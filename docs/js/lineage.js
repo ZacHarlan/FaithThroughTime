@@ -392,22 +392,56 @@ const Lineage = (() => {
                     const dist = Math.hypot(e.clientX - downX, e.clientY - downY);
                     if (dist > 5) return; // was a drag, not a click
                     const personId = isSpouse ? d.data.spouse.id : d.data.id;
-                    openPersonDetail(personId);
+                    openPersonDetail(personId, el);
                 });
                 el.addEventListener('touchend', (e) => {
                     if (e.changedTouches.length !== 1) return;
                     const personId = isSpouse ? d.data.spouse.id : d.data.id;
-                    openPersonDetail(personId);
+                    openPersonDetail(personId, el);
                 });
             });
         }
 
-        function openPersonDetail(personId) {
+        function openPersonDetail(personId, cardEl) {
             Api.getPersonDetail(personId).then(detail => {
                 if (detail) {
                     State.setSelectedItem({ type: 'person', ...detail });
+                    // After panel opens, ensure the clicked card is still visible
+                    requestAnimationFrame(() => scrollCardIntoView(cardEl));
                 }
             });
+        }
+
+        function scrollCardIntoView(cardEl) {
+            if (!cardEl) return;
+            const rect = cardEl.getBoundingClientRect();
+            const contRect = container.getBoundingClientRect();
+            const panelEl = document.getElementById('detail-panel');
+            const isMobile = window.innerWidth <= 768;
+
+            if (isMobile) {
+                // Bottom sheet: ensure card is above the panel top
+                const panelTop = panelEl ? panelEl.getBoundingClientRect().top : window.innerHeight;
+                const margin = 20;
+                if (rect.bottom > panelTop - margin) {
+                    const overflow = rect.bottom - (panelTop - margin);
+                    container.scrollBy({ top: overflow, behavior: 'smooth' });
+                }
+            } else {
+                // Desktop: ensure card isn't behind the right-side panel
+                const panelLeft = panelEl ? panelEl.getBoundingClientRect().left : window.innerWidth;
+                const margin = 20;
+                if (rect.right > panelLeft - margin) {
+                    const overflow = rect.right - (panelLeft - margin);
+                    container.scrollBy({ left: overflow, behavior: 'smooth' });
+                }
+                // Also ensure it's within the visible area vertically
+                if (rect.top < contRect.top) {
+                    container.scrollBy({ top: rect.top - contRect.top - margin, behavior: 'smooth' });
+                } else if (rect.bottom > contRect.bottom) {
+                    container.scrollBy({ top: rect.bottom - contRect.bottom + margin, behavior: 'smooth' });
+                }
+            }
         }
 
         // Enable click-and-drag panning
