@@ -2,13 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" content="dark">
+    <meta name="description" content="Explore biblical history with an interactive timeline spanning from Creation to the Modern Era. Discover people, events, and journeys from Scripture.">
     <title>Bible Timeline — Interactive Biblical History</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='28' font-size='28'>📖</text></svg>">
+    <link rel="preconnect" href="https://d3js.org" crossorigin>
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
           integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-          crossorigin="" />
+          crossorigin="" media="print" onload="this.media='all'" />
 </head>
 <body>
     <!-- Top Bar -->
@@ -77,24 +81,24 @@
                         <span id="range-end-label">AD 2030</span>
                     </div>
                     <div class="dual-range">
-                        <input type="range" id="range-start" min="-4100" max="2030" value="-4100" step="10" />
-                        <input type="range" id="range-end" min="-4100" max="2030" value="2030" step="10" />
+                        <input type="range" id="range-start" min="-4100" max="2030" value="-4100" step="10" aria-label="Date range start" />
+                        <input type="range" id="range-end" min="-4100" max="2030" value="2030" step="10" aria-label="Date range end" />
                     </div>
                 </div>
             </div>
 
             <!-- Time Period -->
             <div class="filter-section">
-                <h3>Time Period</h3>
-                <select id="filter-period">
+                <h3 id="label-period">Time Period</h3>
+                <select id="filter-period" aria-labelledby="label-period">
                     <option value="">All Periods</option>
                 </select>
             </div>
 
             <!-- Date Confidence -->
             <div class="filter-section">
-                <h3>Date Confidence</h3>
-                <select id="filter-confidence">
+                <h3 id="label-confidence">Date Confidence</h3>
+                <select id="filter-confidence" aria-labelledby="label-confidence">
                     <option value="">All Confidence Levels</option>
                 </select>
             </div>
@@ -113,24 +117,24 @@
 
             <!-- Tribe (people only) -->
             <div class="filter-section filter-people-only" id="section-tribe">
-                <h3>Tribe <span class="filter-tag">People</span></h3>
-                <select id="filter-tribe">
+                <h3 id="label-tribe">Tribe <span class="filter-tag">People</span></h3>
+                <select id="filter-tribe" aria-labelledby="label-tribe">
                     <option value="">All Tribes</option>
                 </select>
             </div>
 
             <!-- Scripture Book -->
             <div class="filter-section">
-                <h3>Scripture Book</h3>
-                <select id="filter-book">
+                <h3 id="label-book">Scripture Book</h3>
+                <select id="filter-book" aria-labelledby="label-book">
                     <option value="">All Books</option>
                 </select>
             </div>
 
             <!-- Location (events only) -->
             <div class="filter-section filter-events-only" id="section-location">
-                <h3>Location <span class="filter-tag">Events</span></h3>
-                <select id="filter-location">
+                <h3 id="label-location">Location <span class="filter-tag">Events</span></h3>
+                <select id="filter-location" aria-labelledby="label-location">
                     <option value="">All Locations</option>
                 </select>
             </div>
@@ -143,7 +147,10 @@
 
         <!-- Timeline Canvas -->
         <main id="timeline-container">
-            <div id="timeline-loading" class="loading">Loading timeline…</div>
+            <div id="timeline-loading" class="loading">
+                <h2 class="loading-title">Bible Timeline</h2>
+                <p>Loading interactive timeline…</p>
+            </div>
             <svg id="timeline-svg"></svg>
             <div id="tooltip" class="tooltip hidden"></div>
         </main>
@@ -217,16 +224,16 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
             integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-            crossorigin=""></script>
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script src="/js/api.js"></script>
-    <script src="/js/state.js"></script>
-    <script src="/js/timeline.js"></script>
-    <script src="/js/filters.js"></script>
-    <script src="/js/detail-panel.js"></script>
-    <script src="/js/search.js"></script>
-    <script src="/js/lineage.js"></script>
-    <script src="/js/map.js"></script>
-    <script src="/js/app.js"></script>
+            crossorigin="" defer></script>
+    <script src="https://d3js.org/d3.v7.min.js" defer></script>
+    <script src="/js/api.js" defer></script>
+    <script src="/js/state.js" defer></script>
+    <script src="/js/timeline.js" defer></script>
+    <script src="/js/filters.js" defer></script>
+    <script src="/js/detail-panel.js" defer></script>
+    <script src="/js/search.js" defer></script>
+    <script src="/js/lineage.js" defer></script>
+    <script src="/js/map.js" defer></script>
+    <script src="/js/app.js" defer></script>
 </body>
 </html>
