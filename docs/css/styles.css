@@ -1075,6 +1075,7 @@ html, body {
     display: flex;
     flex-direction: column;
     background: var(--bg-primary);
+    z-index: 1;
 }
 
 .lineage-header {

@@ -486,6 +486,47 @@ public class TimelineE2ETests : PageTest
         var count = await sections.CountAsync();
         Assert.That(count, Is.GreaterThan(0), "Detail panel should have content sections");
     }
+
+    [Test]
+    public async Task Lineage_DetailPanel_IsScrollable()
+    {
+        await Page.GotoAsync("http://localhost:5180");
+        await Page.WaitForSelectorAsync("#timeline-svg");
+
+        // Switch to lineage tab
+        await Page.ClickAsync("[data-tab='lineage']");
+        await Page.WaitForTimeoutAsync(500);
+
+        // Search for Abraham (has many relatives)
+        await Page.FillAsync("#lineage-search", "Abraham");
+        await Page.WaitForSelectorAsync("#lineage-suggestions li");
+        await Page.ClickAsync("#lineage-suggestions li:first-child");
+        await Page.WaitForTimeoutAsync(1000);
+
+        // Click a non-subject card
+        var card = Page.Locator(".lineage-node:not(.subject) .lineage-card").First;
+        await card.ClickAsync();
+        await Page.WaitForTimeoutAsync(500);
+
+        // Panel should be visible
+        var panel = Page.Locator("#detail-panel");
+        await Expect(panel).Not.ToHaveClassAsync(new System.Text.RegularExpressions.Regex("hidden"));
+
+        // Check that the detail panel is the top element at its center
+        var isOnTop = await Page.EvaluateAsync<bool>(@"() => {
+            const panel = document.getElementById('detail-panel');
+            const rect = panel.getBoundingClientRect();
+            const cx = rect.left + rect.width / 2;
+            const cy = rect.top + rect.height / 2;
+            const el = document.elementFromPoint(cx, cy);
+            return panel.contains(el);
+        }");
+        Assert.That(isOnTop, Is.True, "Detail panel should be the topmost element at its center (z-index stacking)");
+
+        // Check that the panel is scrollable (overflow-y is scroll or auto)
+        var overflowY = await panel.EvaluateAsync<string>("el => window.getComputedStyle(el).overflowY");
+        Assert.That(overflowY, Is.AnyOf("scroll", "auto"), "Detail panel must have overflow-y: scroll or auto");
+    }
 }
 
 /// <summary>
