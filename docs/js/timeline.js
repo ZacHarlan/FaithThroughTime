@@ -168,6 +168,19 @@ const Timeline = (() => {
         }, { passive: true });
 
         ctr.addEventListener('touchmove', (e) => {
+            // If a second finger appears, cancel our drag and let D3 handle pinch
+            if (e.touches.length >= 2) {
+                if (dragging) {
+                    dragging = false;
+                    touchId = null;
+                    if (dragOffsetX !== 0) {
+                        dragOffsetX = 0;
+                        g.attr('transform', null);
+                        render();
+                    }
+                }
+                return;
+            }
             if (!dragging || e.touches.length !== 1) return;
             const t = e.touches[0];
             if (t.identifier !== touchId) return;

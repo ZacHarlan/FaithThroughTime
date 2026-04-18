@@ -496,6 +496,7 @@ html, body {
     overflow-x: hidden;
     overflow-y: scroll;
     background: var(--bg-primary);
+    touch-action: none;
 }
 
 #timeline-svg {
