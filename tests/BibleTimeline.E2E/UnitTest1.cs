@@ -487,3 +487,169 @@ public class TimelineE2ETests : PageTest
         Assert.That(count, Is.GreaterThan(0), "Detail panel should have content sections");
     }
 }
+
+/// <summary>
+/// Mobile-specific E2E tests using a 375×667 (iPhone SE) viewport.
+/// Verifies responsive layout, filter drawer, and select element rendering.
+/// </summary>
+[TestFixture]
+public class MobileE2ETests : PageTest
+{
+    private const string BaseUrl = "http://localhost:5180";
+
+    public override BrowserNewContextOptions ContextOptions()
+    {
+        return new BrowserNewContextOptions
+        {
+            ViewportSize = new ViewportSize { Width = 375, Height = 667 },
+            IsMobile = true,
+            HasTouch = true,
+            UserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1"
+        };
+    }
+
+    [Test]
+    public async Task Mobile_SelectElements_HaveMinimum16pxFontSize()
+    {
+        await Page.GotoAsync(BaseUrl);
+        await Page.WaitForSelectorAsync(".timeline-item");
+
+        // Open the filter drawer
+        await Page.ClickAsync("#btn-mobile-filters");
+        await Page.WaitForTimeoutAsync(300);
+
+        // Check all <select> elements inside the filter panel
+        var selects = Page.Locator(".filter-section select");
+        var selectCount = await selects.CountAsync();
+        Assert.That(selectCount, Is.GreaterThan(0), "Should have filter select elements");
+
+        for (int i = 0; i < selectCount; i++)
+        {
+            var fontSize = await selects.Nth(i).EvaluateAsync<string>(
+                "el => window.getComputedStyle(el).fontSize");
+            var sizeValue = float.Parse(fontSize.Replace("px", ""));
+            Assert.That(sizeValue, Is.GreaterThanOrEqualTo(16f),
+                $"Select #{i} has font-size {fontSize}, must be >= 16px to prevent iOS zoom");
+        }
+    }
+
+    [Test]
+    public async Task Mobile_SelectElements_HaveAdequateHeight()
+    {
+        await Page.GotoAsync(BaseUrl);
+        await Page.WaitForSelectorAsync(".timeline-item");
+
+        await Page.ClickAsync("#btn-mobile-filters");
+        await Page.WaitForTimeoutAsync(300);
+
+        var selects = Page.Locator(".filter-section select");
+        var selectCount = await selects.CountAsync();
+
+        for (int i = 0; i < selectCount; i++)
+        {
+            var height = await selects.Nth(i).EvaluateAsync<double>(
+                "el => el.getBoundingClientRect().height");
+            Assert.That(height, Is.GreaterThanOrEqualTo(40),
+                $"Select #{i} rendered height is {height}px, must be >= 40px for touch targets");
+        }
+    }
+
+    [Test]
+    public async Task Mobile_SelectOptions_HaveReadableText()
+    {
+        await Page.GotoAsync(BaseUrl);
+        await Page.WaitForSelectorAsync(".timeline-item");
+
+        await Page.ClickAsync("#btn-mobile-filters");
+        await Page.WaitForTimeoutAsync(300);
+
+        // Verify the period select has options with text
+        var periodSelect = Page.Locator("#filter-period");
+        var optionCount = await periodSelect.Locator("option").CountAsync();
+        Assert.That(optionCount, Is.GreaterThan(1), "Period select should have options populated");
+
+        // Verify option font-size matches the select's font-size
+        var selectFontSize = await periodSelect.EvaluateAsync<string>(
+            "el => window.getComputedStyle(el).fontSize");
+        var optionFontSize = await periodSelect.Locator("option").First.EvaluateAsync<string>(
+            "el => window.getComputedStyle(el).fontSize");
+        var selectSize = float.Parse(selectFontSize.Replace("px", ""));
+        var optionSize = float.Parse(optionFontSize.Replace("px", ""));
+        Assert.That(optionSize, Is.GreaterThanOrEqualTo(selectSize),
+            $"Option font-size ({optionFontSize}) should be >= select font-size ({selectFontSize})");
+    }
+
+    [Test]
+    public async Task Mobile_ColorScheme_IsDark()
+    {
+        await Page.GotoAsync(BaseUrl);
+
+        // Verify color-scheme meta tag is present
+        var metaColorScheme = await Page.EvaluateAsync<string>(
+            "() => document.querySelector('meta[name=\"color-scheme\"]')?.content ?? ''");
+        Assert.That(metaColorScheme, Is.EqualTo("dark"),
+            "color-scheme meta tag should be 'dark' for proper native control rendering");
+
+        // Verify CSS color-scheme property is set
+        var cssColorScheme = await Page.EvaluateAsync<string>(
+            "() => window.getComputedStyle(document.documentElement).colorScheme");
+        Assert.That(cssColorScheme, Does.Contain("dark"),
+            "CSS color-scheme should include 'dark'");
+    }
+
+    [Test]
+    public async Task Mobile_HamburgerButton_IsVisible()
+    {
+        await Page.GotoAsync(BaseUrl);
+        await Page.WaitForSelectorAsync(".timeline-item");
+
+        var hamburger = Page.Locator("#btn-mobile-filters");
+        await Expect(hamburger).ToBeVisibleAsync();
+    }
+
+    [Test]
+    public async Task Mobile_FilterDrawer_OpensAndCloses()
+    {
+        await Page.GotoAsync(BaseUrl);
+        await Page.WaitForSelectorAsync(".timeline-item");
+
+        var filterPanel = Page.Locator("#filter-panel");
+
+        // Initially should be off-screen (not have drawer-open class)
+        await Expect(filterPanel).Not.ToHaveClassAsync(new System.Text.RegularExpressions.Regex("drawer-open"));
+
+        // Open drawer
+        await Page.ClickAsync("#btn-mobile-filters");
+        await Page.WaitForTimeoutAsync(400);
+        await Expect(filterPanel).ToHaveClassAsync(new System.Text.RegularExpressions.Regex("drawer-open"));
+
+        // Close by tapping backdrop via JS dispatch (backdrop is behind drawer in z-order)
+        await Page.EvaluateAsync("() => document.getElementById('mobile-backdrop').click()");
+        await Page.WaitForTimeoutAsync(400);
+        await Expect(filterPanel).Not.ToHaveClassAsync(new System.Text.RegularExpressions.Regex("drawer-open"));
+    }
+
+    [Test]
+    public async Task Mobile_FilterPeriodSelect_CanBeInteracted()
+    {
+        await Page.GotoAsync(BaseUrl);
+        await Page.WaitForSelectorAsync(".timeline-item");
+
+        // Open drawer
+        await Page.ClickAsync("#btn-mobile-filters");
+        await Page.WaitForTimeoutAsync(300);
+
+        // Select a period
+        var periodSelect = Page.Locator("#filter-period");
+        await periodSelect.SelectOptionAsync("Life of Christ");
+
+        // Wait for data to reload
+        await Page.WaitForTimeoutAsync(500);
+
+        // Should still have items (filter is working, not broken)
+        var items = Page.Locator(".timeline-item");
+        var itemCount = await items.CountAsync();
+        Assert.That(itemCount, Is.GreaterThan(0),
+            "Selecting a period filter on mobile should still show results");
+    }
+}
