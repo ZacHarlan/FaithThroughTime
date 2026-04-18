@@ -338,6 +338,96 @@ def export_lineage_people(conn):
     return rows
 
 
+def export_map_events(conn):
+    """Export events that have locations (for map markers)."""
+    return conn.execute("""
+        SELECT e.id AS event_id, e.name AS event_name,
+               e.start_year, e.end_year,
+               e.category, e.significance,
+               l.id AS location_id, l.name AS location_name, l.modern_name,
+               l.latitude, l.longitude
+        FROM events e
+        JOIN event_locations el ON el.event_id = e.id
+        JOIN locations l ON l.id = el.location_id
+        WHERE l.latitude IS NOT NULL
+        ORDER BY e.sort_order, COALESCE(e.start_year, e.end_year)
+    """).fetchall()
+
+
+def export_map_people(conn):
+    """Export people who have at least 2 located events (for journey dropdown)."""
+    return conn.execute("""
+        SELECT p.id, p.name, COUNT(DISTINCT el.event_id) AS event_count
+        FROM people p
+        JOIN person_events pe ON pe.person_id = p.id
+        JOIN event_locations el ON el.event_id = pe.event_id
+        JOIN locations l ON l.id = el.location_id
+        WHERE l.latitude IS NOT NULL
+        GROUP BY p.id, p.name
+        HAVING COUNT(DISTINCT el.event_id) >= 2
+        ORDER BY p.name
+    """).fetchall()
+
+
+def export_map_journeys(conn):
+    """Export person-event-location joins for journey rendering."""
+    return conn.execute("""
+        SELECT pe.person_id, e.id AS event_id, e.name AS event_name,
+               e.start_year, e.end_year,
+               e.category, pe.role_in_event,
+               l.id AS location_id, l.name AS location_name,
+               l.latitude, l.longitude
+        FROM person_events pe
+        JOIN events e ON e.id = pe.event_id
+        JOIN event_locations el ON el.event_id = e.id
+        JOIN locations l ON l.id = el.location_id
+        WHERE l.latitude IS NOT NULL
+        ORDER BY e.sort_order, COALESCE(e.start_year, e.end_year)
+    """).fetchall()
+
+
+def export_book_journeys(conn):
+    """Export book journey list with stop counts."""
+    return conn.execute("""
+        SELECT j.id, j.name, j.description,
+               COUNT(js.id) AS stop_count
+        FROM journeys j
+        JOIN journey_stops js ON js.journey_id = j.id
+        GROUP BY j.id, j.name, j.description
+        ORDER BY j.name
+    """).fetchall()
+
+
+def export_book_journey_stops(conn):
+    """Export all journey stops keyed by journey_id."""
+    rows = conn.execute("""
+        SELECT js.journey_id,
+               COALESCE(js.event_id, 0) AS event_id,
+               js.label AS event_name,
+               js.year AS start_year,
+               COALESCE(e.category, 'other') AS category,
+               js.chapter AS role_in_event,
+               l.id AS location_id,
+               l.name AS location_name,
+               l.latitude, l.longitude,
+               js.chapter,
+               js.description AS stop_description
+        FROM journey_stops js
+        JOIN locations l ON l.id = js.location_id
+        LEFT JOIN events e ON e.id = js.event_id
+        WHERE l.latitude IS NOT NULL
+        ORDER BY js.journey_id, js.sort_order
+    """).fetchall()
+    # Group by journey_id
+    result = {}
+    for r in rows:
+        jid = str(r["journeyId"])
+        if jid not in result:
+            result[jid] = []
+        result[jid].append(r)
+    return result
+
+
 def write_json(path, data, label=None):
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w") as f:
@@ -454,6 +544,11 @@ def main():
         "people": export_people_detail(conn),
         "events": export_events_detail(conn),
         "lineagePeople": export_lineage_people(conn),
+        "mapEvents": export_map_events(conn),
+        "mapPeople": export_map_people(conn),
+        "mapJourneys": export_map_journeys(conn),
+        "bookJourneys": export_book_journeys(conn),
+        "bookJourneyStops": export_book_journey_stops(conn),
     }
 
     conn.close()

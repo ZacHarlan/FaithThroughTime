@@ -245,5 +245,49 @@ const Api = (() => {
             const { lineagePeople } = await _load();
             return computeLineage(id, lineagePeople);
         },
+
+        async getMapEvents(startYear, endYear) {
+            const { mapEvents } = await _load();
+            if (!mapEvents) return [];
+            return mapEvents.filter(e => {
+                const y = e.startYear ?? e.endYear;
+                if (startYear != null && y != null && y < startYear) return false;
+                if (endYear != null && y != null && y > endYear) return false;
+                return true;
+            });
+        },
+
+        async getMapPeople() {
+            const { mapPeople } = await _load();
+            return mapPeople || [];
+        },
+
+        async getMapJourney(personId, startYear, endYear) {
+            const { mapJourneys } = await _load();
+            if (!mapJourneys) return [];
+            return mapJourneys.filter(j => {
+                if (j.personId !== personId) return false;
+                const y = j.startYear ?? j.endYear;
+                if (startYear != null && y != null && y < startYear) return false;
+                if (endYear != null && y != null && y > endYear) return false;
+                return true;
+            });
+        },
+
+        async getMapLocations() {
+            // Not separately exported; not needed for map rendering
+            return [];
+        },
+
+        async getBookJourneys() {
+            const { bookJourneys } = await _load();
+            return bookJourneys || [];
+        },
+
+        async getBookJourneyStops(journeyId) {
+            const { bookJourneyStops } = await _load();
+            if (!bookJourneyStops) return [];
+            return bookJourneyStops[String(journeyId)] || [];
+        },
     };
 })();

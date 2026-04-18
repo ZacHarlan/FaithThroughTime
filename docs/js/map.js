@@ -193,9 +193,9 @@ const MapView = (() => {
     function resetSliderRange() {
         const slider = document.getElementById('map-year-slider');
         slider.min = -4100;
-        slider.max = 110;
-        slider.value = 110;
-        updateYearLabel(110);
+        slider.max = 2030;
+        slider.value = 2030;
+        updateYearLabel(2030);
     }
 
     function onSliderInput() {
