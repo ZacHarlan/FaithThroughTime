@@ -6,6 +6,42 @@ const DetailPanel = (() => {
 
     function init() {
         document.getElementById('btn-close-detail').addEventListener('click', close);
+        initSwipeToDismiss();
+    }
+
+    function initSwipeToDismiss() {
+        const handle = document.querySelector('.detail-drag-handle');
+        if (!handle) return;
+
+        let startY = 0;
+        let currentY = 0;
+        let dragging = false;
+
+        handle.addEventListener('touchstart', e => {
+            startY = e.touches[0].clientY;
+            currentY = startY;
+            dragging = true;
+            panel().style.transition = 'none';
+        }, { passive: true });
+
+        handle.addEventListener('touchmove', e => {
+            if (!dragging) return;
+            currentY = e.touches[0].clientY;
+            const dy = Math.max(0, currentY - startY);
+            panel().style.transform = `translateY(${dy}px)`;
+        }, { passive: true });
+
+        handle.addEventListener('touchend', () => {
+            if (!dragging) return;
+            dragging = false;
+            panel().style.transition = '';
+            const dy = currentY - startY;
+            if (dy > 80) {
+                close();
+            } else {
+                panel().style.transform = '';
+            }
+        });
     }
 
     function show(item) {
