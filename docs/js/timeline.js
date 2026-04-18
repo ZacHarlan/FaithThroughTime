@@ -48,11 +48,17 @@ const Timeline = (() => {
         g.append('g').attr('class', 'layer-axis');
         g.append('g').attr('class', 'layer-items');
 
-        // D3 zoom handles wheel-zoom only; drag panning is handled separately
-        // to support both horizontal and vertical axes without feedback loops
+        // D3 zoom handles wheel-zoom and pinch-to-zoom; single-finger drag
+        // panning is handled separately via enableDragPan
         zoom = d3.zoom()
             .scaleExtent([0.1, 200])
-            .filter(event => event.type === 'wheel' || event.type === 'dblclick')
+            .filter(event => {
+                // Allow wheel, dblclick, and multi-touch (pinch zoom)
+                if (event.type === 'wheel' || event.type === 'dblclick') return true;
+                if (event.type === 'touchstart' && event.touches && event.touches.length >= 2) return true;
+                if (event.type === 'touchmove' && event.touches && event.touches.length >= 2) return true;
+                return false;
+            })
             .on('zoom', onZoom);
 
         svg.call(zoom);
@@ -80,18 +86,29 @@ const Timeline = (() => {
         document.getElementById('btn-fit').addEventListener('click', fitAll);
     }
 
+    let _rafPending = false;
+    function scheduleRender() {
+        if (_rafPending) return;
+        _rafPending = true;
+        requestAnimationFrame(() => {
+            _rafPending = false;
+            render();
+            updateYearDisplay();
+        });
+    }
+
     function onZoom(event) {
         // Wheel zoom only — constrain Y to 0 (vertical is handled by container scroll)
         const t = event.transform;
         const constrained = d3.zoomIdentity.translate(t.x, 0).scale(t.k);
         svg.node().__zoom = constrained;
         currentTransform = constrained;
-        render();
-        updateYearDisplay();
+        scheduleRender();
     }
 
     function enableDragPan(ctr) {
         let dragging = false, startX, startY, startScrollTop, startTx;
+        let dragOffsetX = 0;
 
         ctr.addEventListener('mousedown', (e) => {
             if (e.button !== 0) return;
@@ -110,11 +127,14 @@ const Timeline = (() => {
             const dx = e.clientX - startX;
             const dy = e.clientY - startY;
 
-            // Horizontal: update D3 zoom transform
+            // Fast path: translate the g element directly, skip full re-render
+            dragOffsetX = dx;
+            g.attr('transform', `translate(${dx},0)`);
+
+            // Update the transform so year display stays accurate
             const newTransform = d3.zoomIdentity.translate(startTx + dx, 0).scale(currentTransform.k);
             svg.node().__zoom = newTransform;
             currentTransform = newTransform;
-            render();
             updateYearDisplay();
 
             // Vertical: scroll the container
@@ -125,7 +145,64 @@ const Timeline = (() => {
             if (!dragging) return;
             dragging = false;
             ctr.style.cursor = '';
+            // Reset offset and do a proper re-render at final position
+            if (dragOffsetX !== 0) {
+                dragOffsetX = 0;
+                g.attr('transform', null);
+                render();
+            }
         });
+
+        // Touch support for mobile panning
+        let touchId = null;
+        ctr.addEventListener('touchstart', (e) => {
+            if (e.touches.length !== 1) return;
+            if (e.target.closest('button, input, select, a')) return;
+            const t = e.touches[0];
+            touchId = t.identifier;
+            dragging = true;
+            startX = t.clientX;
+            startY = t.clientY;
+            startScrollTop = ctr.scrollTop;
+            startTx = currentTransform.x;
+        }, { passive: true });
+
+        ctr.addEventListener('touchmove', (e) => {
+            if (!dragging || e.touches.length !== 1) return;
+            const t = e.touches[0];
+            if (t.identifier !== touchId) return;
+            const dx = t.clientX - startX;
+            const dy = t.clientY - startY;
+
+            // Fast path: translate the g element directly
+            dragOffsetX = dx;
+            g.attr('transform', `translate(${dx},0)`);
+
+            const newTransform = d3.zoomIdentity.translate(startTx + dx, 0).scale(currentTransform.k);
+            svg.node().__zoom = newTransform;
+            currentTransform = newTransform;
+            updateYearDisplay();
+
+            ctr.scrollTop = startScrollTop - dy;
+            e.preventDefault();
+        }, { passive: false });
+
+        ctr.addEventListener('touchend', (e) => {
+            if (!dragging) return;
+            for (const t of e.changedTouches) {
+                if (t.identifier === touchId) {
+                    dragging = false;
+                    touchId = null;
+                    // Reset offset and do a proper re-render
+                    if (dragOffsetX !== 0) {
+                        dragOffsetX = 0;
+                        g.attr('transform', null);
+                        render();
+                    }
+                    break;
+                }
+            }
+        }, { passive: true });
     }
 
     function getVisibleXScale() {
@@ -447,6 +524,9 @@ const Timeline = (() => {
     }
 
     function showTooltip(event, d) {
+        // Don't show tooltips on touch devices — the detail panel handles it
+        if ('ontouchstart' in window || navigator.maxTouchPoints > 0) return;
+
         const tooltip = document.getElementById('tooltip');
         const dates = formatDateRange(d);
 

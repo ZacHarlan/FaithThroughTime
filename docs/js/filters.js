@@ -4,6 +4,16 @@ const Filters = (() => {
     let _debounceTimer = null;
 
     function init() {
+        // Mobile drawer toggle
+        const hamburger = document.getElementById('btn-mobile-filters');
+        const backdrop = document.getElementById('mobile-backdrop');
+        if (hamburger) {
+            hamburger.addEventListener('click', toggleDrawer);
+        }
+        if (backdrop) {
+            backdrop.addEventListener('click', closeDrawer);
+        }
+
         // Show toggles
         document.getElementById('filter-people').addEventListener('change', e => {
             State.updateFilter('includePeople', e.target.checked);
@@ -323,5 +333,26 @@ const Filters = (() => {
         return str.charAt(0).toUpperCase() + str.slice(1);
     }
 
-    return { init, populate, syncUI };
+    function toggleDrawer() {
+        const panel = document.getElementById('filter-panel');
+        const backdrop = document.getElementById('mobile-backdrop');
+        const isOpen = panel.classList.contains('drawer-open');
+        if (isOpen) {
+            closeDrawer();
+        } else {
+            panel.classList.add('drawer-open');
+            backdrop.classList.remove('hidden');
+            requestAnimationFrame(() => backdrop.classList.add('visible'));
+        }
+    }
+
+    function closeDrawer() {
+        const panel = document.getElementById('filter-panel');
+        const backdrop = document.getElementById('mobile-backdrop');
+        panel.classList.remove('drawer-open');
+        backdrop.classList.remove('visible');
+        setTimeout(() => backdrop.classList.add('hidden'), 250);
+    }
+
+    return { init, populate, syncUI, closeDrawer };
 })();

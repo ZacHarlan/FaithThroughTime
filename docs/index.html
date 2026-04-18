@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="color-scheme" content="dark">
     <title>Bible Timeline — Interactive Biblical History</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -14,6 +15,7 @@
     <!-- Top Bar -->
     <header id="header">
         <div class="header-left">
+            <button id="btn-mobile-filters" class="mobile-only btn-hamburger" title="Filters">☰</button>
             <h1>Bible Timeline</h1>
             <nav class="tab-nav">
                 <button class="tab-btn active" data-tab="timeline">Timeline</button>
@@ -149,8 +151,12 @@
 
     </div>
 
+    <!-- Mobile Backdrop -->
+    <div id="mobile-backdrop" class="mobile-backdrop hidden"></div>
+
     <!-- Detail Panel (shared across all tabs) -->
     <aside id="detail-panel" class="panel-right hidden">
+        <div class="detail-drag-handle mobile-only"><span></span></div>
         <div class="panel-header">
             <h2 id="detail-title">Details</h2>
             <button id="btn-close-detail" class="btn-close" title="Close">×</button>
