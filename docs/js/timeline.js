@@ -38,7 +38,7 @@ const Timeline = (() => {
 
         // Base x scale: covers full biblical span
         xScale = d3.scaleLinear()
-            .domain([-4100, 110])
+            .domain([-4100, 2030])
             .range([MARGIN.left, width - MARGIN.right]);
 
         // Create layer groups in correct z-order

@@ -83,7 +83,7 @@ const Filters = (() => {
         // Debounce API call
         clearTimeout(_debounceTimer);
         _debounceTimer = setTimeout(() => {
-            const isDefault = startVal <= -4100 && endVal >= 110;
+            const isDefault = startVal <= -4100 && endVal >= 2030;
             State.updateFilter('startYear', isDefault ? null : startVal);
             State.updateFilter('endYear', isDefault ? null : endVal);
         }, 200);
@@ -247,9 +247,9 @@ const Filters = (() => {
         syncCheckboxGroup('category-checkboxes', f.category);
 
         document.getElementById('range-start').value = f.startYear ?? -4100;
-        document.getElementById('range-end').value = f.endYear ?? 110;
+        document.getElementById('range-end').value = f.endYear ?? 2030;
         document.getElementById('range-start-label').textContent = formatYear(f.startYear ?? -4100);
-        document.getElementById('range-end-label').textContent = formatYear(f.endYear ?? 110);
+        document.getElementById('range-end-label').textContent = formatYear(f.endYear ?? 2030);
 
         updateContextualVisibility();
         updateChips();
