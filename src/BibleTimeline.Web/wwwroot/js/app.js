@@ -16,6 +16,9 @@
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
 
+            // Close mobile drawer on tab switch
+            Filters.closeDrawer();
+
             // Hide all tab content
             document.getElementById('app').style.display = 'none';
             document.getElementById('lineage-tab').classList.add('hidden');
