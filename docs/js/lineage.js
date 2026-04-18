@@ -348,13 +348,15 @@ const Lineage = (() => {
                 .attr('class', 'lineage-card')
                 .attr('width', nodeW)
                 .attr('height', nodeH)
-                .attr('rx', 6);
+                .attr('rx', 6)
+                .style('cursor', 'pointer');
 
             sel.append('text')
                 .attr('class', 'lineage-name')
                 .attr('x', nodeW / 2)
                 .attr('y', 20)
                 .attr('text-anchor', 'middle')
+                .style('pointer-events', 'none')
                 .text(d => isSpouse ? d.data.spouse.name : d.data.name);
 
             sel.append('text')
@@ -362,6 +364,7 @@ const Lineage = (() => {
                 .attr('x', nodeW / 2)
                 .attr('y', 36)
                 .attr('text-anchor', 'middle')
+                .style('pointer-events', 'none')
                 .text(d => {
                     const p = isSpouse ? d.data.spouse : d.data;
                     const dates = formatPersonDates(p);
@@ -377,7 +380,34 @@ const Lineage = (() => {
                 .attr('x', nodeW / 2)
                 .attr('y', 50)
                 .attr('text-anchor', 'middle')
+                .style('pointer-events', 'none')
                 .text(d => (isSpouse ? d.data.spouse.role : d.data.role) || '');
+
+            // Click to open detail panel
+            sel.each(function (d) {
+                const el = this;
+                let downX, downY;
+                el.addEventListener('mousedown', (e) => { downX = e.clientX; downY = e.clientY; });
+                el.addEventListener('mouseup', (e) => {
+                    const dist = Math.hypot(e.clientX - downX, e.clientY - downY);
+                    if (dist > 5) return; // was a drag, not a click
+                    const personId = isSpouse ? d.data.spouse.id : d.data.id;
+                    openPersonDetail(personId);
+                });
+                el.addEventListener('touchend', (e) => {
+                    if (e.changedTouches.length !== 1) return;
+                    const personId = isSpouse ? d.data.spouse.id : d.data.id;
+                    openPersonDetail(personId);
+                });
+            });
+        }
+
+        function openPersonDetail(personId) {
+            Api.getPersonDetail(personId).then(detail => {
+                if (detail) {
+                    State.setSelectedItem({ type: 'person', ...detail });
+                }
+            });
         }
 
         // Enable click-and-drag panning
