@@ -518,7 +518,7 @@ const Timeline = (() => {
                 .attr('y', ROW_HEIGHT / 2)
                 .text(d.name)
                 .style('font-weight', d.significance === 'major' ? '600' : d.significance === 'moderate' ? '500' : '400')
-                .style('font-size', d.significance === 'major' ? '12px' : d.significance === 'moderate' ? '11.5px' : '11px');
+                .style('font-size', d.significance === 'major' ? '14px' : d.significance === 'moderate' ? '13px' : '12px');
         });
 
         return offsetY + lanes.length * (ROW_HEIGHT + ROW_GAP);
