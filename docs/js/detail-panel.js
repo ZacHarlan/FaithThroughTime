@@ -16,6 +16,8 @@ const DetailPanel = (() => {
 
         if (item.type === 'person') {
             renderPerson(item);
+        } else if (item.type === 'stop') {
+            renderStop(item);
         } else {
             renderEvent(item);
         }
@@ -130,6 +132,11 @@ const DetailPanel = (() => {
             html += '</ul></div>';
         }
 
+        // Mini-map for locations with coordinates
+        if (e.locations && e.locations.some(l => l.latitude && l.longitude)) {
+            html += '<div class="detail-section"><h3>Map</h3><div id="detail-mini-map" class="detail-mini-map"></div></div>';
+        }
+
         // Scripture references
         if (e.scriptureReferences && e.scriptureReferences.length) {
             html += '<div class="detail-section"><h3>Scripture</h3><ul class="detail-list">';
@@ -141,6 +148,45 @@ const DetailPanel = (() => {
 
         c.innerHTML = html;
         attachListClicks(c);
+
+        // Render mini-map after DOM is updated
+        if (e.locations && e.locations.some(l => l.latitude && l.longitude)) {
+            setTimeout(() => {
+                if (typeof MapView !== 'undefined') {
+                    MapView.renderMiniMap('detail-mini-map', e.locations);
+                }
+            }, 50);
+        }
+    }
+
+    function renderStop(s) {
+        const c = content();
+        let html = '';
+
+        html += '<div class="detail-section"><h3>Details</h3><dl class="detail-meta">';
+        if (s.year != null) html += metaRow('Date', s.year < 0 ? `${Math.abs(s.year)} BC` : `AD ${s.year}`);
+        if (s.chapter) html += metaRow('Reference', chapterRefLink(s.chapter));
+        if (s.locationName) html += metaRow('Location', escapeHtml(s.locationName));
+        html += '</dl></div>';
+
+        if (s.stopDescription) {
+            html += `<div class="detail-section"><h3>Description</h3><p class="detail-description">${escapeHtml(s.stopDescription)}</p></div>`;
+        }
+
+        // Mini-map for the stop location
+        if (s.latitude && s.longitude) {
+            html += '<div class="detail-section"><h3>Map</h3><div id="detail-mini-map" class="detail-mini-map"></div></div>';
+        }
+
+        c.innerHTML = html;
+
+        if (s.latitude && s.longitude) {
+            setTimeout(() => {
+                if (typeof MapView !== 'undefined') {
+                    MapView.renderMiniMap('detail-mini-map', [{ name: s.locationName, latitude: s.latitude, longitude: s.longitude }]);
+                }
+            }, 50);
+        }
     }
 
     function attachListClicks(container) {
@@ -226,6 +272,14 @@ const DetailPanel = (() => {
             return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="scripture-link">${text}</a>`;
         }
         return text;
+    }
+
+    function chapterRefLink(text) {
+        const url = bibleGatewayUrl(text);
+        if (url) {
+            return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="scripture-link">${escapeHtml(text)}</a>`;
+        }
+        return escapeHtml(text);
     }
 
     return { init, show, close };

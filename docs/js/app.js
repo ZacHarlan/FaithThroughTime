@@ -9,26 +9,37 @@
 
     // Tab switching
     let lineageLoaded = false;
+    let mapLoaded = false;
     document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.addEventListener('click', async () => {
             const tab = btn.dataset.tab;
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
 
+            // Hide all tab content
+            document.getElementById('app').style.display = 'none';
+            document.getElementById('lineage-tab').classList.add('hidden');
+            document.getElementById('map-tab').classList.add('hidden');
+            document.querySelector('.header-center').style.display = 'none';
+            document.querySelector('.header-right').style.display = 'none';
+
             if (tab === 'timeline') {
                 document.getElementById('app').style.display = '';
-                document.getElementById('lineage-tab').classList.add('hidden');
                 document.querySelector('.header-center').style.display = '';
                 document.querySelector('.header-right').style.display = '';
             } else if (tab === 'lineage') {
-                document.getElementById('app').style.display = 'none';
                 document.getElementById('lineage-tab').classList.remove('hidden');
-                document.querySelector('.header-center').style.display = 'none';
-                document.querySelector('.header-right').style.display = 'none';
                 if (!lineageLoaded) {
                     lineageLoaded = true;
                     await Lineage.loadPeopleList();
                 }
+            } else if (tab === 'map') {
+                document.getElementById('map-tab').classList.remove('hidden');
+                if (!mapLoaded) {
+                    mapLoaded = true;
+                    MapView.init();
+                }
+                await MapView.activate();
             }
         });
     });

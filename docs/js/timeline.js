@@ -15,8 +15,10 @@ const Timeline = (() => {
     const ROW_HEIGHT = 26;
     const ROW_GAP = 3;
     const BAR_HEIGHT_MAJOR = 20;
+    const BAR_HEIGHT_MODERATE = 17;
     const BAR_HEIGHT_MINOR = 14;
     const POINT_RADIUS_MAJOR = 6;
+    const POINT_RADIUS_MODERATE = 5;
     const POINT_RADIUS_MINOR = 4;
     const LABEL_PADDING = 6;
     const PERIOD_BAND_HEIGHT = 28;
@@ -387,7 +389,7 @@ const Timeline = (() => {
 
         merged.each(function(d) {
             const el = d3.select(this);
-            const barH = d.significance === 'major' ? BAR_HEIGHT_MAJOR : BAR_HEIGHT_MINOR;
+            const barH = d.significance === 'major' ? BAR_HEIGHT_MAJOR : d.significance === 'moderate' ? BAR_HEIGHT_MODERATE : BAR_HEIGHT_MINOR;
             const barY = (ROW_HEIGHT - barH) / 2;
             const isApprox = d.startApprox || d.endApprox;
 
@@ -401,7 +403,7 @@ const Timeline = (() => {
                     .attr('height', barH);
             } else {
                 // Point marker (diamond for events, circle for people)
-                const r = d.significance === 'major' ? POINT_RADIUS_MAJOR : POINT_RADIUS_MINOR;
+                const r = d.significance === 'major' ? POINT_RADIUS_MAJOR : d.significance === 'moderate' ? POINT_RADIUS_MODERATE : POINT_RADIUS_MINOR;
                 if (d.type === 'event') {
                     el.append('path')
                         .attr('class', `item-point ${d.type}`)
@@ -418,14 +420,15 @@ const Timeline = (() => {
             }
 
             // Label (to the right of the bar/point)
-            const labelX = d.isRange ? d.x + d.w + LABEL_PADDING : d.x + (d.significance === 'major' ? POINT_RADIUS_MAJOR : POINT_RADIUS_MINOR) + LABEL_PADDING;
+            const pointR = d.significance === 'major' ? POINT_RADIUS_MAJOR : d.significance === 'moderate' ? POINT_RADIUS_MODERATE : POINT_RADIUS_MINOR;
+            const labelX = d.isRange ? d.x + d.w + LABEL_PADDING : d.x + pointR + LABEL_PADDING;
             el.append('text')
                 .attr('class', 'item-label')
                 .attr('x', labelX)
                 .attr('y', ROW_HEIGHT / 2)
                 .text(d.name)
-                .style('font-weight', d.significance === 'major' ? '600' : '400')
-                .style('font-size', d.significance === 'major' ? '12px' : '11px');
+                .style('font-weight', d.significance === 'major' ? '600' : d.significance === 'moderate' ? '500' : '400')
+                .style('font-size', d.significance === 'major' ? '12px' : d.significance === 'moderate' ? '11.5px' : '11px');
         });
 
         return offsetY + lanes.length * (ROW_HEIGHT + ROW_GAP);

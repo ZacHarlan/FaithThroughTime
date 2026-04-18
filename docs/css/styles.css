@@ -171,6 +171,11 @@ html, body {
     border-right: none;
     border-left: 1px solid var(--border);
     transition: width var(--transition), min-width var(--transition), padding var(--transition);
+    position: fixed;
+    top: var(--header-height);
+    right: 0;
+    bottom: 0;
+    z-index: 50;
 }
 
 .panel-right.hidden {
@@ -618,6 +623,10 @@ html, body {
     height: 20px;
 }
 
+.significance-moderate .item-bar {
+    height: 17px;
+}
+
 .significance-minor .item-bar {
     height: 14px;
 }
@@ -985,4 +994,219 @@ html, body {
     fill: var(--text-muted);
     font-size: 10px;
     text-transform: capitalize;
+}
+
+/* ── Map Tab ──────────────────────────────────────────────── */
+#map-tab {
+    position: absolute;
+    top: var(--header-height);
+    left: 0; right: 0; bottom: 0;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-primary);
+    z-index: 10;
+}
+
+.map-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 10px 20px;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+    flex-wrap: wrap;
+}
+
+.map-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.map-controls label {
+    color: var(--text-secondary);
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+#map-person-select {
+    width: 240px;
+    padding: 6px 10px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text-primary);
+    font-size: 13px;
+}
+#map-person-select:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+.map-slider-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    min-width: 300px;
+}
+
+.map-btn {
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--bg-card);
+    color: var(--text-primary);
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background var(--transition);
+    flex-shrink: 0;
+}
+.map-btn:hover { background: var(--bg-hover); }
+.map-btn.map-speed { font-size: 12px; font-weight: 600; width: 36px; }
+
+.map-step-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 260px;
+    flex-shrink: 1;
+}
+
+#map-year-slider {
+    flex: 1;
+    height: 6px;
+    accent-color: var(--accent);
+    cursor: pointer;
+}
+
+#map-year-label {
+    font-size: 13px;
+    color: var(--text-secondary);
+    min-width: 80px;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.map-legend {
+    display: flex;
+    gap: 12px;
+    font-size: 11px;
+    color: var(--text-muted);
+}
+.map-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    border: 1px solid rgba(255,255,255,0.3);
+}
+
+#map-container {
+    flex: 1;
+    z-index: 1;
+}
+
+/* Leaflet popup overrides for dark theme */
+.leaflet-popup-content-wrapper {
+    background: var(--bg-card);
+    color: var(--text-primary);
+    border-radius: 6px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+}
+.leaflet-popup-tip { background: var(--bg-card); }
+.leaflet-popup-content { margin: 10px 14px; font-size: 13px; line-height: 1.5; }
+
+/* Map tooltip (hover label) */
+.map-tooltip {
+    background: var(--bg-card) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 4px !important;
+    padding: 4px 8px !important;
+    font-size: 12px !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
+    white-space: nowrap;
+}
+.map-tooltip::before {
+    border-top-color: var(--border) !important;
+}
+
+.map-popup strong { color: var(--text-primary); }
+.map-popup-meta { color: var(--text-secondary); font-size: 12px; }
+.map-popup-loc { color: var(--text-muted); font-size: 12px; }
+.map-popup-cat {
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: 3px;
+    background: var(--bg-hover);
+    color: var(--text-secondary);
+    font-size: 11px;
+    text-transform: capitalize;
+    margin-top: 2px;
+}
+
+/* Journey step labels */
+.journey-step-label {
+    background: transparent !important;
+    border: none !important;
+}
+.journey-step-label span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+/* Journey pulse marker */
+.journey-pulse {
+    background: transparent !important;
+    border: none !important;
+}
+.journey-pulse::before {
+    content: '';
+    display: block;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--accent);
+    opacity: 0.5;
+    animation: pulse-ring 1.5s ease-out infinite;
+}
+@keyframes pulse-ring {
+    0% { transform: scale(1); opacity: 0.5; }
+    100% { transform: scale(2.5); opacity: 0; }
+}
+
+/* Detail panel mini-map */
+.detail-mini-map {
+    width: 100%;
+    height: 180px;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+}
+
+/* Leaflet dark theme container */
+.leaflet-container {
+    background: var(--bg-primary);
 }
