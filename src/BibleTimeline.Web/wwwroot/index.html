@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bible Timeline — Interactive Biblical History</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin="" />
+</head>
+<body>
+    <!-- Top Bar -->
+    <header id="header">
+        <div class="header-left">
+            <h1>Bible Timeline</h1>
+            <nav class="tab-nav">
+                <button class="tab-btn active" data-tab="timeline">Timeline</button>
+                <button class="tab-btn" data-tab="lineage">Family Tree</button>
+                <button class="tab-btn" data-tab="map">Map</button>
+            </nav>
+        </div>
+        <div class="header-center">
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Search people, events, scripture…" autocomplete="off" />
+                <div id="search-results" class="search-dropdown hidden"></div>
+            </div>
+        </div>
+        <div class="header-right">
+            <button id="btn-zoom-in" title="Zoom In">+</button>
+            <button id="btn-zoom-out" title="Zoom Out">−</button>
+            <button id="btn-fit" title="Fit All">⟲</button>
+            <span id="year-display" class="year-display"></span>
+        </div>
+    </header>
+
+    <div id="app">
+        <!-- Filter Sidebar -->
+        <aside id="filter-panel" class="panel-left">
+            <div class="panel-header">
+                <h2>Filters</h2>
+                <button id="btn-clear-filters" class="btn-link">Clear All</button>
+            </div>
+
+            <!-- Active filter chips -->
+            <div id="active-filters" class="active-filters hidden">
+                <div id="filter-chips" class="filter-chips"></div>
+                <div id="filter-count" class="filter-count"></div>
+            </div>
+
+            <!-- Show toggles -->
+            <div class="filter-section">
+                <h3>Show</h3>
+                <label><input type="checkbox" id="filter-people" checked /> People</label>
+                <label><input type="checkbox" id="filter-events" checked /> Events</label>
+            </div>
+
+            <!-- Significance -->
+            <div class="filter-section">
+                <h3>Significance</h3>
+                <div class="toggle-group" id="significance-toggle">
+                    <button class="toggle-btn active" data-value="">All</button>
+                    <button class="toggle-btn" data-value="major">Major</button>
+                    <button class="toggle-btn" data-value="moderate">Moderate</button>
+                    <button class="toggle-btn" data-value="minor">Minor</button>
+                </div>
+            </div>
+
+            <!-- Date Range Slider -->
+            <div class="filter-section">
+                <h3>Date Range</h3>
+                <div class="range-slider-container">
+                    <div class="range-labels">
+                        <span id="range-start-label">4000 BC</span>
+                        <span id="range-end-label">AD 100</span>
+                    </div>
+                    <div class="dual-range">
+                        <input type="range" id="range-start" min="-4100" max="110" value="-4100" step="10" />
+                        <input type="range" id="range-end" min="-4100" max="110" value="110" step="10" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Time Period -->
+            <div class="filter-section">
+                <h3>Time Period</h3>
+                <select id="filter-period">
+                    <option value="">All Periods</option>
+                </select>
+            </div>
+
+            <!-- Date Confidence -->
+            <div class="filter-section">
+                <h3>Date Confidence</h3>
+                <select id="filter-confidence">
+                    <option value="">All Confidence Levels</option>
+                </select>
+            </div>
+
+            <!-- Role (people only) -->
+            <div class="filter-section filter-people-only" id="section-role">
+                <h3>Role <span class="filter-tag">People</span></h3>
+                <div id="role-checkboxes" class="checkbox-group"></div>
+            </div>
+
+            <!-- Event Category (events only) -->
+            <div class="filter-section filter-events-only" id="section-category">
+                <h3>Category <span class="filter-tag">Events</span></h3>
+                <div id="category-checkboxes" class="checkbox-group"></div>
+            </div>
+
+            <!-- Tribe (people only) -->
+            <div class="filter-section filter-people-only" id="section-tribe">
+                <h3>Tribe <span class="filter-tag">People</span></h3>
+                <select id="filter-tribe">
+                    <option value="">All Tribes</option>
+                </select>
+            </div>
+
+            <!-- Scripture Book -->
+            <div class="filter-section">
+                <h3>Scripture Book</h3>
+                <select id="filter-book">
+                    <option value="">All Books</option>
+                </select>
+            </div>
+
+            <!-- Location (events only) -->
+            <div class="filter-section filter-events-only" id="section-location">
+                <h3>Location <span class="filter-tag">Events</span></h3>
+                <select id="filter-location">
+                    <option value="">All Locations</option>
+                </select>
+            </div>
+
+            <div class="filter-section legend">
+                <h3>Legend</h3>
+                <div id="legend-items"></div>
+            </div>
+        </aside>
+
+        <!-- Timeline Canvas -->
+        <main id="timeline-container">
+            <div id="timeline-loading" class="loading">Loading timeline…</div>
+            <svg id="timeline-svg"></svg>
+            <div id="tooltip" class="tooltip hidden"></div>
+        </main>
+
+    </div>
+
+    <!-- Detail Panel (shared across all tabs) -->
+    <aside id="detail-panel" class="panel-right hidden">
+        <div class="panel-header">
+            <h2 id="detail-title">Details</h2>
+            <button id="btn-close-detail" class="btn-close" title="Close">×</button>
+        </div>
+        <div id="detail-content"></div>
+    </aside>
+
+    <!-- Family Tree Tab -->
+    <div id="lineage-tab" class="tab-content hidden">
+        <div class="lineage-header">
+            <div class="lineage-picker">
+                <label for="lineage-search">Person:</label>
+                <div class="lineage-autocomplete">
+                    <input type="text" id="lineage-search" placeholder="Type a name…" autocomplete="off" />
+                    <ul id="lineage-suggestions" class="autocomplete-list hidden"></ul>
+                </div>
+            </div>
+            <div class="lineage-info hidden">
+                <span id="lineage-subject-name"></span>
+                <span id="lineage-count"></span>
+            </div>
+        </div>
+        <div id="lineage-container">
+            <div class="lineage-empty">
+                <p>Select a person to view their family tree</p>
+                <p class="lineage-hint">Use the dropdown above to choose a biblical figure and see their ancestors and descendants.</p>
+            </div>
+            <svg id="lineage-svg"></svg>
+        </div>
+    </div>
+
+    <!-- Map Tab -->
+    <div id="map-tab" class="tab-content hidden">
+        <div class="map-header">
+            <div class="map-controls">
+                <label for="map-person-select">Journey:</label>
+                <select id="map-person-select">
+                    <option value="">All Events</option>
+                </select>
+            </div>
+            <div class="map-slider-controls">
+                <button id="map-prev-btn" class="map-btn" title="Previous Event">&#x23EE;</button>
+                <button id="map-play-btn" class="map-btn" title="Play">&#x25B6;</button>
+                <button id="map-next-btn" class="map-btn" title="Next Event">&#x23ED;</button>
+                <button id="map-speed-btn" class="map-btn map-speed" title="Speed">1&times;</button>
+                <input type="range" id="map-year-slider" min="-4100" max="110" value="110" step="1" />
+                <span id="map-year-label">AD 100</span>
+                <span id="map-step-label" class="map-step-label"></span>
+            </div>
+            <div class="map-legend">
+                <span class="map-legend-item"><span class="legend-dot" style="background:#FFD700"></span>Miracle</span>
+                <span class="map-legend-item"><span class="legend-dot" style="background:#DC143C"></span>War</span>
+                <span class="map-legend-item"><span class="legend-dot" style="background:#4a90d9"></span>Covenant</span>
+                <span class="map-legend-item"><span class="legend-dot" style="background:#2E8B57"></span>Other</span>
+            </div>
+        </div>
+        <div id="map-container"></div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="/js/api.js"></script>
+    <script src="/js/state.js"></script>
+    <script src="/js/timeline.js"></script>
+    <script src="/js/filters.js"></script>
+    <script src="/js/detail-panel.js"></script>
+    <script src="/js/search.js"></script>
+    <script src="/js/lineage.js"></script>
+    <script src="/js/map.js"></script>
+    <script src="/js/app.js"></script>
+</body>
+</html>
