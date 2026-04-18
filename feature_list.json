@@ -1,0 +1,643 @@
+[
+  {
+    "id": "timeline-rendering",
+    "category": "core",
+    "description": "D3.js SVG timeline renders people (bars) and events (points) on a horizontal time axis spanning -4100 to 110",
+    "verification": [
+      "GET /api/timeline returns items",
+      "SVG renders .timeline-item elements",
+      "People render as bars, events as points/bars based on date range"
+    ],
+    "passes": true
+  },
+  {
+    "id": "zoom-pan",
+    "category": "core",
+    "description": "Timeline supports zoom (0.1x–200x) and pan with mouse/trackpad, including zoom toolbar buttons",
+    "verification": [
+      "Mouse wheel zooms SVG",
+      "Click-drag pans SVG",
+      "Zoom buttons (#btn-zoom-in, #btn-zoom-out, #btn-fit) work",
+      "Scale extent clamped to [0.1, 200]"
+    ],
+    "passes": true
+  },
+  {
+    "id": "period-bands",
+    "category": "core",
+    "description": "Colored background bands show biblical time periods (Patriarchal, Exodus, Monarchy, Exile, etc.)",
+    "verification": [
+      "GET /api/timeline/periods returns period objects",
+      "SVG .layer-periods renders colored rectangles behind items"
+    ],
+    "passes": true
+  },
+  {
+    "id": "full-text-search",
+    "category": "core",
+    "description": "FTS5-powered search across people and events with debounced input (250ms) and dropdown results",
+    "verification": [
+      "GET /api/search?q=moses returns results with snippets",
+      "Typing in #search-input triggers debounced API call",
+      "Dropdown appears with clickable results"
+    ],
+    "passes": true
+  },
+  {
+    "id": "filter-type-toggle",
+    "category": "filter",
+    "description": "Checkboxes toggle visibility of people and events independently",
+    "verification": [
+      "#filter-people and #filter-events checkboxes control includePeople/includeEvents query params",
+      "Timeline re-renders with filtered data"
+    ],
+    "passes": true
+  },
+  {
+    "id": "filter-significance",
+    "category": "filter",
+    "description": "Radio buttons filter by significance level (all, major, moderate, minor)",
+    "verification": [
+      "Significance radio group sends 'significance' filter to API",
+      "GET /api/timeline?significance=major returns only major items"
+    ],
+    "passes": true
+  },
+  {
+    "id": "filter-period",
+    "category": "filter",
+    "description": "Dropdown filters by time period (Patriarchal, United Monarchy, etc.)",
+    "verification": [
+      "#filter-period dropdown populated from /api/timeline/filters",
+      "Selection filters timeline items by period"
+    ],
+    "passes": true
+  },
+  {
+    "id": "filter-role",
+    "category": "filter",
+    "description": "Dropdown filters people by role (patriarch, prophet, king, judge, etc.)",
+    "verification": [
+      "#filter-role dropdown populated from /api/timeline/filters",
+      "GET /api/timeline?role=prophet returns only prophets"
+    ],
+    "passes": true
+  },
+  {
+    "id": "filter-category",
+    "category": "filter",
+    "description": "Dropdown filters events by category (covenant, military, prophetic, etc.)",
+    "verification": [
+      "#filter-category dropdown populated from /api/timeline/filters",
+      "GET /api/timeline?category=covenant returns only covenant events"
+    ],
+    "passes": true
+  },
+  {
+    "id": "filter-tribe",
+    "category": "filter",
+    "description": "Dropdown filters people by Israelite tribe",
+    "verification": [
+      "#filter-tribe dropdown populated from /api/timeline/filters",
+      "GET /api/timeline?tribe=Judah returns only Judah tribe"
+    ],
+    "passes": true
+  },
+  {
+    "id": "filter-clear",
+    "category": "filter",
+    "description": "Clear All button resets all filters to default state",
+    "verification": [
+      "Click #btn-clear-filters resets checkboxes, radios, and dropdowns",
+      "Timeline reloads with unfiltered data"
+    ],
+    "passes": true
+  },
+  {
+    "id": "detail-panel-person",
+    "category": "detail",
+    "description": "Clicking a person shows right-side panel with dates, role, tribe, significance, description, chronology notes, related events, and scripture references",
+    "verification": [
+      "GET /api/people/{id} returns person detail",
+      "#detail-panel opens with person info sections",
+      "Related events are clickable links"
+    ],
+    "passes": true
+  },
+  {
+    "id": "detail-panel-event",
+    "category": "detail",
+    "description": "Clicking an event shows detail panel with date, category, significance, description, key figures, locations, and scripture references",
+    "verification": [
+      "GET /api/events/{id} returns event detail",
+      "#detail-panel opens with event info sections",
+      "Key figures are clickable links"
+    ],
+    "passes": true
+  },
+  {
+    "id": "detail-panel-close",
+    "category": "detail",
+    "description": "Detail panel can be closed via the X button",
+    "verification": [
+      "Click #btn-close-detail hides panel",
+      "State.selectedItem resets to null"
+    ],
+    "passes": true
+  },
+  {
+    "id": "date-confidence-display",
+    "category": "data",
+    "description": "Timeline visually distinguishes date confidence levels (exact, approximate, estimated, traditional) via opacity and dashed borders",
+    "verification": [
+      "Items with lower confidence render with reduced opacity or dashed borders in SVG",
+      "Detail panel shows confidence badge"
+    ],
+    "passes": true
+  },
+  {
+    "id": "dark-theme",
+    "category": "ui",
+    "description": "Full dark-themed UI with custom CSS variables",
+    "verification": [
+      "styles.css uses --bg-primary, --text-primary etc. with dark color values",
+      "All panels, header, and timeline use dark backgrounds"
+    ],
+    "passes": true
+  },
+  {
+    "id": "responsive-layout",
+    "category": "ui",
+    "description": "Layout adjusts to window resizes — timeline SVG redraws on resize with debounce",
+    "verification": [
+      "window 'resize' event triggers timeline re-render",
+      "SVG width/height update to match container"
+    ],
+    "passes": true
+  },
+  {
+    "id": "year-display",
+    "category": "ui",
+    "description": "Current center year is displayed in the header during zoom/pan",
+    "verification": [
+      "#year-display updates as user pans the timeline",
+      "Year format uses BC/AD notation"
+    ],
+    "passes": true
+  },
+  {
+    "id": "api-timeline",
+    "category": "api",
+    "description": "GET /api/timeline returns timeline items with flexible query parameters",
+    "verification": [
+      "Returns 200 with array of TimelineItemDto objects",
+      "Supports startYear, endYear, role, category, significance, period, tribe, includePeople, includeEvents"
+    ],
+    "passes": true
+  },
+  {
+    "id": "api-periods",
+    "category": "api",
+    "description": "GET /api/timeline/periods returns time period definitions for background bands",
+    "verification": [
+      "Returns 200 with array of period objects (name, startYear, endYear, color)"
+    ],
+    "passes": true
+  },
+  {
+    "id": "api-books",
+    "category": "api",
+    "description": "GET /api/timeline/books returns list of biblical books with metadata",
+    "verification": [
+      "Returns 200 with array of book objects"
+    ],
+    "passes": true
+  },
+  {
+    "id": "api-filters",
+    "category": "api",
+    "description": "GET /api/timeline/filters returns available filter option values",
+    "verification": [
+      "Returns object with timePeriods, roles, eventCategories, tribes arrays"
+    ],
+    "passes": true
+  },
+  {
+    "id": "api-person-detail",
+    "category": "api",
+    "description": "GET /api/people/{id} returns full person detail with relationships",
+    "verification": [
+      "Returns 200 with person, events, and scripture references",
+      "Returns 404 for non-existent ID"
+    ],
+    "passes": true
+  },
+  {
+    "id": "api-event-detail",
+    "category": "api",
+    "description": "GET /api/events/{id} returns full event detail with people and locations",
+    "verification": [
+      "Returns 200 with event, people, locations, and scripture references",
+      "Returns 404 for non-existent ID"
+    ],
+    "passes": true
+  },
+  {
+    "id": "api-search",
+    "category": "api",
+    "description": "GET /api/search?q= performs FTS5 full-text search across people and events",
+    "verification": [
+      "Returns 200 with array of search results (id, name, type, snippet, startYear)",
+      "Returns 400 when q is missing or < 2 chars"
+    ],
+    "passes": true
+  },
+  {
+    "id": "sqlite-embedded-init",
+    "category": "data",
+    "description": "Database auto-creates from embedded Schema.sql and SeedData.sql on first run",
+    "verification": [
+      "DatabaseInitializer reads SQL from assembly embedded resources",
+      "Schema creates 10 tables + 2 FTS5 virtual tables + triggers",
+      "Seed inserts 47 people, 52 events, 66 books, 15 locations"
+    ],
+    "passes": true
+  },
+  {
+    "id": "fts5-auto-sync",
+    "category": "data",
+    "description": "FTS5 virtual tables auto-sync via INSERT/UPDATE/DELETE triggers on people and events tables",
+    "verification": [
+      "Schema.sql defines triggers: people_ai, people_au, people_ad, events_ai, events_au, events_ad",
+      "Inserting a person row populates people_fts automatically"
+    ],
+    "passes": true
+  },
+  {
+    "id": "state-pubsub",
+    "category": "architecture",
+    "description": "Centralized State object with pub/sub pattern — all modules subscribe to state changes",
+    "verification": [
+      "state.js exposes State.subscribe() and State.updateFilter()",
+      "Filter/search changes trigger re-render via state callbacks"
+    ],
+    "passes": true
+  },
+  {
+    "id": "api-fetch-isolation",
+    "category": "architecture",
+    "description": "Only api.js uses fetch() — enforced by architecture test",
+    "verification": [
+      "ArchitectureTests.cs: OnlyApiJs_Uses_Fetch_Directly",
+      "Other JS files import Api module instead of calling fetch"
+    ],
+    "passes": true
+  },
+  {
+    "id": "layer-enforcement",
+    "category": "architecture",
+    "description": "C# layer rules enforced via architecture tests — Models cannot import Data/Endpoints, Data cannot import Endpoints, Endpoints cannot use SQLite/Dapper directly",
+    "verification": [
+      "ArchitectureTests.cs: 6 layer-boundary tests",
+      "Error messages include what's wrong, why, and how to fix"
+    ],
+    "passes": true
+  },
+  {
+    "id": "filter-active-chips",
+    "category": "filter",
+    "description": "Active filter chips display below the filter bar showing all applied filters with remove buttons",
+    "verification": [
+      "Applying a filter shows a chip with the filter name and an X button",
+      "Clicking X on a chip removes that filter and reloads the timeline"
+    ],
+    "passes": true
+  },
+  {
+    "id": "filter-date-range-slider",
+    "category": "filter",
+    "description": "Dual-handle date range slider filters timeline items by year range",
+    "verification": [
+      "Slider allows selecting a start and end year range",
+      "Timeline filters to only show items within the selected date range"
+    ],
+    "passes": true
+  },
+  {
+    "id": "filter-contextual-dimming",
+    "category": "filter",
+    "description": "Items outside active filters are dimmed rather than hidden, providing context while emphasizing matches",
+    "verification": [
+      "Filtered-out items render with reduced opacity",
+      "Matching items render at full opacity"
+    ],
+    "passes": true
+  },
+  {
+    "id": "filter-multi-select",
+    "category": "filter",
+    "description": "Role and category filters support multi-select via checkbox groups instead of single-select dropdowns",
+    "verification": [
+      "Multiple roles can be checked simultaneously",
+      "Multiple event categories can be checked simultaneously",
+      "Timeline shows items matching any selected value"
+    ],
+    "passes": true
+  },
+  {
+    "id": "filter-date-confidence",
+    "category": "filter",
+    "description": "Date confidence filter allows filtering by confidence level (exact, approximate, estimated, traditional)",
+    "verification": [
+      "Checkbox group for date confidence levels in filter panel",
+      "GET /api/timeline supports dateConfidence parameter"
+    ],
+    "passes": true
+  },
+  {
+    "id": "filter-scripture-book",
+    "category": "filter",
+    "description": "Scripture book filter allows filtering timeline items by associated biblical book",
+    "verification": [
+      "Dropdown or list of biblical books in filter panel",
+      "Selecting a book filters to items with scripture references from that book"
+    ],
+    "passes": true
+  },
+  {
+    "id": "filter-location",
+    "category": "filter",
+    "description": "Location filter allows filtering events by associated geographic location",
+    "verification": [
+      "Location options populated from /api/timeline/filters",
+      "Selecting a location filters to events at that location"
+    ],
+    "passes": true
+  },
+  {
+    "id": "filter-regression-test",
+    "category": "testing",
+    "description": "Integration test GetFilters_ReturnsAllFieldsRequiredByFrontend validates filter API returns all required fields",
+    "verification": [
+      "Test asserts timePeriods, roles, eventCategories, tribes arrays are present and non-empty",
+      "dotnet test passes with this test included"
+    ],
+    "passes": true
+  },
+  {
+    "id": "genealogy-schema",
+    "category": "data",
+    "description": "People table has father_id and mother_id columns enabling genealogical tree tracking",
+    "verification": [
+      "Schema.sql defines father_id and mother_id INTEGER columns on people table",
+      "Entities.cs Person record includes FatherId and MotherId properties",
+      "SeedData.sql contains UPDATE statements linking ~40 family relationships"
+    ],
+    "passes": true
+  },
+  {
+    "id": "expanded-people-data",
+    "category": "data",
+    "description": "Database seeded with 322 biblical figures spanning all biblical eras from Adam to Phoebe, including Cain, Abel, Melchizedek, Nebuchadnezzar, Cyrus, complete Jesus lineage (Matthew 1 + Luke 3), brothers of Jesus, and the Bethany family",
+    "verification": [
+      "SeedData.sql contains INSERT statements for 322 people",
+      "Includes complete Gen 5 + Gen 11 genealogical chain from Adam to Abraham",
+      "Includes Father of Lazarus placeholder linking Lazarus, Martha, Mary of Bethany",
+      "Each person has associated scripture references and person_relationships entries"
+    ],
+    "passes": true
+  },
+  {
+    "id": "parallel-scripture-references",
+    "category": "data",
+    "description": "Events have multiple scripture references showing parallel accounts across Gospels and OT books (e.g., Crucifixion has Matthew, Mark, Luke, and John references)",
+    "verification": [
+      "event_scripture junction table links events to multiple scripture_references",
+      "Detail panel displays all parallel references for an event",
+      "56 parallel references added covering Gospel synoptics and OT parallels (Kings/Chronicles)"
+    ],
+    "passes": true
+  },
+  {
+    "id": "search-selection-highlight",
+    "category": "ui",
+    "description": "Selecting or searching for an item highlights it on the timeline with a white glow border and pulse animation",
+    "verification": [
+      "timeline.js highlightSelected() applies .selected class to matching SVG element",
+      "CSS .timeline-item.selected has white stroke, drop-shadow glow, and 3-cycle pulse-glow animation",
+      "Highlight updates on every render and selection state change"
+    ],
+    "passes": true
+  },
+  {
+    "id": "ussher-chronology",
+    "category": "data",
+    "description": "All OT dates aligned to Ussher chronology (Annales Veteris Testamenti, 1650): Creation 4004 BC, Flood 2349 BC, Abraham born 1996 BC, Exodus 1491 BC. Divided Kingdom dates realigned from Thiele to Ussher starting from 975 BC division using Biblical reign lengths. 12 Gen 5/11 genealogical ancestors added. Elijah death_year set to NULL (translated, 2 Kgs 2:11). All date_notes cite Ussher with Anno Mundi references.",
+    "verification": [
+      "Adam birth_year = -4004, death_year = -3074 (930 years, Gen 5:5)",
+      "Abraham birth_year = -1996, death_year = -1821 (175 years, Gen 25:7)",
+      "Exodus event start_year = -1491 (Ussher AM 2513)",
+      "Ahab death_year = -897 (Ussher: 918-897 BC, 22 years, 1 Kgs 16:29)",
+      "Hezekiah birth_year = -751, death_year = -697 (Ussher: 726-697 BC, 29 years)",
+      "Fall of Samaria = -721 (Ussher AM 3283)",
+      "Elijah death_year = NULL (translated, 2 Kgs 2:11)",
+      "Elijah on Mount Carmel event = -905 (during Ahab's reign 918-897)",
+      "5 new Ussher-dated events: Destruction of Sodom, Covenant of Circumcision, Joseph Made Ruler, Tabernacle Completed, Ark Captured",
+      "All 106 tests pass with Ussher dates"
+    ],
+    "passes": true
+  },
+  {
+    "id": "jesus-lineage-data",
+    "category": "data",
+    "description": "Complete genealogy of Jesus from both Matthew 1 and Luke 3 added to seed data. 52 people (IDs 270-321): Matthew's royal line, Luke's pre-/post-exilic lines, plus all 4 brothers of Jesus (Mark 6:3). Full unbroken ancestor chain from Jesus to Adam (74 ancestors).",
+    "verification": [
+      "SeedData.sql contains INSERT statements for people IDs 270-321",
+      "Matthew line: David → Solomon → ... → Zerubbabel → Abiud → ... → Jacob → Joseph → Jesus",
+      "Luke line: David → Nathan → Mattatha → ... → Neri → Shealtiel → Zerubbabel → Rhesa → ... → Heli → Joseph → Jesus",
+      "Brothers of Jesus: James (144), Joses (319), Simon (320), Judas/Jude (321) — all with father_id=122, mother_id=38",
+      "Jesus lineage API returns 74 ancestors and 4 siblings",
+      "Integration test GetLineage_Jesus_FullDavidicLine verifies 35+ ancestors including Adam, Abraham, David, Solomon",
+      "All 81 tests pass"
+    ],
+    "passes": true
+  },
+  {
+    "id": "lineage-api",
+    "category": "api",
+    "description": "GET /api/lineage/people returns all people for family tree, GET /api/lineage/{id} returns subject, ancestors, descendants, siblings, and extended family via recursive CTEs",
+    "verification": [
+      "GET /api/lineage/people returns sorted list of LineagePersonDto with parent IDs",
+      "GET /api/lineage/{id} returns subject, ancestors, descendants, siblings, and extendedFamily",
+      "Recursive CTEs walk father_id/mother_id for multi-generation traversal",
+      "ExtendedFamily includes children of ancestors not already in ancestors/descendants/siblings",
+      "Siblings query finds people sharing father_id or mother_id with subject",
+      "Returns 404 for non-existent person ID",
+      "106 unit + integration tests verify endpoints"
+    ],
+    "passes": true
+  },
+  {
+    "id": "family-tree-tab",
+    "category": "ui",
+    "description": "Family Tree tab with D3.js tree visualization showing full ancestral lineage, spouses rendered side-by-side, siblings, and extended family displayed",
+    "verification": [
+      "Tab nav in header switches between Timeline and Family Tree views",
+      "Autocomplete input with dropdown suggestions for person selection",
+      "Keyboard navigation (ArrowUp/ArrowDown/Enter/Escape) in suggestions",
+      "D3 tree layout renders cards with name, dates, age, and role",
+      "Spouses render side-by-side at same level with dashed horizontal connector",
+      "Info bar shows ancestor, descendant, and sibling counts",
+      "Subject node highlighted with accent border and glow",
+      "Auto-scrolls to subject node on load"
+    ],
+    "passes": true
+  },
+  {
+    "id": "age-display",
+    "category": "ui",
+    "description": "People's age shown alongside birth/death years in detail panel and timeline tooltips",
+    "verification": [
+      "Detail panel formatLifespan() shows '(age X)' when both birth and death years known",
+      "Timeline tooltip appends age for people items",
+      "Age calculated as Math.abs(deathYear - birthYear)"
+    ],
+    "passes": true
+  },
+  {
+    "id": "static-github-pages-build",
+    "category": "deployment",
+    "description": "Python build script (build-static.py) exports SQLite data to 7 JSON files and copies static assets to docs/ for GitHub Pages deployment",
+    "verification": [
+      "python3 build-static.py runs without errors",
+      "docs/ contains index.html, css/styles.css, js/*.js, data/*.json",
+      "static/api.js provides client-side filtering, search, and lineage computation",
+      "test-static.py validates exported data (322 people, 89 events, 66 books)"
+    ],
+    "passes": true
+  },
+  {
+    "id": "shareable-pub-offline",
+    "category": "deployment",
+    "description": "docs/ has all JSON data embedded inline in index.html via window.__BIBLE_DATA__, enabling both file:// protocol and HTTP hosting",
+    "verification": [
+      "docs/index.html contains <script>window.__BIBLE_DATA__={...}</script>",
+      "Opening docs/index.html directly in browser works without a server",
+      "static/api.js checks window.__BIBLE_DATA__ before falling back to fetch()"
+    ],
+    "passes": true
+  },
+  {
+    "id": "dual-build-output",
+    "category": "deployment",
+    "description": "build-static.py builds docs/ with inline data from SQLite in a single step",
+    "verification": [
+      "python3 build-static.py builds docs/",
+      "Data exported once from SQLite, inlined into index.html"
+    ],
+    "passes": true
+  },
+  {
+    "id": "static-client-side-search",
+    "category": "core",
+    "description": "Static site search uses client-side substring matching across names and descriptions instead of server-side FTS5",
+    "verification": [
+      "static/api.js search() filters cached data with case-insensitive substring match",
+      "Search works identically in docs/ builds",
+      "Returns matching people and events with name, type, and description snippet"
+    ],
+    "passes": true
+  },
+  {
+    "id": "static-client-side-lineage",
+    "category": "core",
+    "description": "Static site computes lineage via BFS traversal of father_id/mother_id instead of server-side recursive CTEs",
+    "verification": [
+      "static/api.js computeLineage() walks ancestors up via fatherId/motherId",
+      "Descendants found by scanning all people for matching parent IDs",
+      "Siblings found by shared fatherId or motherId",
+      "ExtendedFamily computed as children of ancestors not in other sets"
+    ],
+    "passes": true
+  },
+  {
+    "id": "lineage-autocomplete-search",
+    "category": "ui",
+    "description": "Family tree person selection uses a single autocomplete text input with dropdown suggestions replacing the old search+select pattern",
+    "verification": [
+      "Single #lineage-search input with #lineage-suggestions dropdown",
+      "Typing filters people by substring match, shows up to 20 results",
+      "ArrowUp/ArrowDown navigate suggestions, Enter selects, Escape closes",
+      "Each suggestion shows person name and date range"
+    ],
+    "passes": true
+  },
+  {
+    "id": "ci-cd-github-pages",
+    "category": "devops",
+    "description": "GitHub Actions workflow builds app, seeds database, exports static site, and deploys to GitHub Pages on push to main",
+    "verification": [
+      ".github/workflows/deploy-pages.yml exists",
+      "Workflow triggers on push to main branch",
+      "Steps: dotnet build → dotnet run → python3 build-static.py → deploy to Pages"
+    ],
+    "passes": true
+  },
+  {
+    "id": "init-bootstrap-script",
+    "category": "devops",
+    "description": "Deterministic one-command bootstrap (bash init.sh): checks prerequisites, kills stale processes, restores packages, builds, runs tests, starts app",
+    "verification": [
+      "bash init.sh completes without errors",
+      "Validates .NET 9+ SDK is installed",
+      "Runs dotnet test before starting app",
+      "App accessible at http://localhost:5180 after script completes"
+    ],
+    "passes": true
+  },
+  {
+    "id": "agent-status-script",
+    "category": "devops",
+    "description": "Health check dashboard (bash agent-status.sh) showing app status, API health, database state, and git status",
+    "verification": [
+      "bash agent-status.sh completes without errors",
+      "Reports app running/stopped, API healthy/unreachable",
+      "Shows database file size and git branch/status"
+    ],
+    "passes": true
+  },
+  {
+    "id": "quality-sweep-script",
+    "category": "devops",
+    "description": "Quality audit script (bash quality-sweep.sh) checks architecture violations, build health, dead code, and debug artifacts",
+    "verification": [
+      "bash quality-sweep.sh completes without errors",
+      "Checks for console.log/debugger statements in JS",
+      "Runs architecture tests and build verification"
+    ],
+    "passes": true
+  },
+  {
+    "id": "static-data-validation",
+    "category": "testing",
+    "description": "Python validation script (test-static.py) verifies exported static data integrity: item counts, people/event details, lineage people, periods, books",
+    "verification": [
+      "python3 test-static.py passes all checks",
+      "Validates 416 timeline items (322 people, 94 events)",
+      "Validates 322 people details, 94 event details, 322 lineage people",
+      "Validates 11 periods and 66 books"
+    ],
+    "passes": true
+  },
+  {
+    "id": "bethany-family-data",
+    "category": "data",
+    "description": "Father of Lazarus placeholder person links Lazarus, Martha, and Mary of Bethany as siblings via shared father_id, enabling family tree rendering",
+    "verification": [
+      "SeedData.sql inserts 'Father of Lazarus' with role='other'",
+      "Lazarus (123), Martha (124), Mary of Bethany (243) all have father_id pointing to Father of Lazarus",
+      "Family tree tab shows the Bethany family tree when searching for Lazarus"
+    ],
+    "passes": true
+  }
+]

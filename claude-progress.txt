@@ -1,0 +1,73 @@
+# claude-progress.txt — Session Continuity Log
+
+> Updated after each working session. Agents: read this first, then AGENTS.md.
+
+---
+
+## Session 1 — Initial Build
+
+**Goal:** Build a production-ready interactive Bible timeline web application.
+
+**Completed:**
+- .NET 9 solution with 3 projects: BibleTimeline.Web, BibleTimeline.Tests, BibleTimeline.E2E
+- SQLite schema: 10 tables + 2 FTS5 virtual tables + auto-sync triggers
+- Seed data: 47 people, 52 events, 66 books, 15 locations with junction tables
+- Dapper data access layer (BibleTimelineDb.cs) with MatchNamesWithUnderscores
+- Minimal API endpoints: timeline, periods, books, filters, person detail, event detail, search
+- Vanilla JS frontend: 7 IIFE modules (api, state, timeline, filters, search, detail-panel, app)
+- D3.js SVG timeline with zoom (0.1x–200x), pan, period bands, confidence display
+- Dark-themed CSS with responsive layout
+- 16 unit tests (in-memory SQLite) + 23 integration tests (WebApplicationFactory) — all passing
+- 9 Playwright E2E test scenarios
+- ARCHITECTURE.md documentation
+
+**Bugs Fixed:**
+- Dapper column mapping: Added DefaultTypeMap.MatchNamesWithUnderscores = true
+- SQL file loading: Switched from file paths to embedded assembly resources
+- Seed data FK mismatches: Corrected junction table foreign key IDs
+- Stale DB: Renamed old DB to force re-seed
+- NuGet version: Pinned Microsoft.AspNetCore.Mvc.Testing to 9.0.4 (not 10.0.5)
+
+---
+
+## Session 2 — Harness Engineering
+
+**Goal:** Implement 6 Harness Engineering pillars for AI-agent readiness.
+
+**Completed:**
+- Pillar 1 — `init.sh`: Deterministic bootstrap script (prereq check → restore → build → test → start → health check)
+- Pillar 2 — `AGENTS.md`: Progressive-disclosure agent entry point with architecture diagram, key files table, layer rules, API endpoints, environment config, common tasks
+- Pillar 3 — `tests/BibleTimeline.Tests/ArchitectureTests.cs`: 12 executable enforcement tests (layer boundaries, fetch isolation, no debug artifacts, SQL validity, embedded resources). All 12 passing.
+- Pillar 4 — `agent-status.sh`: Dynamic context dump (service status, DB stats, build, tests, git, features)
+- Pillar 4 — `quality-sweep.sh`: Garbage-collection sweep (architecture tests, build, full test suite, debug artifacts, doc freshness, config integrity, dead code)
+- Pillar 5 — `feature_list.json`: 30-feature structured registry (core, filter, detail, data, ui, api, architecture categories) with verification steps
+- Pillar 6 — `claude-progress.txt`: This file
+- Pre-commit hook: `.githooks/pre-commit` (runs architecture tests, blocks debug artifacts, validates JSON config)
+- `.gitignore`: Standard .NET ignores + project-specific files
+
+**Test counts:** 16 unit + 23 integration + 12 architecture = 51 total (all passing)
+
+---
+
+## Current State
+
+- **App port:** 5180
+- **All tests passing:** Yes (51 total)
+- **Known issues:** chmod +x blocked by terminal policy — use `bash script.sh` invocation
+- **Next steps:** None — all 6 pillars implemented
+
+---
+
+## File Manifest
+
+| File | Pillar | Purpose |
+|------|--------|---------|
+| init.sh | 1 | Zero-to-running bootstrap |
+| AGENTS.md | 2 | Agent entry point documentation |
+| tests/BibleTimeline.Tests/ArchitectureTests.cs | 3 | 12 enforcement tests |
+| agent-status.sh | 4 | Dynamic system state dump |
+| quality-sweep.sh | 4 | Drift detection sweep |
+| feature_list.json | 5 | 30-feature structured registry |
+| claude-progress.txt | 6 | Session continuity log (this file) |
+| .githooks/pre-commit | — | Quality gate hook |
+| .gitignore | — | Git ignore rules |
