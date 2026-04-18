@@ -434,8 +434,8 @@ const Lineage = (() => {
         let startX, startY, scrollLeft, scrollTop;
 
         container.addEventListener('mousedown', (e) => {
-            // Ignore clicks on interactive elements
-            if (e.target.closest('a, button, input')) return;
+            // Ignore clicks on interactive elements or the detail panel
+            if (e.target.closest('a, button, input, #detail-panel')) return;
             isDragging = true;
             startX = e.clientX;
             startY = e.clientY;

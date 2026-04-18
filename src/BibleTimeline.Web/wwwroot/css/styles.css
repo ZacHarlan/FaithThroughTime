@@ -177,6 +177,7 @@ html, body {
     right: 0;
     bottom: 0;
     z-index: 50;
+    overscroll-behavior: contain;
 }
 
 .panel-right.hidden {

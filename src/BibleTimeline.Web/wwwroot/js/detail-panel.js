@@ -7,6 +7,13 @@ const DetailPanel = (() => {
     function init() {
         document.getElementById('btn-close-detail').addEventListener('click', close);
         initSwipeToDismiss();
+
+        // Prevent drag-to-pan handlers on underlying containers from
+        // intercepting scroll/touch inside the detail panel
+        const p = panel();
+        p.addEventListener('mousedown', e => e.stopPropagation());
+        p.addEventListener('touchstart', e => e.stopPropagation(), { passive: true });
+        p.addEventListener('wheel', e => e.stopPropagation(), { passive: true });
     }
 
     function initSwipeToDismiss() {
