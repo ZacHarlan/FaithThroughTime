@@ -498,10 +498,17 @@ def build_output(dir_name, data, inline=False):
     """Build one output directory from pre-exported data."""
     out_dir = os.path.join(ROOT, dir_name)
 
-    # Clean
+    # Clean (preserve CNAME for GitHub Pages custom domain)
+    cname_path = os.path.join(out_dir, "CNAME")
+    cname_content = None
+    if os.path.exists(cname_path):
+        cname_content = open(cname_path).read()
     if os.path.exists(out_dir):
         shutil.rmtree(out_dir)
     os.makedirs(out_dir)
+    if cname_content is not None:
+        with open(cname_path, "w") as f:
+            f.write(cname_content)
 
     if inline:
         inline_data = data
