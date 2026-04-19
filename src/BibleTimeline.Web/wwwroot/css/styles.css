@@ -563,6 +563,41 @@ html, body {
     margin-bottom: 8px;
 }
 
+/* ── Skeleton Loading ─────────────────────────────────────── */
+.skeleton-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 24px;
+    width: 300px;
+}
+.skeleton-bar {
+    height: 14px;
+    border-radius: 7px;
+    background: var(--bg-card);
+}
+@keyframes skeleton-pulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.7; }
+}
+.skeleton-pulse {
+    animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+.skeleton-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+}
+.skeleton-line {
+    height: 12px;
+    border-radius: 6px;
+    background: var(--bg-card);
+}
+.skeleton-line.short { width: 40%; }
+.skeleton-line.medium { width: 65%; }
+.skeleton-line.long { width: 90%; }
+
 /* ── SVG Timeline Elements ────────────────────────────────── */
 .period-band {
     opacity: 0.12;

@@ -225,6 +225,16 @@ const DetailPanel = (() => {
         if (btn) btn.style.display = 'none';
     }
 
+    function showSkeleton() {
+        content().innerHTML = '<div class="skeleton-detail">' +
+            '<div class="skeleton-line long skeleton-pulse"></div>' +
+            '<div class="skeleton-line medium skeleton-pulse"></div>' +
+            '<div class="skeleton-line short skeleton-pulse"></div>' +
+            '<div class="skeleton-line long skeleton-pulse"></div>' +
+            '<div class="skeleton-line medium skeleton-pulse"></div>' +
+            '</div>';
+    }
+
     function renderPerson(p) {
         const c = content();
         let html = '';
@@ -393,6 +403,9 @@ const DetailPanel = (() => {
             li.addEventListener('click', () => {
                 const type = li.dataset.type;
                 const id = parseInt(li.dataset.id);
+                // Show skeleton while loading
+                title().textContent = li.textContent.trim().split('\n')[0];
+                showSkeleton();
                 if (type === 'person') {
                     Api.getPersonDetail(id).then(detail => {
                         if (detail) {
