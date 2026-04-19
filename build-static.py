@@ -21,7 +21,7 @@ import sqlite3
 import sys
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
-DB_PATH = os.path.join(ROOT, "src", "BibleTimeline.Web", "bin", "Debug", "net9.0", "bible-timeline.db")
+DB_PATH = os.path.join(ROOT, "src", "BibleTimeline.Web", "bin", "Debug", "net9.0", "faith-through-time.db")
 WWWROOT = os.path.join(ROOT, "src", "BibleTimeline.Web", "wwwroot")
 
 

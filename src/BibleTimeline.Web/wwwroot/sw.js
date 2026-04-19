@@ -1,5 +1,5 @@
-// sw.js — Service Worker for Bible Timeline PWA
-const CACHE_NAME = 'bible-timeline-v1';
+// sw.js — Service Worker for Faith Through Time PWA
+const CACHE_NAME = 'faith-through-time-v1';
 const STATIC_ASSETS = [
     '/',
     '/css/styles.css',

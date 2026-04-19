@@ -4,7 +4,7 @@ using BibleTimeline.Web.Endpoints;
 var builder = WebApplication.CreateBuilder(args);
 
 // Database
-var dbPath = Path.Combine(AppContext.BaseDirectory, "bible-timeline.db");
+var dbPath = Path.Combine(AppContext.BaseDirectory, "faith-through-time.db");
 var connectionString = $"Data Source={dbPath}";
 builder.Services.AddSingleton(new BibleTimelineDb(connectionString));
 

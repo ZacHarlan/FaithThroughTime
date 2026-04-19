@@ -1,4 +1,4 @@
-# Bible Timeline
+# Faith Through Time
 
 An interactive, zoomable timeline of biblical history built with .NET 9, SQLite, and D3.js.
 
@@ -67,7 +67,7 @@ Browser (Vanilla JS + D3.js)
   └── Data/DatabaseInitializer.cs → schema + seed
         │
         ▼
-SQLite (bible-timeline.db)
+SQLite (faith-through-time.db)
   ├── 10 tables + 2 FTS5 virtual tables
   └── Schema.sql + SeedData.sql (embedded resources)
 ```
@@ -110,7 +110,7 @@ Architecture tests enforce layer boundaries, fetch isolation to `api.js`, absenc
 
 ## Database
 
-The database auto-creates from embedded SQL resources on startup. To re-seed, delete `bible-timeline.db` from the build output directory and restart the app.
+The database auto-creates from embedded SQL resources on startup. To re-seed, delete `faith-through-time.db` from the build output directory and restart the app.
 
 **Key tables:** `people`, `events`, `time_periods`, `biblical_books`, `locations`, `person_events`, `person_relationships`, `scripture_references`, `people_fts`, `events_fts`
 

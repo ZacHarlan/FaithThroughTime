@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # =============================================================================
-# init.sh — Deterministic Bootstrap for Bible Timeline
+# init.sh — Deterministic Bootstrap for Faith Through Time
 # Brings the entire dev environment from zero to running in one command.
 # Idempotent: safe to run repeatedly at any time.
 # =============================================================================
@@ -60,7 +60,7 @@ dotnet build --no-restore --verbosity quiet >> "$LOG_FILE" 2>&1
 ok "Build succeeded"
 
 # ─── Step 5: Remove stale database (forces re-seed if schema changed) ───────
-DB_FILE="$ROOT_DIR/$PROJECT_DIR/bin/Debug/net9.0/bible-timeline.db"
+DB_FILE="$ROOT_DIR/$PROJECT_DIR/bin/Debug/net9.0/faith-through-time.db"
 if [[ -f "$DB_FILE" ]]; then
     log "Existing database found — will re-seed if empty"
 fi
@@ -75,7 +75,7 @@ else
 fi
 
 # ─── Step 7: Start the application ──────────────────────────────────────────
-log "Starting Bible Timeline on $APP_URL ..."
+log "Starting Faith Through Time on $APP_URL ..."
 
 cd "$ROOT_DIR/$PROJECT_DIR"
 dotnet run --no-build --urls "$APP_URL" >> "$LOG_FILE" 2>&1 &
@@ -102,7 +102,7 @@ fi
 # ─── Step 9: Print success summary ──────────────────────────────────────────
 echo ""
 echo -e "${GREEN}════════════════════════════════════════════════════════════${NC}"
-echo -e "${GREEN}  Bible Timeline is running!${NC}"
+echo -e "${GREEN}  Faith Through Time is running!${NC}"
 echo -e "${GREEN}════════════════════════════════════════════════════════════${NC}"
 echo ""
 echo -e "  App URL:    ${CYAN}$APP_URL${NC}"

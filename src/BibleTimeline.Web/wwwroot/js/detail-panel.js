@@ -163,7 +163,7 @@ const DetailPanel = (() => {
         btn.onclick = () => {
             const url = `${window.location.origin}/#${item.type}/${item.id}`;
             navigator.share({
-                title: item.name + ' — Bible Timeline',
+                title: item.name + ' — Faith Through Time',
                 text: `${item.name} — ${item.type === 'person' ? (item.role || 'Biblical Figure') : (item.category || 'Biblical Event')}`,
                 url
             }).catch(() => {});

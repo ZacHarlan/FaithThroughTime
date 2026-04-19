@@ -43,7 +43,7 @@ fi
 # ─── Database Status ─────────────────────────────────────────────────────────
 section "DATABASE"
 
-DB_FILE="$ROOT_DIR/src/BibleTimeline.Web/bin/Debug/net9.0/bible-timeline.db"
+DB_FILE="$ROOT_DIR/src/BibleTimeline.Web/bin/Debug/net9.0/faith-through-time.db"
 if [[ -f "$DB_FILE" ]]; then
     DB_SIZE=$(du -h "$DB_FILE" | cut -f1)
     echo -e "  Database:   ${GREEN}EXISTS${NC} ($DB_SIZE)"

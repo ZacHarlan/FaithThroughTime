@@ -1,4 +1,4 @@
-# Bible Timeline — Architecture & Design Document
+# Faith Through Time — Architecture & Design Document
 
 ## High-Level Architecture
 
@@ -36,7 +36,7 @@
 │                         │                                    │
 │  ┌──────────────────────┴──────────────────────────────┐    │
 │  │              SQLite Database                         │    │
-│  │  bible-timeline.db (single file, portable)          │    │
+│  │  faith-through-time.db (single file, portable)          │    │
 │  └─────────────────────────────────────────────────────┘    │
 └─────────────────────────────────────────────────────────────┘
 ```

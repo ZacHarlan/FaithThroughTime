@@ -1,4 +1,4 @@
-# AGENTS.md — Bible Timeline Agent Entry Point
+# AGENTS.md — Faith Through Time Agent Entry Point
 
 > **First action in any session:** `bash init.sh`
 > **Then orient yourself:** `bash agent-status.sh`
@@ -34,7 +34,7 @@ Browser (Vanilla JS + D3.js)
   └── Data/DatabaseInitializer.cs → schema + seed
         │
         ▼
-SQLite (bible-timeline.db)
+SQLite (faith-through-time.db)
   ├── 10 tables + 2 FTS5 virtual tables
   └── Schema.sql + SeedData.sql (embedded resources)
 ```
@@ -86,7 +86,7 @@ SQLite (bible-timeline.db)
 | Item | Value | Location |
 |------|-------|----------|
 | App Port | `5180` (HTTP) | `src/BibleTimeline.Web/Properties/launchSettings.json` |
-| Database | `bible-timeline.db` (auto-created) | `bin/Debug/net9.0/` at runtime |
+| Database | `faith-through-time.db` (auto-created) | `bin/Debug/net9.0/` at runtime |
 | SQL Files | Embedded resources in assembly | `src/BibleTimeline.Web/Data/` |
 | .NET Version | 9.0+ | `global.json` (if present) or SDK |
 | Dapper Config | `MatchNamesWithUnderscores = true` | `BibleTimelineDb` constructor |
@@ -104,7 +104,7 @@ SQLite (bible-timeline.db)
 | **Install Playwright browsers** | `pwsh tests/BibleTimeline.E2E/bin/Debug/net9.0/playwright.ps1 install` |
 | **Check system status** | `bash agent-status.sh` |
 | **Quality sweep** | `bash quality-sweep.sh` |
-| **Re-seed database** | Delete `bible-timeline.db`, then restart app |
+| **Re-seed database** | Delete `faith-through-time.db`, then restart app |
 | **View feature backlog** | `cat feature_list.json \| python3 -m json.tool` |
 | **Build static site** | `python3 build-static.py` (requires app to have run once) |
 | **Validate static data** | `python3 test-static.py` |

@@ -6,7 +6,7 @@
 
 ## Session 1 — Initial Build
 
-**Goal:** Build a production-ready interactive Bible timeline web application.
+**Goal:** Build a production-ready interactive biblical history web application (Faith Through Time).", "oldString": "**Goal:** Build a production-ready interactive Bible timeline web application.
 
 **Completed:**
 - .NET 9 solution with 3 projects: BibleTimeline.Web, BibleTimeline.Tests, BibleTimeline.E2E

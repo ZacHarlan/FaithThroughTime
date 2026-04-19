@@ -1,4 +1,4 @@
--- Bible Timeline Seed Data
+-- Faith Through Time Seed Data
 -- Dates follow Ussher chronology (Annales Veteris Testamenti, 1650) for OT
 -- NT dates follow Roman historical records
 -- All BCE dates are negative integers

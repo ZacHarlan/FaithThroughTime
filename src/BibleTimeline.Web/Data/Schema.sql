@@ -1,4 +1,4 @@
--- Bible Timeline Database Schema
+-- Faith Through Time Database Schema
 -- All years are integers: negative = BCE, positive = CE
 
 CREATE TABLE IF NOT EXISTS people (

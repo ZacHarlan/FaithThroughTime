@@ -4,7 +4,7 @@ using Microsoft.Playwright;
 namespace BibleTimeline.E2E;
 
 /// <summary>
-/// End-to-end Playwright tests for Bible Timeline.
+/// End-to-end Playwright tests for Faith Through Time.
 /// Run the app first: cd src/BibleTimeline.Web && dotnet run
 /// Then: dotnet test tests/BibleTimeline.E2E
 /// Install browsers first: pwsh tests/BibleTimeline.E2E/bin/Debug/net9.0/playwright.ps1 install
@@ -20,7 +20,7 @@ public class TimelineE2ETests : PageTest
         await Page.GotoAsync(BaseUrl);
 
         // Title should be present
-        await Expect(Page).ToHaveTitleAsync(new System.Text.RegularExpressions.Regex("Bible Timeline"));
+        await Expect(Page).ToHaveTitleAsync(new System.Text.RegularExpressions.Regex("Faith Through Time"));
 
         // SVG timeline should render
         var svg = Page.Locator("#timeline-svg");
