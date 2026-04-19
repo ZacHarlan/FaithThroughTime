@@ -361,9 +361,61 @@
 
         // Handle deep link on load
         handleHash();
+
+        // Pull-to-refresh (mobile)
+        initPullToRefresh();
     } catch (err) {
         console.error('Failed to initialize:', err);
         document.getElementById('timeline-loading').textContent = 'Failed to load data. Please refresh.';
+    }
+
+    function initPullToRefresh() {
+        const ptr = document.getElementById('pull-to-refresh');
+        if (!ptr) return;
+        const container = document.getElementById('timeline-container');
+        let startY = 0, pulling = false, dist = 0;
+        const threshold = 70;
+
+        container.addEventListener('touchstart', e => {
+            // Only activate at top (scroll = 0) and on timeline tab
+            if (container.scrollTop > 0) return;
+            if (document.getElementById('app').style.display === 'none') return;
+            startY = e.touches[0].clientY;
+            pulling = true;
+            dist = 0;
+        }, { passive: true });
+
+        container.addEventListener('touchmove', e => {
+            if (!pulling) return;
+            dist = e.touches[0].clientY - startY;
+            if (dist < 0) { dist = 0; return; }
+            const d = Math.min(dist, threshold * 1.5);
+            ptr.style.transform = `translateY(${d - 50}px)`;
+            ptr.style.opacity = Math.min(d / threshold, 1);
+            if (d >= threshold) {
+                ptr.textContent = '↻ Release to refresh';
+            } else {
+                ptr.textContent = '↓ Pull to refresh';
+            }
+        }, { passive: true });
+
+        container.addEventListener('touchend', async () => {
+            if (!pulling) return;
+            pulling = false;
+            if (dist >= threshold) {
+                ptr.textContent = 'Refreshing…';
+                ptr.style.transform = 'translateY(10px)';
+                try {
+                    await loadTimeline();
+                } catch (e) { /* ignore */ }
+            }
+            setTimeout(() => {
+                ptr.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+                ptr.style.transform = 'translateY(-50px)';
+                ptr.style.opacity = '0';
+                setTimeout(() => { ptr.style.transition = ''; }, 300);
+            }, dist >= threshold ? 400 : 0);
+        });
     }
 
     async function loadTimeline() {

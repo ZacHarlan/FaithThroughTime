@@ -598,6 +598,24 @@ html, body {
 .skeleton-line.medium { width: 65%; }
 .skeleton-line.long { width: 90%; }
 
+/* ── Pull to Refresh ──────────────────────────────────────── */
+.pull-to-refresh {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50px);
+    background: var(--bg-card);
+    color: var(--text-secondary);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    z-index: 10;
+    opacity: 0;
+    pointer-events: none;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
 /* ── SVG Timeline Elements ────────────────────────────────── */
 .period-band {
     opacity: 0.12;
