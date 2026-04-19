@@ -1702,6 +1702,7 @@ html, body {
     #lineage-tab { bottom: var(--bottom-nav-height); }
     #map-tab { bottom: var(--bottom-nav-height); }
     #saved-tab { bottom: var(--bottom-nav-height); }
+    .search-overlay { bottom: var(--bottom-nav-height); }
 
     /* Compact map header on mobile */
     .map-header {

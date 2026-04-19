@@ -747,6 +747,11 @@ public class MobileE2ETests : PageTest
             return `htmlScroll=${document.documentElement.scrollTop} bodyScroll=${document.body.scrollTop} visualVP=${window.visualViewport?.offsetTop ?? 'n/a'} innerH=${window.innerHeight} outerH=${window.outerHeight} bodyH=${document.body.offsetHeight} htmlH=${document.documentElement.offsetHeight} docSH=${document.documentElement.scrollHeight}`;
         }");
         TestContext.Out.WriteLine($"SCROLL INFO: {scrollInfo}");
+
+        var transforms = await Page.EvaluateAsync<string>(@"() => {
+            let el = document.querySelector('.bottom-nav');
+            const results = [];
+            while (el) {
                 const cs = getComputedStyle(el);
                 if (cs.transform !== 'none') results.push(el.tagName + '#' + el.id + '.' + el.className + '=' + cs.transform);
                 el = el.parentElement;
@@ -757,5 +762,31 @@ public class MobileE2ETests : PageTest
 
         Assert.That(boxAfter.Height, Is.GreaterThanOrEqualTo(55), $"Bottom nav height is {boxAfter.Height}px, expected ≥55");
         Assert.That(boxAfter.Height, Is.EqualTo(boxBefore.Height).Within(2), "Bottom nav height changed after switching to map tab");
+    }
+
+    [Test]
+    public async Task Mobile_SearchTab_BottomNavStaysVisible()
+    {
+        await Page.GotoAsync(BaseUrl);
+        await Page.WaitForSelectorAsync(".timeline-item");
+
+        var nav = Page.Locator(".bottom-nav");
+        await Expect(nav).ToBeVisibleAsync();
+        var boxBefore = await nav.BoundingBoxAsync();
+        Assert.That(boxBefore, Is.Not.Null);
+
+        // Click search tab
+        await Page.ClickAsync(".bottom-nav-btn[data-tab=\"search\"]");
+        await Page.WaitForTimeoutAsync(500);
+
+        // Bottom nav should still be visible and same position
+        await Expect(nav).ToBeVisibleAsync();
+        var boxAfter = await nav.BoundingBoxAsync();
+        Assert.That(boxAfter, Is.Not.Null, "Bottom nav has no bounding box on search tab");
+        TestContext.Out.WriteLine($"BEFORE: nav y={boxBefore!.Y} h={boxBefore.Height}");
+        TestContext.Out.WriteLine($"AFTER:  nav y={boxAfter!.Y} h={boxAfter.Height}");
+
+        Assert.That(boxAfter.Y, Is.EqualTo(boxBefore.Y).Within(2), "Bottom nav moved after switching to search tab");
+        Assert.That(boxAfter.Height, Is.GreaterThanOrEqualTo(55));
     }
 }
