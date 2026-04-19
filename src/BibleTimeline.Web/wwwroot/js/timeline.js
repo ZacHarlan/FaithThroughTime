@@ -227,6 +227,12 @@ const Timeline = (() => {
         const domain = s.domain();
         const fmt = y => y < 0 ? `${Math.abs(Math.round(y))} BC` : `AD ${Math.round(y)}`;
         document.getElementById('year-display').textContent = `${fmt(domain[0])} — ${fmt(domain[1])}`;
+
+        // Update era scrubber
+        if (typeof EraScrubber !== 'undefined') {
+            const centerYear = (domain[0] + domain[1]) / 2;
+            EraScrubber.updateActiveEra(centerYear);
+        }
     }
 
     function fitAll() {

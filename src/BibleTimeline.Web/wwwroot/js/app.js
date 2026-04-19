@@ -319,6 +319,7 @@
         State.setBooks(books);
 
         Filters.populate(filterOptions);
+        if (typeof EraScrubber !== 'undefined') EraScrubber.setPeriods(periods);
 
         await loadTimeline();
 
