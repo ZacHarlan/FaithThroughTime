@@ -7,6 +7,11 @@
     <meta name="description" content="Explore biblical history with an interactive timeline spanning from Creation to the Modern Era. Discover people, events, and journeys from Scripture.">
     <title>Bible Timeline — Interactive Biblical History</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='28' font-size='28'>📖</text></svg>">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#16213e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="/icons/icon-192.png">
     <!-- Google Analytics 4 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-7FEHLW6BD9"></script>
     <script>
@@ -243,5 +248,10 @@
     <script src="/js/lineage.js" defer></script>
     <script src="/js/map.js" defer></script>
     <script src="/js/app.js" defer></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js').catch(() => {});
+      }
+    </script>
 </body>
 </html>
