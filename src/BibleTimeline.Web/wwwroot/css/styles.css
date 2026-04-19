@@ -195,7 +195,19 @@ html, body {
     margin-bottom: 12px;
     padding-bottom: 8px;
     border-bottom: 1px solid var(--border);
+    gap: 8px;
 }
+.btn-back {
+    background: none;
+    border: none;
+    color: var(--accent);
+    font-size: 20px;
+    cursor: pointer;
+    padding: 4px 8px;
+    line-height: 1;
+    border-radius: 4px;
+}
+.btn-back:hover { background: var(--bg-hover); }
 
 .panel-header h2 {
     font-size: 15px;

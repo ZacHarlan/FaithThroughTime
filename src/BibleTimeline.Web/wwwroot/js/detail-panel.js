@@ -7,6 +7,7 @@ const DetailPanel = (() => {
     function init() {
         document.getElementById('btn-close-detail').addEventListener('click', close);
         initSwipeToDismiss();
+        initSwipeBack();
 
         // Prevent drag-to-pan handlers on underlying containers from
         // intercepting scroll/touch inside the detail panel
@@ -51,6 +52,55 @@ const DetailPanel = (() => {
         });
     }
 
+    function initSwipeBack() {
+        const p = panel();
+        let startX = 0, startY = 0, swiping = false;
+
+        p.addEventListener('touchstart', e => {
+            if (navStack.length === 0) return;
+            const t = e.touches[0];
+            // Only trigger from left edge (first 40px)
+            if (t.clientX > 40) return;
+            startX = t.clientX;
+            startY = t.clientY;
+            swiping = true;
+        }, { passive: true });
+
+        p.addEventListener('touchmove', e => {
+            if (!swiping) return;
+            const dx = e.touches[0].clientX - startX;
+            const dy = Math.abs(e.touches[0].clientY - startY);
+            // If vertical movement dominates, cancel
+            if (dy > Math.abs(dx)) { swiping = false; return; }
+            if (dx > 0) {
+                content().style.transition = 'none';
+                content().style.transform = `translateX(${dx}px)`;
+                content().style.opacity = Math.max(0, 1 - dx / 200);
+            }
+        }, { passive: true });
+
+        p.addEventListener('touchend', e => {
+            if (!swiping) return;
+            swiping = false;
+            const dx = e.changedTouches[0].clientX - startX;
+            content().style.transition = 'transform 0.2s ease, opacity 0.2s ease';
+            if (dx > 80 && navStack.length > 0) {
+                content().style.transform = 'translateX(100%)';
+                content().style.opacity = '0';
+                setTimeout(() => {
+                    content().style.transform = '';
+                    content().style.opacity = '';
+                    content().style.transition = '';
+                    popItem();
+                }, 200);
+            } else {
+                content().style.transform = '';
+                content().style.opacity = '';
+                setTimeout(() => { content().style.transition = ''; }, 200);
+            }
+        });
+    }
+
     function show(item) {
         if (!item) { close(); return; }
 
@@ -60,6 +110,7 @@ const DetailPanel = (() => {
         // Update bookmark button
         updateBookmarkButton(item);
         addShareButton(item);
+        updateBackButton();
 
         if (item.type === 'person') {
             renderPerson(item);
@@ -119,9 +170,59 @@ const DetailPanel = (() => {
         };
     }
 
+    // Navigation stack for card-based drill-down
+    const navStack = [];
+
     function close() {
         panel().classList.add('hidden');
+        navStack.length = 0;
         State.selectedItem = null;
+        removeBackButton();
+    }
+
+    function pushItem(item) {
+        if (State.selectedItem) {
+            navStack.push({ ...State.selectedItem });
+        }
+        State.setSelectedItem(item);
+    }
+
+    function popItem() {
+        if (navStack.length === 0) return;
+        const prev = navStack.pop();
+        // Re-show without pushing to stack
+        State.selectedItem = prev;
+        panel().classList.remove('hidden');
+        title().textContent = prev.name;
+        updateBookmarkButton(prev);
+        addShareButton(prev);
+        updateBackButton();
+        if (prev.type === 'person') renderPerson(prev);
+        else if (prev.type === 'stop') renderStop(prev);
+        else renderEvent(prev);
+    }
+
+    function updateBackButton() {
+        let btn = panel().querySelector('.btn-back');
+        if (navStack.length > 0) {
+            if (!btn) {
+                btn = document.createElement('button');
+                btn.className = 'btn-back';
+                btn.title = 'Back';
+                btn.innerHTML = '←';
+                btn.addEventListener('click', popItem);
+                const header = panel().querySelector('.panel-header');
+                header.insertBefore(btn, header.firstChild);
+            }
+            btn.style.display = '';
+        } else {
+            removeBackButton();
+        }
+    }
+
+    function removeBackButton() {
+        const btn = panel().querySelector('.btn-back');
+        if (btn) btn.style.display = 'none';
     }
 
     function renderPerson(p) {
@@ -293,17 +394,13 @@ const DetailPanel = (() => {
                 if (type === 'person') {
                     Api.getPersonDetail(id).then(detail => {
                         if (detail) {
-                            State.setSelectedItem({ type: 'person', ...detail });
-                            Timeline.zoomToYear(detail.birthYear || detail.deathYear);
-                            setTimeout(() => Timeline.scrollToItem('person', id), 550);
+                            pushItem({ type: 'person', ...detail });
                         }
                     });
                 } else {
                     Api.getEventDetail(id).then(detail => {
                         if (detail) {
-                            State.setSelectedItem({ type: 'event', ...detail });
-                            Timeline.zoomToYear(detail.startYear || detail.endYear);
-                            setTimeout(() => Timeline.scrollToItem('event', id), 550);
+                            pushItem({ type: 'event', ...detail });
                         }
                     });
                 }
