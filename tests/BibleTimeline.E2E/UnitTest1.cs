@@ -703,4 +703,59 @@ public class MobileE2ETests : PageTest
         Assert.That(itemCount, Is.GreaterThan(0),
             "Selecting a period filter on mobile should still show results");
     }
+
+    [Test]
+    public async Task Mobile_MapTab_BottomNavStaysVisible()
+    {
+        await Page.GotoAsync(BaseUrl);
+        await Page.WaitForSelectorAsync(".timeline-item");
+
+        // Bottom nav should be visible initially
+        var nav = Page.Locator(".bottom-nav");
+        await Expect(nav).ToBeVisibleAsync();
+        var boxBefore = await nav.BoundingBoxAsync();
+        Assert.That(boxBefore, Is.Not.Null);
+        TestContext.Out.WriteLine($"BEFORE: nav y={boxBefore!.Y} h={boxBefore.Height}");
+
+        // Click map tab
+        await Page.ClickAsync(".bottom-nav-btn[data-tab=\"map\"]");
+        await Page.WaitForTimeoutAsync(1500);
+
+        // Bottom nav should still be visible and same size
+        await Expect(nav).ToBeVisibleAsync();
+        var boxAfter = await nav.BoundingBoxAsync();
+        Assert.That(boxAfter, Is.Not.Null, "Bottom nav has no bounding box on map tab");
+        TestContext.Out.WriteLine($"AFTER:  nav y={boxAfter!.Y} h={boxAfter.Height}");
+
+        // Check computed styles
+        var styles = await Page.EvaluateAsync<string>(@"() => {
+            const n = document.querySelector('.bottom-nav');
+            const cs = getComputedStyle(n);
+            return `display=${cs.display} pos=${cs.position} bot=${cs.bottom} z=${cs.zIndex} h=${cs.height}`;
+        }");
+        TestContext.Out.WriteLine($"NAV STYLES: {styles}");
+
+        var mapStyles = await Page.EvaluateAsync<string>(@"() => {
+            const m = document.getElementById('map-tab');
+            const cs = getComputedStyle(m);
+            return `display=${cs.display} pos=${cs.position} bot=${cs.bottom} z=${cs.zIndex} h=${cs.height}`;
+        }");
+        TestContext.Out.WriteLine($"MAP STYLES: {mapStyles}");
+
+        // Check if the page is scrolling or viewport is shifting
+        var scrollInfo = await Page.EvaluateAsync<string>(@"() => {
+            return `htmlScroll=${document.documentElement.scrollTop} bodyScroll=${document.body.scrollTop} visualVP=${window.visualViewport?.offsetTop ?? 'n/a'} innerH=${window.innerHeight} outerH=${window.outerHeight} bodyH=${document.body.offsetHeight} htmlH=${document.documentElement.offsetHeight} docSH=${document.documentElement.scrollHeight}`;
+        }");
+        TestContext.Out.WriteLine($"SCROLL INFO: {scrollInfo}");
+                const cs = getComputedStyle(el);
+                if (cs.transform !== 'none') results.push(el.tagName + '#' + el.id + '.' + el.className + '=' + cs.transform);
+                el = el.parentElement;
+            }
+            return results.length ? results.join('; ') : 'none';
+        }");
+        TestContext.Out.WriteLine($"ANCESTOR TRANSFORMS: {transforms}");
+
+        Assert.That(boxAfter.Height, Is.GreaterThanOrEqualTo(55), $"Bottom nav height is {boxAfter.Height}px, expected ≥55");
+        Assert.That(boxAfter.Height, Is.EqualTo(boxBefore.Height).Within(2), "Bottom nav height changed after switching to map tab");
+    }
 }

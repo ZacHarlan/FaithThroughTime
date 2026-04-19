@@ -1428,6 +1428,7 @@ html, body {
     flex-direction: column;
     background: var(--bg-primary);
     z-index: 10;
+    overflow: hidden;
 }
 
 .map-header {
@@ -1701,6 +1702,18 @@ html, body {
     #lineage-tab { bottom: var(--bottom-nav-height); }
     #map-tab { bottom: var(--bottom-nav-height); }
     #saved-tab { bottom: var(--bottom-nav-height); }
+
+    /* Compact map header on mobile */
+    .map-header {
+        padding: 6px 10px;
+        gap: 6px;
+    }
+    .map-slider-controls {
+        min-width: 0;
+        gap: 6px;
+    }
+    .map-legend { display: none; }
+    #map-person-select { width: 100%; }
     .panel-right:not(.hidden) {
         bottom: var(--bottom-nav-height);
         height: calc(55vh - var(--bottom-nav-height) / 2);
