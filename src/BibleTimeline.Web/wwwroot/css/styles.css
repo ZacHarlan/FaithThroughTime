@@ -783,9 +783,20 @@ html, body {
 }
 
 /* ── Detail Panel Content ─────────────────────────────────── */
+@keyframes fade-slide-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 .detail-section {
     margin-bottom: 16px;
+    animation: fade-slide-in 0.25s ease both;
 }
+.detail-section:nth-child(2) { animation-delay: 0.05s; }
+.detail-section:nth-child(3) { animation-delay: 0.1s; }
+.detail-section:nth-child(4) { animation-delay: 0.15s; }
+.detail-section:nth-child(5) { animation-delay: 0.2s; }
+.detail-section:nth-child(6) { animation-delay: 0.25s; }
 
 .detail-section h3 {
     font-size: 12px;
@@ -823,15 +834,22 @@ html, body {
 }
 
 .detail-list li {
-    padding: 4px 0;
+    padding: 6px 8px;
     font-size: 13px;
     border-bottom: 1px solid var(--border);
     cursor: pointer;
     color: var(--text-secondary);
-    transition: color var(--transition);
+    transition: color var(--transition), background var(--transition), transform 0.15s ease;
+    border-radius: 4px;
 }
 
-.detail-list li:hover { color: var(--accent); }
+.detail-list li:hover {
+    color: var(--accent);
+    background: var(--bg-hover);
+}
+.detail-list li:active {
+    transform: scale(0.97);
+}
 
 .detail-list .list-meta {
     font-size: 11px;
@@ -1650,6 +1668,10 @@ html, body {
         padding: 6px 0;
         position: relative;
         -webkit-tap-highlight-color: transparent;
+        transition: color 0.2s ease, transform 0.1s ease;
+    }
+    .bottom-nav-btn:active {
+        transform: scale(0.9);
     }
     .bottom-nav-btn svg {
         width: 22px;
