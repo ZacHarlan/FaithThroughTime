@@ -788,5 +788,31 @@ public class MobileE2ETests : PageTest
 
         Assert.That(boxAfter.Y, Is.EqualTo(boxBefore.Y).Within(2), "Bottom nav moved after switching to search tab");
         Assert.That(boxAfter.Height, Is.GreaterThanOrEqualTo(55));
+
+        // Verify the search overlay does NOT cover the bottom nav area
+        var overlayBottom = await Page.EvaluateAsync<double>(@"() => {
+            const overlay = document.querySelector('.search-overlay:not(.hidden)');
+            if (!overlay) return 0;
+            const rect = overlay.getBoundingClientRect();
+            return rect.bottom;
+        }");
+        var navTop = await Page.EvaluateAsync<double>(@"() => {
+            const nav = document.querySelector('.bottom-nav');
+            return nav.getBoundingClientRect().top;
+        }");
+        TestContext.Out.WriteLine($"OVERLAY bottom={overlayBottom}, NAV top={navTop}");
+        Assert.That(overlayBottom, Is.LessThanOrEqualTo(navTop + 2),
+            $"Search overlay (bottom={overlayBottom}) must not cover bottom nav (top={navTop})");
+
+        // Verify bottom nav buttons are actually clickable (not covered)
+        var timelineBtn = Page.Locator(".bottom-nav-btn[data-tab=\"timeline\"]");
+        await timelineBtn.ClickAsync(new() { Timeout = 3000 });
+        await Page.WaitForTimeoutAsync(300);
+
+        // Should have switched back to timeline tab
+        var isTimelineVisible = await Page.EvaluateAsync<bool>(
+            "() => document.getElementById('app').style.display !== 'none'");
+        Assert.That(isTimelineVisible, Is.True,
+            "Clicking timeline button in bottom nav while search is open should switch tabs");
     }
 }
