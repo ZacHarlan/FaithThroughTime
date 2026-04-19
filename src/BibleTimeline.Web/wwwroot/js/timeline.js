@@ -228,10 +228,20 @@ const Timeline = (() => {
         const fmt = y => y < 0 ? `${Math.abs(Math.round(y))} BC` : `AD ${Math.round(y)}`;
         document.getElementById('year-display').textContent = `${fmt(domain[0])} — ${fmt(domain[1])}`;
 
+        const centerYear = (domain[0] + domain[1]) / 2;
+
         // Update era scrubber
         if (typeof EraScrubber !== 'undefined') {
-            const centerYear = (domain[0] + domain[1]) / 2;
             EraScrubber.updateActiveEra(centerYear);
+        }
+
+        // Update period-colored header accent
+        const periods = State.periods;
+        if (periods && periods.length) {
+            const p = periods.find(p => centerYear >= p.startYear && centerYear <= p.endYear);
+            if (p && p.color) {
+                document.documentElement.style.setProperty('--period-accent', p.color);
+            }
         }
     }
 

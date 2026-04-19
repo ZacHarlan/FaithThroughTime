@@ -61,9 +61,10 @@ html, body {
     height: var(--header-height);
     padding: 0 16px;
     background: var(--bg-secondary);
-    border-bottom: 1px solid var(--border);
+    border-bottom: 3px solid var(--period-accent, var(--accent));
     gap: 16px;
     z-index: 100;
+    transition: border-color 0.5s ease;
 }
 
 .header-left {
