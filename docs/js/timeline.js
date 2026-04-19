@@ -499,6 +499,19 @@ const Timeline = (() => {
             const barY = (ROW_HEIGHT - barH) / 2;
             const isApprox = d.startApprox || d.endApprox;
 
+            // Invisible hit-area rect for easier touch targeting (min 44px tall)
+            const hitH = Math.max(44, ROW_HEIGHT);
+            const hitY = (ROW_HEIGHT - hitH) / 2;
+            const itemW = d.isRange ? Math.max(d.w, 3) : 0;
+            el.append('rect')
+                .attr('class', 'hit-area')
+                .attr('x', d.x - 10)
+                .attr('y', hitY)
+                .attr('width', Math.max(44, itemW + 160))
+                .attr('height', hitH)
+                .style('fill', 'transparent')
+                .style('cursor', 'pointer');
+
             if (d.isRange) {
                 // Range bar
                 el.append('rect')
