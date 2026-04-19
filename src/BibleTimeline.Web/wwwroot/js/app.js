@@ -7,6 +7,36 @@
     Search.init();
     Lineage.init();
 
+    // ── Theme Toggle ──
+    initTheme();
+
+    function initTheme() {
+        const saved = localStorage.getItem('bt-theme');
+        if (saved === 'light') applyTheme('light');
+        const btn = document.getElementById('btn-theme-toggle');
+        if (btn) btn.addEventListener('click', toggleTheme);
+    }
+
+    function toggleTheme() {
+        const current = document.documentElement.getAttribute('data-theme');
+        const next = current === 'light' ? 'dark' : 'light';
+        applyTheme(next);
+        localStorage.setItem('bt-theme', next);
+    }
+
+    function applyTheme(theme) {
+        const btn = document.getElementById('btn-theme-toggle');
+        if (theme === 'light') {
+            document.documentElement.setAttribute('data-theme', 'light');
+            if (btn) btn.textContent = '☀️';
+            document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#f5f5f0');
+        } else {
+            document.documentElement.removeAttribute('data-theme');
+            if (btn) btn.textContent = '🌙';
+            document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#1a1a2e');
+        }
+    }
+
     // ── Unified tab switching (works for both header tabs and bottom nav) ──
     let lineageLoaded = false;
     let mapLoaded = false;
