@@ -510,23 +510,15 @@ const DetailPanel = (() => {
 
     function fetchScripturePreview(ref, container) {
         const preview = container.querySelector('.scripture-preview');
-        // Use Bible API (bible-api.com is free, no CORS, no key needed)
-        const apiRef = ref.replace(/\s+/g, '+');
-        fetch(`https://bible-api.com/${encodeURIComponent(ref)}?translation=kjv`)
-            .then(r => r.ok ? r.json() : Promise.reject())
-            .then(data => {
-                if (data && data.text) {
-                    preview.textContent = data.text.trim().substring(0, 500);
-                    if (data.text.length > 500) preview.textContent += '…';
-                } else {
-                    preview.textContent = 'Tap the link below to read this passage.';
-                }
-                container.dataset.loaded = 'true';
-            })
-            .catch(() => {
+        Api.getScripturePassage(ref).then(text => {
+            if (text) {
+                preview.textContent = text.substring(0, 500);
+                if (text.length > 500) preview.textContent += '…';
+            } else {
                 preview.textContent = 'Tap the link below to read this passage.';
-                container.dataset.loaded = 'true';
-            });
+            }
+            container.dataset.loaded = 'true';
+        });
     }
 
     function chapterRefLink(text) {

@@ -7,6 +7,11 @@
     <meta name="description" content="Explore biblical history with an interactive timeline spanning from Creation to the Modern Era. Discover people, events, and journeys from Scripture.">
     <title>Bible Timeline — Interactive Biblical History</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='28' font-size='28'>📖</text></svg>">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#16213e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="/icons/icon-192.png">
     <!-- Google Analytics 4 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-7FEHLW6BD9"></script>
     <script>
@@ -42,6 +47,7 @@
             </div>
         </div>
         <div class="header-right">
+            <button id="btn-theme-toggle" class="btn-theme-toggle" title="Toggle light/dark mode">🌙</button>
             <button id="btn-zoom-in" title="Zoom In">+</button>
             <button id="btn-zoom-out" title="Zoom Out">−</button>
             <button id="btn-fit" title="Fit All">⟲</button>
@@ -156,18 +162,54 @@
 
         <!-- Timeline Canvas -->
         <main id="timeline-container">
+            <div id="pull-to-refresh" class="pull-to-refresh mobile-only">↓ Pull to refresh</div>
             <div id="timeline-loading" class="loading">
                 <h2 class="loading-title">Bible Timeline</h2>
                 <p>Loading interactive timeline…</p>
+                <div class="skeleton-timeline" aria-hidden="true">
+                    <div class="skeleton-bar skeleton-pulse" style="width:60%;margin-left:5%"></div>
+                    <div class="skeleton-bar skeleton-pulse" style="width:40%;margin-left:20%"></div>
+                    <div class="skeleton-bar skeleton-pulse" style="width:70%;margin-left:10%"></div>
+                    <div class="skeleton-bar skeleton-pulse" style="width:30%;margin-left:35%"></div>
+                    <div class="skeleton-bar skeleton-pulse" style="width:55%;margin-left:15%"></div>
+                    <div class="skeleton-bar skeleton-pulse" style="width:45%;margin-left:8%"></div>
+                </div>
             </div>
             <svg id="timeline-svg"></svg>
             <div id="tooltip" class="tooltip hidden"></div>
+            <!-- Era scrubber (mobile) -->
+            <div id="era-scrubber" class="era-scrubber mobile-only"></div>
         </main>
 
     </div>
 
     <!-- Mobile Backdrop -->
     <div id="mobile-backdrop" class="mobile-backdrop hidden"></div>
+
+    <!-- Mobile Search Overlay -->
+    <div id="search-overlay" class="search-overlay hidden">
+        <div class="search-overlay-header">
+            <input type="text" id="mobile-search-input" placeholder="Search people, events, scripture…" autocomplete="off" />
+            <button id="btn-close-search" class="btn-close" title="Close">×</button>
+        </div>
+        <div id="mobile-search-results" class="mobile-search-results"></div>
+        <div id="recent-searches" class="recent-searches">
+            <h3>Recent Searches</h3>
+            <ul id="recent-searches-list"></ul>
+        </div>
+    </div>
+
+    <!-- Saved / Bookmarks Panel -->
+    <div id="saved-tab" class="tab-content hidden">
+        <div class="saved-header">
+            <h2>Saved Items</h2>
+        </div>
+        <div id="saved-empty" class="lineage-empty">
+            <p>No saved items yet</p>
+            <p class="lineage-hint">Tap the bookmark icon on any person or event to save it here.</p>
+        </div>
+        <ul id="saved-list" class="saved-list"></ul>
+    </div>
 
     <!-- Detail Panel (shared across all tabs) -->
     <aside id="detail-panel" class="panel-right hidden">
@@ -242,7 +284,37 @@
     <script src="js/detail-panel.js" defer></script>
     <script src="js/search.js" defer></script>
     <script src="js/lineage.js" defer></script>
+    <script src="js/scrollbar.js" defer></script>
     <script src="js/map.js" defer></script>
     <script src="js/app.js" defer></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js').catch(() => {});
+      }
+    </script>
+
+    <!-- Bottom Navigation (mobile) -->
+    <nav id="bottom-nav" class="bottom-nav mobile-only">
+        <button class="bottom-nav-btn active" data-tab="timeline">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/><circle cx="7" cy="6" r="2" fill="currentColor" stroke="none"/><circle cx="14" cy="12" r="2" fill="currentColor" stroke="none"/><circle cx="10" cy="18" r="2" fill="currentColor" stroke="none"/></svg>
+            <span>Timeline</span>
+        </button>
+        <button class="bottom-nav-btn" data-tab="lineage">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="4" r="2"/><circle cx="6" cy="12" r="2"/><circle cx="18" cy="12" r="2"/><circle cx="4" cy="20" r="2"/><circle cx="10" cy="20" r="2"/><circle cx="16" cy="20" r="2"/><circle cx="22" cy="20" r="2"/><line x1="12" y1="6" x2="6" y2="10"/><line x1="12" y1="6" x2="18" y2="10"/><line x1="6" y1="14" x2="4" y2="18"/><line x1="6" y1="14" x2="10" y2="18"/><line x1="18" y1="14" x2="16" y2="18"/><line x1="18" y1="14" x2="22" y2="18"/></svg>
+            <span>Family</span>
+        </button>
+        <button class="bottom-nav-btn" data-tab="map">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+            <span>Map</span>
+        </button>
+        <button class="bottom-nav-btn" data-tab="search">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <span>Search</span>
+        </button>
+        <button class="bottom-nav-btn" data-tab="saved">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+            <span>Saved</span>
+        </button>
+    </nav>
 </body>
 </html>

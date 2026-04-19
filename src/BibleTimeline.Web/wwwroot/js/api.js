@@ -103,5 +103,16 @@ const Api = {
         const res = await fetch(`/api/map/journeys/${encodeURIComponent(journeyId)}`);
         if (!res.ok) throw new Error(`Book journey stops fetch failed: ${res.status}`);
         return res.json();
+    },
+
+    async getScripturePassage(ref) {
+        try {
+            const res = await fetch(`https://bible-api.com/${encodeURIComponent(ref)}?translation=kjv`);
+            if (!res.ok) return null;
+            const data = await res.json();
+            return data && data.text ? data.text.trim() : null;
+        } catch {
+            return null;
+        }
     }
 };

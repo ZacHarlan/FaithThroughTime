@@ -327,20 +327,25 @@ public class TimelineE2ETests : PageTest
         var panel = Page.Locator("#detail-panel");
         await Expect(panel).Not.ToHaveClassAsync(new System.Text.RegularExpressions.Regex("hidden"));
 
-        // Scripture section should exist with clickable <a> tags
-        var scriptureLinks = Page.Locator("#detail-content .scripture-link");
-        await Expect(scriptureLinks.First).ToBeVisibleAsync();
+        // Scripture section should exist with accordion toggles
+        var scriptureToggles = Page.Locator("#detail-content .scripture-toggle");
+        await Expect(scriptureToggles.First).ToBeVisibleAsync();
 
-        // Links should be actual <a> elements with href
-        var tagName = await scriptureLinks.First.EvaluateAsync<string>("el => el.tagName");
-        Assert.That(tagName, Is.EqualTo("A"));
+        // Toggle should be a button
+        var tagName = await scriptureToggles.First.EvaluateAsync<string>("el => el.tagName");
+        Assert.That(tagName, Is.EqualTo("BUTTON"));
 
-        var href = await scriptureLinks.First.GetAttributeAsync("href");
+        // Click to expand, then check for BibleGateway link inside body
+        await scriptureToggles.First.ClickAsync();
+        var readMore = Page.Locator("#detail-content .scripture-read-more");
+        await Expect(readMore.First).ToBeVisibleAsync();
+
+        var href = await readMore.First.GetAttributeAsync("href");
         Assert.That(href, Does.Contain("biblegateway.com"));
         Assert.That(href, Does.Contain("version=ESV"));
 
-        // Should open in new tab
-        var target = await scriptureLinks.First.GetAttributeAsync("target");
+        // Link should open in new tab
+        var target = await readMore.First.GetAttributeAsync("target");
         Assert.That(target, Is.EqualTo("_blank"));
     }
 
@@ -357,11 +362,16 @@ public class TimelineE2ETests : PageTest
         var panel = Page.Locator("#detail-panel");
         await Expect(panel).Not.ToHaveClassAsync(new System.Text.RegularExpressions.Regex("hidden"));
 
-        // Scripture links should be present and be <a> tags
-        var scriptureLinks = Page.Locator("#detail-content .scripture-link");
-        await Expect(scriptureLinks.First).ToBeVisibleAsync();
+        // Scripture accordion toggles should be present
+        var scriptureToggles = Page.Locator("#detail-content .scripture-toggle");
+        await Expect(scriptureToggles.First).ToBeVisibleAsync();
 
-        var href = await scriptureLinks.First.GetAttributeAsync("href");
+        // Expand and check for BibleGateway link
+        await scriptureToggles.First.ClickAsync();
+        var readMore = Page.Locator("#detail-content .scripture-read-more");
+        await Expect(readMore.First).ToBeVisibleAsync();
+
+        var href = await readMore.First.GetAttributeAsync("href");
         Assert.That(href, Does.Contain("biblegateway.com"));
     }
 
