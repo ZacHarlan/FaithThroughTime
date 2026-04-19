@@ -173,6 +173,31 @@
     <!-- Mobile Backdrop -->
     <div id="mobile-backdrop" class="mobile-backdrop hidden"></div>
 
+    <!-- Mobile Search Overlay -->
+    <div id="search-overlay" class="search-overlay hidden">
+        <div class="search-overlay-header">
+            <input type="text" id="mobile-search-input" placeholder="Search people, events, scripture…" autocomplete="off" />
+            <button id="btn-close-search" class="btn-close" title="Close">×</button>
+        </div>
+        <div id="mobile-search-results" class="mobile-search-results"></div>
+        <div id="recent-searches" class="recent-searches">
+            <h3>Recent Searches</h3>
+            <ul id="recent-searches-list"></ul>
+        </div>
+    </div>
+
+    <!-- Saved / Bookmarks Panel -->
+    <div id="saved-tab" class="tab-content hidden">
+        <div class="saved-header">
+            <h2>Saved Items</h2>
+        </div>
+        <div id="saved-empty" class="lineage-empty">
+            <p>No saved items yet</p>
+            <p class="lineage-hint">Tap the bookmark icon on any person or event to save it here.</p>
+        </div>
+        <ul id="saved-list" class="saved-list"></ul>
+    </div>
+
     <!-- Detail Panel (shared across all tabs) -->
     <aside id="detail-panel" class="panel-right hidden">
         <div class="detail-drag-handle mobile-only"><span></span></div>
@@ -253,5 +278,29 @@
         navigator.serviceWorker.register('/sw.js').catch(() => {});
       }
     </script>
+
+    <!-- Bottom Navigation (mobile) -->
+    <nav id="bottom-nav" class="bottom-nav mobile-only">
+        <button class="bottom-nav-btn active" data-tab="timeline">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/><circle cx="7" cy="6" r="2" fill="currentColor" stroke="none"/><circle cx="14" cy="12" r="2" fill="currentColor" stroke="none"/><circle cx="10" cy="18" r="2" fill="currentColor" stroke="none"/></svg>
+            <span>Timeline</span>
+        </button>
+        <button class="bottom-nav-btn" data-tab="lineage">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="4" r="2"/><circle cx="6" cy="12" r="2"/><circle cx="18" cy="12" r="2"/><circle cx="4" cy="20" r="2"/><circle cx="10" cy="20" r="2"/><circle cx="16" cy="20" r="2"/><circle cx="22" cy="20" r="2"/><line x1="12" y1="6" x2="6" y2="10"/><line x1="12" y1="6" x2="18" y2="10"/><line x1="6" y1="14" x2="4" y2="18"/><line x1="6" y1="14" x2="10" y2="18"/><line x1="18" y1="14" x2="16" y2="18"/><line x1="18" y1="14" x2="22" y2="18"/></svg>
+            <span>Family</span>
+        </button>
+        <button class="bottom-nav-btn" data-tab="map">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+            <span>Map</span>
+        </button>
+        <button class="bottom-nav-btn" data-tab="search">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <span>Search</span>
+        </button>
+        <button class="bottom-nav-btn" data-tab="saved">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+            <span>Saved</span>
+        </button>
+    </nav>
 </body>
 </html>

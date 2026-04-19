@@ -57,6 +57,10 @@ const DetailPanel = (() => {
         panel().classList.remove('hidden');
         title().textContent = item.name;
 
+        // Update bookmark button
+        updateBookmarkButton(item);
+        addShareButton(item);
+
         if (item.type === 'person') {
             renderPerson(item);
         } else if (item.type === 'stop') {
@@ -64,6 +68,55 @@ const DetailPanel = (() => {
         } else {
             renderEvent(item);
         }
+    }
+
+    function updateBookmarkButton(item) {
+        let btn = panel().querySelector('.btn-bookmark');
+        if (!btn) {
+            btn = document.createElement('button');
+            btn.className = 'btn-bookmark';
+            btn.title = 'Save';
+            const header = panel().querySelector('.panel-header');
+            header.insertBefore(btn, header.querySelector('.btn-close'));
+        }
+        const bm = window._bookmarks;
+        if (!bm || item.type === 'stop') { btn.style.display = 'none'; return; }
+        btn.style.display = '';
+        const saved = bm.isItemSaved(item.type, item.id);
+        btn.textContent = saved ? '★' : '☆';
+        btn.classList.toggle('bookmarked', saved);
+        btn.onclick = () => {
+            if (bm.isItemSaved(item.type, item.id)) {
+                bm.removeSavedItem(item.type, item.id);
+            } else {
+                const meta = item.type === 'person'
+                    ? (item.role || '')
+                    : (item.category || '');
+                bm.saveItem(item.type, item.id, item.name, meta);
+            }
+            updateBookmarkButton(item);
+        };
+    }
+
+    function addShareButton(item) {
+        if (!navigator.share || item.type === 'stop') return;
+        let btn = panel().querySelector('.btn-share');
+        if (!btn) {
+            btn = document.createElement('button');
+            btn.className = 'btn-bookmark'; // reuse style
+            btn.title = 'Share';
+            btn.textContent = '↗';
+            const header = panel().querySelector('.panel-header');
+            header.insertBefore(btn, header.querySelector('.btn-close'));
+        }
+        btn.onclick = () => {
+            const url = `${window.location.origin}/#${item.type}/${item.id}`;
+            navigator.share({
+                title: item.name + ' — Bible Timeline',
+                text: `${item.name} — ${item.type === 'person' ? (item.role || 'Biblical Figure') : (item.category || 'Biblical Event')}`,
+                url
+            }).catch(() => {});
+        };
     }
 
     function close() {
