@@ -289,5 +289,16 @@ const Api = (() => {
             if (!bookJourneyStops) return [];
             return bookJourneyStops[String(journeyId)] || [];
         },
+
+        async getScripturePassage(ref) {
+            try {
+                const res = await fetch(`https://bible-api.com/${encodeURIComponent(ref)}?translation=kjv`);
+                if (!res.ok) return null;
+                const data = await res.json();
+                return data && data.text ? data.text.trim() : null;
+            } catch {
+                return null;
+            }
+        },
     };
 })();
