@@ -275,15 +275,16 @@ const DetailPanel = (() => {
 
         // Scripture references
         if (p.scriptureReferences && p.scriptureReferences.length) {
-            html += '<div class="detail-section"><h3>Scripture</h3><ul class="detail-list">';
+            html += '<div class="detail-section"><h3>Scripture</h3><div class="scripture-list">';
             for (const s of p.scriptureReferences) {
-                html += `<li>${scriptureLink(s)}</li>`;
+                html += scriptureLink(s);
             }
-            html += '</ul></div>';
+            html += '</div></div>';
         }
 
         c.innerHTML = html;
         attachListClicks(c);
+        initScriptureAccordions(c);
     }
 
     function renderEvent(e) {
@@ -336,15 +337,16 @@ const DetailPanel = (() => {
 
         // Scripture references
         if (e.scriptureReferences && e.scriptureReferences.length) {
-            html += '<div class="detail-section"><h3>Scripture</h3><ul class="detail-list">';
+            html += '<div class="detail-section"><h3>Scripture</h3><div class="scripture-list">';
             for (const s of e.scriptureReferences) {
-                html += `<li>${scriptureLink(s)}</li>`;
+                html += scriptureLink(s);
             }
-            html += '</ul></div>';
+            html += '</div></div>';
         }
 
         c.innerHTML = html;
         attachListClicks(c);
+        initScriptureAccordions(c);
 
         // Render mini-map after DOM is updated
         if (e.locations && e.locations.some(l => l.latitude && l.longitude)) {
@@ -461,10 +463,57 @@ const DetailPanel = (() => {
     function scriptureLink(s) {
         const text = escapeHtml(s.referenceText);
         const url = bibleGatewayUrl(s.referenceText);
+        const id = 'scr-' + Math.random().toString(36).slice(2, 8);
+        let html = `<div class="scripture-accordion">`;
+        html += `<button class="scripture-toggle" aria-expanded="false" data-target="${id}">`;
+        html += `<span class="scripture-ref-text">📖 ${text}</span>`;
+        html += `<span class="scripture-chevron">›</span>`;
+        html += `</button>`;
+        html += `<div class="scripture-body" id="${id}" hidden>`;
+        html += `<p class="scripture-preview">Loading passage…</p>`;
         if (url) {
-            return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="scripture-link">${text}</a>`;
+            html += `<a href="${url}" target="_blank" rel="noopener noreferrer" class="scripture-read-more">Read full passage on BibleGateway ↗</a>`;
         }
-        return text;
+        html += `</div></div>`;
+        return html;
+    }
+
+    function initScriptureAccordions(container) {
+        container.querySelectorAll('.scripture-toggle').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const target = document.getElementById(btn.dataset.target);
+                const expanded = btn.getAttribute('aria-expanded') === 'true';
+                btn.setAttribute('aria-expanded', !expanded);
+                target.hidden = expanded;
+                btn.querySelector('.scripture-chevron').textContent = expanded ? '›' : '⌄';
+                // Fetch passage on first open
+                if (!expanded && target.dataset.loaded !== 'true') {
+                    const ref = btn.querySelector('.scripture-ref-text').textContent.replace('📖 ', '');
+                    fetchScripturePreview(ref, target);
+                }
+            });
+        });
+    }
+
+    function fetchScripturePreview(ref, container) {
+        const preview = container.querySelector('.scripture-preview');
+        // Use Bible API (bible-api.com is free, no CORS, no key needed)
+        const apiRef = ref.replace(/\s+/g, '+');
+        fetch(`https://bible-api.com/${encodeURIComponent(ref)}?translation=kjv`)
+            .then(r => r.ok ? r.json() : Promise.reject())
+            .then(data => {
+                if (data && data.text) {
+                    preview.textContent = data.text.trim().substring(0, 500);
+                    if (data.text.length > 500) preview.textContent += '…';
+                } else {
+                    preview.textContent = 'Tap the link below to read this passage.';
+                }
+                container.dataset.loaded = 'true';
+            })
+            .catch(() => {
+                preview.textContent = 'Tap the link below to read this passage.';
+                container.dataset.loaded = 'true';
+            });
     }
 
     function chapterRefLink(text) {

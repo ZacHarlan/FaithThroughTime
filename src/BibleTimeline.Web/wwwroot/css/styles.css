@@ -1052,6 +1052,58 @@ html, body {
     text-decoration: underline;
 }
 
+/* ── Scripture Accordion ──────────────────────────────────── */
+.scripture-list { display: flex; flex-direction: column; gap: 6px; }
+.scripture-accordion {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+}
+.scripture-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px 12px;
+    background: var(--bg-card);
+    border: none;
+    color: var(--text);
+    font-size: 14px;
+    cursor: pointer;
+    text-align: left;
+    gap: 8px;
+}
+.scripture-toggle:hover { background: var(--bg-hover); }
+.scripture-ref-text { flex: 1; }
+.scripture-chevron {
+    font-size: 16px;
+    color: var(--text-muted);
+    transition: transform 0.2s ease;
+}
+.scripture-toggle[aria-expanded="true"] .scripture-chevron {
+    transform: rotate(90deg);
+}
+.scripture-body {
+    padding: 12px;
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+}
+.scripture-preview {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text-muted);
+    margin: 0 0 8px;
+    font-style: italic;
+}
+.scripture-read-more {
+    display: inline-block;
+    font-size: 12px;
+    color: var(--accent);
+    text-decoration: none;
+    margin-top: 4px;
+}
+.scripture-read-more:hover { text-decoration: underline; }
+
 /* ── Tab Navigation ───────────────────────────────────────── */
 .tab-nav {
     display: flex;
