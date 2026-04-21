@@ -890,19 +890,25 @@ html, body {
 .mobile-backdrop.hidden { display: none; }
 
 .btn-hamburger {
-    width: 36px;
-    height: 36px;
+    width: 44px;
+    height: 44px;
     border: 1px solid var(--border);
-    border-radius: 6px;
+    border-radius: 8px;
     background: var(--bg-card);
     color: var(--text-primary);
-    font-size: 18px;
+    font-size: 22px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
     margin-right: 8px;
+    -webkit-tap-highlight-color: rgba(255,255,255,0.15);
+}
+.btn-hamburger:active {
+    background: var(--accent);
+    color: #fff;
+    transform: scale(0.92);
 }
 
 .detail-drag-handle {

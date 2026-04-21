@@ -665,16 +665,28 @@ public class MobileE2ETests : PageTest
         await Page.WaitForSelectorAsync(".timeline-item");
 
         var filterPanel = Page.Locator("#filter-panel");
+        var hamburger = Page.Locator("#btn-mobile-filters");
 
         // Initially should be off-screen (not have drawer-open class)
         await Expect(filterPanel).Not.ToHaveClassAsync(new System.Text.RegularExpressions.Regex("drawer-open"));
 
-        // Open drawer
-        await Page.ClickAsync("#btn-mobile-filters");
+        // Verify button is tappable (not covered) — get its bounding box
+        var box = await hamburger.BoundingBoxAsync();
+        Assert.That(box, Is.Not.Null, "Hamburger button has no bounding box");
+        TestContext.Out.WriteLine($"HAMBURGER: x={box!.X} y={box.Y} w={box.Width} h={box.Height}");
+
+        // Use Tap (touch event) instead of Click (mouse event) for real mobile testing
+        await hamburger.TapAsync();
         await Page.WaitForTimeoutAsync(400);
         await Expect(filterPanel).ToHaveClassAsync(new System.Text.RegularExpressions.Regex("drawer-open"));
 
-        // Close by tapping backdrop via JS dispatch (backdrop is behind drawer in z-order)
+        // Verify drawer is actually visible on screen
+        var drawerBox = await filterPanel.BoundingBoxAsync();
+        Assert.That(drawerBox, Is.Not.Null, "Drawer opened but has no bounding box");
+        Assert.That(drawerBox!.X, Is.GreaterThanOrEqualTo(0), "Drawer should be on-screen (not translated left)");
+        TestContext.Out.WriteLine($"DRAWER: x={drawerBox.X} y={drawerBox.Y} w={drawerBox.Width} h={drawerBox.Height}");
+
+        // Close by tapping backdrop
         await Page.EvaluateAsync("() => document.getElementById('mobile-backdrop').click()");
         await Page.WaitForTimeoutAsync(400);
         await Expect(filterPanel).Not.ToHaveClassAsync(new System.Text.RegularExpressions.Regex("drawer-open"));
