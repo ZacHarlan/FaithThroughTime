@@ -22,3 +22,7 @@ Thumbs.db
 
 # Playwright
 playwright/.cache/
+
+# Agent-harness runtime files
+.app.pid
+.init.log
