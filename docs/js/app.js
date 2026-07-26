@@ -113,6 +113,7 @@
     let lineageLoaded = false;
     let mapLoaded = false;
     let lastNonSearchTab = 'timeline';
+    let currentTab = 'timeline';
     // Request tokens — declared up here because loadTimeline() runs during
     // init, before later `let` statements in this function body execute (TDZ)
     let _timelineReq = 0;
@@ -130,10 +131,15 @@
 
         vibrate(8);
 
-        // Close mobile drawer on tab switch. The detail panel deliberately
-        // survives tab switches — it renders above every tab, and destroying
-        // the drill-down stack on a peek at the Map was a top UX complaint.
+        // Close mobile drawer on tab switch. The detail panel survives most
+        // tab switches (peeking at the Map mid-read must not destroy the
+        // drill-down stack) — EXCEPT when leaving the Map tab: a lingering
+        // journey-stop sidebar over the timeline is stale clutter.
         Filters.closeDrawer();
+        if (currentTab === 'map' && tab !== 'map' && tab !== 'search') {
+            DetailPanel.close();
+        }
+        currentTab = tab === 'search' ? currentTab : tab;
 
         // Hide all tab content
         document.getElementById('app').style.display = 'none';

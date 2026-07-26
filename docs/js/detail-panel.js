@@ -558,12 +558,24 @@ const DetailPanel = (() => {
 
         html += '<div class="detail-section"><h3>Details</h3><dl class="detail-meta">';
         if (s.year != null) html += metaRow('Date', s.year < 0 ? `${Math.abs(s.year)} BC` : `AD ${s.year}`);
-        if (s.chapter) html += metaRow('Reference', chapterRefLink(s.chapter));
         if (s.locationName) html += metaRow('Location', escapeHtml(s.locationName));
         html += '</dl></div>';
 
         if (s.stopDescription) {
             html += `<div class="detail-section"><h3>Description</h3><p class="detail-description">${escapeHtml(s.stopDescription)}</p></div>`;
+        }
+
+        // Scripture: journey-stop references become the same expandable
+        // accordions as person/event scripture (full local text + version
+        // picker). Compound refs ("Deuteronomy 34:1-12; Joshua 1:1-18")
+        // split into one accordion each.
+        if (s.chapter) {
+            const refs = s.chapter.split(';').map(r => r.trim()).filter(Boolean);
+            html += '<div class="detail-section"><div class="scripture-section-head"><h3>Scripture</h3></div><div class="scripture-list">';
+            for (const ref of refs) {
+                html += scriptureLink({ referenceText: ref });
+            }
+            html += '</div></div>';
         }
 
         // Mini-map for the stop location
@@ -572,6 +584,7 @@ const DetailPanel = (() => {
         }
 
         c.innerHTML = html;
+        initScriptureAccordions(c);
 
         if (s.latitude && s.longitude) {
             setTimeout(() => {

@@ -131,7 +131,13 @@ const Timeline = (() => {
         const x1 = xScale(MAX_YEAR);
         const plotWidth = width - MARGIN.left - MARGIN.right;
         const minK = Math.min(1, plotWidth / (x1 - x0));
-        zoom.scaleExtent([minK, 200])
+        // extent must be the PLOT area, not the full SVG: the scale maps
+        // years into [MARGIN.left, width - MARGIN.right], and with the
+        // default full-element extent the constrain clamped MAX_YEAR into
+        // the right margin strip — the modern era became unreachable
+        // (panning stopped ~1979 at typical zoom).
+        zoom.extent([[MARGIN.left, 0], [width - MARGIN.right, height]])
+            .scaleExtent([minK, 200])
             .translateExtent([[x0, -Infinity], [x1, Infinity]]);
     }
 
