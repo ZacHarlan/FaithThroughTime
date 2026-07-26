@@ -557,6 +557,13 @@ const Timeline = (() => {
     function layoutAndRender(layer, items, xS, offsetY, type) {
         const cache = ensureLanes();
 
+        // World right edge in current-zoom pixels: labels that would extend
+        // past it flip to the LEFT of their marker — otherwise items near
+        // MAX_YEAR have their names permanently clipped at the pan limit
+        // (a label is worth centuries at low zoom; no year-bound extension
+        // can absorb that).
+        const rightEdgePx = xS(MAX_YEAR);
+
         const positioned = items.map(d => {
             const start = d.startYear ?? d.endYear;
             const end = d.endYear ?? d.startYear;
@@ -566,6 +573,9 @@ const Timeline = (() => {
             const x2 = end !== start ? xS(end) : x1;
             const barWidth = Math.max(x2 - x1, 2);
             const lane = cache.lanes.get(`${type}-${d.id}`) ?? 0;
+            const isRange = start !== end && end !== null;
+            const labelAnchor = (isRange ? x1 + barWidth : x1 + POINT_RADIUS_MAJOR) + LABEL_PADDING;
+            const flipLabel = labelAnchor + labelWidthFor(d) > rightEdgePx;
 
             return {
                 ...d,
@@ -573,7 +583,8 @@ const Timeline = (() => {
                 w: barWidth,
                 lane,
                 y: offsetY + lane * (ROW_HEIGHT + ROW_GAP),
-                isRange: start !== end && end !== null
+                isRange,
+                flipLabel
             };
         }).filter(Boolean);
 
@@ -587,11 +598,24 @@ const Timeline = (() => {
         }
         for (const arr of byLane.values()) {
             arr.sort((a, b) => a.x - b.x);
+            let lastShownEnd = -Infinity;
             for (let i = 0; i < arr.length; i++) {
                 const d = arr[i];
                 const next = arr[i + 1];
-                const labelEnd = (d.isRange ? d.x + d.w : d.x) + LABEL_PADDING + labelWidthFor(d);
-                d.showLabel = !next || labelEnd <= next.x - 4;
+                const prev = arr[i - 1];
+                const lw = labelWidthFor(d);
+                if (d.flipLabel) {
+                    // Label extends LEFT of the marker: show only if it
+                    // clears the previous item's marker and shown label
+                    const labelStart = (d.isRange ? d.x : d.x - POINT_RADIUS_MAJOR) - LABEL_PADDING - lw;
+                    const prevEdge = prev ? prev.x + (prev.isRange ? prev.w : 0) + 4 : -Infinity;
+                    d.showLabel = labelStart >= Math.max(lastShownEnd + 4, prevEdge);
+                    if (d.showLabel) lastShownEnd = d.isRange ? d.x + d.w : d.x;
+                } else {
+                    const labelEnd = (d.isRange ? d.x + d.w : d.x) + LABEL_PADDING + lw;
+                    d.showLabel = (!next || labelEnd <= next.x - 4) && (d.x >= lastShownEnd + 4 || !prev);
+                    if (d.showLabel) lastShownEnd = labelEnd;
+                }
             }
         }
 
@@ -672,15 +696,18 @@ const Timeline = (() => {
                 }
             }
 
-            // Label (to the right of the bar/point) — culled when zoomed out
-            // crowds it into its lane neighbor (see showLabel pass above)
+            // Label — right of the marker normally, flipped to the left near
+            // the world's right edge; culled when it crowds a lane neighbor
             if (d.showLabel !== false) {
                 const pointR = d.significance === 'major' ? POINT_RADIUS_MAJOR : d.significance === 'moderate' ? POINT_RADIUS_MODERATE : POINT_RADIUS_MINOR;
-                const labelX = d.isRange ? d.x + d.w + LABEL_PADDING : d.x + pointR + LABEL_PADDING;
+                const labelX = d.flipLabel
+                    ? (d.isRange ? d.x : d.x - pointR) - LABEL_PADDING
+                    : (d.isRange ? d.x + d.w + LABEL_PADDING : d.x + pointR + LABEL_PADDING);
                 el.append('text')
                     .attr('class', 'item-label')
                     .attr('x', labelX)
                     .attr('y', ROW_HEIGHT / 2)
+                    .attr('text-anchor', d.flipLabel ? 'end' : null)
                     .text(d.name)
                     .style('font-weight', d.significance === 'major' ? '600' : d.significance === 'moderate' ? '500' : '400')
                     .style('font-size', d.significance === 'major' ? '14px' : d.significance === 'moderate' ? '13px' : '12px');
@@ -739,17 +766,30 @@ const Timeline = (() => {
 
         tooltip.classList.remove('hidden');
 
-        // Position near cursor
-        const container = document.getElementById('timeline-container');
+        // Anchor to the ITEM (its label if visible, else its marker), not the
+        // cursor. The tooltip is absolutely positioned inside the scrolling
+        // container, so container.scrollTop must be added — omitting it left
+        // the tooltip drifting off by the full scroll distance.
         const rect = container.getBoundingClientRect();
-        let x = event.clientX - rect.left + 12;
-        let y = event.clientY - rect.top + 12;
+        const group = event.currentTarget || event.target.closest('.timeline-item');
+        const anchorEl = group && (group.querySelector('.item-label') ||
+                                   group.querySelector('.item-bar, .item-point'));
+        const a = (anchorEl || event.target).getBoundingClientRect();
 
-        // Keep within bounds
         const tw = tooltip.offsetWidth;
         const th = tooltip.offsetHeight;
-        if (x + tw > rect.width) x = x - tw - 24;
-        if (y + th > rect.height) y = y - th - 24;
+        // Right of the item's text, vertically centered on it
+        let x = a.right - rect.left + 10;
+        let y = a.top - rect.top + container.scrollTop + a.height / 2 - th / 2;
+        // Flip to the left of the item when it would overflow the right edge
+        if (x + tw > container.clientWidth - 4) {
+            x = a.left - rect.left - tw - 10;
+        }
+        if (x < 4) x = 4;
+        // Clamp vertically to the visible portion of the container
+        const minY = container.scrollTop + 4;
+        const maxY = container.scrollTop + container.clientHeight - th - 4;
+        y = Math.max(minY, Math.min(maxY, y));
 
         tooltip.style.left = x + 'px';
         tooltip.style.top = y + 'px';
