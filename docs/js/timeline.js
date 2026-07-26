@@ -574,8 +574,6 @@ const Timeline = (() => {
             const barWidth = Math.max(x2 - x1, 2);
             const lane = cache.lanes.get(`${type}-${d.id}`) ?? 0;
             const isRange = start !== end && end !== null;
-            const labelAnchor = (isRange ? x1 + barWidth : x1 + POINT_RADIUS_MAJOR) + LABEL_PADDING;
-            const flipLabel = labelAnchor + labelWidthFor(d) > rightEdgePx;
 
             return {
                 ...d,
@@ -583,8 +581,7 @@ const Timeline = (() => {
                 w: barWidth,
                 lane,
                 y: offsetY + lane * (ROW_HEIGHT + ROW_GAP),
-                isRange,
-                flipLabel
+                isRange
             };
         }).filter(Boolean);
 
@@ -604,17 +601,36 @@ const Timeline = (() => {
                 const next = arr[i + 1];
                 const prev = arr[i - 1];
                 const lw = labelWidthFor(d);
-                if (d.flipLabel) {
-                    // Label extends LEFT of the marker: show only if it
-                    // clears the previous item's marker and shown label
-                    const labelStart = (d.isRange ? d.x : d.x - POINT_RADIUS_MAJOR) - LABEL_PADDING - lw;
-                    const prevEdge = prev ? prev.x + (prev.isRange ? prev.w : 0) + 4 : -Infinity;
-                    d.showLabel = labelStart >= Math.max(lastShownEnd + 4, prevEdge);
-                    if (d.showLabel) lastShownEnd = d.isRange ? d.x + d.w : d.x;
+                const rightLabelEnd = (d.isRange ? d.x + d.w : d.x) + LABEL_PADDING + lw;
+
+                // Flip is a LAST RESORT: only when the rightward label would
+                // cross the world's right edge (unreachable by panning) AND
+                // the flipped label actually fits to the left. Flipping
+                // eagerly at low zoom collided whole eras into their lane
+                // neighbors and mass-hid labels.
+                const flipStart = (d.isRange ? d.x : d.x - POINT_RADIUS_MAJOR) - LABEL_PADDING - lw;
+                const prevEdge = prev ? prev.x + (prev.isRange ? prev.w : 0) + 4 : -Infinity;
+                const flipFits = flipStart >= Math.max(lastShownEnd + 4, prevEdge);
+
+                if (rightLabelEnd > rightEdgePx && flipFits) {
+                    d.flipLabel = true;
+                    d.showLabel = true;
+                    lastShownEnd = d.isRange ? d.x + d.w : d.x;
                 } else {
-                    const labelEnd = (d.isRange ? d.x + d.w : d.x) + LABEL_PADDING + lw;
-                    d.showLabel = (!next || labelEnd <= next.x - 4) && (d.x >= lastShownEnd + 4 || !prev);
-                    if (d.showLabel) lastShownEnd = labelEnd;
+                    // Original rule: rightward label, hidden only when it
+                    // would run into the next item in this lane
+                    d.flipLabel = false;
+                    d.showLabel = !next || rightLabelEnd <= next.x - 4;
+                    if (d.showLabel) {
+                        // Neither direction fits a very long label near the
+                        // world edge: truncate rightward with an ellipsis
+                        // rather than clipping mid-glyph at the pan limit
+                        if (rightLabelEnd > rightEdgePx) {
+                            const anchorX = (d.isRange ? d.x + d.w : d.x) + LABEL_PADDING;
+                            d.labelMaxPx = rightEdgePx - anchorX - 2;
+                        }
+                        lastShownEnd = Math.min(rightLabelEnd, rightEdgePx);
+                    }
                 }
             }
         }
@@ -703,12 +719,20 @@ const Timeline = (() => {
                 const labelX = d.flipLabel
                     ? (d.isRange ? d.x : d.x - pointR) - LABEL_PADDING
                     : (d.isRange ? d.x + d.w + LABEL_PADDING : d.x + pointR + LABEL_PADDING);
+                let labelText = d.name;
+                if (d.labelMaxPx != null) {
+                    const charW = labelWidthFor(d) / Math.max(1, d.name.length);
+                    const maxChars = Math.floor(d.labelMaxPx / charW) - 1;
+                    if (maxChars >= 4 && maxChars < d.name.length) {
+                        labelText = d.name.slice(0, maxChars) + '…';
+                    }
+                }
                 el.append('text')
                     .attr('class', 'item-label')
                     .attr('x', labelX)
                     .attr('y', ROW_HEIGHT / 2)
                     .attr('text-anchor', d.flipLabel ? 'end' : null)
-                    .text(d.name)
+                    .text(labelText)
                     .style('font-weight', d.significance === 'major' ? '600' : d.significance === 'moderate' ? '500' : '400')
                     .style('font-size', d.significance === 'major' ? '14px' : d.significance === 'moderate' ? '13px' : '12px');
             }
