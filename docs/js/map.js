@@ -619,5 +619,24 @@ const MapView = (() => {
         currentMiniMap = miniMap;
     }
 
-    return { init, activate, renderMiniMap, destroyMiniMap };
+    /**
+     * Center the MAIN map on a location and label it — used by the detail
+     * panel's "Open in Map view" button. Callers must switch to the Map tab
+     * first (activate() creates the map on first open).
+     */
+    function focusLocation(lat, lng, name) {
+        if (!map) return;
+        setTimeout(() => {
+            map.invalidateSize();
+            map.setView([lat, lng], 9, { animate: true });
+            if (name) {
+                L.popup({ offset: [0, -4] })
+                    .setLatLng([lat, lng])
+                    .setContent('<strong>' + escapeHtml(name) + '</strong>')
+                    .openOn(map);
+            }
+        }, 80);
+    }
+
+    return { init, activate, renderMiniMap, destroyMiniMap, focusLocation };
 })();

@@ -493,7 +493,9 @@ const DetailPanel = (() => {
 
         // Mini-map for locations with coordinates
         if (e.locations && e.locations.some(l => l.latitude && l.longitude)) {
-            html += '<div class="detail-section"><h3>Map</h3><div id="detail-mini-map" class="detail-mini-map"></div></div>';
+            html += '<div class="detail-section"><h3>Map</h3><div id="detail-mini-map" class="detail-mini-map"></div>'
+                 + '<button type="button" id="btn-open-map" class="btn-open-map">'
+                 + '<svg class="icon"><use href="#i-location"/></svg> Open in Map view</button></div>';
         }
 
         // Scripture references
@@ -516,7 +518,23 @@ const DetailPanel = (() => {
                     MapView.renderMiniMap('detail-mini-map', e.locations);
                 }
             }, 50);
+            wireOpenInMap(e.locations.find(l => l.latitude && l.longitude));
         }
+    }
+
+    // "Open in Map view": jump to the Map tab centered on this location.
+    // On mobile the sheet drops to peek so the map is actually visible.
+    function wireOpenInMap(loc) {
+        const btn = content().querySelector('#btn-open-map');
+        if (!btn || !loc) return;
+        btn.addEventListener('click', async () => {
+            if (window._vibrate) window._vibrate(8);
+            if (isMobile()) setSnap('peek', { haptic: false });
+            if (window._switchTab) await window._switchTab('map');
+            if (typeof MapView !== 'undefined' && MapView.focusLocation) {
+                MapView.focusLocation(loc.latitude, loc.longitude, loc.name);
+            }
+        });
     }
 
     function renderStop(s) {
@@ -535,7 +553,9 @@ const DetailPanel = (() => {
 
         // Mini-map for the stop location
         if (s.latitude && s.longitude) {
-            html += '<div class="detail-section"><h3>Map</h3><div id="detail-mini-map" class="detail-mini-map"></div></div>';
+            html += '<div class="detail-section"><h3>Map</h3><div id="detail-mini-map" class="detail-mini-map"></div>'
+                 + '<button type="button" id="btn-open-map" class="btn-open-map">'
+                 + '<svg class="icon"><use href="#i-location"/></svg> Open in Map view</button></div>';
         }
 
         c.innerHTML = html;
@@ -546,6 +566,7 @@ const DetailPanel = (() => {
                     MapView.renderMiniMap('detail-mini-map', [{ name: s.locationName, latitude: s.latitude, longitude: s.longitude }]);
                 }
             }, 50);
+            wireOpenInMap({ name: s.locationName, latitude: s.latitude, longitude: s.longitude });
         }
     }
 

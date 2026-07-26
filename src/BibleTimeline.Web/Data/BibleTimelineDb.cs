@@ -307,12 +307,16 @@ public class BibleTimelineDb
 
         if (type is null or "person")
         {
+            // bm25 column weights (name, alt_names, description): a hit on
+            // the NAME must outrank description mentions — otherwise a search
+            // for David returns twenty people whose bios mention him before
+            // David himself. bm25() returns lower-is-better.
             var people = await conn.QueryAsync<SearchResultDto>("""
                 SELECT p.id, 'person' as Type, p.name, p.description as Snippet, p.birth_year as StartYear
                 FROM people p
                 JOIN people_fts fts ON fts.rowid = p.id
                 WHERE people_fts MATCH @Query
-                ORDER BY rank
+                ORDER BY bm25(people_fts, 20.0, 5.0, 1.0)
                 LIMIT 20
                 """, new { Query = ftsQuery });
             results.AddRange(people);
@@ -325,7 +329,7 @@ public class BibleTimelineDb
                 FROM events e
                 JOIN events_fts fts ON fts.rowid = e.id
                 WHERE events_fts MATCH @Query
-                ORDER BY rank
+                ORDER BY bm25(events_fts, 20.0, 1.0)
                 LIMIT 20
                 """, new { Query = ftsQuery });
             results.AddRange(events);

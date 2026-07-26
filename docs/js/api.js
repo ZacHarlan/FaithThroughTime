@@ -202,6 +202,7 @@ const Api = (() => {
                         results.push({
                             id: p.id, type: 'person', name: p.name,
                             snippet: p.description, startYear: p.birthYear,
+                            _rank: p.name.toLowerCase().includes(q) ? 0 : 1,
                         });
                     }
                 }
@@ -215,6 +216,7 @@ const Api = (() => {
                         results.push({
                             id: e.id, type: 'event', name: e.name,
                             snippet: e.description, startYear: e.startYear,
+                            _rank: e.name.toLowerCase().includes(q) ? 0 : 1,
                         });
                     }
                 }
@@ -233,6 +235,9 @@ const Api = (() => {
                 }
             }
 
+            // Name matches outrank description mentions (parity with the
+            // server's weighted bm25) — searching David must list David first
+            results.sort((a, b) => (a._rank ?? 0) - (b._rank ?? 0));
             return results.slice(0, 40);
         },
 

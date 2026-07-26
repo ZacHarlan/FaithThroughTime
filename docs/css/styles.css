@@ -2651,3 +2651,31 @@ html, body {
     fill: var(--text-primary);
     font-weight: 700;
 }
+
+/* ── "Open in Map view" under the detail mini-map ─────────── */
+.btn-open-map {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    min-height: var(--touch-min);
+    margin-top: 8px;
+    padding: 10px 14px;
+    background: var(--bg-card);
+    color: var(--accent);
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background var(--transition), border-color var(--transition);
+}
+.btn-open-map:hover {
+    background: var(--bg-hover);
+    border-color: var(--accent);
+}
+.btn-open-map .icon {
+    width: 16px;
+    height: 16px;
+}

@@ -202,6 +202,9 @@
         }
     }
 
+    // Expose for the detail panel's "Open in Map view" navigation
+    window._switchTab = switchTab;
+
     // Bind header tabs
     document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.addEventListener('click', () => switchTab(btn.dataset.tab));
