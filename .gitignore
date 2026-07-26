@@ -26,3 +26,6 @@ playwright/.cache/
 # Agent-harness runtime files
 .app.pid
 .init.log
+
+# Source Bible PDFs (copyrighted; JSON extraction lives in wwwroot/bibles)
+bibles/
