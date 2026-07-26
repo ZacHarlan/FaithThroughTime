@@ -355,34 +355,80 @@ def export_map_events(conn):
 
 
 def export_map_people(conn):
-    """Export people who have at least 2 located events (for journey dropdown)."""
+    """Export people who have at least 2 located reachable points (for journey dropdown).
+
+    Reachable through either person_events → event_locations OR journey_people → journey_stops.
+    Mirrors BibleTimelineDb.GetMapPeopleAsync.
+    """
     return conn.execute("""
-        SELECT p.id, p.name, COUNT(DISTINCT el.event_id) AS event_count
+        SELECT p.id, p.name, COUNT(DISTINCT location_event_key) AS event_count
         FROM people p
-        JOIN person_events pe ON pe.person_id = p.id
-        JOIN event_locations el ON el.event_id = pe.event_id
-        JOIN locations l ON l.id = el.location_id
-        WHERE l.latitude IS NOT NULL
+        JOIN (
+            SELECT pe.person_id, el.event_id || ':' || el.location_id AS location_event_key
+            FROM person_events pe
+            JOIN event_locations el ON el.event_id = pe.event_id
+            JOIN locations l ON l.id = el.location_id
+            WHERE l.latitude IS NOT NULL
+
+            UNION
+
+            SELECT jp.person_id, 'js:' || js.id AS location_event_key
+            FROM journey_people jp
+            JOIN journey_stops js ON js.journey_id = jp.journey_id
+            JOIN locations l ON l.id = js.location_id
+            WHERE l.latitude IS NOT NULL
+        ) reach ON reach.person_id = p.id
         GROUP BY p.id, p.name
-        HAVING COUNT(DISTINCT el.event_id) >= 2
+        HAVING COUNT(DISTINCT location_event_key) >= 2
         ORDER BY p.name
     """).fetchall()
 
 
 def export_map_journeys(conn):
-    """Export person-event-location joins for journey rendering."""
+    """Export person → step joins for journey rendering.
+
+    Combines two paths so person-journey maps cover every relevant stop:
+      1. Direct person_events → event_locations links
+      2. journey_people → journey_stops associations
+    Mirrors BibleTimelineDb.GetJourneyAsync.
+    """
     return conn.execute("""
-        SELECT pe.person_id, e.id AS event_id, e.name AS event_name,
-               e.start_year, e.end_year,
-               e.category, pe.role_in_event,
-               l.id AS location_id, l.name AS location_name,
-               l.latitude, l.longitude
-        FROM person_events pe
-        JOIN events e ON e.id = pe.event_id
-        JOIN event_locations el ON el.event_id = e.id
-        JOIN locations l ON l.id = el.location_id
-        WHERE l.latitude IS NOT NULL
-        ORDER BY e.sort_order, COALESCE(e.start_year, e.end_year)
+        SELECT DISTINCT * FROM (
+            SELECT pe.person_id AS person_id,
+                   e.id AS event_id, e.name AS event_name,
+                   e.start_year, e.end_year,
+                   e.category, pe.role_in_event,
+                   l.id AS location_id, l.name AS location_name,
+                   l.latitude, l.longitude,
+                   NULL AS chapter, NULL AS stop_description,
+                   e.sort_order AS sort_key,
+                   COALESCE(e.start_year, e.end_year) AS year_key
+            FROM person_events pe
+            JOIN events e ON e.id = pe.event_id
+            JOIN event_locations el ON el.event_id = e.id
+            JOIN locations l ON l.id = el.location_id
+            WHERE l.latitude IS NOT NULL
+
+            UNION
+
+            SELECT jp.person_id AS person_id,
+                   COALESCE(e.id, 0) AS event_id,
+                   js.label AS event_name,
+                   js.year AS start_year, NULL AS end_year,
+                   COALESCE(e.category, 'other') AS category,
+                   NULL AS role_in_event,
+                   l.id AS location_id, l.name AS location_name,
+                   l.latitude, l.longitude,
+                   js.chapter, js.description AS stop_description,
+                   js.sort_order AS sort_key,
+                   js.year AS year_key
+            FROM journey_people jp
+            JOIN journey_stops js ON js.journey_id = jp.journey_id
+            JOIN locations l ON l.id = js.location_id
+            LEFT JOIN events e ON e.id = js.event_id
+            WHERE l.latitude IS NOT NULL
+        )
+        ORDER BY person_id, year_key, sort_key
     """).fetchall()
 
 
@@ -454,8 +500,14 @@ def copy_static_assets(out_dir, dir_name, inline_data=None):
 
     # Embed inline data for file:// usage
     if inline_data:
-        data_script = '<script>window.__BIBLE_DATA__=' + json.dumps(inline_data, separators=(",", ":")) + ';</script>'
-        html = html.replace('</head>', data_script + '\n</head>')
+        # json.dumps does not escape "</" — a description containing
+        # "</script>" would terminate the inline block early (breakage now,
+        # stored XSS if the data source is ever less trusted).
+        payload = json.dumps(inline_data, separators=(",", ":")).replace("</", "<\\/")
+        data_script = '<script>window.__BIBLE_DATA__=' + payload + ';</script>'
+        patched = html.replace('</head>', data_script + '\n</head>')
+        assert patched != html, "index.html has no </head> — inline data was NOT injected"
+        html = patched
         print(f"  {dir_name + '/index.html':40s} (patched + inline data)")
     else:
         print(f"  {dir_name + '/index.html':40s} (patched paths)")
@@ -488,6 +540,27 @@ def copy_static_assets(out_dir, dir_name, inline_data=None):
     if os.path.exists(static_api_path):
         shutil.copy2(static_api_path, os.path.join(js_dst, "api.js"))
         print(f"  {dir_name + '/js/api.js':40s} (static version)")
+
+    # PWA assets: service worker and manifest.
+    # Without these, the service worker registered from index.html either
+    # 404s (forcing the browser to keep the OLD cached SW + cached assets)
+    # or never updates — which is exactly how stale map.js stuck around
+    # after deploys. Copy verbatim; sw.js paths are root-relative so they
+    # work both on the dev app and on root-hosted GitHub Pages.
+    for pwa_file in ("sw.js", "manifest.json"):
+        src_pwa = os.path.join(WWWROOT, pwa_file)
+        if os.path.exists(src_pwa):
+            shutil.copy2(src_pwa, os.path.join(out_dir, pwa_file))
+            print(f"  {dir_name + '/' + pwa_file:40s} (copied)")
+
+    # icons/ — referenced from manifest.json and sw.js STATIC_ASSETS
+    icons_src = os.path.join(WWWROOT, "icons")
+    icons_dst = os.path.join(out_dir, "icons")
+    if os.path.exists(icons_src):
+        if os.path.exists(icons_dst):
+            shutil.rmtree(icons_dst)
+        shutil.copytree(icons_src, icons_dst)
+        print(f"  {dir_name + '/icons/':40s} (copied)")
 
     # .nojekyll for GitHub Pages
     with open(os.path.join(out_dir, ".nojekyll"), "w") as f:

@@ -302,7 +302,8 @@ public class BibleTimelineDb
     {
         using var conn = CreateConnection();
         var results = new List<SearchResultDto>();
-        var ftsQuery = $"{query}*"; // prefix matching
+        var ftsQuery = BuildFtsQuery(query);
+        if (ftsQuery.Length == 0) return results;
 
         if (type is null or "person")
         {
@@ -343,6 +344,24 @@ public class BibleTimelineDb
         }
 
         return results;
+    }
+
+    /// <summary>
+    /// Builds a safe FTS5 MATCH expression from raw user input. FTS5 has its
+    /// own query language, so parameterization alone doesn't help: bare
+    /// quotes, apostrophes, hyphens (mother-in-law), and keywords (AND, NOT)
+    /// all raise SqliteException → HTTP 500 mid-keystroke. Each term is
+    /// wrapped in double quotes (internal quotes doubled) with a * suffix for
+    /// prefix matching, which makes any input a literal phrase search.
+    /// </summary>
+    private static string BuildFtsQuery(string query)
+    {
+        var terms = query.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        var quoted = terms
+            .Select(t => t.Trim('"'))
+            .Where(t => t.Length > 0)
+            .Select(t => $"\"{t.Replace("\"", "\"\"")}\" *");
+        return string.Join(" ", quoted);
     }
 
     // ── Lineage ───────────────────────────────────────────────────
@@ -517,46 +536,144 @@ public class BibleTimelineDb
     public async Task<IEnumerable<JourneyStepDto>> GetJourneyAsync(int personId, int? startYear, int? endYear)
     {
         using var conn = CreateConnection();
-        var sql = """
+        // Two paths feed the person-journey map:
+        //   1. person_events → events → event_locations (the original direct link)
+        //   2. journey_people → journey_stops (Option 2: surface every stop in a
+        //      journey the person belongs to, even when no individual person_events
+        //      row links them to that stop's event)
+        // Run them as separate queries so SQLite type affinity propagates cleanly
+        // to Dapper; merge, dedupe, and sort in C#.
+        var parameters = new DynamicParameters();
+        parameters.Add("PersonId", personId);
+        var yearFilter1 = "";
+        var yearFilter2 = "";
+        if (startYear.HasValue)
+        {
+            parameters.Add("StartYear", startYear.Value);
+            yearFilter1 += " AND COALESCE(e.start_year, e.end_year) >= @StartYear";
+            yearFilter2 += " AND COALESCE(js.year, e.start_year, e.end_year) >= @StartYear";
+        }
+        if (endYear.HasValue)
+        {
+            parameters.Add("EndYear", endYear.Value);
+            yearFilter1 += " AND COALESCE(e.start_year, e.end_year) <= @EndYear";
+            yearFilter2 += " AND COALESCE(js.year, e.start_year, e.end_year) <= @EndYear";
+        }
+
+        var directSql = $"""
             SELECT e.id AS EventId, e.name AS EventName,
                    e.start_year AS StartYear, e.end_year AS EndYear,
-                   e.category, pe.role_in_event AS RoleInEvent,
+                   e.category AS Category, pe.role_in_event AS RoleInEvent,
                    l.id AS LocationId, l.name AS LocationName,
-                   l.latitude, l.longitude
+                   l.latitude AS Latitude, l.longitude AS Longitude,
+                   e.sort_order AS SortKey
             FROM person_events pe
             JOIN events e ON e.id = pe.event_id
             JOIN event_locations el ON el.event_id = e.id
             JOIN locations l ON l.id = el.location_id
-            WHERE pe.person_id = @PersonId AND l.latitude IS NOT NULL
+            WHERE pe.person_id = @PersonId AND l.latitude IS NOT NULL{yearFilter1}
             """;
-        var parameters = new DynamicParameters();
-        parameters.Add("PersonId", personId);
-        if (startYear.HasValue)
+
+        var stopSql = $"""
+            SELECT COALESCE(e.id, 0) AS EventId,
+                   js.label AS EventName,
+                   js.year AS StartYear,
+                   CAST(NULL AS INTEGER) AS EndYear,
+                   COALESCE(e.category, 'other') AS Category,
+                   js.chapter AS RoleInEvent,
+                   l.id AS LocationId, l.name AS LocationName,
+                   l.latitude AS Latitude, l.longitude AS Longitude,
+                   js.chapter AS Chapter, js.description AS StopDescription,
+                   js.sort_order AS SortKey
+            FROM journey_people jp
+            JOIN journey_stops js ON js.journey_id = jp.journey_id
+            JOIN locations l ON l.id = js.location_id
+            LEFT JOIN events e ON e.id = js.event_id
+            WHERE jp.person_id = @PersonId AND l.latitude IS NOT NULL{yearFilter2}
+            """;
+
+        var direct = (await conn.QueryAsync<JourneyStepWithSort>(directSql, parameters)).ToList();
+        var fromStops = (await conn.QueryAsync<JourneyStepWithSort>(stopSql, parameters)).ToList();
+
+        // Dedupe by (EventId, LocationId, EventName) — direct hits win because they
+        // carry the role_in_event metadata.
+        var seen = new HashSet<(int, int, string)>();
+        var merged = new List<JourneyStepWithSort>();
+        foreach (var item in direct.Concat(fromStops))
         {
-            sql += " AND COALESCE(e.start_year, e.end_year) >= @StartYear";
-            parameters.Add("StartYear", startYear.Value);
+            var key = (item.EventId, item.LocationId, item.EventName);
+            if (seen.Add(key)) merged.Add(item);
         }
-        if (endYear.HasValue)
-        {
-            sql += " AND COALESCE(e.start_year, e.end_year) <= @EndYear";
-            parameters.Add("EndYear", endYear.Value);
-        }
-        sql += " ORDER BY e.sort_order, COALESCE(e.start_year, e.end_year)";
-        return await conn.QueryAsync<JourneyStepDto>(sql, parameters);
+
+        // Order chronologically by year first; sort_order is only a tiebreaker for
+        // same-year events. Ordering by sort_order primarily was buggy because event
+        // sort_order values collide across categories (e.g. Acts narrative events
+        // share slots with Pauline epistle "writing" events from the same era), so
+        // a year-61 letter could land before a year-60 shipwreck. Year-first keeps
+        // the on-map polyline strictly chronological.
+        return merged
+            .OrderBy(x => x.StartYear ?? x.EndYear ?? int.MaxValue)
+            .ThenBy(x => x.SortKey)
+            .Select(x => new JourneyStepDto
+            {
+                EventId = x.EventId,
+                EventName = x.EventName,
+                StartYear = x.StartYear,
+                EndYear = x.EndYear,
+                Category = x.Category,
+                RoleInEvent = x.RoleInEvent,
+                LocationId = x.LocationId,
+                LocationName = x.LocationName,
+                Latitude = x.Latitude,
+                Longitude = x.Longitude,
+                Chapter = x.Chapter,
+                StopDescription = x.StopDescription,
+            })
+            .ToList();
+    }
+
+    private sealed class JourneyStepWithSort
+    {
+        public int EventId { get; set; }
+        public string EventName { get; set; } = "";
+        public int? StartYear { get; set; }
+        public int? EndYear { get; set; }
+        public string Category { get; set; } = "";
+        public string? RoleInEvent { get; set; }
+        public int LocationId { get; set; }
+        public string LocationName { get; set; } = "";
+        public double? Latitude { get; set; }
+        public double? Longitude { get; set; }
+        public string? Chapter { get; set; }
+        public string? StopDescription { get; set; }
+        public int SortKey { get; set; }
     }
 
     public async Task<IEnumerable<MapPersonDto>> GetMapPeopleAsync()
     {
         using var conn = CreateConnection();
+        // A person is selectable on the map if they reach >= 2 distinct geo-located
+        // events EITHER through person_events OR through journey_people associations.
         return await conn.QueryAsync<MapPersonDto>("""
-            SELECT p.id, p.name, COUNT(DISTINCT el.event_id) AS EventCount
+            SELECT p.id, p.name, COUNT(DISTINCT location_event_key) AS EventCount
             FROM people p
-            JOIN person_events pe ON pe.person_id = p.id
-            JOIN event_locations el ON el.event_id = pe.event_id
-            JOIN locations l ON l.id = el.location_id
-            WHERE l.latitude IS NOT NULL
+            JOIN (
+                SELECT pe.person_id, el.event_id || ':' || el.location_id AS location_event_key
+                FROM person_events pe
+                JOIN event_locations el ON el.event_id = pe.event_id
+                JOIN locations l ON l.id = el.location_id
+                WHERE l.latitude IS NOT NULL
+
+                UNION
+
+                SELECT jp.person_id, 'js:' || js.id AS location_event_key
+                FROM journey_people jp
+                JOIN journey_stops js ON js.journey_id = jp.journey_id
+                JOIN locations l ON l.id = js.location_id
+                WHERE l.latitude IS NOT NULL
+            ) reach ON reach.person_id = p.id
             GROUP BY p.id, p.name
-            HAVING COUNT(DISTINCT el.event_id) >= 2
+            HAVING COUNT(DISTINCT location_event_key) >= 2
             ORDER BY p.name
             """);
     }

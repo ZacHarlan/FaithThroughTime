@@ -537,6 +537,123 @@ public class TimelineE2ETests : PageTest
         var overflowY = await panel.EvaluateAsync<string>("el => window.getComputedStyle(el).overflowY");
         Assert.That(overflowY, Is.AnyOf("scroll", "auto"), "Detail panel must have overflow-y: scroll or auto");
     }
+
+    // ─────────────────────────────────────────────────────────
+    // Map view: regression coverage for two recurring bugs
+    //   1. The dashed polyline that connects journey stops disappears
+    //   2. Clicking a marker no longer opens the detail panel
+    // These tests pick a person known to have a long, multi-location
+    // journey (Paul = id 41, includes Acts shipwreck arc) so a missing
+    // polyline is unambiguous: with 40+ stops we expect at least one
+    // SVG <path> with no arc commands and ≥10 line segments.
+    // ─────────────────────────────────────────────────────────
+
+    private static async Task SelectPaulOnMap(IPage page)
+    {
+        await page.GotoAsync(BaseUrl);
+        await page.ClickAsync("[data-tab='map']");
+        await page.WaitForSelectorAsync("#map-container");
+        // Wait for map data to load and Leaflet to lay out the SVG overlay
+        await page.WaitForFunctionAsync(
+            "() => document.querySelectorAll('#map-person-select option').length > 5",
+            null,
+            new PageWaitForFunctionOptions { Timeout = 10000 });
+        await page.SelectOptionAsync("#map-person-select", "41");
+        // Allow the journey fetch + polyline draw to settle
+        await page.WaitForFunctionAsync(
+            @"() => {
+                const overlayPane = document.querySelector('#map-tab .leaflet-overlay-pane');
+                if (!overlayPane) return false;
+                return overlayPane.querySelectorAll('path').length > 5;
+            }",
+            null,
+            new PageWaitForFunctionOptions { Timeout = 10000 });
+    }
+
+    [Test]
+    public async Task MapView_PersonJourney_DrawsConnectingPolyline()
+    {
+        await SelectPaulOnMap(Page);
+
+        // The journey polyline is a single SVG <path> in Leaflet's overlay
+        // pane with `fill="none"` and a sequence of L commands and no arc
+        // commands. Circle markers, by contrast, use `a` (arc) commands.
+        var polylineInfo = await Page.EvaluateAsync<string>(@"() => {
+            const overlayPane = document.querySelector('#map-tab .leaflet-overlay-pane');
+            if (!overlayPane) return JSON.stringify({error: 'overlay pane missing'});
+            const paths = overlayPane.querySelectorAll('path');
+            const polylines = [];
+            paths.forEach(p => {
+                const d = p.getAttribute('d') || '';
+                const hasArc = /[Aa]/.test(d);
+                const lineSegments = (d.match(/[Ll]/g) || []).length;
+                if (!hasArc && lineSegments > 0) {
+                    polylines.push({
+                        stroke: p.getAttribute('stroke'),
+                        strokeWidth: p.getAttribute('stroke-width'),
+                        lineSegments,
+                        dLen: d.length
+                    });
+                }
+            });
+            return JSON.stringify({total: paths.length, polylines});
+        }");
+
+        var doc = System.Text.Json.JsonDocument.Parse(polylineInfo);
+        var polylines = doc.RootElement.GetProperty("polylines");
+        Assert.That(polylines.GetArrayLength(), Is.GreaterThanOrEqualTo(1),
+            $"Expected at least one journey polyline connecting Paul's map markers, got: {polylineInfo}");
+
+        // The journey should connect ALL of Paul's stops, so we expect
+        // many line segments. A regression that drops half the journey
+        // would still leave a polyline; this guards against the polyline
+        // shrinking to a stub or being replaced by a 2-point degenerate.
+        var segments = polylines[0].GetProperty("lineSegments").GetInt32();
+        Assert.That(segments, Is.GreaterThanOrEqualTo(10),
+            $"Polyline has too few segments ({segments}); expected ≥10 for Paul's journey. Diag: {polylineInfo}");
+    }
+
+    [Test]
+    public async Task MapView_ClickMarker_OpensDetailPanel()
+    {
+        await SelectPaulOnMap(Page);
+
+        // Click the first arc-command path (a circle marker, not the polyline)
+        var clicked = await Page.EvaluateAsync<bool>(@"() => {
+            const paths = document.querySelectorAll('#map-tab .leaflet-interactive');
+            for (const p of paths) {
+                const d = p.getAttribute('d') || '';
+                if (/[Aa]/.test(d)) {
+                    p.dispatchEvent(new MouseEvent('click', {bubbles: true}));
+                    return true;
+                }
+            }
+            return false;
+        }");
+        Assert.That(clicked, Is.True, "Could not find a clickable circle marker on the map");
+
+        var panel = Page.Locator("#detail-panel");
+        await Expect(panel).Not.ToHaveClassAsync(new System.Text.RegularExpressions.Regex("hidden"));
+
+        // The panel must actually be on-screen, not just lacking the hidden class
+        var rect = await panel.BoundingBoxAsync();
+        Assert.That(rect, Is.Not.Null, "Detail panel has no bounding box");
+        Assert.That(rect!.Width, Is.GreaterThan(0), "Detail panel has zero width");
+        Assert.That(rect.Height, Is.GreaterThan(0), "Detail panel has zero height");
+
+        // The title should be populated with the clicked stop's event name,
+        // not the default "Details" placeholder.
+        var title = await Page.Locator("#detail-title").TextContentAsync();
+        Assert.That(title, Is.Not.Null.And.Not.Empty);
+        Assert.That(title, Is.Not.EqualTo("Details"),
+            "Detail panel title should reflect the clicked marker, not stay at the default");
+
+        // And the body must be populated, not just an empty shell
+        var contentLen = await Page.EvaluateAsync<int>(
+            "() => document.getElementById('detail-content')?.innerHTML?.length || 0");
+        Assert.That(contentLen, Is.GreaterThan(100),
+            "Detail panel content should be populated after clicking a map marker");
+    }
 }
 
 /// <summary>
@@ -555,6 +672,10 @@ public class MobileE2ETests : PageTest
             ViewportSize = new ViewportSize { Width = 375, Height = 667 },
             IsMobile = true,
             HasTouch = true,
+            // The app now follows the OS color-scheme preference when the
+            // user hasn't chosen a theme; these tests assert the dark UI,
+            // so the emulated device must declare a dark preference.
+            ColorScheme = ColorScheme.Dark,
             UserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1"
         };
     }

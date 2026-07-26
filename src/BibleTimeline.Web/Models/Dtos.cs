@@ -163,6 +163,10 @@ public record JourneyStepDto
     public string LocationName { get; init; } = "";
     public double? Latitude { get; init; }
     public double? Longitude { get; init; }
+    // Populated when this step came from a journey_stop without an event link
+    // (Option 2 path) so the detail panel can still show context.
+    public string? Chapter { get; init; }
+    public string? StopDescription { get; init; }
 }
 
 public record MapPersonDto

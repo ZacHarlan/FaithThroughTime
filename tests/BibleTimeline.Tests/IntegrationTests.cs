@@ -320,6 +320,34 @@ public class SearchEndpointsTests : IClassFixture<WebApplicationFactory<Program>
         Assert.Contains(results, r => r.Type == "event");
     }
 
+    [Theory]
+    [InlineData("ab%22")]            // embedded double quote: ab" (a lone " is <2 chars → 400 by design)
+    [InlineData("O'Brien")]          // apostrophe
+    [InlineData("mother-in-law")]    // hyphens parsed as column syntax by raw FTS5
+    [InlineData("AND")]              // FTS5 keyword
+    [InlineData("NOT")]              // FTS5 keyword
+    [InlineData("(david)")]          // parens
+    [InlineData("person*")]          // user-supplied star
+    public async Task Search_FtsSpecialCharacters_DoNotError(string query)
+    {
+        // Regression: raw user input reached FTS5 MATCH unquoted, so these
+        // inputs threw SqliteException → HTTP 500 mid-keystroke.
+        var response = await _client.GetAsync($"/api/search?q={query}");
+
+        Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task Search_HyphenatedPrefix_StillMatches()
+    {
+        // Quoting must not break ordinary prefix search
+        var results = await _client.GetFromJsonAsync<List<SearchResultDto>>(
+            "/api/search?q=Mos");
+
+        Assert.NotNull(results);
+        Assert.Contains(results, r => r.Name.Contains("Moses"));
+    }
+
     [Fact]
     public async Task Search_FilterByType()
     {
@@ -860,6 +888,38 @@ public class MapEndpointsTests : IClassFixture<WebApplicationFactory<Program>>
             Assert.NotNull(year);
             Assert.InRange(year!.Value, 28, 30);
         });
+    }
+
+    [Fact]
+    public async Task GetMapJourney_ForPaul_IsStrictlyChronologicalAcrossEpistlesAndActs()
+    {
+        // Regression: event.sort_order values collide across categories — Acts
+        // narrative events (Storm at Crete, Shipwreck on Malta) sit in the same
+        // sort_order slots as Pauline epistle "writing" events from the same era,
+        // so ordering by sort_order primarily put year-61 Philippians before
+        // year-60 Shipwreck. Year-first ordering is the contract for the on-map
+        // polyline; this test asserts it stays correct.
+        var steps = await _client.GetFromJsonAsync<List<JourneyStepDto>>(
+            "/api/map/journey/41");
+
+        Assert.NotNull(steps);
+        Assert.NotEmpty(steps);
+
+        for (int i = 1; i < steps!.Count; i++)
+        {
+            var prev = steps[i - 1].StartYear ?? steps[i - 1].EndYear ?? int.MaxValue;
+            var curr = steps[i].StartYear ?? steps[i].EndYear ?? int.MaxValue;
+            Assert.True(curr >= prev,
+                $"Paul's journey not chronological: {steps[i - 1].EventName} ({prev}) before {steps[i].EventName} ({curr})");
+        }
+
+        // Specific anchor: Shipwreck on Malta (60 AD) MUST come before Philippians Written (61 AD).
+        var shipwreckIdx = steps.FindIndex(s => s.EventName.Contains("Shipwreck", StringComparison.OrdinalIgnoreCase));
+        var philippiansIdx = steps.FindIndex(s => s.EventName.Contains("Philippians", StringComparison.OrdinalIgnoreCase));
+        Assert.True(shipwreckIdx >= 0, "Shipwreck on Malta should be in Paul's journey");
+        Assert.True(philippiansIdx >= 0, "Philippians Written should be in Paul's journey");
+        Assert.True(shipwreckIdx < philippiansIdx,
+            $"Shipwreck (idx {shipwreckIdx}) must come before Philippians Written (idx {philippiansIdx})");
     }
 
     [Fact]

@@ -89,6 +89,25 @@ if jesus:
 has_father = sum(1 for p in lineage if p.get("fatherId"))
 check(has_father > 50, f"Expected 50+ people with fatherId, got {has_father}")
 
+# PWA assets — without these, the previously-installed service worker on
+# returning users keeps serving stale map.js and index.html. Stale SW was
+# the root cause of disappearing journey lines and broken marker clicks.
+sw_path = os.path.join(DOCS, "sw.js")
+manifest_path = os.path.join(DOCS, "manifest.json")
+check(os.path.exists(sw_path), "docs/sw.js missing — PWA service worker not deployed")
+check(os.path.exists(manifest_path), "docs/manifest.json missing — PWA manifest not deployed")
+if os.path.exists(sw_path):
+    sw_content = open(sw_path).read()
+    # The cache name MUST change between deploys, otherwise the activate
+    # handler can't evict old entries (cache-first / stale-while-revalidate
+    # would keep handing out yesterday's map.js).
+    m = re.search(r"CACHE_NAME\s*=\s*['\"]([^'\"]+)['\"]", sw_content)
+    check(m is not None, "sw.js does not declare a CACHE_NAME constant")
+    if m:
+        cache_name = m.group(1)
+        check(cache_name != "faith-through-time-v1",
+              f"sw.js still uses the original CACHE_NAME ('{cache_name}') — bump it on each deploy")
+
 if errors:
     print(f"\n{errors} check(s) FAILED")
     sys.exit(1)

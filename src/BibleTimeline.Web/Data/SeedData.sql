@@ -7,24 +7,27 @@
 -- TIME PERIODS
 -- ============================================================
 INSERT INTO time_periods (name, start_year, end_year, color, sort_order, description) VALUES
-('Creation & Primeval History',   -4004, -1996, '#8B4513', 1, 'Adam through the Tower of Babel'),
-('Patriarchs',                    -1996, -1706, '#DAA520', 2, 'Abraham, Isaac, Jacob, Joseph'),
-('Egypt & Exodus',                -1706, -1451, '#CD853F', 3, 'Israel in Egypt and the Exodus'),
-('Conquest & Judges',             -1451, -1095, '#556B2F', 4, 'Joshua''s conquest through the period of the Judges'),
-('United Kingdom',                -1095,  -975, '#4169E1', 5, 'Saul, David, Solomon'),
-('Divided Kingdom',                -975,  -586, '#DC143C', 6, 'Israel and Judah as separate kingdoms'),
-('Exile',                          -586,  -538, '#696969', 7, 'Babylonian captivity'),
-('Return & Restoration',          -538,  -400, '#2E8B57', 8, 'Zerubbabel, Ezra, Nehemiah'),
-('Intertestamental Period',       -400,    -5, '#708090', 9, 'Between the Testaments'),
-('Life of Christ',                  -5,    33, '#FFD700', 10, 'Birth through Ascension of Jesus'),
-('Apostolic Age',                   33,   100, '#9370DB', 11, 'Early church through death of John'),
-('Early Church & Persecution',     100,   313, '#B22222', 12, 'Persecution under Rome; Church Fathers; canon formation'),
-('Imperial Christianity',          313,   476, '#6A0DAD', 13, 'Edict of Milan through fall of the Western Roman Empire'),
-('Early Medieval',                 476,  1054, '#2F4F4F', 14, 'Rise of monasticism; spread of Christianity; East-West tensions'),
-('High Medieval & Crusades',      1054,  1400, '#708090', 15, 'Great Schism; Crusades; Scholasticism; early reform movements'),
-('Reformation',                   1400,  1648, '#228B22', 16, 'Gutenberg Bible; Protestant Reformation; Catholic Counter-Reformation'),
-('Enlightenment & Missions',      1648,  1900, '#191970', 17, 'Great Awakenings; modern missions movement; Bible societies'),
-('Modern Era',                    1900,  2026, '#C0C0C0', 18, 'Global Christianity; ecumenical movement; digital age');
+-- Colors: luminance-normalized OKLCH ramp (L 0.56-0.80, validated for
+-- adjacent-era separation on the dark ground). Each era keeps its
+-- traditional hue association; lightness alternates between neighbors.
+('Creation & Primeval History',   -4004, -1996, '#a16844', 1, 'Adam through the Tower of Babel'),
+('Patriarchs',                    -1996, -1706, '#c3a03a', 2, 'Abraham, Isaac, Jacob, Joseph'),
+('Egypt & Exodus',                -1706, -1451, '#bc634d', 3, 'Israel in Egypt and the Exodus'),
+('Conquest & Judges',             -1451, -1095, '#7fae64', 4, 'Joshua''s conquest through the period of the Judges'),
+('United Kingdom',                -1095,  -975, '#567cd3', 5, 'Saul, David, Solomon'),
+('Divided Kingdom',                -975,  -586, '#e1707c', 6, 'Israel and Judah as separate kingdoms'),
+('Exile',                          -586,  -538, '#5c7794', 7, 'Babylonian captivity'),
+('Return & Restoration',          -538,  -400, '#55b486', 8, 'Zerubbabel, Ezra, Nehemiah'),
+('Intertestamental Period',       -400,    -5, '#917bab', 9, 'Between the Testaments'),
+('Life of Christ',                  -5,    33, '#d8bd51', 10, 'Birth through Ascension of Jesus'),
+('Apostolic Age',                   33,   100, '#7f79d1', 11, 'Early church through death of John'),
+('Early Church & Persecution',     100,   313, '#e38879', 12, 'Persecution under Rome; Church Fathers; canon formation'),
+('Imperial Christianity',          313,   476, '#a264b0', 13, 'Edict of Milan through fall of the Western Roman Empire'),
+('Early Medieval',                 476,  1054, '#63aea9', 14, 'Rise of monasticism; spread of Christianity; East-West tensions'),
+('High Medieval & Crusades',      1054,  1400, '#667ab9', 15, 'Great Schism; Crusades; Scholasticism; early reform movements'),
+('Reformation',                   1400,  1648, '#67b36a', 16, 'Gutenberg Bible; Protestant Reformation; Catholic Counter-Reformation'),
+('Enlightenment & Missions',      1648,  1900, '#4188b6', 17, 'Great Awakenings; modern missions movement; Bible societies'),
+('Modern Era',                    1900,  2026, '#90b1bc', 18, 'Global Christianity; ecumenical movement; digital age');
 
 -- ============================================================
 -- PEOPLE (Major figures first, then minor)
@@ -934,7 +937,33 @@ INSERT INTO events (name, start_year, end_year, start_approx, end_approx, date_c
 ('John Written',             85, NULL, 1, 1, 'traditional', 'other', 'minor', 'The apostle John composes his Gospel in Ephesus — a theological masterpiece opening with "In the beginning was the Word," presenting Jesus as the divine Son of God.', 'Traditional date: AD 85-95. Written in Ephesus. Last Gospel composed, supplementing the Synoptics.', 1005),
 ('1 John Written',           90, NULL, 1, 1, 'traditional', 'other', 'minor', 'John writes his first epistle from Ephesus, countering early Gnostic-like heresies and declaring that "God is light" and "God is love."', 'Dated AD 85-95. Written from Ephesus to churches in Asia Minor.', 1006),
 ('2 John Written',           90, NULL, 1, 1, 'traditional', 'other', 'minor', 'John writes a brief letter to "the elect lady and her children" — a local church — warning against false teachers who deny Christ came in the flesh.', 'Dated AD 85-95. Written from Ephesus.', 1007),
-('3 John Written',           90, NULL, 1, 1, 'traditional', 'other', 'minor', 'John writes to Gaius commending his hospitality to traveling missionaries and rebuking Diotrephes, who "likes to put himself first."', 'Dated AD 85-95. Written from Ephesus.', 1008);
+('3 John Written',           90, NULL, 1, 1, 'traditional', 'other', 'minor', 'John writes to Gaius commending his hospitality to traveling missionaries and rebuking Diotrephes, who "likes to put himself first."', 'Dated AD 85-95. Written from Ephesus.', 1008),
+
+-- Acts Journey Detail Events (IDs 175–198) — promotes formerly journey-only stops to first-class events
+('Philip Preaches in Samaria',                  35, NULL, 1, 1, 'probable',    'miracle',   'minor',    'Philip the evangelist proclaims Christ in Samaria; many believe and miracles accompany his preaching.', 'Acts 8:4-25.', 942),
+('Ethiopian Eunuch Baptized',                   35, NULL, 1, 1, 'probable',    'salvation', 'minor',    'Philip meets an Ethiopian official on the Gaza road, explains Isaiah 53, and baptizes him.', 'Acts 8:26-40.', 943),
+('Peter Raises Tabitha in Joppa',               37, NULL, 1, 1, 'possible',    'miracle',   'minor',    'Peter raises the disciple Tabitha (Dorcas) from the dead in Joppa.', 'Acts 9:36-43.', 944),
+('Peter and Cornelius in Caesarea',             40, NULL, 1, 1, 'probable',    'salvation', 'major',    'Peter receives a vision and visits Cornelius; the first Gentile household receives the Holy Spirit.', 'Acts 10:1-48; 11:1-18.', 945),
+('Church Established in Antioch',               43, NULL, 1, 1, 'probable',    'other',     'moderate', 'Believers are first called Christians in Antioch as Barnabas and Saul teach the church for a year.', 'Acts 11:19-30.', 946),
+('Barnabas and Saul in Cyprus',                 47, NULL, 1, 1, 'probable',    'miracle',   'minor',    'Paul blinds the sorcerer Bar-Jesus on Cyprus; the Roman proconsul Sergius Paulus believes.', 'Acts 13:4-12. First stop of the first missionary journey.', 961),
+('Paul Preaches in Pisidian Antioch',           47, NULL, 1, 1, 'probable',    'other',     'minor',    'Paul preaches in the synagogue at Pisidian Antioch; many believe but Jews stir up opposition and drive the missionaries out.', 'Acts 13:14-52.', 962),
+('Iconium — Belief and Opposition',             48, NULL, 1, 1, 'probable',    'other',     'minor',    'Paul and Barnabas preach in Iconium; the city divides; they flee before a planned stoning.', 'Acts 14:1-7.', 963),
+('Lystra — Healing and Stoning',                48, NULL, 1, 1, 'probable',    'miracle',   'minor',    'Paul heals a man lame from birth in Lystra; the crowd hails them as gods, then stones Paul and leaves him for dead.', 'Acts 14:8-20.', 964),
+('Derbe — Many Disciples',                      48, NULL, 1, 1, 'probable',    'other',     'minor',    'Paul and Barnabas make many disciples in Derbe and begin the return journey strengthening the new churches.', 'Acts 14:20-21.', 965),
+('Macedonian Vision at Troas',                  50, NULL, 1, 1, 'probable',    'prophecy',  'minor',    'Paul receives a vision at Troas: "Come over to Macedonia and help us." The gospel crosses into Europe.', 'Acts 16:8-10.', 981),
+('Lydia Converted in Philippi',                 50, NULL, 1, 1, 'probable',    'salvation', 'moderate', 'Lydia, a seller of purple cloth, becomes the first European convert; Paul and Silas are imprisoned and the jailer is converted.', 'Acts 16:11-40.', 982),
+('Paul in Thessalonica',                        50, NULL, 1, 1, 'probable',    'other',     'minor',    'Paul reasons in the synagogue at Thessalonica for three Sabbaths; opponents accuse the missionaries of "turning the world upside down."', 'Acts 17:1-9.', 983),
+('Noble-Minded Bereans',                        50, NULL, 1, 1, 'probable',    'other',     'minor',    'The Bereans receive the word eagerly and examine the Scriptures daily to verify Paul''s message.', 'Acts 17:10-15.', 984),
+('Paul on the Areopagus in Athens',             51, NULL, 1, 1, 'probable',    'other',     'moderate', 'Paul addresses the philosophers of Athens on Mars Hill, proclaiming the "Unknown God" and the resurrection.', 'Acts 17:16-34.', 985),
+('Paul in Corinth — 18 Months',                 51, 53,   1, 1, 'probable',    'other',     'moderate', 'Paul stays 18 months with Aquila and Priscilla in Corinth; the proconsul Gallio dismisses charges against him.', 'Acts 18:1-17. Gallio inscription dates this to AD 51-52.', 986),
+('Paul in Ephesus — 2 Years',                   54, 57,   1, 1, 'probable',    'miracle',   'moderate', 'Paul teaches in Ephesus for over two years with extraordinary miracles; new believers burn their occult scrolls; Demetrius the silversmith starts a riot.', 'Acts 19:1-41.', 991),
+('Farewell to Ephesian Elders at Miletus',      57, NULL, 1, 1, 'probable',    'other',     'minor',    'Paul calls the Ephesian elders to Miletus for an emotional farewell: "I have not coveted anyone''s silver or gold."', 'Acts 20:17-38.', 992),
+('Paul Arrested in Jerusalem',                  57, NULL, 1, 1, 'probable',    'other',     'moderate', 'Paul is seized in the temple, beaten by the crowd, and transferred to Roman custody under the tribune Claudius Lysias.', 'Acts 21:27–23:10.', 993),
+('Paul''s Trial before Felix and Festus',       58, 60,   1, 1, 'probable',    'other',     'moderate', 'Paul is held in Caesarea for two years under Felix and then Festus; he defends himself before Agrippa II and appeals to Caesar.', 'Acts 23:23–26:32.', 994),
+('Storm and Fair Havens of Crete',              60, NULL, 1, 1, 'probable',    'other',     'minor',    'Paul warns against sailing late in the season; a violent northeaster batters the ship for 14 days as it drifts toward Malta.', 'Acts 27:7-44.', 995),
+('Shipwreck on Malta',                          60, NULL, 1, 1, 'probable',    'miracle',   'moderate', 'All 276 aboard reach shore safely; Paul is bitten by a viper but unharmed and heals the sick on the island for three months.', 'Acts 27:39–28:10.', 996),
+('Landing at Puteoli',                          61, NULL, 1, 1, 'probable',    'other',     'minor',    'Paul and his companions land at the Italian port of Puteoli and stay seven days with believers there.', 'Acts 28:13-14.', 997),
+('Paul Arrives in Rome',                        61, 63,   1, 1, 'probable',    'other',     'major',    'Paul reaches Rome and preaches the kingdom of God under house arrest for two years, "with all boldness and without hindrance."', 'Acts 28:16-31.', 998);
 
 -- ============================================================
 -- BIBLICAL BOOKS
@@ -2825,6 +2854,109 @@ INSERT INTO journey_stops (journey_id, sort_order, location_id, event_id, label,
 (1, 260, 44, NULL, 'Shipwreck on Malta', 'All 276 aboard survive; Paul bitten by a viper but unharmed; heals the sick.', 60, 'Acts 27:39–28:10'),
 (1, 270, 45, NULL, 'Landing at Puteoli', 'Paul welcomed by believers at the Italian port.', 61, 'Acts 28:13-14'),
 (1, 280, 14, NULL, 'Paul Arrives in Rome', 'Paul preaches the kingdom of God under house arrest for two years.', 61, 'Acts 28:16-31');
+
+-- ── Acts journey: backfill event links + person/location relationships ──
+-- The Acts stops above were originally seeded with event_id = NULL, so the person-journey
+-- query (which joins person_events → events → event_locations) skipped them entirely.
+-- The Acts Journey Detail Events block (event IDs 175–198) promotes each stop to a
+-- first-class event so it appears on every person's map, on the timeline, and in search.
+
+-- Event → Location links for the new Acts events
+INSERT INTO event_locations (event_id, location_id) VALUES
+(175, 26),  -- Philip Preaches in Samaria → Samaria
+(176, 27),  -- Ethiopian Eunuch Baptized → Gaza Road
+(177, 28),  -- Peter Raises Tabitha in Joppa → Joppa
+(178, 29),  -- Peter and Cornelius in Caesarea → Caesarea
+(179, 13),  -- Church Established in Antioch → Antioch
+(180, 30),  -- Barnabas and Saul in Cyprus → Cyprus
+(181, 31),  -- Paul Preaches in Pisidian Antioch → Pisidian Antioch
+(182, 32),  -- Iconium → Iconium
+(183, 33),  -- Lystra → Lystra
+(184, 34),  -- Derbe → Derbe
+(185, 35),  -- Macedonian Vision at Troas → Troas
+(186, 36),  -- Lydia Converted in Philippi → Philippi
+(187, 37),  -- Paul in Thessalonica → Thessalonica
+(188, 38),  -- Noble-Minded Bereans → Berea
+(189, 39),  -- Paul on the Areopagus in Athens → Athens
+(190, 40),  -- Paul in Corinth → Corinth
+(191, 41),  -- Paul in Ephesus → Ephesus
+(192, 42),  -- Farewell at Miletus → Miletus
+(193, 7),   -- Paul Arrested in Jerusalem → Jerusalem
+(194, 29),  -- Paul's Trial before Felix and Festus → Caesarea
+(195, 43),  -- Storm and Fair Havens of Crete → Crete
+(196, 44),  -- Shipwreck on Malta → Malta
+(197, 45),  -- Landing at Puteoli → Puteoli
+(198, 14);  -- Paul Arrives in Rome → Rome
+
+-- Person → Event links for the new Acts events
+-- People IDs: Peter=40, Paul=41, Barnabas=45, Silas=138, Priscilla=140, Aquila=141,
+--             Cornelius=245, Lydia=246, Dorcas=249, Philip the Evangelist=250,
+--             Ethiopian Eunuch=251, Felix=256, Festus=257
+INSERT INTO person_events (person_id, event_id, role_in_event) VALUES
+(250, 175, 'protagonist'),                                          -- Philip → Samaria
+(250, 176, 'protagonist'), (251, 176, 'recipient'),                 -- Philip + Ethiopian eunuch
+(40,  177, 'protagonist'), (249, 177, 'recipient'),                 -- Peter raises Tabitha
+(40,  178, 'protagonist'), (245, 178, 'recipient'),                 -- Peter + Cornelius
+(45,  179, 'protagonist'), (41,  179, 'protagonist'),               -- Barnabas + Paul in Antioch
+(41,  180, 'protagonist'), (45,  180, 'protagonist'),               -- Cyprus
+(41,  181, 'protagonist'), (45,  181, 'participant'),               -- Pisidian Antioch
+(41,  182, 'protagonist'), (45,  182, 'participant'),               -- Iconium
+(41,  183, 'protagonist'), (45,  183, 'participant'),               -- Lystra
+(41,  184, 'protagonist'), (45,  184, 'participant'),               -- Derbe
+(41,  185, 'protagonist'),                                          -- Macedonian vision
+(41,  186, 'protagonist'), (138, 186, 'participant'), (246, 186, 'recipient'),  -- Philippi
+(41,  187, 'protagonist'), (138, 187, 'participant'),               -- Thessalonica
+(41,  188, 'protagonist'), (138, 188, 'participant'),               -- Berea
+(41,  189, 'protagonist'),                                          -- Athens
+(41,  190, 'protagonist'), (140, 190, 'participant'), (141, 190, 'participant'),  -- Corinth
+(41,  191, 'protagonist'),                                          -- Ephesus
+(41,  192, 'protagonist'),                                          -- Miletus
+(41,  193, 'protagonist'),                                          -- Arrested in Jerusalem
+(41,  194, 'protagonist'), (256, 194, 'antagonist'), (257, 194, 'antagonist'),   -- Trial
+(41,  195, 'protagonist'),                                          -- Storm at Crete
+(41,  196, 'protagonist'),                                          -- Shipwreck on Malta
+(41,  197, 'protagonist'),                                          -- Puteoli
+(41,  198, 'protagonist');                                          -- Rome
+
+-- Backfill the event_id column on the existing journey_stops rows so the Acts journey
+-- now drills down to the same canonical events.
+UPDATE journey_stops SET event_id = 175 WHERE journey_id = 1 AND sort_order = 30;
+UPDATE journey_stops SET event_id = 176 WHERE journey_id = 1 AND sort_order = 40;
+UPDATE journey_stops SET event_id = 177 WHERE journey_id = 1 AND sort_order = 60;
+UPDATE journey_stops SET event_id = 178 WHERE journey_id = 1 AND sort_order = 70;
+UPDATE journey_stops SET event_id = 179 WHERE journey_id = 1 AND sort_order = 80;
+UPDATE journey_stops SET event_id = 180 WHERE journey_id = 1 AND sort_order = 90;
+UPDATE journey_stops SET event_id = 181 WHERE journey_id = 1 AND sort_order = 100;
+UPDATE journey_stops SET event_id = 182 WHERE journey_id = 1 AND sort_order = 110;
+UPDATE journey_stops SET event_id = 183 WHERE journey_id = 1 AND sort_order = 120;
+UPDATE journey_stops SET event_id = 184 WHERE journey_id = 1 AND sort_order = 130;
+UPDATE journey_stops SET event_id = 185 WHERE journey_id = 1 AND sort_order = 150;
+UPDATE journey_stops SET event_id = 186 WHERE journey_id = 1 AND sort_order = 160;
+UPDATE journey_stops SET event_id = 187 WHERE journey_id = 1 AND sort_order = 170;
+UPDATE journey_stops SET event_id = 188 WHERE journey_id = 1 AND sort_order = 180;
+UPDATE journey_stops SET event_id = 189 WHERE journey_id = 1 AND sort_order = 190;
+UPDATE journey_stops SET event_id = 190 WHERE journey_id = 1 AND sort_order = 200;
+UPDATE journey_stops SET event_id = 191 WHERE journey_id = 1 AND sort_order = 210;
+UPDATE journey_stops SET event_id = 192 WHERE journey_id = 1 AND sort_order = 220;
+UPDATE journey_stops SET event_id = 193 WHERE journey_id = 1 AND sort_order = 230;
+UPDATE journey_stops SET event_id = 194 WHERE journey_id = 1 AND sort_order = 240;
+UPDATE journey_stops SET event_id = 195 WHERE journey_id = 1 AND sort_order = 250;
+UPDATE journey_stops SET event_id = 196 WHERE journey_id = 1 AND sort_order = 260;
+UPDATE journey_stops SET event_id = 197 WHERE journey_id = 1 AND sort_order = 270;
+UPDATE journey_stops SET event_id = 198 WHERE journey_id = 1 AND sort_order = 280;
+
+-- ── Journey ↔ Person associations (Option 2) ──
+-- Lets the person-journey query surface every stop in a journey the person belongs to,
+-- even when no individual person_events row links the person to that stop's event.
+-- People IDs: Peter=40, Paul=41, John=42, Stephen=44, Barnabas=45, Luke=47,
+--             Mark=137, Silas=138, Priscilla=140, Aquila=141,
+--             Cornelius=245, Lydia=246, Dorcas=249, Philip the Evangelist=250,
+--             Ethiopian Eunuch=251, Felix=256, Festus=257
+INSERT INTO journey_people (journey_id, person_id) VALUES
+-- Acts journey (id=1): all major figures who travel through it
+(1, 40), (1, 41), (1, 44), (1, 45), (1, 47), (1, 137), (1, 138),
+(1, 140), (1, 141), (1, 245), (1, 246), (1, 249), (1, 250), (1, 251),
+(1, 256), (1, 257);
 
 -- ── Genesis Journey ──────────────────────────────────────────
 INSERT INTO journeys (name, description, book_id) VALUES

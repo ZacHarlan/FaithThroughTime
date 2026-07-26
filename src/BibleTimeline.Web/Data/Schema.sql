@@ -133,6 +133,15 @@ CREATE TABLE IF NOT EXISTS journey_stops (
     chapter     TEXT          -- e.g. "Acts 2" for reference
 );
 
+-- Junction: people associated with a journey (e.g. Paul on the Acts journey).
+-- Lets person-journey queries surface every stop in a journey the person belongs to,
+-- even when the stop has no individual person_events link.
+CREATE TABLE IF NOT EXISTS journey_people (
+    journey_id INTEGER NOT NULL REFERENCES journeys(id) ON DELETE CASCADE,
+    person_id  INTEGER NOT NULL REFERENCES people(id) ON DELETE CASCADE,
+    PRIMARY KEY (journey_id, person_id)
+);
+
 -- Indexes for common queries
 
 CREATE INDEX IF NOT EXISTS idx_people_role ON people(role);
