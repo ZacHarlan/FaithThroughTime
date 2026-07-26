@@ -392,7 +392,7 @@ def export_map_journeys(conn):
       2. journey_people → journey_stops associations
     Mirrors BibleTimelineDb.GetJourneyAsync.
     """
-    return conn.execute("""
+    rows = conn.execute("""
         SELECT DISTINCT * FROM (
             SELECT pe.person_id AS person_id,
                    e.id AS event_id, e.name AS event_name,
@@ -430,6 +430,27 @@ def export_map_journeys(conn):
         )
         ORDER BY person_id, year_key, sort_key
     """).fetchall()
+    # Dedupe to mirror BibleTimelineDb.GetJourneyAsync: an event reachable
+    # both directly (person_events) and via a journey stop must appear once.
+    # Event-linked rows key on (person, event, location); event-less stops
+    # key on their label. STOP rows win (curated sort_order + chapter text;
+    # stops are recognizable by their stopDescription/chapter payload, which
+    # direct rows never carry) — direct rows only fill journey gaps.
+    def is_stop(r):
+        return r["chapter"] is not None or r["stopDescription"] is not None
+    rows.sort(key=lambda r: (r["personId"], 0 if is_stop(r) else 1))
+    seen, deduped = set(), []
+    for r in rows:
+        key = ((r["personId"], r["eventId"], r["locationId"], "")
+               if r["eventId"] else
+               (r["personId"], 0, r["locationId"], r["eventName"]))
+        if key in seen:
+            continue
+        seen.add(key)
+        deduped.append(r)
+    deduped.sort(key=lambda r: (r["personId"], r["yearKey"] is None,
+                                r["yearKey"] or 0, r["sortKey"] or 0))
+    return deduped
 
 
 def export_book_journeys(conn):

@@ -3045,3 +3045,15 @@ INSERT INTO journey_stops (journey_id, sort_order, location_id, event_id, label,
 (5, 50, 56, NULL, 'Jonah Preaches in Nineveh', 'Jonah walks through the great city crying, "Yet forty days, and Nineveh shall be overthrown!"', -785, 'Jonah 3:1-4'),
 (5, 60, 56, NULL, 'Nineveh Repents', 'The king and all the people repent in sackcloth and ashes; God relents from disaster.', -785, 'Jonah 3:5-10'),
 (5, 70, 56, NULL, 'Jonah''s Anger and the Vine', 'Jonah is angry that God showed mercy. God teaches him compassion through a vine and a worm.', -785, 'Jonah 4:1-11');
+
+-- ── Journey membership for the remaining book journeys ─────────────
+-- journey_people makes every stop of a journey visible on a person's map
+-- view. Only Acts (journey 1) was populated originally, which left Moses
+-- with two lonely pins. Journey IDs: 2=Genesis, 3=Exodus, 4=Luke, 5=Jonah.
+-- People: Abraham=4, Isaac=6, Jacob=8, Joseph=9, Moses=10, Aaron=11,
+--         Joshua=13, Jesus=37, Mary=38, Jonah=112.
+INSERT INTO journey_people (journey_id, person_id) VALUES
+(2, 4), (2, 6), (2, 8), (2, 9),
+(3, 10), (3, 11), (3, 13),
+(4, 37), (4, 38),
+(5, 112);

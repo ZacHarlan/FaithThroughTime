@@ -599,13 +599,21 @@ public class BibleTimelineDb
         var direct = (await conn.QueryAsync<JourneyStepWithSort>(directSql, parameters)).ToList();
         var fromStops = (await conn.QueryAsync<JourneyStepWithSort>(stopSql, parameters)).ToList();
 
-        // Dedupe by (EventId, LocationId, EventName) — direct hits win because they
-        // carry the role_in_event metadata.
+        // Dedupe: when a stop is linked to a real event, key on (EventId,
+        // LocationId) alone — direct rows and journey stops label the same
+        // event differently ("The Exodus" vs "The Ten Plagues"), and a
+        // name-inclusive key doubled those pins. Event-less stops (EventId 0)
+        // still key on their label. STOP rows win: their sort_order encodes
+        // the curated route (direct rows carry the global timeline
+        // sort_order, which zigzags the polyline within a year), and they
+        // bring chapter + description. Direct rows only fill journey gaps.
         var seen = new HashSet<(int, int, string)>();
         var merged = new List<JourneyStepWithSort>();
-        foreach (var item in direct.Concat(fromStops))
+        foreach (var item in fromStops.Concat(direct))
         {
-            var key = (item.EventId, item.LocationId, item.EventName);
+            var key = item.EventId != 0
+                ? (item.EventId, item.LocationId, "")
+                : (0, item.LocationId, item.EventName);
             if (seen.Add(key)) merged.Add(item);
         }
 
