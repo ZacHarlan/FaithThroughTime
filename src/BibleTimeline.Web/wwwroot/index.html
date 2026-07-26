@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="color-scheme" content="dark">
     <meta name="description" content="Explore biblical history with an interactive timeline spanning from Creation to the Modern Era. Discover people, events, and journeys from Scripture.">
     <title>Faith Through Time — Interactive Biblical History</title>
@@ -28,10 +28,46 @@
           crossorigin="" media="print" onload="this.media='all'" />
 </head>
 <body>
+    <!-- ============================================== -->
+    <!-- SVG Icon Sprite (single source of truth)       -->
+    <!-- ============================================== -->
+    <svg id="icon-sprite" aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0;overflow:hidden">
+        <defs>
+            <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></symbol>
+            <symbol id="i-filter" viewBox="0 0 24 24"><path d="M3 5h18M6 12h12M10 19h4"/></symbol>
+            <symbol id="i-close" viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></symbol>
+            <symbol id="i-share" viewBox="0 0 24 24"><circle cx="6" cy="12" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><line x1="8.6" y1="10.7" x2="15.4" y2="7.3"/><line x1="8.6" y1="13.3" x2="15.4" y2="16.7"/></symbol>
+            <symbol id="i-bookmark" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></symbol>
+            <symbol id="i-bookmark-fill" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" fill="currentColor"/></symbol>
+            <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="4.2" y1="4.2" x2="6.3" y2="6.3"/><line x1="17.7" y1="17.7" x2="19.8" y2="19.8"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/><line x1="4.2" y1="19.8" x2="6.3" y2="17.7"/><line x1="17.7" y1="6.3" x2="19.8" y2="4.2"/></symbol>
+            <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></symbol>
+            <symbol id="i-plus" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></symbol>
+            <symbol id="i-minus" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/></symbol>
+            <symbol id="i-fit" viewBox="0 0 24 24"><path d="M4 9V5a1 1 0 0 1 1-1h4M20 9V5a1 1 0 0 0-1-1h-4M4 15v4a1 1 0 0 0 1 1h4M20 15v4a1 1 0 0 1-1 1h-4"/></symbol>
+            <symbol id="i-play" viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4" fill="currentColor" stroke="none"/></symbol>
+            <symbol id="i-pause" viewBox="0 0 24 24"><rect x="6" y="5" width="4" height="14" fill="currentColor" stroke="none"/><rect x="14" y="5" width="4" height="14" fill="currentColor" stroke="none"/></symbol>
+            <symbol id="i-prev" viewBox="0 0 24 24"><polygon points="19 5 9 12 19 19 19 5" fill="currentColor" stroke="none"/><line x1="5" y1="5" x2="5" y2="19" stroke-width="2.5"/></symbol>
+            <symbol id="i-next" viewBox="0 0 24 24"><polygon points="5 5 15 12 5 19 5 5" fill="currentColor" stroke="none"/><line x1="19" y1="5" x2="19" y2="19" stroke-width="2.5"/></symbol>
+            <symbol id="i-chevron-down" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></symbol>
+            <symbol id="i-chevron-left" viewBox="0 0 24 24"><polyline points="15 6 9 12 15 18"/></symbol>
+            <symbol id="i-chevron-right" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></symbol>
+            <symbol id="i-person" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+            <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="16" y1="3" x2="16" y2="7"/></symbol>
+            <symbol id="i-location" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></symbol>
+            <symbol id="i-tree" viewBox="0 0 24 24"><circle cx="12" cy="4" r="2"/><circle cx="6" cy="12" r="2"/><circle cx="18" cy="12" r="2"/><circle cx="4" cy="20" r="2"/><circle cx="10" cy="20" r="2"/><circle cx="16" cy="20" r="2"/><circle cx="22" cy="20" r="2"/><line x1="12" y1="6" x2="6" y2="10"/><line x1="12" y1="6" x2="18" y2="10"/><line x1="6" y1="14" x2="4" y2="18"/><line x1="6" y1="14" x2="10" y2="18"/><line x1="18" y1="14" x2="16" y2="18"/><line x1="18" y1="14" x2="22" y2="18"/></symbol>
+            <symbol id="i-timeline" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/><circle cx="7" cy="6" r="2" fill="currentColor" stroke="none"/><circle cx="14" cy="12" r="2" fill="currentColor" stroke="none"/><circle cx="10" cy="18" r="2" fill="currentColor" stroke="none"/></symbol>
+            <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.5" fill="currentColor" stroke="none"/></symbol>
+            <symbol id="i-trash" viewBox="0 0 24 24"><polyline points="4 7 20 7"/><path d="M9 7V4h6v3M6 7l1 13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-13"/></symbol>
+            <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 4h7a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H4z"/><path d="M20 4h-7a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h8z"/></symbol>
+        </defs>
+    </svg>
+
     <!-- Top Bar -->
     <header id="header">
         <div class="header-left">
-            <button id="btn-mobile-filters" class="mobile-only btn-hamburger" title="Filters">☰</button>
+            <button id="btn-mobile-filters" class="mobile-only btn-icon btn-hamburger" title="Filters" aria-label="Open filters">
+                <svg class="icon"><use href="#i-filter"/></svg>
+            </button>
             <h1>Faith Through Time</h1>
             <nav class="tab-nav">
                 <button class="tab-btn active" data-tab="timeline">Timeline</button>
@@ -46,10 +82,21 @@
             </div>
         </div>
         <div class="header-right">
-            <button id="btn-theme-toggle" class="btn-theme-toggle" title="Toggle light/dark mode">🌙</button>
-            <button id="btn-zoom-in" title="Zoom In">+</button>
-            <button id="btn-zoom-out" title="Zoom Out">−</button>
-            <button id="btn-fit" title="Fit All">⟲</button>
+            <button id="btn-mobile-search" class="mobile-only btn-icon" title="Search" aria-label="Search">
+                <svg class="icon"><use href="#i-search"/></svg>
+            </button>
+            <button id="btn-theme-toggle" class="btn-icon btn-theme-toggle" title="Toggle light/dark mode" aria-label="Toggle theme">
+                <svg class="icon"><use href="#i-moon"/></svg>
+            </button>
+            <button id="btn-zoom-in" class="btn-icon desktop-only" title="Zoom In" aria-label="Zoom in">
+                <svg class="icon"><use href="#i-plus"/></svg>
+            </button>
+            <button id="btn-zoom-out" class="btn-icon desktop-only" title="Zoom Out" aria-label="Zoom out">
+                <svg class="icon"><use href="#i-minus"/></svg>
+            </button>
+            <button id="btn-fit" class="btn-icon desktop-only" title="Fit All" aria-label="Fit all">
+                <svg class="icon"><use href="#i-fit"/></svg>
+            </button>
             <span id="year-display" class="year-display"></span>
         </div>
     </header>
@@ -65,7 +112,7 @@
             <!-- Active filter chips -->
             <div id="active-filters" class="active-filters hidden">
                 <div id="filter-chips" class="filter-chips"></div>
-                <div id="filter-count" class="filter-count"></div>
+                <div id="filter-count" class="filter-count" role="status"></div>
             </div>
 
             <!-- Show toggles -->
@@ -176,8 +223,22 @@
             </div>
             <svg id="timeline-svg"></svg>
             <div id="tooltip" class="tooltip hidden"></div>
-            <!-- Era scrubber (mobile) -->
-            <div id="era-scrubber" class="era-scrubber mobile-only"></div>
+            <!-- Long-press peek card (touch) -->
+            <div id="peek-card" class="peek-card hidden" aria-hidden="true"></div>
+            <!-- Era ribbon (mobile, horizontal) -->
+            <div id="era-ribbon" class="era-ribbon mobile-only" role="group" aria-label="Jump to era"></div>
+            <!-- Floating timeline FAB cluster (mobile) -->
+            <div id="timeline-fabs" class="timeline-fabs mobile-only">
+                <button class="fab" id="fab-zoom-in" aria-label="Zoom in">
+                    <svg class="icon"><use href="#i-plus"/></svg>
+                </button>
+                <button class="fab" id="fab-zoom-out" aria-label="Zoom out">
+                    <svg class="icon"><use href="#i-minus"/></svg>
+                </button>
+                <button class="fab" id="fab-fit" aria-label="Fit all">
+                    <svg class="icon"><use href="#i-fit"/></svg>
+                </button>
+            </div>
         </main>
 
     </div>
@@ -186,15 +247,26 @@
     <div id="mobile-backdrop" class="mobile-backdrop hidden"></div>
 
     <!-- Mobile Search Overlay -->
-    <div id="search-overlay" class="search-overlay hidden">
+    <div id="search-overlay" class="search-overlay hidden" role="dialog" aria-label="Search">
         <div class="search-overlay-header">
-            <input type="text" id="mobile-search-input" placeholder="Search people, events, scripture…" autocomplete="off" />
-            <button id="btn-close-search" class="btn-close" title="Close">×</button>
+            <button id="btn-close-search" class="btn-icon btn-close" title="Close" aria-label="Close search">
+                <svg class="icon"><use href="#i-chevron-left"/></svg>
+            </button>
+            <div class="search-overlay-input-wrap">
+                <svg class="icon search-overlay-icon"><use href="#i-search"/></svg>
+                <input type="text" id="mobile-search-input" placeholder="Search people, events, scripture…" autocomplete="off" enterkeyhint="search" />
+                <button id="btn-clear-search" class="btn-icon btn-clear-search hidden" aria-label="Clear search">
+                    <svg class="icon"><use href="#i-close"/></svg>
+                </button>
+            </div>
         </div>
-        <div id="mobile-search-results" class="mobile-search-results"></div>
+        <div id="mobile-search-results" class="mobile-search-results" aria-live="polite"></div>
         <div id="recent-searches" class="recent-searches">
-            <h3>Recent Searches</h3>
-            <ul id="recent-searches-list"></ul>
+            <div class="recent-searches-header">
+                <h3>Recent</h3>
+                <button id="btn-clear-recent" class="btn-link" type="button">Clear all</button>
+            </div>
+            <ul id="recent-searches-list" class="recent-chip-list"></ul>
         </div>
     </div>
 
@@ -210,12 +282,14 @@
         <ul id="saved-list" class="saved-list"></ul>
     </div>
 
-    <!-- Detail Panel (shared across all tabs) -->
-    <aside id="detail-panel" class="panel-right hidden">
-        <div class="detail-drag-handle mobile-only"><span></span></div>
+    <!-- Detail Panel (shared across all tabs; bottom sheet on mobile) -->
+    <aside id="detail-panel" class="panel-right hidden" data-snap="hidden" aria-label="Details">
+        <div class="detail-drag-handle mobile-only" aria-hidden="true"><span></span></div>
         <div class="panel-header">
             <h2 id="detail-title">Details</h2>
-            <button id="btn-close-detail" class="btn-close" title="Close">×</button>
+            <button id="btn-close-detail" class="btn-icon btn-close" title="Close" aria-label="Close details">
+                <svg class="icon"><use href="#i-close"/></svg>
+            </button>
         </div>
         <div id="detail-content"></div>
     </aside>
@@ -234,6 +308,9 @@
                 <span id="lineage-subject-name"></span>
                 <span id="lineage-count"></span>
             </div>
+            <button id="btn-lineage-recenter" class="btn-icon mobile-only lineage-recenter-btn" type="button" aria-label="Recenter" title="Recenter">
+                <svg class="icon"><use href="#i-fit"/></svg>
+            </button>
         </div>
         <div id="lineage-container">
             <div class="lineage-empty">
@@ -247,26 +324,34 @@
     <!-- Map Tab -->
     <div id="map-tab" class="tab-content hidden">
         <div class="map-header">
-            <div class="map-controls">
-                <label for="map-person-select">Journey:</label>
+            <div class="map-row map-row-select">
+                <label for="map-person-select" class="map-label">Journey:</label>
                 <select id="map-person-select">
                     <option value="">All Events</option>
                 </select>
             </div>
-            <div class="map-slider-controls">
-                <button id="map-prev-btn" class="map-btn" title="Previous Event">&#x23EE;</button>
-                <button id="map-play-btn" class="map-btn" title="Play">&#x25B6;</button>
-                <button id="map-next-btn" class="map-btn" title="Next Event">&#x23ED;</button>
-                <button id="map-speed-btn" class="map-btn map-speed" title="Speed">1&times;</button>
-                <input type="range" id="map-year-slider" min="-4100" max="2030" value="2030" step="1" />
-                <span id="map-year-label">AD 2030</span>
+            <div class="map-row map-row-controls">
+                <button id="map-prev-btn" class="btn-icon map-btn" title="Previous Event" aria-label="Previous event">
+                    <svg class="icon"><use href="#i-prev"/></svg>
+                </button>
+                <button id="map-play-btn" class="btn-icon map-btn map-play-btn" title="Play" aria-label="Play">
+                    <svg class="icon" id="map-play-icon"><use href="#i-play"/></svg>
+                </button>
+                <button id="map-next-btn" class="btn-icon map-btn" title="Next Event" aria-label="Next event">
+                    <svg class="icon"><use href="#i-next"/></svg>
+                </button>
+                <button id="map-speed-btn" class="btn-icon map-btn map-speed" title="Speed" aria-label="Speed">1×</button>
                 <span id="map-step-label" class="map-step-label"></span>
             </div>
+            <div class="map-row map-row-slider">
+                <input type="range" id="map-year-slider" min="-4100" max="2030" value="2030" step="1" aria-label="Year" />
+                <span id="map-year-label">AD 2030</span>
+            </div>
             <div class="map-legend">
-                <span class="map-legend-item"><span class="legend-dot" style="background:#FFD700"></span>Miracle</span>
-                <span class="map-legend-item"><span class="legend-dot" style="background:#DC143C"></span>War</span>
-                <span class="map-legend-item"><span class="legend-dot" style="background:#4a90d9"></span>Covenant</span>
-                <span class="map-legend-item"><span class="legend-dot" style="background:#2E8B57"></span>Other</span>
+                <span class="map-legend-item"><span class="legend-dot" style="background:#d8bd51"></span>Miracle</span>
+                <span class="map-legend-item"><span class="legend-dot" style="background:#e1707c"></span>War</span>
+                <span class="map-legend-item"><span class="legend-dot" style="background:#567cd3"></span>Covenant</span>
+                <span class="map-legend-item"><span class="legend-dot" style="background:#55b486"></span>Other</span>
             </div>
         </div>
         <div id="map-container"></div>
@@ -276,6 +361,7 @@
             integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
             crossorigin="" defer></script>
     <script src="https://d3js.org/d3.v7.min.js" defer></script>
+    <script src="/js/utils.js" defer></script>
     <script src="/js/api.js" defer></script>
     <script src="/js/state.js" defer></script>
     <script src="/js/timeline.js" defer></script>
@@ -293,26 +379,31 @@
     </script>
 
     <!-- Bottom Navigation (mobile) -->
-    <nav id="bottom-nav" class="bottom-nav mobile-only">
-        <button class="bottom-nav-btn active" data-tab="timeline">
-            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/><circle cx="7" cy="6" r="2" fill="currentColor" stroke="none"/><circle cx="14" cy="12" r="2" fill="currentColor" stroke="none"/><circle cx="10" cy="18" r="2" fill="currentColor" stroke="none"/></svg>
-            <span>Timeline</span>
+    <nav id="bottom-nav" class="bottom-nav mobile-only" aria-label="Primary">
+        <button class="bottom-nav-btn active" data-tab="timeline" aria-label="Timeline">
+            <span class="bottom-nav-pill" aria-hidden="true"></span>
+            <svg class="icon bottom-nav-icon"><use href="#i-timeline"/></svg>
+            <span class="bottom-nav-label">Timeline</span>
         </button>
-        <button class="bottom-nav-btn" data-tab="lineage">
-            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="4" r="2"/><circle cx="6" cy="12" r="2"/><circle cx="18" cy="12" r="2"/><circle cx="4" cy="20" r="2"/><circle cx="10" cy="20" r="2"/><circle cx="16" cy="20" r="2"/><circle cx="22" cy="20" r="2"/><line x1="12" y1="6" x2="6" y2="10"/><line x1="12" y1="6" x2="18" y2="10"/><line x1="6" y1="14" x2="4" y2="18"/><line x1="6" y1="14" x2="10" y2="18"/><line x1="18" y1="14" x2="16" y2="18"/><line x1="18" y1="14" x2="22" y2="18"/></svg>
-            <span>Family</span>
+        <button class="bottom-nav-btn" data-tab="lineage" aria-label="Family tree">
+            <span class="bottom-nav-pill" aria-hidden="true"></span>
+            <svg class="icon bottom-nav-icon"><use href="#i-tree"/></svg>
+            <span class="bottom-nav-label">Family</span>
         </button>
-        <button class="bottom-nav-btn" data-tab="map">
-            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
-            <span>Map</span>
+        <button class="bottom-nav-btn" data-tab="map" aria-label="Map">
+            <span class="bottom-nav-pill" aria-hidden="true"></span>
+            <svg class="icon bottom-nav-icon"><use href="#i-location"/></svg>
+            <span class="bottom-nav-label">Map</span>
         </button>
-        <button class="bottom-nav-btn" data-tab="search">
-            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <span>Search</span>
+        <button class="bottom-nav-btn" data-tab="search" aria-label="Search">
+            <span class="bottom-nav-pill" aria-hidden="true"></span>
+            <svg class="icon bottom-nav-icon"><use href="#i-search"/></svg>
+            <span class="bottom-nav-label">Search</span>
         </button>
-        <button class="bottom-nav-btn" data-tab="saved">
-            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-            <span>Saved</span>
+        <button class="bottom-nav-btn" data-tab="saved" aria-label="Saved">
+            <span class="bottom-nav-pill" aria-hidden="true"></span>
+            <svg class="icon bottom-nav-icon"><use href="#i-bookmark"/></svg>
+            <span class="bottom-nav-label">Saved</span>
         </button>
     </nav>
 </body>

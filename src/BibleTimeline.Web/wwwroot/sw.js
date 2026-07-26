@@ -1,8 +1,13 @@
 // sw.js — Service Worker for Faith Through Time PWA
-const CACHE_NAME = 'faith-through-time-v1';
+//
+// Bump CACHE_NAME on every release so the activate handler deletes the
+// old cache. Without a bump, returning users get the previously cached
+// map.js / index.html forever (cache-first hides server updates).
+const CACHE_NAME = 'faith-through-time-v7-2026-07-26';
 const STATIC_ASSETS = [
     '/',
     '/css/styles.css',
+    '/js/utils.js',
     '/js/api.js',
     '/js/state.js',
     '/js/timeline.js',
@@ -24,12 +29,15 @@ const CDN_ASSETS = [
     'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css'
 ];
 
-// Install: cache static assets
+// Install: cache static assets AND the CDN libraries. Without the CDN
+// files precached, an offline reopen loads the shell but d3/leaflet 404
+// ("d3 is not defined" → blank app) — the first visit fetches them before
+// this worker controls the page, so install is the only reliable moment.
 self.addEventListener('install', event => {
     event.waitUntil(
         caches.open(CACHE_NAME).then(cache => {
-            return cache.addAll(STATIC_ASSETS).catch(err => {
-                console.warn('SW: Some static assets failed to cache:', err);
+            return cache.addAll([...STATIC_ASSETS, ...CDN_ASSETS]).catch(err => {
+                console.warn('SW: Some assets failed to precache:', err);
             });
         })
     );
@@ -55,8 +63,12 @@ self.addEventListener('fetch', event => {
         event.respondWith(
             fetch(event.request)
                 .then(resp => {
-                    const clone = resp.clone();
-                    caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+                    // Only cache good responses — a transient 500 must not
+                    // evict the last good payload from the offline cache
+                    if (resp && resp.ok) {
+                        const clone = resp.clone();
+                        caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+                    }
                     return resp;
                 })
                 .catch(() => caches.match(event.request))
@@ -79,17 +91,21 @@ self.addEventListener('fetch', event => {
         return;
     }
 
-    // Static assets: cache-first with network fallback
+    // Static assets: stale-while-revalidate.
+    // Return cached copy immediately for speed, but fetch fresh in the
+    // background so the next page load picks up any deployed changes.
+    // Pure cache-first (the previous behavior) caused old map.js / index.html
+    // to be served indefinitely after a deploy.
     event.respondWith(
         caches.match(event.request).then(cached => {
-            if (cached) return cached;
-            return fetch(event.request).then(resp => {
-                if (resp.ok) {
+            const networkFetch = fetch(event.request).then(resp => {
+                if (resp && resp.ok) {
                     const clone = resp.clone();
                     caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
                 }
                 return resp;
-            });
+            }).catch(() => cached);
+            return cached || networkFetch;
         })
     );
 });

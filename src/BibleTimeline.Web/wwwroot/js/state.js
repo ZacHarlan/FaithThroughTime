@@ -64,6 +64,14 @@ const State = {
         this.notify('filters');
     },
 
+    // Set several filters with ONE notify — callers that update related
+    // values (e.g. startYear + endYear) must use this, or each notify
+    // fires its own fetch and the responses race.
+    updateFilters(obj) {
+        Object.assign(this.filters, obj);
+        this.notify('filters');
+    },
+
     getFilterParams() {
         return {
             role: this.filters.role || undefined,
@@ -74,8 +82,8 @@ const State = {
             dateConfidence: this.filters.dateConfidence || undefined,
             bookId: this.filters.bookId || undefined,
             locationId: this.filters.locationId || undefined,
-            startYear: this.filters.startYear || undefined,
-            endYear: this.filters.endYear || undefined,
+            startYear: this.filters.startYear ?? undefined,
+            endYear: this.filters.endYear ?? undefined,
             includePeople: this.filters.includePeople,
             includeEvents: this.filters.includeEvents
         };

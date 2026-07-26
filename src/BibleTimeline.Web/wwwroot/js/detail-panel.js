@@ -4,9 +4,28 @@ const DetailPanel = (() => {
     const title = () => document.getElementById('detail-title');
     const content = () => document.getElementById('detail-content');
 
+    // Snap-point state for mobile bottom sheet
+    const SNAPS = ['hidden', 'peek', 'half', 'full'];
+    let currentSnap = 'hidden';
+
+    function isMobile() { return window.matchMedia('(max-width: 767px)').matches; }
+
+    function setSnap(name, opts = {}) {
+        if (!SNAPS.includes(name)) name = 'half';
+        currentSnap = name;
+        const p = panel();
+        p.dataset.snap = name;
+        // Body class lets siblings (FABs, era ribbon) react
+        document.body.classList.remove('sheet-peek', 'sheet-half', 'sheet-full');
+        if (name === 'peek' || name === 'half' || name === 'full') {
+            document.body.classList.add('sheet-' + name);
+        }
+        if (opts.haptic !== false && window._vibrate) window._vibrate(8);
+    }
+
     function init() {
         document.getElementById('btn-close-detail').addEventListener('click', close);
-        initSwipeToDismiss();
+        initSheetGestures();
         initSwipeBack();
 
         // Prevent drag-to-pan handlers on underlying containers from
@@ -15,40 +34,123 @@ const DetailPanel = (() => {
         p.addEventListener('mousedown', e => e.stopPropagation());
         p.addEventListener('touchstart', e => e.stopPropagation(), { passive: true });
         p.addEventListener('wheel', e => e.stopPropagation(), { passive: true });
+
+        // Re-evaluate on resize / orientation
+        window.addEventListener('resize', () => {
+            if (!isMobile() && currentSnap !== 'hidden') {
+                document.body.classList.remove('sheet-peek', 'sheet-half', 'sheet-full');
+            }
+        });
     }
 
-    function initSwipeToDismiss() {
-        const handle = document.querySelector('.detail-drag-handle');
+    /**
+     * Sheet gestures: drag the handle (or top of header) to resize between
+     * peek / half / full snap points. Velocity decides the destination on release.
+     */
+    function initSheetGestures() {
+        const handle = panel().querySelector('.detail-drag-handle');
         if (!handle) return;
 
         let startY = 0;
-        let currentY = 0;
+        let lastY = 0;
+        let lastT = 0;
+        let velocity = 0;
         let dragging = false;
+        let startHeight = 0;
 
-        handle.addEventListener('touchstart', e => {
-            startY = e.touches[0].clientY;
-            currentY = startY;
+        const heightFor = (snap) => {
+            const vh = window.innerHeight;
+            const navH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--bottom-nav-height')) || 64;
+            const headerH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-height')) || 52;
+            switch (snap) {
+                case 'peek': return 96;
+                case 'half': return Math.round(vh * 0.6);
+                case 'full': return vh - headerH - 16;
+                default:     return Math.round(vh * 0.6);
+            }
+        };
+
+        const onStart = (e) => {
+            if (!isMobile()) return;
+            startY = e.touches ? e.touches[0].clientY : e.clientY;
+            lastY = startY;
+            lastT = Date.now();
+            velocity = 0;
             dragging = true;
+            startHeight = panel().getBoundingClientRect().height;
             panel().style.transition = 'none';
-        }, { passive: true });
+        };
 
-        handle.addEventListener('touchmove', e => {
+        const onMove = (e) => {
             if (!dragging) return;
-            currentY = e.touches[0].clientY;
-            const dy = Math.max(0, currentY - startY);
-            panel().style.transform = `translateY(${dy}px)`;
-        }, { passive: true });
+            const y = e.touches ? e.touches[0].clientY : e.clientY;
+            const now = Date.now();
+            const dt = Math.max(1, now - lastT);
+            velocity = (y - lastY) / dt; // px / ms (positive = downward)
+            lastY = y;
+            lastT = now;
+            const dy = y - startY;
+            const newHeight = Math.max(60, Math.min(window.innerHeight, startHeight - dy));
+            panel().style.height = newHeight + 'px';
+            if (e.cancelable) e.preventDefault();
+        };
 
-        handle.addEventListener('touchend', () => {
+        const onEnd = () => {
             if (!dragging) return;
             dragging = false;
             panel().style.transition = '';
-            const dy = currentY - startY;
-            if (dy > 80) {
+            const finalH = panel().getBoundingClientRect().height;
+
+            // Velocity-based snap selection
+            const FAST = 0.6; // px/ms
+            let target;
+            if (velocity > FAST) {
+                // Fast downward fling: go down one snap or close
+                if (currentSnap === 'full') target = 'half';
+                else if (currentSnap === 'half') target = 'peek';
+                else target = 'hidden';
+            } else if (velocity < -FAST) {
+                if (currentSnap === 'peek') target = 'half';
+                else if (currentSnap === 'half') target = 'full';
+                else target = 'full';
+            } else {
+                // Snap to nearest by height
+                const peekH = heightFor('peek');
+                const halfH = heightFor('half');
+                const fullH = heightFor('full');
+                const candidates = [
+                    { name: 'peek', d: Math.abs(finalH - peekH) },
+                    { name: 'half', d: Math.abs(finalH - halfH) },
+                    { name: 'full', d: Math.abs(finalH - fullH) }
+                ];
+                if (finalH < 70) target = 'hidden';
+                else target = candidates.sort((a, b) => a.d - b.d)[0].name;
+            }
+
+            // Clear inline height so CSS data-snap rules take over
+            panel().style.height = '';
+            if (target === 'hidden') {
                 close();
             } else {
-                panel().style.transform = '';
+                setSnap(target);
             }
+        };
+
+        handle.addEventListener('touchstart', onStart, { passive: true });
+        handle.addEventListener('touchmove', onMove, { passive: false });
+        handle.addEventListener('touchend', onEnd);
+        handle.addEventListener('touchcancel', onEnd);
+        // Mouse fallback (small desktops)
+        handle.addEventListener('mousedown', (e) => {
+            onStart(e);
+            const mm = (ev) => onMove(ev);
+            const mu = () => {
+                onEnd();
+                window.removeEventListener('mousemove', mm);
+                window.removeEventListener('mouseup', mu);
+            };
+            window.addEventListener('mousemove', mm);
+            window.addEventListener('mouseup', mu);
         });
     }
 
@@ -101,10 +203,38 @@ const DetailPanel = (() => {
         });
     }
 
+    // Element that had focus before the panel opened — restored on close
+    let _invoker = null;
+
     function show(item) {
         if (!item) { close(); return; }
 
+        // Register with surface history so Back closes the panel; person/event
+        // views also get a shareable #person/id / #event/id URL for free.
+        if (window._surfaces) {
+            const url = (item.type === 'person' || item.type === 'event')
+                ? `#${item.type}/${item.id}` : undefined;
+            window._surfaces.opened('detail', url);
+        }
+
+        const wasHidden = panel().classList.contains('hidden');
+        if (wasHidden && document.activeElement && document.activeElement !== document.body) {
+            _invoker = document.activeElement;
+        }
+
         panel().classList.remove('hidden');
+
+        // Move focus into the panel so keyboard/SR users land where the
+        // content is (only on first open — not on drill-downs)
+        if (wasHidden) {
+            const closeBtn = document.getElementById('btn-close-detail');
+            if (closeBtn) closeBtn.focus({ preventScroll: true });
+        }
+        // On mobile, default to half-snap for new items; if a sheet is already
+        // open at full, keep it; if peek, expand to half on drill-in
+        if (isMobile()) {
+            if (currentSnap === 'hidden' || currentSnap === 'peek') setSnap('half', { haptic: true });
+        }
         title().textContent = item.name;
 
         // Update bookmark button
@@ -125,8 +255,10 @@ const DetailPanel = (() => {
         let btn = panel().querySelector('.btn-bookmark');
         if (!btn) {
             btn = document.createElement('button');
-            btn.className = 'btn-bookmark';
+            btn.className = 'btn-icon btn-bookmark';
             btn.title = 'Save';
+            btn.setAttribute('aria-label', 'Save');
+            btn.innerHTML = '<svg class="icon"><use href="#i-bookmark"/></svg>';
             const header = panel().querySelector('.panel-header');
             header.insertBefore(btn, header.querySelector('.btn-close'));
         }
@@ -134,29 +266,36 @@ const DetailPanel = (() => {
         if (!bm || item.type === 'stop') { btn.style.display = 'none'; return; }
         btn.style.display = '';
         const saved = bm.isItemSaved(item.type, item.id);
-        btn.textContent = saved ? '★' : '☆';
+        const useEl = btn.querySelector('use');
+        if (useEl) useEl.setAttribute('href', saved ? '#i-bookmark-fill' : '#i-bookmark');
         btn.classList.toggle('bookmarked', saved);
         btn.onclick = () => {
             if (bm.isItemSaved(item.type, item.id)) {
                 bm.removeSavedItem(item.type, item.id);
             } else {
-                const meta = item.type === 'person'
-                    ? (item.role || '')
-                    : (item.category || '');
+                const meta = item.type === 'person' ? (item.role || '') : (item.category || '');
                 bm.saveItem(item.type, item.id, item.name, meta);
             }
             updateBookmarkButton(item);
+            if (window._vibrate) window._vibrate(10);
         };
     }
 
     function addShareButton(item) {
-        if (!navigator.share || item.type === 'stop') return;
-        let btn = panel().querySelector('.btn-share');
+        const existing = panel().querySelector('.btn-share');
+        if (!navigator.share || item.type === 'stop') {
+            // Hide rather than leave the previous item's share handler live
+            if (existing) existing.style.display = 'none';
+            return;
+        }
+        if (existing) existing.style.display = '';
+        let btn = existing;
         if (!btn) {
             btn = document.createElement('button');
-            btn.className = 'btn-bookmark'; // reuse style
+            btn.className = 'btn-icon btn-share';
             btn.title = 'Share';
-            btn.textContent = '↗';
+            btn.setAttribute('aria-label', 'Share');
+            btn.innerHTML = '<svg class="icon"><use href="#i-share"/></svg>';
             const header = panel().querySelector('.panel-header');
             header.insertBefore(btn, header.querySelector('.btn-close'));
         }
@@ -174,10 +313,21 @@ const DetailPanel = (() => {
     const navStack = [];
 
     function close() {
+        // Consume our history entry first; popstate re-enters close() with
+        // the surface manager in its popping state, which falls through here.
+        if (window._surfaces && window._surfaces.requestClose('detail')) return;
         panel().classList.add('hidden');
+        setSnap('hidden', { haptic: false });
         navStack.length = 0;
         State.selectedItem = null;
         removeBackButton();
+        // Dispose the embedded Leaflet mini-map (it leaks listeners otherwise)
+        if (typeof MapView !== 'undefined' && MapView.destroyMiniMap) MapView.destroyMiniMap();
+        // Return focus to whatever opened the panel
+        if (_invoker && document.contains(_invoker)) {
+            _invoker.focus({ preventScroll: true });
+        }
+        _invoker = null;
     }
 
     function pushItem(item) {
@@ -207,9 +357,10 @@ const DetailPanel = (() => {
         if (navStack.length > 0) {
             if (!btn) {
                 btn = document.createElement('button');
-                btn.className = 'btn-back';
+                btn.className = 'btn-icon btn-back';
                 btn.title = 'Back';
-                btn.innerHTML = '←';
+                btn.setAttribute('aria-label', 'Back');
+                btn.innerHTML = '<svg class="icon"><use href="#i-chevron-left"/></svg>';
                 btn.addEventListener('click', popItem);
                 const header = panel().querySelector('.panel-header');
                 header.insertBefore(btn, header.firstChild);
@@ -431,7 +582,7 @@ const DetailPanel = (() => {
         const fm = y => Timeline.formatYear(y);
         const t = a => a ? '~' : '';
         if (b !== null && d !== null) {
-            const age = d - b;
+            const age = Utils.yearSpan(b, d);
             return `${t(p.birthApprox)}${fm(b)} — ${t(p.deathApprox)}${fm(d)} (age ${age})`;
         }
         if (b !== null) return `Born ${t(p.birthApprox)}${fm(b)}`;
@@ -462,11 +613,7 @@ const DetailPanel = (() => {
         return str.charAt(0).toUpperCase() + str.slice(1);
     }
 
-    function escapeHtml(str) {
-        const div = document.createElement('div');
-        div.textContent = str;
-        return div.innerHTML;
-    }
+    function escapeHtml(str) { return Utils.escapeHtml(str); }
 
     function bibleGatewayUrl(ref) {
         if (!ref) return null;

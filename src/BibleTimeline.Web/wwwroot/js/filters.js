@@ -3,6 +3,8 @@ const Filters = (() => {
     let _options = null;
     let _debounceTimer = null;
 
+    function isMobile() { return window.matchMedia('(max-width: 767px)').matches; }
+
     function init() {
         // Mobile drawer toggle
         const hamburger = document.getElementById('btn-mobile-filters');
@@ -57,9 +59,28 @@ const Filters = (() => {
             if (changeType === 'filters') {
                 updateChips();
                 updateContextualVisibility();
+                updateFooterCount();
             }
             if (changeType === 'items') {
                 updateCount();
+                updateFooterCount();
+            }
+        });
+
+        // Mobile-only enhancements: accordion, footer, edge-swipe close
+        injectMobileFooter();
+        if (isMobile()) {
+            applyMobileAccordion();
+            applyChipGroups();
+            initEdgeSwipeClose();
+        }
+        // Re-apply on resize boundary crossings
+        window.addEventListener('resize', () => {
+            if (isMobile()) {
+                applyMobileAccordion();
+                applyChipGroups();
+            } else {
+                resetMobileAccordion();
             }
         });
     }
@@ -94,8 +115,10 @@ const Filters = (() => {
         clearTimeout(_debounceTimer);
         _debounceTimer = setTimeout(() => {
             const isDefault = startVal <= -4100 && endVal >= 2030;
-            State.updateFilter('startYear', isDefault ? null : startVal);
-            State.updateFilter('endYear', isDefault ? null : endVal);
+            State.updateFilters({
+                startYear: isDefault ? null : startVal,
+                endYear: isDefault ? null : endVal
+            });
         }, 200);
     }
 
@@ -119,6 +142,12 @@ const Filters = (() => {
 
         renderLegend(options);
         updateContextualVisibility();
+        // Now that the legend section was just (re-)created, re-apply mobile accordion/chips
+        if (isMobile()) {
+            applyMobileAccordion();
+            applyChipGroups();
+        }
+        updateFooterCount();
     }
 
     function populateCheckboxGroup(containerId, items, filterKey) {
@@ -209,6 +238,7 @@ const Filters = (() => {
             const btn = document.createElement('button');
             btn.className = 'chip-remove';
             btn.textContent = '\u00d7';
+            btn.setAttribute('aria-label', 'Remove filter: ' + chip.label);
             btn.addEventListener('click', () => removeChip(chip.key));
             el.appendChild(btn);
             container.appendChild(el);
@@ -217,8 +247,7 @@ const Filters = (() => {
 
     function removeChip(key) {
         if (key === 'dateRange') {
-            State.updateFilter('startYear', null);
-            State.updateFilter('endYear', null);
+            State.updateFilters({ startYear: null, endYear: null });
         } else if (key === 'includePeople') {
             State.updateFilter('includePeople', true);
         } else if (key === 'includeEvents') {
@@ -325,9 +354,7 @@ const Filters = (() => {
         }
     }
 
-    function formatYear(y) {
-        return y < 0 ? Math.abs(y) + ' BC' : 'AD ' + y;
-    }
+    function formatYear(y) { return Utils.formatYear(y); }
 
     function capitalize(str) {
         return str.charAt(0).toUpperCase() + str.slice(1);
@@ -343,15 +370,136 @@ const Filters = (() => {
             panel.classList.add('drawer-open');
             backdrop.classList.remove('hidden');
             requestAnimationFrame(() => backdrop.classList.add('visible'));
+            if (window._surfaces) window._surfaces.opened('drawer');
+            if (window._vibrate) window._vibrate(8);
         }
     }
 
     function closeDrawer() {
         const panel = document.getElementById('filter-panel');
+        if (!panel.classList.contains('drawer-open')) return;
+        // Route through history so the drawer's Back entry is consumed
+        if (window._surfaces && window._surfaces.requestClose('drawer')) return;
         const backdrop = document.getElementById('mobile-backdrop');
         panel.classList.remove('drawer-open');
         backdrop.classList.remove('visible');
         setTimeout(() => backdrop.classList.add('hidden'), 250);
+    }
+
+    /**
+     * Inject a sticky footer with Reset / Apply (N) buttons. The drawer is
+     * always live (filters apply as you change them) so the Apply button
+     * simply closes the drawer; Reset clears all filters.
+     */
+    function injectMobileFooter() {
+        const panel = document.getElementById('filter-panel');
+        if (!panel || panel.querySelector('.filter-footer')) return;
+        const footer = document.createElement('div');
+        footer.className = 'filter-footer mobile-only';
+        footer.innerHTML = `
+            <button type="button" class="btn-reset">Reset</button>
+            <button type="button" class="btn-apply">Show <span class="footer-count">all</span></button>
+        `;
+        panel.appendChild(footer);
+        footer.querySelector('.btn-reset').addEventListener('click', () => {
+            State.clearFilters();
+            syncUI();
+            if (window._vibrate) window._vibrate(10);
+        });
+        footer.querySelector('.btn-apply').addEventListener('click', () => {
+            closeDrawer();
+            if (window._vibrate) window._vibrate(8);
+        });
+    }
+
+    function updateFooterCount() {
+        const span = document.querySelector('.filter-footer .footer-count');
+        if (!span) return;
+        const total = State.items.length;
+        span.textContent = total + ' item' + (total !== 1 ? 's' : '');
+    }
+
+    /** Make every filter section a collapsible accordion on mobile. */
+    function applyMobileAccordion() {
+        const panel = document.getElementById('filter-panel');
+        if (!panel) return;
+        const sections = panel.querySelectorAll('.filter-section');
+        sections.forEach((sec, i) => {
+            if (sec.classList.contains('collapsible')) return;
+            sec.classList.add('collapsible');
+            // Wrap all children except <h3> in a .filter-body div
+            const h3 = sec.querySelector('h3');
+            if (!h3) return;
+            const body = document.createElement('div');
+            body.className = 'filter-body';
+            const moving = [];
+            for (const child of sec.childNodes) {
+                if (child !== h3) moving.push(child);
+            }
+            moving.forEach(n => body.appendChild(n));
+            sec.appendChild(body);
+            // First two sections (Show + Significance) start expanded
+            if (i < 2) sec.classList.add('open');
+            h3.addEventListener('click', () => {
+                sec.classList.toggle('open');
+                if (window._vibrate) window._vibrate(6);
+            });
+        });
+    }
+
+    function resetMobileAccordion() {
+        const panel = document.getElementById('filter-panel');
+        if (!panel) return;
+        panel.querySelectorAll('.filter-section.collapsible').forEach(sec => {
+            const h3 = sec.querySelector('h3');
+            const body = sec.querySelector('.filter-body');
+            if (body) {
+                while (body.firstChild) sec.appendChild(body.firstChild);
+                body.remove();
+            }
+            sec.classList.remove('collapsible', 'open');
+            if (h3) {
+                const newH3 = h3.cloneNode(true);
+                h3.parentNode.replaceChild(newH3, h3);
+            }
+        });
+    }
+
+    function applyChipGroups() {
+        document.querySelectorAll('#role-checkboxes, #category-checkboxes').forEach(g => {
+            g.classList.add('chip-group');
+        });
+    }
+
+    /** Edge-swipe-left to close the drawer. */
+    function initEdgeSwipeClose() {
+        const panel = document.getElementById('filter-panel');
+        if (!panel) return;
+        let startX = 0, startY = 0, dragging = false;
+        panel.addEventListener('touchstart', (e) => {
+            if (!panel.classList.contains('drawer-open')) return;
+            const t = e.touches[0];
+            startX = t.clientX;
+            startY = t.clientY;
+            dragging = true;
+        }, { passive: true });
+        panel.addEventListener('touchmove', (e) => {
+            if (!dragging) return;
+            const t = e.touches[0];
+            const dx = t.clientX - startX;
+            const dy = Math.abs(t.clientY - startY);
+            if (dy > Math.abs(dx)) { dragging = false; return; }
+            if (dx < 0) {
+                panel.style.transform = `translateX(${dx}px)`;
+            }
+        }, { passive: true });
+        panel.addEventListener('touchend', (e) => {
+            if (!dragging) return;
+            dragging = false;
+            const dx = e.changedTouches[0].clientX - startX;
+            panel.style.transform = '';
+            if (dx < -80) closeDrawer();
+        });
     }
 
     return { init, populate, syncUI, closeDrawer };

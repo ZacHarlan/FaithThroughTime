@@ -32,10 +32,13 @@ const Search = (() => {
         });
     }
 
+    let _searchReq = 0;
     async function performSearch(query) {
         const dropdown = document.getElementById('search-results');
+        const reqId = ++_searchReq;
         try {
             const results = await Api.search(query);
+            if (reqId !== _searchReq) return; // stale response — newer query in flight
             if (!results.length) {
                 dropdown.innerHTML = '<div class="search-result-item"><span class="result-meta">No results found</span></div>';
                 dropdown.classList.remove('hidden');
@@ -100,11 +103,7 @@ const Search = (() => {
         }
     }
 
-    function escapeHtml(str) {
-        const div = document.createElement('div');
-        div.textContent = str;
-        return div.innerHTML;
-    }
+    function escapeHtml(str) { return Utils.escapeHtml(str); }
 
     function capitalize(str) {
         return str.charAt(0).toUpperCase() + str.slice(1);
