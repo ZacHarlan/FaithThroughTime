@@ -493,11 +493,7 @@ const DetailPanel = (() => {
 
         // Mini-map for locations with coordinates
         if (e.locations && e.locations.some(l => l.latitude && l.longitude)) {
-            html += '<div class="detail-section"><h3>Map</h3><div class="mini-map-wrap">'
-                 + '<div id="detail-mini-map" class="detail-mini-map"></div>'
-                 + '<button type="button" id="btn-open-map" class="mini-map-overlay" aria-label="Open in Map view">'
-                 + '<span class="mini-map-hint"><svg class="icon"><use href="#i-location"/></svg> Open in Map view</span>'
-                 + '</button></div></div>';
+            html += miniMapSection();
         }
 
         // Scripture references
@@ -524,8 +520,25 @@ const DetailPanel = (() => {
         }
     }
 
-    // "Open in Map view": jump to the Map tab centered on this location.
-    // On mobile the sheet drops to peek so the map is actually visible.
+    /**
+     * Clickable mini-map section. The label is contextual: "Open in Map
+     * view" normally, but "Show on map" when the Map tab is already active
+     * (offering to open a view you're already in reads as a bug).
+     */
+    function miniMapSection() {
+        const mapTab = document.getElementById('map-tab');
+        const onMapTab = mapTab && !mapTab.classList.contains('hidden');
+        const label = onMapTab ? 'Show on map' : 'Open in Map view';
+        return '<div class="detail-section"><h3>Map</h3><div class="mini-map-wrap">'
+            + '<div id="detail-mini-map" class="detail-mini-map"></div>'
+            + `<button type="button" id="btn-open-map" class="mini-map-overlay" aria-label="${label}">`
+            + `<span class="mini-map-hint"><svg class="icon"><use href="#i-location"/></svg> ${label}</span>`
+            + '</button></div></div>';
+    }
+
+    // Click on the mini-map: jump to the Map tab centered on this location
+    // (a no-op tab switch when already there). On mobile the sheet drops to
+    // peek so the map is actually visible.
     function wireOpenInMap(loc) {
         const btn = content().querySelector('#btn-open-map');
         if (!btn || !loc) return;
@@ -555,11 +568,7 @@ const DetailPanel = (() => {
 
         // Mini-map for the stop location
         if (s.latitude && s.longitude) {
-            html += '<div class="detail-section"><h3>Map</h3><div class="mini-map-wrap">'
-                 + '<div id="detail-mini-map" class="detail-mini-map"></div>'
-                 + '<button type="button" id="btn-open-map" class="mini-map-overlay" aria-label="Open in Map view">'
-                 + '<span class="mini-map-hint"><svg class="icon"><use href="#i-location"/></svg> Open in Map view</span>'
-                 + '</button></div></div>';
+            html += miniMapSection();
         }
 
         c.innerHTML = html;
