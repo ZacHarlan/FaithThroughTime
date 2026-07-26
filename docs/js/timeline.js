@@ -22,6 +22,10 @@ const Timeline = (() => {
     const POINT_RADIUS_MINOR = 4;
     const LABEL_PADDING = 6;
     const PERIOD_BAND_HEIGHT = 28;
+    // Pannable world bounds: creation-era start through ten years from now.
+    // Anything beyond is empty void — panning there just loses the user.
+    const MIN_YEAR = -4100;
+    const MAX_YEAR = new Date().getFullYear() + 10;
 
     let svg, g, xScale, zoom, width, height, container;
     let currentTransform = d3.zoomIdentity;
@@ -64,6 +68,7 @@ const Timeline = (() => {
             .on('zoom', onZoom)
             .on('end', onZoomEnd);
 
+        updateZoomBounds();
         svg.call(zoom);
         // Disable D3's default double-click zoom so we can run our own
         // animated zoom centered on the tap.
@@ -111,7 +116,23 @@ const Timeline = (() => {
         height = r.height;
         svg.attr('width', width).attr('height', height);
         xScale.range([MARGIN.left, width - MARGIN.right]);
+        updateZoomBounds();
         render();
+    }
+
+    /**
+     * Constrain pan/zoom to [MIN_YEAR, MAX_YEAR]: translateExtent stops
+     * panning into the empty future/past, and the minimum scale is capped
+     * so zooming out can't show more than the full span.
+     */
+    function updateZoomBounds() {
+        if (!zoom) return;
+        const x0 = xScale(MIN_YEAR);
+        const x1 = xScale(MAX_YEAR);
+        const plotWidth = width - MARGIN.left - MARGIN.right;
+        const minK = Math.min(1, plotWidth / (x1 - x0));
+        zoom.scaleExtent([minK, 200])
+            .translateExtent([[x0, -Infinity], [x1, Infinity]]);
     }
 
     let _rafPending = false;
@@ -126,19 +147,24 @@ const Timeline = (() => {
     }
 
     let _gestureScrollTop = 0;
-    function onZoomStart() {
+    let _gestureClientY = null;
+    function onZoomStart(event) {
         _gestureScrollTop = container.scrollTop;
+        // Anchor on the viewport-stable clientY, NOT the D3 transform: D3
+        // measures the pointer relative to the SVG, and the SVG moves when
+        // we scroll — deriving scroll from t.y feeds our own scroll back
+        // into the next transform and oscillates (visible as violent jitter).
+        const se = event.sourceEvent;
+        _gestureClientY = (se && se.type === 'mousedown') ? se.clientY : null;
     }
 
     function onZoom(event) {
         const t = event.transform;
-        // Vertical routing: because the stored transform's y is pinned to 0
-        // below, t.y is the cumulative vertical delta for this gesture. For
-        // mouse drags, feed it into native container scroll (touch already
-        // scrolls natively via CSS touch-action: pan-y — don't double-apply).
+        // Vertical routing for mouse drags → native container scroll (touch
+        // already scrolls natively via CSS touch-action: pan-y).
         const se = event.sourceEvent;
-        if (se && se.type === 'mousemove' && t.y !== 0) {
-            container.scrollTop = _gestureScrollTop - t.y;
+        if (se && se.type === 'mousemove' && _gestureClientY !== null) {
+            container.scrollTop = _gestureScrollTop - (se.clientY - _gestureClientY);
         }
         // Constrain Y to 0 — vertical is container scroll, never SVG translate
         const constrained = d3.zoomIdentity.translate(t.x, 0).scale(t.k);
@@ -288,8 +314,8 @@ const Timeline = (() => {
         if (minY === Infinity) return;
 
         const padding = Math.max(50, (maxY - minY) * 0.05);
-        minY -= padding;
-        maxY += padding;
+        minY = Math.max(MIN_YEAR, minY - padding);
+        maxY = Math.min(MAX_YEAR, maxY + padding);
 
         const x0 = xScale(minY);
         const x1 = xScale(maxY);
@@ -470,9 +496,60 @@ const Timeline = (() => {
         svg.attr('height', totalHeight);
     }
 
+    // ── Stable swim-lanes ────────────────────────────────────
+    // Lane assignment is computed ONCE per dataset at the BASE scale and
+    // reused at every zoom level, so items never change row while zooming
+    // (per-frame greedy packing reshuffled rows as pixel widths changed,
+    // making items impossible to track). Labels that crowd within a lane
+    // when zoomed far out are culled per-frame instead of moving items.
+
+    // Label width estimate must match the *rendered* font: 12–14px,
+    // semibold (and bumped by !important CSS on mobile) — a 6.5px/char
+    // guess under-reserved and caused label pile-ups.
+    function labelWidthFor(d) {
+        const labelFs = (d.significance === 'major' ? 14 : d.significance === 'moderate' ? 13 : 12)
+            + (isMobile() ? 1 : 0);
+        return d.name.length * labelFs * 0.64 + LABEL_PADDING * 2 + 8;
+    }
+
+    let _laneCache = null; // { itemsRef, width, mobile, lanes: Map(key→lane), counts: {event, person} }
+
+    function ensureLanes() {
+        const items = State.items;
+        const mobile = isMobile();
+        if (_laneCache && _laneCache.itemsRef === items &&
+            _laneCache.width === width && _laneCache.mobile === mobile) {
+            return _laneCache;
+        }
+        const laneOf = new Map();
+        const counts = { event: 0, person: 0 };
+        for (const type of ['event', 'person']) {
+            const sorted = items
+                .filter(d => d.type === type && (d.startYear ?? d.endYear) != null)
+                .sort((a, b) => (a.startYear ?? a.endYear) - (b.startYear ?? b.endYear));
+            const laneEnds = [];
+            for (const d of sorted) {
+                const start = d.startYear ?? d.endYear;
+                const end = d.endYear ?? d.startYear;
+                const x1 = xScale(start); // base scale — zoom-independent
+                const x2 = end !== start ? xScale(end) : x1;
+                const totalWidth = Math.max(x2 - x1, 2) + labelWidthFor(d);
+                let lane = 0;
+                for (lane = 0; lane < laneEnds.length; lane++) {
+                    if (laneEnds[lane] <= x1 - 12) break;
+                }
+                if (lane === laneEnds.length) laneEnds.push(0);
+                laneEnds[lane] = x1 + totalWidth;
+                laneOf.set(`${type}-${d.id}`, lane);
+            }
+            counts[type] = laneEnds.length;
+        }
+        _laneCache = { itemsRef: items, width, mobile, lanes: laneOf, counts };
+        return _laneCache;
+    }
+
     function layoutAndRender(layer, items, xS, offsetY, type) {
-        // Swim-lane assignment: each lane tracks its rightmost x extent
-        const lanes = [];
+        const cache = ensureLanes();
 
         const positioned = items.map(d => {
             const start = d.startYear ?? d.endYear;
@@ -482,31 +559,35 @@ const Timeline = (() => {
             const x1 = xS(start);
             const x2 = end !== start ? xS(end) : x1;
             const barWidth = Math.max(x2 - x1, 2);
-
-            // Find first lane where this item fits.
-            // Label width estimate must match the *rendered* font: 12–14px,
-            // semibold (and bumped by !important CSS on mobile) — the old
-            // 6.5px/char guess under-reserved and caused label pile-ups.
-            let lane = 0;
-            const labelFs = (d.significance === 'major' ? 14 : d.significance === 'moderate' ? 13 : 12)
-                + (isMobile() ? 1 : 0);
-            const labelWidth = d.name.length * labelFs * 0.64 + LABEL_PADDING * 2 + 8;
-            const totalWidth = barWidth + labelWidth;
-
-            for (lane = 0; lane < lanes.length; lane++) {
-                if (lanes[lane] <= x1 - 12) break;
-            }
-            if (lane === lanes.length) lanes.push(0);
-            lanes[lane] = x1 + totalWidth;
+            const lane = cache.lanes.get(`${type}-${d.id}`) ?? 0;
 
             return {
                 ...d,
                 x: x1,
                 w: barWidth,
+                lane,
                 y: offsetY + lane * (ROW_HEIGHT + ROW_GAP),
                 isRange: start !== end && end !== null
             };
         }).filter(Boolean);
+
+        // Per-frame label culling: lanes are fixed, so when zoomed out far
+        // enough that neighbors within a lane would overlap, hide the
+        // crowded label (items stay put; only text visibility changes).
+        const byLane = new Map();
+        for (const d of positioned) {
+            if (!byLane.has(d.lane)) byLane.set(d.lane, []);
+            byLane.get(d.lane).push(d);
+        }
+        for (const arr of byLane.values()) {
+            arr.sort((a, b) => a.x - b.x);
+            for (let i = 0; i < arr.length; i++) {
+                const d = arr[i];
+                const next = arr[i + 1];
+                const labelEnd = (d.isRange ? d.x + d.w : d.x) + LABEL_PADDING + labelWidthFor(d);
+                d.showLabel = !next || labelEnd <= next.x - 4;
+            }
+        }
 
         // D3 data join
         const className = `item-group-${type}`;
@@ -585,19 +666,22 @@ const Timeline = (() => {
                 }
             }
 
-            // Label (to the right of the bar/point)
-            const pointR = d.significance === 'major' ? POINT_RADIUS_MAJOR : d.significance === 'moderate' ? POINT_RADIUS_MODERATE : POINT_RADIUS_MINOR;
-            const labelX = d.isRange ? d.x + d.w + LABEL_PADDING : d.x + pointR + LABEL_PADDING;
-            el.append('text')
-                .attr('class', 'item-label')
-                .attr('x', labelX)
-                .attr('y', ROW_HEIGHT / 2)
-                .text(d.name)
-                .style('font-weight', d.significance === 'major' ? '600' : d.significance === 'moderate' ? '500' : '400')
-                .style('font-size', d.significance === 'major' ? '14px' : d.significance === 'moderate' ? '13px' : '12px');
+            // Label (to the right of the bar/point) — culled when zoomed out
+            // crowds it into its lane neighbor (see showLabel pass above)
+            if (d.showLabel !== false) {
+                const pointR = d.significance === 'major' ? POINT_RADIUS_MAJOR : d.significance === 'moderate' ? POINT_RADIUS_MODERATE : POINT_RADIUS_MINOR;
+                const labelX = d.isRange ? d.x + d.w + LABEL_PADDING : d.x + pointR + LABEL_PADDING;
+                el.append('text')
+                    .attr('class', 'item-label')
+                    .attr('x', labelX)
+                    .attr('y', ROW_HEIGHT / 2)
+                    .text(d.name)
+                    .style('font-weight', d.significance === 'major' ? '600' : d.significance === 'moderate' ? '500' : '400')
+                    .style('font-size', d.significance === 'major' ? '14px' : d.significance === 'moderate' ? '13px' : '12px');
+            }
         });
 
-        return offsetY + lanes.length * (ROW_HEIGHT + ROW_GAP);
+        return offsetY + cache.counts[type] * (ROW_HEIGHT + ROW_GAP);
     }
 
     function onItemClick(d) {
