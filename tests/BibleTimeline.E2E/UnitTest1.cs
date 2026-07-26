@@ -335,18 +335,22 @@ public class TimelineE2ETests : PageTest
         var tagName = await scriptureToggles.First.EvaluateAsync<string>("el => el.tagName");
         Assert.That(tagName, Is.EqualTo("BUTTON"));
 
-        // Click to expand, then check for BibleGateway link inside body
+        // Click to expand: passage text loads inline from the local Bible
+        // JSON (no external BibleGateway link-outs anymore)
         await scriptureToggles.First.ClickAsync();
-        var readMore = Page.Locator("#detail-content .scripture-read-more");
-        await Expect(readMore.First).ToBeVisibleAsync();
+        var preview = Page.Locator("#detail-content .scripture-preview").First;
+        await Expect(preview).Not.ToContainTextAsync("Loading passage", new() { Timeout = 10000 });
+        var text = await preview.TextContentAsync();
+        Assert.That(text!.Length, Is.GreaterThan(80), "inline passage text should load");
 
-        var href = await readMore.First.GetAttributeAsync("href");
-        Assert.That(href, Does.Contain("biblegateway.com"));
-        Assert.That(href, Does.Contain("version=ESV"));
+        var gatewayLinks = await Page.Locator("#detail-content a[href*='biblegateway']").CountAsync();
+        Assert.That(gatewayLinks, Is.EqualTo(0), "BibleGateway link-outs were removed");
 
-        // Link should open in new tab
-        var target = await readMore.First.GetAttributeAsync("target");
-        Assert.That(target, Is.EqualTo("_blank"));
+        // Version picker is present and lists the local translations
+        var picker = Page.Locator("#detail-content .bible-version-select");
+        await Expect(picker).ToBeVisibleAsync();
+        var options = await picker.Locator("option").AllTextContentsAsync();
+        Assert.That(options, Does.Contain("KJV"));
     }
 
     [Test]
@@ -366,13 +370,22 @@ public class TimelineE2ETests : PageTest
         var scriptureToggles = Page.Locator("#detail-content .scripture-toggle");
         await Expect(scriptureToggles.First).ToBeVisibleAsync();
 
-        // Expand and check for BibleGateway link
+        // Expand: passage text loads inline from the local Bible JSON, and
+        // switching the version picker swaps the translation
         await scriptureToggles.First.ClickAsync();
-        var readMore = Page.Locator("#detail-content .scripture-read-more");
-        await Expect(readMore.First).ToBeVisibleAsync();
+        var preview = Page.Locator("#detail-content .scripture-preview").First;
+        await Expect(preview).Not.ToContainTextAsync("Loading passage", new() { Timeout = 10000 });
+        var kjvText = await preview.TextContentAsync();
+        Assert.That(kjvText!.Length, Is.GreaterThan(80), "inline passage text should load");
 
-        var href = await readMore.First.GetAttributeAsync("href");
-        Assert.That(href, Does.Contain("biblegateway.com"));
+        var picker = Page.Locator("#detail-content .bible-version-select");
+        await Expect(picker).ToBeVisibleAsync();
+        await picker.SelectOptionAsync("nlt");
+        await Page.WaitForTimeoutAsync(1500);
+        var nltText = await preview.TextContentAsync();
+        Assert.That(nltText, Is.Not.EqualTo(kjvText), "changing version should change the passage text");
+        // Reset for other tests (picker choice persists in localStorage)
+        await picker.SelectOptionAsync("kjv");
     }
 
     [Test]

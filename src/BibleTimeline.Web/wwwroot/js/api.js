@@ -114,5 +114,18 @@ const Api = {
         } catch {
             return null;
         }
+    },
+
+    // ── Local Bible text (per-book JSON under wwwroot/bibles/) ──
+    async getBibleManifest() {
+        const res = await fetch('bibles/manifest.json');
+        if (!res.ok) throw new Error(`Bible manifest fetch failed: ${res.status}`);
+        return res.json();
+    },
+
+    async getBibleBook(versionId, bookSlug) {
+        const res = await fetch(`bibles/${encodeURIComponent(versionId)}/${encodeURIComponent(bookSlug)}.json`);
+        if (!res.ok) throw new Error(`Bible book fetch failed: ${res.status}`);
+        return res.json();
     }
 };

@@ -562,6 +562,18 @@ def copy_static_assets(out_dir, dir_name, inline_data=None):
         shutil.copytree(icons_src, icons_dst)
         print(f"  {dir_name + '/icons/':40s} (copied)")
 
+    # bibles/ — per-book Bible text JSON (lazy-loaded by js/bible.js).
+    # NOTE: KJV is public domain; ESV/NIV/NLT are copyrighted translations —
+    # deploying their full text publicly requires the publishers' permission.
+    bibles_src = os.path.join(WWWROOT, "bibles")
+    bibles_dst = os.path.join(out_dir, "bibles")
+    if os.path.exists(bibles_src):
+        if os.path.exists(bibles_dst):
+            shutil.rmtree(bibles_dst)
+        shutil.copytree(bibles_src, bibles_dst)
+        n_files = sum(len(f) for _, _, f in os.walk(bibles_dst))
+        print(f"  {dir_name + '/bibles/':40s} (copied, {n_files} files)")
+
     # .nojekyll for GitHub Pages
     with open(os.path.join(out_dir, ".nojekyll"), "w") as f:
         pass

@@ -2652,30 +2652,78 @@ html, body {
     font-weight: 700;
 }
 
-/* ── "Open in Map view" under the detail mini-map ─────────── */
-.btn-open-map {
+/* ── Clickable detail mini-map (whole map opens Map view) ─── */
+.mini-map-wrap {
+    position: relative;
+    border-radius: var(--r-md);
+    overflow: hidden;
+}
+.mini-map-overlay {
+    position: absolute;
+    inset: 0;
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    /* Above Leaflet's panes/controls so the click always lands here */
+    z-index: 500;
+}
+.mini-map-hint {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin: 8px;
+    padding: 5px 12px;
+    background: color-mix(in srgb, var(--bg-secondary) 88%, transparent);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+    border-radius: var(--r-full);
+    font-size: 12px;
+    font-weight: 600;
+    transition: background var(--transition), color var(--transition);
+}
+.mini-map-hint .icon { width: 14px; height: 14px; }
+.mini-map-overlay:hover .mini-map-hint,
+.mini-map-overlay:focus-visible .mini-map-hint {
+    background: var(--accent-strong);
+    color: #fff;
+    border-color: var(--accent-strong);
+}
+
+/* ── Scripture: version picker + verse rendering ──────────── */
+.scripture-section-head {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 8px;
-    width: 100%;
-    min-height: var(--touch-min);
-    margin-top: 8px;
-    padding: 10px 14px;
+    justify-content: space-between;
+    gap: 10px;
+}
+.bible-version-select {
+    padding: 4px 8px;
     background: var(--bg-card);
-    color: var(--accent);
+    color: var(--text-primary);
     border: 1px solid var(--border);
-    border-radius: var(--r-md);
-    font-size: 13px;
+    border-radius: var(--r-sm);
+    font-size: 12px;
     font-weight: 600;
     cursor: pointer;
-    transition: background var(--transition), border-color var(--transition);
 }
-.btn-open-map:hover {
-    background: var(--bg-hover);
-    border-color: var(--accent);
+.scripture-preview sup {
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 0.72em;
+    margin-right: 1px;
 }
-.btn-open-map .icon {
-    width: 16px;
-    height: 16px;
+.scripture-body {
+    max-height: 340px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.scripture-truncated {
+    color: var(--text-muted);
+    font-style: italic;
 }
