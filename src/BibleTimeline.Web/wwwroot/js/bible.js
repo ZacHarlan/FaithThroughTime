@@ -151,18 +151,66 @@ const BibleText = (() => {
         'gi'
     );
 
+    // Continuation segments after a reference: ", 47-50" (same chapter) or
+    // "; 27:3-10" (same book, new chapter). Guarded against consuming year
+    // ranges — a segment followed by BC/AD/"years" is prose, not scripture.
+    const CONT_REGEX = /^([;,]\s*)(\d+(?::\d+)?(?:\s*[-–—]\s*\d+(?::\d+)?)?)(?!\s*(?:BC|AD|B\.C\.|A\.D\.|years?)\b)(?![:\d])/;
+
+    function refBtn(ref, label) {
+        return `<button type="button" class="ref-link" data-ref="${ref}" aria-expanded="false">${label}</button>`;
+    }
+
     /**
      * Wrap scripture references in ALREADY-ESCAPED prose with clickable
      * <button class="ref-link" data-ref="Canonical C:V"> elements.
-     * Input MUST be HTML-escaped text (this only adds trusted markup).
+     * Compound citations carry context forward: in
+     * "Matthew 26:14-16, 47-50; 27:3-10" the comma segment inherits book
+     * AND chapter (Matthew 26:47-50), the semicolon segment inherits the
+     * book (Matthew 27:3-10). Input MUST be HTML-escaped text.
      */
     function linkifyRefs(escapedText) {
-        return escapedText.replace(REF_REGEX, (match, name, tail) => {
-            const canonical = CANON[name.toLowerCase().replace(/\s+/g, ' ')];
-            if (!canonical) return match;
-            const ref = `${canonical} ${tail.replace(/\s+/g, '')}`;
-            return `<button type="button" class="ref-link" data-ref="${ref}">${match}</button>`;
-        });
+        let out = '';
+        let i = 0;
+        REF_REGEX.lastIndex = 0;
+        let m;
+        while ((m = REF_REGEX.exec(escapedText)) !== null) {
+            out += escapedText.slice(i, m.index);
+            const canonical = CANON[m[1].toLowerCase().replace(/\s+/g, ' ')];
+            if (!canonical) {
+                out += m[0];
+                i = REF_REGEX.lastIndex;
+                continue;
+            }
+            const baseTail = m[2].replace(/\s+/g, '');
+            let curChapter = baseTail.includes(':') ? baseTail.split(':')[0] : null;
+            out += refBtn(`${canonical} ${baseTail}`, m[0]);
+            i = REF_REGEX.lastIndex;
+
+            // Consume continuation segments while they read as citations
+            let c;
+            while ((c = escapedText.slice(i).match(CONT_REGEX)) !== null) {
+                const sep = c[1];
+                const seg = c[2].replace(/\s+/g, '');
+                let ref;
+                if (seg.includes(':')) {
+                    // "; 27:3-10" — explicit chapter:verse, same book
+                    ref = `${canonical} ${seg}`;
+                    curChapter = seg.split(':')[0];
+                } else if (sep.trimEnd().startsWith(',') && curChapter) {
+                    // ", 47-50" — verses within the current chapter
+                    ref = `${canonical} ${curChapter}:${seg}`;
+                } else {
+                    // "; 11" — whole chapter(s), same book
+                    ref = `${canonical} ${seg}`;
+                    curChapter = null;
+                }
+                out += sep + refBtn(ref, c[2]);
+                i += c[0].length;
+            }
+            REF_REGEX.lastIndex = i;
+        }
+        out += escapedText.slice(i);
+        return out;
     }
 
     return { manifest, getVersion, setVersion, getPassage, parseRef, linkifyRefs };
