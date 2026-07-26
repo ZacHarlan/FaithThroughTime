@@ -587,13 +587,20 @@ const MapView = (() => {
         const validLocs = locations.filter(l => l.latitude && l.longitude);
         if (validLocs.length === 0) return;
 
+        // Inert preview: the whole mini-map is a click target that opens the
+        // Map tab (see detail-panel mini-map-overlay), so no interaction here
         const miniMap = L.map(containerId, {
             center: [validLocs[0].latitude, validLocs[0].longitude],
             zoom: 8,
             zoomControl: false,
             attributionControl: false,
-            dragging: true,
-            scrollWheelZoom: false
+            dragging: false,
+            scrollWheelZoom: false,
+            doubleClickZoom: false,
+            boxZoom: false,
+            keyboard: false,
+            touchZoom: false,
+            tapHold: false
         });
 
         L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v12/tiles/{z}/{x}/{y}?access_token=' + MAPBOX_TOKEN, {

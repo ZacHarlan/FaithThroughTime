@@ -436,7 +436,7 @@ const DetailPanel = (() => {
 
         // Scripture references
         if (p.scriptureReferences && p.scriptureReferences.length) {
-            html += '<div class="detail-section"><h3>Scripture</h3><div class="scripture-list">';
+            html += '<div class="detail-section"><div class="scripture-section-head"><h3>Scripture</h3></div><div class="scripture-list">';
             for (const s of p.scriptureReferences) {
                 html += scriptureLink(s);
             }
@@ -493,14 +493,16 @@ const DetailPanel = (() => {
 
         // Mini-map for locations with coordinates
         if (e.locations && e.locations.some(l => l.latitude && l.longitude)) {
-            html += '<div class="detail-section"><h3>Map</h3><div id="detail-mini-map" class="detail-mini-map"></div>'
-                 + '<button type="button" id="btn-open-map" class="btn-open-map">'
-                 + '<svg class="icon"><use href="#i-location"/></svg> Open in Map view</button></div>';
+            html += '<div class="detail-section"><h3>Map</h3><div class="mini-map-wrap">'
+                 + '<div id="detail-mini-map" class="detail-mini-map"></div>'
+                 + '<button type="button" id="btn-open-map" class="mini-map-overlay" aria-label="Open in Map view">'
+                 + '<span class="mini-map-hint"><svg class="icon"><use href="#i-location"/></svg> Open in Map view</span>'
+                 + '</button></div></div>';
         }
 
         // Scripture references
         if (e.scriptureReferences && e.scriptureReferences.length) {
-            html += '<div class="detail-section"><h3>Scripture</h3><div class="scripture-list">';
+            html += '<div class="detail-section"><div class="scripture-section-head"><h3>Scripture</h3></div><div class="scripture-list">';
             for (const s of e.scriptureReferences) {
                 html += scriptureLink(s);
             }
@@ -553,9 +555,11 @@ const DetailPanel = (() => {
 
         // Mini-map for the stop location
         if (s.latitude && s.longitude) {
-            html += '<div class="detail-section"><h3>Map</h3><div id="detail-mini-map" class="detail-mini-map"></div>'
-                 + '<button type="button" id="btn-open-map" class="btn-open-map">'
-                 + '<svg class="icon"><use href="#i-location"/></svg> Open in Map view</button></div>';
+            html += '<div class="detail-section"><h3>Map</h3><div class="mini-map-wrap">'
+                 + '<div id="detail-mini-map" class="detail-mini-map"></div>'
+                 + '<button type="button" id="btn-open-map" class="mini-map-overlay" aria-label="Open in Map view">'
+                 + '<span class="mini-map-hint"><svg class="icon"><use href="#i-location"/></svg> Open in Map view</span>'
+                 + '</button></div></div>';
         }
 
         c.innerHTML = html;
@@ -636,25 +640,16 @@ const DetailPanel = (() => {
 
     function escapeHtml(str) { return Utils.escapeHtml(str); }
 
-    function bibleGatewayUrl(ref) {
-        if (!ref) return null;
-        return `https://www.biblegateway.com/passage/?search=${encodeURIComponent(ref)}&version=ESV`;
-    }
-
     function scriptureLink(s) {
         const text = escapeHtml(s.referenceText);
-        const url = bibleGatewayUrl(s.referenceText);
         const id = 'scr-' + Math.random().toString(36).slice(2, 8);
         let html = `<div class="scripture-accordion">`;
-        html += `<button class="scripture-toggle" aria-expanded="false" data-target="${id}">`;
+        html += `<button class="scripture-toggle" aria-expanded="false" data-target="${id}" aria-controls="${id}">`;
         html += `<span class="scripture-ref-text">📖 ${text}</span>`;
         html += `<span class="scripture-chevron">›</span>`;
         html += `</button>`;
         html += `<div class="scripture-body" id="${id}" hidden>`;
         html += `<p class="scripture-preview">Loading passage…</p>`;
-        if (url) {
-            html += `<a href="${url}" target="_blank" rel="noopener noreferrer" class="scripture-read-more">Read full passage on BibleGateway ↗</a>`;
-        }
         html += `</div></div>`;
         return html;
     }
@@ -670,30 +665,85 @@ const DetailPanel = (() => {
                 // Fetch passage on first open
                 if (!expanded && target.dataset.loaded !== 'true') {
                     const ref = btn.querySelector('.scripture-ref-text').textContent.replace('📖 ', '');
-                    fetchScripturePreview(ref, target);
+                    loadPassage(ref, target);
                 }
             });
         });
+        initVersionPicker(container);
     }
 
-    function fetchScripturePreview(ref, container) {
+    /**
+     * Load passage text: local Bible JSON first (user-selected version),
+     * falling back to the bible-api.com KJV snippet when local text is
+     * unavailable (e.g. bibles/ not deployed).
+     */
+    function loadPassage(ref, container) {
         const preview = container.querySelector('.scripture-preview');
-        Api.getScripturePassage(ref).then(text => {
-            if (text) {
-                preview.textContent = text.substring(0, 500);
-                if (text.length > 500) preview.textContent += '…';
-            } else {
-                preview.textContent = 'Tap the link below to read this passage.';
+        preview.textContent = 'Loading passage…';
+        BibleText.getPassage(ref).then(passage => {
+            if (passage) {
+                // Chapter-qualify verse numbers only for cross-chapter refs
+                const multiCh = passage.verses.some(x => x.c !== passage.verses[0].c);
+                const parts = passage.verses.map(v =>
+                    `<sup>${multiCh ? v.c + ':' : ''}${v.v}</sup> ${escapeHtml(v.text)}`);
+                preview.innerHTML = parts.join(' ')
+                    + (passage.truncated ? ' <span class="scripture-truncated">… (passage continues)</span>' : '');
+                container.dataset.loaded = 'true';
+                return;
             }
+            // Fallback: external KJV snippet
+            return Api.getScripturePassage(ref).then(text => {
+                preview.textContent = text
+                    ? text.substring(0, 500) + (text.length > 500 ? '…' : '')
+                    : 'Passage text is not available.';
+                container.dataset.loaded = 'true';
+            });
+        }).catch(() => {
+            preview.textContent = 'Passage text is not available.';
             container.dataset.loaded = 'true';
         });
     }
 
+    /**
+     * Bible-version picker, shown in the Scripture section header whenever
+     * local bibles exist. Changing it re-loads any open passages and
+     * persists the choice for future sessions.
+     */
+    function initVersionPicker(container) {
+        const head = container.querySelector('.scripture-section-head');
+        if (!head) return;
+        BibleText.manifest().then(man => {
+            if (!man) return; // no local bibles — header stays plain
+            let sel = head.querySelector('.bible-version-select');
+            if (!sel) {
+                sel = document.createElement('select');
+                sel.className = 'bible-version-select';
+                sel.setAttribute('aria-label', 'Bible version');
+                head.appendChild(sel);
+            }
+            sel.innerHTML = man.versions
+                .map(v => `<option value="${v.id}">${escapeHtml(v.short)}</option>`)
+                .join('');
+            const current = BibleText.getVersion();
+            sel.value = man.versions.some(v => v.id === current) ? current : man.versions[0].id;
+            sel.addEventListener('change', () => {
+                BibleText.setVersion(sel.value);
+                if (window._vibrate) window._vibrate(6);
+                // Re-load every accordion body: open ones now, closed ones lazily
+                container.querySelectorAll('.scripture-body').forEach(body => {
+                    body.dataset.loaded = 'false';
+                    if (!body.hidden) {
+                        const btn = container.querySelector(`[data-target="${body.id}"]`);
+                        const ref = btn.querySelector('.scripture-ref-text').textContent.replace('📖 ', '');
+                        loadPassage(ref, body);
+                        body.dataset.loaded = 'true';
+                    }
+                });
+            });
+        });
+    }
+
     function chapterRefLink(text) {
-        const url = bibleGatewayUrl(text);
-        if (url) {
-            return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="scripture-link">${escapeHtml(text)}</a>`;
-        }
         return escapeHtml(text);
     }
 

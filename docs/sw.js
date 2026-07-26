@@ -3,12 +3,13 @@
 // Bump CACHE_NAME on every release so the activate handler deletes the
 // old cache. Without a bump, returning users get the previously cached
 // map.js / index.html forever (cache-first hides server updates).
-const CACHE_NAME = 'faith-through-time-v7-2026-07-26';
+const CACHE_NAME = 'faith-through-time-v8-2026-07-26';
 const STATIC_ASSETS = [
     '/',
     '/css/styles.css',
     '/js/utils.js',
     '/js/api.js',
+    '/js/bible.js',
     '/js/state.js',
     '/js/timeline.js',
     '/js/filters.js',
