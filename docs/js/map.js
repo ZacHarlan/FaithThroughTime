@@ -18,35 +18,31 @@ const MapView = (() => {
     let activated = false;
     let currentStepIndex = -1;
 
+    // Normalized OKLCH-derived hues — same family as the period palette in
+    // SeedData.sql so map pins and timeline bands read as one system.
+    // Keep the four legend dots in index.html (#map-tab .map-legend) in sync.
     const CATEGORY_COLORS = {
-        creation: '#8B4513',
-        covenant: '#4a90d9',
-        war: '#DC143C',
-        miracle: '#FFD700',
-        prophecy: '#9370DB',
-        exile: '#696969',
-        birth: '#2E8B57',
-        death: '#708090',
-        law: '#CD853F',
-        conquest: '#556B2F',
-        judgment: '#e8a838',
-        salvation: '#FFD700'
+        creation: '#a16844',
+        covenant: '#567cd3',
+        war: '#e1707c',
+        miracle: '#d8bd51',
+        prophecy: '#7f79d1',
+        exile: '#5c7794',
+        birth: '#55b486',
+        death: '#90b1bc',
+        law: '#bc634d',
+        conquest: '#7fae64',
+        judgment: '#c3a03a',
+        salvation: '#d8bd51'
     };
 
     function categoryColor(cat) {
-        return CATEGORY_COLORS[cat] || '#2E8B57';
+        return CATEGORY_COLORS[cat] || '#55b486';
     }
 
-    function formatYear(y) {
-        if (y == null) return '?';
-        return y < 0 ? `${Math.abs(y)} BC` : `AD ${y}`;
-    }
+    function formatYear(y) { return Utils.formatYear(y); }
 
-    function escapeHtml(str) {
-        const div = document.createElement('div');
-        div.textContent = str;
-        return div.innerHTML;
-    }
+    function escapeHtml(str) { return Utils.escapeHtml(str); }
 
     function init() {
         document.getElementById('map-person-select').addEventListener('change', onPersonChange);
@@ -102,8 +98,9 @@ const MapView = (() => {
             bookJourneys = results[2];
             populatePersonSelect();
             renderMarkers();
-        } catch (_) {
-            // Silently fail — map will be empty
+        } catch {
+            const label = document.getElementById('map-step-label');
+            if (label) label.textContent = 'Couldn’t load map data — check your connection and reopen this tab.';
         }
     }
 
@@ -185,8 +182,9 @@ const MapView = (() => {
             markersLayer.clearLayers();
             renderJourney();
             fitToJourney();
-        } catch (_) {
-            // Silently fail
+        } catch {
+            const label = document.getElementById('map-step-label');
+            if (label) label.textContent = 'Couldn’t load this journey — try again.';
         }
     }
 
@@ -519,7 +517,7 @@ const MapView = (() => {
         }
 
         isPlaying = true;
-        document.getElementById('map-play-btn').textContent = '\u23F8';
+        setPlayIcon(true);
 
         const speeds = [200, 100, 30];
         const interval = speeds[playSpeed - 1] || 100;
@@ -542,10 +540,22 @@ const MapView = (() => {
 
     function stopPlay() {
         isPlaying = false;
-        document.getElementById('map-play-btn').textContent = '\u25B6';
+        setPlayIcon(false);
         if (playInterval) {
             clearInterval(playInterval);
             playInterval = null;
+        }
+    }
+
+    function setPlayIcon(playing) {
+        const icon = document.getElementById('map-play-icon');
+        if (icon) {
+            const useEl = icon.querySelector('use');
+            if (useEl) useEl.setAttribute('href', playing ? '#i-pause' : '#i-play');
+        } else {
+            // Fallback for environments where the SVG slot isn't present
+            const btn = document.getElementById('map-play-btn');
+            if (btn) btn.textContent = playing ? '⏸' : '▶';
         }
     }
 
@@ -560,7 +570,20 @@ const MapView = (() => {
 
     // ── Detail Panel Mini-Map ────────────────────────────────
 
+    // One live instance at a time. Leaflet maps hold window/document
+    // listeners until .remove() is called — without disposal, every detail
+    // view leaked a full map instance for the life of the session.
+    let currentMiniMap = null;
+
+    function destroyMiniMap() {
+        if (currentMiniMap) {
+            try { currentMiniMap.remove(); } catch {}
+            currentMiniMap = null;
+        }
+    }
+
     function renderMiniMap(containerId, locations) {
+        destroyMiniMap();
         const validLocs = locations.filter(l => l.latitude && l.longitude);
         if (validLocs.length === 0) return;
 
@@ -593,7 +616,8 @@ const MapView = (() => {
 
         // Fix Leaflet rendering in hidden/dynamic containers
         setTimeout(() => miniMap.invalidateSize(), 100);
+        currentMiniMap = miniMap;
     }
 
-    return { init, activate, renderMiniMap };
+    return { init, activate, renderMiniMap, destroyMiniMap };
 })();

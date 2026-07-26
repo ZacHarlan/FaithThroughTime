@@ -25,6 +25,8 @@ const Timeline = (() => {
 
     let svg, g, xScale, zoom, width, height, container;
     let currentTransform = d3.zoomIdentity;
+    const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+    const isMobile = () => window.matchMedia('(max-width: 767px)').matches;
 
     function init() {
         container = document.getElementById('timeline-container');
@@ -48,42 +50,68 @@ const Timeline = (() => {
         g.append('g').attr('class', 'layer-axis');
         g.append('g').attr('class', 'layer-items');
 
-        // D3 zoom handles wheel-zoom and pinch-to-zoom; single-finger drag
-        // panning is handled separately via enableDragPan
+        // ── Unified D3 zoom: handles wheel, pinch, single-finger pan, dblclick
         zoom = d3.zoom()
             .scaleExtent([0.1, 200])
             .filter(event => {
-                // Allow wheel, dblclick, and multi-touch (pinch zoom)
-                if (event.type === 'wheel' || event.type === 'dblclick') return true;
-                if (event.type === 'touchstart' && event.touches && event.touches.length >= 2) return true;
-                if (event.type === 'touchmove' && event.touches && event.touches.length >= 2) return true;
-                return false;
+                // Block right-click and middle-click pan
+                if (event.button) return false;
+                // Block clicks that started on an interactive element
+                if (event.target && event.target.closest && event.target.closest('button, input, select, a')) return false;
+                return true;
             })
-            .on('zoom', onZoom);
+            .on('start', onZoomStart)
+            .on('zoom', onZoom)
+            .on('end', onZoomEnd);
 
         svg.call(zoom);
+        // Disable D3's default double-click zoom so we can run our own
+        // animated zoom centered on the tap.
+        svg.on('dblclick.zoom', null);
+        svg.on('dblclick', onDoubleTap);
 
-        // Custom drag handler for both-axis panning
-        enableDragPan(container);
+        // Long-press peek (touch)
+        if (isTouch) initLongPressPeek();
 
         // Resize handler
-        window.addEventListener('resize', debounce(() => {
-            const r = container.getBoundingClientRect();
-            width = r.width;
-            height = r.height;
-            svg.attr('width', width).attr('height', height);
-            xScale.range([MARGIN.left, width - MARGIN.right]);
-            render();
-        }, 150));
+        window.addEventListener('resize', debounce(refresh, 150));
 
-        // Zoom buttons
-        document.getElementById('btn-zoom-in').addEventListener('click', () => {
-            svg.transition().duration(300).call(zoom.scaleBy, 1.5);
-        });
-        document.getElementById('btn-zoom-out').addEventListener('click', () => {
-            svg.transition().duration(300).call(zoom.scaleBy, 0.67);
-        });
-        document.getElementById('btn-fit').addEventListener('click', fitAll);
+        // Zoom buttons (header + floating FAB)
+        const wireZoomBtn = (id, factor) => {
+            const el = document.getElementById(id);
+            if (el) el.addEventListener('click', () => {
+                svg.transition().duration(prefersReduced() ? 0 : 250).call(zoom.scaleBy, factor);
+                if (window._vibrate) window._vibrate(8);
+            });
+        };
+        wireZoomBtn('btn-zoom-in', 1.5);
+        wireZoomBtn('btn-zoom-out', 0.67);
+        wireZoomBtn('fab-zoom-in', 1.5);
+        wireZoomBtn('fab-zoom-out', 0.67);
+        const fitBtn = document.getElementById('btn-fit');
+        if (fitBtn) fitBtn.addEventListener('click', fitAll);
+        const fabFit = document.getElementById('fab-fit');
+        if (fabFit) fabFit.addEventListener('click', () => { fitAll(); if (window._vibrate) window._vibrate(8); });
+    }
+
+    function prefersReduced() {
+        return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    }
+
+    /**
+     * Re-measure the container and re-render. Bails while the timeline tab
+     * is hidden (display:none measures 0×0, which would invert the scale
+     * range and blank the render) — switchTab calls this again on return.
+     */
+    function refresh() {
+        if (!container) return;
+        const r = container.getBoundingClientRect();
+        if (r.width === 0 || r.height === 0) return;
+        width = r.width;
+        height = r.height;
+        svg.attr('width', width).attr('height', height);
+        xScale.range([MARGIN.left, width - MARGIN.right]);
+        render();
     }
 
     let _rafPending = false;
@@ -97,125 +125,125 @@ const Timeline = (() => {
         });
     }
 
+    let _gestureScrollTop = 0;
+    function onZoomStart() {
+        _gestureScrollTop = container.scrollTop;
+    }
+
     function onZoom(event) {
-        // Wheel zoom only — constrain Y to 0 (vertical is handled by container scroll)
         const t = event.transform;
+        // Vertical routing: because the stored transform's y is pinned to 0
+        // below, t.y is the cumulative vertical delta for this gesture. For
+        // mouse drags, feed it into native container scroll (touch already
+        // scrolls natively via CSS touch-action: pan-y — don't double-apply).
+        const se = event.sourceEvent;
+        if (se && se.type === 'mousemove' && t.y !== 0) {
+            container.scrollTop = _gestureScrollTop - t.y;
+        }
+        // Constrain Y to 0 — vertical is container scroll, never SVG translate
         const constrained = d3.zoomIdentity.translate(t.x, 0).scale(t.k);
         svg.node().__zoom = constrained;
         currentTransform = constrained;
         scheduleRender();
+        // Hide peek on any pan/zoom
+        hidePeek();
     }
 
-    function enableDragPan(ctr) {
-        let dragging = false, startX, startY, startScrollTop, startTx;
-        let dragOffsetX = 0;
+    function onZoomEnd(event) {
+        // No additional bookkeeping currently; reserved for future inertia/edge bounce.
+    }
 
-        ctr.addEventListener('mousedown', (e) => {
-            if (e.button !== 0) return;
-            if (e.target.closest('button, input, select, a')) return;
-            dragging = true;
-            startX = e.clientX;
-            startY = e.clientY;
-            startScrollTop = ctr.scrollTop;
-            startTx = currentTransform.x;
-            ctr.style.cursor = 'grabbing';
-            e.preventDefault();
-        });
+    function onDoubleTap(event) {
+        // Smooth 2x zoom-in centered on tap (or zoom-out with shift)
+        const dur = prefersReduced() ? 0 : 280;
+        const factor = event.shiftKey ? 0.5 : 2;
+        const [mx] = d3.pointer(event, svg.node());
+        svg.transition().duration(dur).call(zoom.scaleBy, factor, [mx, 0]);
+        if (window._vibrate) window._vibrate(10);
+    }
 
-        window.addEventListener('mousemove', (e) => {
-            if (!dragging) return;
-            const dx = e.clientX - startX;
-            const dy = e.clientY - startY;
+    /**
+     * Long-press peek: hold 350ms on a timeline item to show a non-blocking
+     * preview card with name + dates. Move >8px or release before threshold
+     * cancels the peek and either pans or fires a tap.
+     */
+    function initLongPressPeek() {
+        const peekEl = document.getElementById('peek-card');
+        if (!peekEl) return;
+        let timer = null;
+        let startX = 0, startY = 0;
+        let activeData = null;
 
-            // Fast path: translate the g element directly, skip full re-render
-            dragOffsetX = dx;
-            g.attr('transform', `translate(${dx},0)`);
+        const cancel = () => {
+            if (timer) { clearTimeout(timer); timer = null; }
+        };
 
-            // Update the transform so year display stays accurate
-            const newTransform = d3.zoomIdentity.translate(startTx + dx, 0).scale(currentTransform.k);
-            svg.node().__zoom = newTransform;
-            currentTransform = newTransform;
-            updateYearDisplay();
-
-            // Vertical: scroll the container
-            ctr.scrollTop = startScrollTop - dy;
-        });
-
-        window.addEventListener('mouseup', () => {
-            if (!dragging) return;
-            dragging = false;
-            ctr.style.cursor = '';
-            // Reset offset and do a proper re-render at final position
-            if (dragOffsetX !== 0) {
-                dragOffsetX = 0;
-                g.attr('transform', null);
-                render();
-            }
-        });
-
-        // Touch support for mobile panning
-        let touchId = null;
-        ctr.addEventListener('touchstart', (e) => {
-            if (e.touches.length !== 1) return;
-            if (e.target.closest('button, input, select, a')) return;
-            const t = e.touches[0];
-            touchId = t.identifier;
-            dragging = true;
+        const onDown = (e) => {
+            if (e.touches && e.touches.length > 1) { cancel(); hidePeek(); return; }
+            const t = e.touches ? e.touches[0] : e;
+            const targetEl = e.target.closest('.timeline-item');
+            if (!targetEl) { cancel(); return; }
+            // Resolve bound D3 datum
+            const datum = d3.select(targetEl).datum();
+            if (!datum) return;
             startX = t.clientX;
             startY = t.clientY;
-            startScrollTop = ctr.scrollTop;
-            startTx = currentTransform.x;
-        }, { passive: true });
-
-        ctr.addEventListener('touchmove', (e) => {
-            // If a second finger appears, cancel our drag and let D3 handle pinch
-            if (e.touches.length >= 2) {
-                if (dragging) {
-                    dragging = false;
-                    touchId = null;
-                    if (dragOffsetX !== 0) {
-                        dragOffsetX = 0;
-                        g.attr('transform', null);
-                        render();
-                    }
-                }
-                return;
+            activeData = datum;
+            cancel();
+            timer = setTimeout(() => {
+                showPeek(datum, t.clientX, t.clientY);
+                if (window._vibrate) window._vibrate(15);
+            }, 350);
+        };
+        const onMove = (e) => {
+            if (!timer && peekEl.classList.contains('hidden')) return;
+            const t = e.touches ? e.touches[0] : e;
+            if (Math.hypot(t.clientX - startX, t.clientY - startY) > 8) {
+                cancel();
+                hidePeek();
             }
-            if (!dragging || e.touches.length !== 1) return;
-            const t = e.touches[0];
-            if (t.identifier !== touchId) return;
-            const dx = t.clientX - startX;
-            const dy = t.clientY - startY;
+        };
+        const onUp = () => {
+            cancel();
+            hidePeek();
+            activeData = null;
+        };
 
-            // Fast path: translate the g element directly
-            dragOffsetX = dx;
-            g.attr('transform', `translate(${dx},0)`);
+        const sn = svg.node();
+        sn.addEventListener('touchstart', onDown, { passive: true });
+        sn.addEventListener('touchmove', onMove, { passive: true });
+        sn.addEventListener('touchend', onUp);
+        sn.addEventListener('touchcancel', onUp);
+    }
 
-            const newTransform = d3.zoomIdentity.translate(startTx + dx, 0).scale(currentTransform.k);
-            svg.node().__zoom = newTransform;
-            currentTransform = newTransform;
-            updateYearDisplay();
+    function showPeek(d, clientX, clientY) {
+        const el = document.getElementById('peek-card');
+        if (!el) return;
+        const dates = formatDateRange(d);
+        const meta = `${d.type}${d.role ? ' · ' + d.role : ''}${d.category ? ' · ' + d.category : ''}`;
+        el.innerHTML = `
+            <div class="peek-meta">${escapeHtml(meta)}</div>
+            <div class="peek-name">${escapeHtml(d.name)}</div>
+            <div class="peek-dates">${dates}</div>
+        `;
+        const cRect = container.getBoundingClientRect();
+        // Default position: above the touch point
+        const pad = 12;
+        el.classList.remove('hidden');
+        const w = el.offsetWidth;
+        const h = el.offsetHeight;
+        let x = clientX - cRect.left - w / 2;
+        let y = clientY - cRect.top - h - 18;
+        if (x < pad) x = pad;
+        if (x + w > cRect.width - pad) x = cRect.width - w - pad;
+        if (y < pad) y = clientY - cRect.top + 24; // flip below if no room above
+        el.style.left = x + 'px';
+        el.style.top = y + 'px';
+    }
 
-            ctr.scrollTop = startScrollTop - dy;
-            e.preventDefault();
-        }, { passive: false });
-
-        ctr.addEventListener('touchend', (e) => {
-            if (!dragging) return;
-            for (const t of e.changedTouches) {
-                if (t.identifier === touchId) {
-                    dragging = false;
-                    touchId = null;
-                    // Reset offset and do a proper re-render
-                    if (dragOffsetX !== 0) {
-                        dragOffsetX = 0;
-                        g.attr('transform', null);
-                        render();
-                    }
-                    break;
-                }
-            }
-        }, { passive: true });
+    function hidePeek() {
+        const el = document.getElementById('peek-card');
+        if (el) el.classList.add('hidden');
     }
 
     function getVisibleXScale() {
@@ -230,7 +258,7 @@ const Timeline = (() => {
 
         const centerYear = (domain[0] + domain[1]) / 2;
 
-        // Update era scrubber
+        // Update era ribbon (mobile) and legacy era scrubber (desktop)
         if (typeof EraScrubber !== 'undefined') {
             EraScrubber.updateActiveEra(centerYear);
         }
@@ -268,7 +296,7 @@ const Timeline = (() => {
         const scale = (width - MARGIN.left - MARGIN.right) / (x1 - x0);
         const tx = MARGIN.left - x0 * scale;
 
-        svg.transition().duration(500).call(
+        svg.transition().duration(prefersReduced() ? 0 : 500).call(
             zoom.transform,
             d3.zoomIdentity.translate(tx, 0).scale(scale)
         );
@@ -309,10 +337,14 @@ const Timeline = (() => {
             .attr('x', d => (s(d.startYear) + s(d.endYear)) / 2)
             .attr('y', 20)
             .text(d => {
+                // Labels are centered in their band; keeping each label
+                // narrower than its own band guarantees neighbors never
+                // collide. ~8.5px/char: 12px uppercase serif + letterspacing.
                 const w = s(d.endYear) - s(d.startYear);
-                if (w < 40) return '';
-                if (w < 80) return truncate(d.name, 8);
-                return d.name;
+                const maxChars = Math.floor((w - 16) / 8.5);
+                if (d.name.length <= maxChars) return d.name;
+                if (maxChars < 5) return '';
+                return d.name.slice(0, maxChars - 1) + '…';
             });
 
         bands.exit().remove();
@@ -323,18 +355,19 @@ const Timeline = (() => {
         const layer = g.select('.layer-axis');
         layer.selectAll('*').remove();
 
-        // Determine tick interval based on zoom level
+        // Determine tick interval from pixel density, not year span alone —
+        // the widest label ("4000 BC" at 14px semibold on mobile) needs ~64px,
+        // so ticks are capped at one per MIN_TICK_PX regardless of viewport.
         const domain = s.domain();
         const span = domain[1] - domain[0];
-        let interval;
-        if (span > 3000) interval = 500;
-        else if (span > 1500) interval = 200;
-        else if (span > 500) interval = 100;
-        else if (span > 200) interval = 50;
-        else if (span > 80) interval = 20;
-        else if (span > 30) interval = 10;
-        else if (span > 10) interval = 5;
-        else interval = 1;
+        const MIN_TICK_PX = 80;
+        const plotWidth = Math.max(1, width - MARGIN.left - MARGIN.right);
+        const maxTicks = Math.max(2, Math.floor(plotWidth / MIN_TICK_PX));
+        const steps = [1, 2, 5, 10, 20, 25, 50, 100, 200, 250, 500, 1000, 2000];
+        let interval = steps[steps.length - 1];
+        for (const step of steps) {
+            if (span / step <= maxTicks) { interval = step; break; }
+        }
 
         const start = Math.ceil(domain[0] / interval) * interval;
         const ticks = [];
@@ -450,13 +483,18 @@ const Timeline = (() => {
             const x2 = end !== start ? xS(end) : x1;
             const barWidth = Math.max(x2 - x1, 2);
 
-            // Find first lane where this item fits
+            // Find first lane where this item fits.
+            // Label width estimate must match the *rendered* font: 12–14px,
+            // semibold (and bumped by !important CSS on mobile) — the old
+            // 6.5px/char guess under-reserved and caused label pile-ups.
             let lane = 0;
-            const labelWidth = d.name.length * 6.5 + LABEL_PADDING * 2;
+            const labelFs = (d.significance === 'major' ? 14 : d.significance === 'moderate' ? 13 : 12)
+                + (isMobile() ? 1 : 0);
+            const labelWidth = d.name.length * labelFs * 0.64 + LABEL_PADDING * 2 + 8;
             const totalWidth = barWidth + labelWidth;
 
             for (lane = 0; lane < lanes.length; lane++) {
-                if (lanes[lane] <= x1 - 4) break;
+                if (lanes[lane] <= x1 - 12) break;
             }
             if (lane === lanes.length) lanes.push(0);
             lanes[lane] = x1 + totalWidth;
@@ -478,10 +516,19 @@ const Timeline = (() => {
         // Remove old
         groups.exit().remove();
 
-        // Enter
+        // Enter — items are keyboard-reachable buttons, not just click targets
         const enter = groups.enter().append('g')
             .attr('class', d => `timeline-item ${className} confidence-${d.dateConfidence} significance-${d.significance}`)
+            .attr('tabindex', 0)
+            .attr('role', 'button')
+            .attr('aria-label', d => `${d.name}, ${d.type}, ${formatDateRange(d)}`)
             .on('click', (event, d) => onItemClick(d))
+            .on('keydown', (event, d) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    onItemClick(d);
+                }
+            })
             .on('mouseenter', (event, d) => showTooltip(event, d))
             .on('mouseleave', hideTooltip);
 
@@ -554,27 +601,43 @@ const Timeline = (() => {
     }
 
     function onItemClick(d) {
-        if (d.type === 'person') {
-            Api.getPersonDetail(d.id).then(detail => {
+        hideTooltip(); // the detail panel supersedes the hover tooltip
+        const load = d.type === 'person'
+            ? Api.getPersonDetail(d.id).then(detail => {
                 if (detail) State.setSelectedItem({ type: 'person', ...detail });
-            });
-        } else {
-            Api.getEventDetail(d.id).then(detail => {
+              })
+            : Api.getEventDetail(d.id).then(detail => {
                 if (detail) State.setSelectedItem({ type: 'event', ...detail });
-            });
+              });
+        load.catch(() => showLoadError(d.name));
+    }
+
+    // Transient non-blocking error toast for failed detail loads
+    function showLoadError(name) {
+        let el = document.getElementById('timeline-error-toast');
+        if (!el) {
+            el = document.createElement('div');
+            el.id = 'timeline-error-toast';
+            el.className = 'hint-toast error';
+            el.setAttribute('role', 'alert');
+            document.body.appendChild(el);
         }
+        el.textContent = `Couldn’t load “${name}” — check your connection and tap it again.`;
+        el.classList.add('visible');
+        clearTimeout(el._t);
+        el._t = setTimeout(() => el.classList.remove('visible'), 4000);
     }
 
     function showTooltip(event, d) {
-        // Don't show tooltips on touch devices — the detail panel handles it
-        if ('ontouchstart' in window || navigator.maxTouchPoints > 0) return;
+        // Don't show tooltips on touch devices — long-press peek + detail panel handle it
+        if (isTouch) return;
 
         const tooltip = document.getElementById('tooltip');
         const dates = formatDateRange(d);
 
         let ageStr = '';
         if (d.type === 'person' && d.startYear != null && d.endYear != null) {
-            ageStr = ` (age ${d.endYear - d.startYear})`;
+            ageStr = ` (age ${Utils.yearSpan(d.startYear, d.endYear)})`;
         }
 
         tooltip.innerHTML = `
@@ -614,16 +677,11 @@ const Timeline = (() => {
     }
 
     function zoomToYear(year) {
-        const s = getVisibleXScale();
-        const domain = s.domain();
-        const span = domain[1] - domain[0];
-
-        // Center on the year
         const targetX = xScale(year);
         const centerX = width / 2;
         const tx = centerX - targetX * currentTransform.k;
 
-        svg.transition().duration(500).call(
+        svg.transition().duration(prefersReduced() ? 0 : 500).call(
             zoom.transform,
             d3.zoomIdentity.translate(tx, currentTransform.y).scale(currentTransform.k)
         );
@@ -647,11 +705,7 @@ const Timeline = (() => {
 
     // ── Helpers ──────────────────────────────────────────────
 
-    function formatYear(y) {
-        if (y < 0) return `${Math.abs(y)} BC`;
-        if (y === 0) return '1 BC';
-        return `AD ${y}`;
-    }
+    function formatYear(y) { return Utils.formatYear(y); }
 
     function formatDateRange(d) {
         const start = d.startYear;
@@ -668,11 +722,7 @@ const Timeline = (() => {
         return `${tilde(approx)}${formatYear(year)}`;
     }
 
-    function escapeHtml(str) {
-        const div = document.createElement('div');
-        div.textContent = str;
-        return div.innerHTML;
-    }
+    function escapeHtml(str) { return Utils.escapeHtml(str); }
 
     function truncate(str, len) {
         return str.length > len ? str.slice(0, len) + '…' : str;
@@ -686,5 +736,5 @@ const Timeline = (() => {
         };
     }
 
-    return { init, render, fitAll, zoomToYear, scrollToItem, highlightSelected, formatYear, formatDateRange, escapeHtml };
+    return { init, render, refresh, fitAll, zoomToYear, scrollToItem, highlightSelected, formatYear, formatDateRange, escapeHtml };
 })();

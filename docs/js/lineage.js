@@ -2,6 +2,12 @@
 const Lineage = (() => {
     let allPeople = [];
     let activeIndex = -1;
+    let _zoomBehavior = null;
+    let _svgInner = null;
+    let _lastTreeBounds = null;
+
+    function isSmallScreen() { return window.innerWidth <= 480; }
+    function isMobile() { return window.matchMedia('(max-width: 767px)').matches; }
 
     function init() {
         const input = document.getElementById('lineage-search');
@@ -27,9 +33,10 @@ const Lineage = (() => {
                 updateActive(items);
             } else if (e.key === 'Enter') {
                 e.preventDefault();
-                if (activeIndex >= 0 && activeIndex < items.length) {
-                    items[activeIndex].click();
-                }
+                // Default to the first suggestion when none is highlighted —
+                // typing a name and pressing Enter must always do something.
+                const idx = activeIndex >= 0 ? activeIndex : 0;
+                if (idx < items.length) items[idx].click();
             } else if (e.key === 'Escape') {
                 hideList();
             }
@@ -39,6 +46,15 @@ const Lineage = (() => {
         document.addEventListener('click', (e) => {
             if (!e.target.closest('.lineage-autocomplete')) hideList();
         });
+
+        // Recenter button (mobile)
+        const recenter = document.getElementById('btn-lineage-recenter');
+        if (recenter) {
+            recenter.addEventListener('click', () => {
+                centerOnSubject();
+                if (window._vibrate) window._vibrate(8);
+            });
+        }
     }
 
     function showSuggestions(people) {
@@ -260,7 +276,13 @@ const Lineage = (() => {
 
         // ── Custom layout: d3.tree for vertical placement, then shift spouses beside ──
 
-        const nodeW = 160, nodeH = 60, spouseGap = 10, gapX = 30, gapY = 50;
+        // Mobile-friendly node sizing (smaller cards on small phones)
+        const small = isSmallScreen();
+        const nodeW = small ? 110 : 160;
+        const nodeH = small ? 52 : 60;
+        const spouseGap = small ? 8 : 10;
+        const gapX = small ? 18 : 30;
+        const gapY = small ? 38 : 50;
         // Use wider node size to account for spouse cards
         const coupleNodeW = nodeW * 2 + spouseGap + gapX;
 
@@ -294,6 +316,8 @@ const Lineage = (() => {
 
         const g = svg.append('g')
             .attr('transform', `translate(${offsetX}, ${offsetY})`);
+        _svgInner = g;
+        _lastTreeBounds = { svgW, svgH, offsetX, offsetY };
 
         // ── Draw links ──
         // Links go from parent couple center-bottom to child top
@@ -354,34 +378,39 @@ const Lineage = (() => {
             sel.append('text')
                 .attr('class', 'lineage-name')
                 .attr('x', nodeW / 2)
-                .attr('y', 20)
+                .attr('y', small ? 18 : 20)
                 .attr('text-anchor', 'middle')
                 .style('pointer-events', 'none')
+                .style('font-size', small ? '11px' : '13px')
                 .text(d => isSpouse ? d.data.spouse.name : d.data.name);
 
             sel.append('text')
                 .attr('class', 'lineage-dates')
                 .attr('x', nodeW / 2)
-                .attr('y', 36)
+                .attr('y', small ? 32 : 36)
                 .attr('text-anchor', 'middle')
                 .style('pointer-events', 'none')
+                .style('font-size', small ? '10px' : '11px')
                 .text(d => {
                     const p = isSpouse ? d.data.spouse : d.data;
                     const dates = formatPersonDates(p);
                     if (!dates) return '';
                     const age = (p.birthYear != null && p.deathYear != null)
-                        ? ` (${p.deathYear - p.birthYear})`
+                        ? ` (${Utils.yearSpan(p.birthYear, p.deathYear)})`
                         : '';
                     return dates + age;
                 });
 
-            sel.append('text')
-                .attr('class', 'lineage-role')
-                .attr('x', nodeW / 2)
-                .attr('y', 50)
-                .attr('text-anchor', 'middle')
-                .style('pointer-events', 'none')
-                .text(d => (isSpouse ? d.data.spouse.role : d.data.role) || '');
+            // Hide role label on small phones to keep cards compact
+            if (!small) {
+                sel.append('text')
+                    .attr('class', 'lineage-role')
+                    .attr('x', nodeW / 2)
+                    .attr('y', 50)
+                    .attr('text-anchor', 'middle')
+                    .style('pointer-events', 'none')
+                    .text(d => (isSpouse ? d.data.spouse.role : d.data.role) || '');
+            }
 
             // Click to open detail panel
             sel.each(function (d) {
@@ -444,8 +473,12 @@ const Lineage = (() => {
             }
         }
 
-        // Enable click-and-drag panning
-        enableDragPan(container);
+        // Enable click-and-drag panning (desktop) and D3 zoom (mobile pinch/pan)
+        if (isMobile()) {
+            enableD3Zoom(svg, g, container);
+        } else {
+            enableDragPan(container);
+        }
 
         // Scroll subject into view
         let subjectD = root.descendants().find(d => d.data.isSubject);
@@ -453,9 +486,63 @@ const Lineage = (() => {
             subjectD = root.descendants().find(d => d.data.spouse && d.data.spouse.isSubject);
         }
         if (subjectD) {
-            const scrollX = subjectD.x + offsetX - container.clientWidth / 2;
-            const scrollY = subjectD.y + offsetY - container.clientHeight / 2;
-            container.scrollTo({ left: scrollX, top: scrollY, behavior: 'smooth' });
+            if (isMobile() && _zoomBehavior) {
+                // Center the subject in the viewport via D3 zoom transform
+                const cw = container.clientWidth;
+                const ch = container.clientHeight;
+                const sx = subjectD.x + offsetX;
+                const sy = subjectD.y + offsetY + nodeH / 2;
+                const k = Math.min(1, cw / svgW, ch / svgH * 1.2) || 1;
+                const tx = cw / 2 - sx * k;
+                const ty = ch / 2 - sy * k;
+                svg.transition().duration(400).call(
+                    _zoomBehavior.transform,
+                    d3.zoomIdentity.translate(tx, ty).scale(k)
+                );
+            } else {
+                const scrollX = subjectD.x + offsetX - container.clientWidth / 2;
+                const scrollY = subjectD.y + offsetY - container.clientHeight / 2;
+                container.scrollTo({ left: scrollX, top: scrollY, behavior: 'smooth' });
+            }
+        }
+    }
+
+    /** Mobile: D3 zoom on the SVG so users can pinch-pan-zoom the tree. */
+    function enableD3Zoom(svg, inner, container) {
+        // Make SVG fill container so D3 zoom transforms map sensibly
+        svg.style('width', '100%').style('height', '100%');
+        container.style.touchAction = 'none';
+        _zoomBehavior = d3.zoom()
+            .scaleExtent([0.3, 4])
+            .on('zoom', (event) => {
+                const baseT = `translate(${_lastTreeBounds.offsetX}, ${_lastTreeBounds.offsetY})`;
+                inner.attr('transform', `${event.transform} ${baseT}`);
+            });
+        svg.call(_zoomBehavior);
+        svg.on('dblclick.zoom', null);
+    }
+
+    function centerOnSubject() {
+        const svg = d3.select('#lineage-svg');
+        const container = document.getElementById('lineage-container');
+        if (isMobile() && _zoomBehavior) {
+            // Reset to 1x identity centered
+            const cw = container.clientWidth;
+            const ch = container.clientHeight;
+            if (!_lastTreeBounds) return;
+            const k = Math.min(1, cw / _lastTreeBounds.svgW, ch / _lastTreeBounds.svgH);
+            const tx = (cw - _lastTreeBounds.svgW * k) / 2;
+            const ty = (ch - _lastTreeBounds.svgH * k) / 2;
+            svg.transition().duration(300).call(
+                _zoomBehavior.transform,
+                d3.zoomIdentity.translate(tx, ty).scale(k)
+            );
+        } else {
+            container.scrollTo({
+                left: (container.scrollWidth - container.clientWidth) / 2,
+                top: (container.scrollHeight - container.clientHeight) / 2,
+                behavior: 'smooth'
+            });
         }
     }
 
