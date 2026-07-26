@@ -27,6 +27,7 @@ const DetailPanel = (() => {
         document.getElementById('btn-close-detail').addEventListener('click', close);
         initSheetGestures();
         initSwipeBack();
+        initRefLinks();
 
         // Prevent drag-to-pan handlers on underlying containers from
         // intercepting scroll/touch inside the detail panel
@@ -402,12 +403,12 @@ const DetailPanel = (() => {
 
         // Description
         if (p.description) {
-            html += `<div class="detail-section"><h3>Description</h3><p class="detail-description">${escapeHtml(p.description)}</p></div>`;
+            html += `<div class="detail-section"><h3>Description</h3><p class="detail-description">${prose(p.description)}</p></div>`;
         }
 
         // Date notes
         if (p.dateNotes) {
-            html += `<div class="detail-section"><h3>Chronology Notes</h3><p class="detail-description date-uncertain">${escapeHtml(p.dateNotes)}</p></div>`;
+            html += `<div class="detail-section"><h3>Chronology Notes</h3><p class="detail-description date-uncertain">${prose(p.dateNotes)}</p></div>`;
         }
 
         // Related events
@@ -462,12 +463,12 @@ const DetailPanel = (() => {
 
         // Description
         if (e.description) {
-            html += `<div class="detail-section"><h3>Description</h3><p class="detail-description">${escapeHtml(e.description)}</p></div>`;
+            html += `<div class="detail-section"><h3>Description</h3><p class="detail-description">${prose(e.description)}</p></div>`;
         }
 
         // Date notes
         if (e.dateNotes) {
-            html += `<div class="detail-section"><h3>Chronology Notes</h3><p class="detail-description date-uncertain">${escapeHtml(e.dateNotes)}</p></div>`;
+            html += `<div class="detail-section"><h3>Chronology Notes</h3><p class="detail-description date-uncertain">${prose(e.dateNotes)}</p></div>`;
         }
 
         // People involved
@@ -562,7 +563,7 @@ const DetailPanel = (() => {
         html += '</dl></div>';
 
         if (s.stopDescription) {
-            html += `<div class="detail-section"><h3>Description</h3><p class="detail-description">${escapeHtml(s.stopDescription)}</p></div>`;
+            html += `<div class="detail-section"><h3>Description</h3><p class="detail-description">${prose(s.stopDescription)}</p></div>`;
         }
 
         // Scripture: journey-stop references become the same expandable
@@ -661,6 +662,45 @@ const DetailPanel = (() => {
     }
 
     function escapeHtml(str) { return Utils.escapeHtml(str); }
+
+    // Escape prose, then make every scripture reference in it clickable
+    function prose(str) {
+        const escaped = escapeHtml(str);
+        return (typeof BibleText !== 'undefined') ? BibleText.linkifyRefs(escaped) : escaped;
+    }
+
+    /**
+     * Inline reference clicks: expand a passage popout directly below the
+     * paragraph containing the reference (clicking the same ref again
+     * collapses it). One delegated listener covers all rendered content.
+     */
+    function initRefLinks() {
+        content().addEventListener('click', e => {
+            const btn = e.target.closest('.ref-link');
+            if (!btn) return;
+            const ref = btn.dataset.ref;
+            const block = btn.closest('p, dd, li, div');
+            if (!block) return;
+            let pop = block.nextElementSibling;
+            const isOurs = pop && pop.classList.contains('ref-popout');
+            if (isOurs && pop.dataset.ref === ref && !pop.hidden) {
+                pop.hidden = true;
+                btn.setAttribute('aria-expanded', 'false');
+                return;
+            }
+            if (!isOurs) {
+                pop = document.createElement('div');
+                pop.className = 'scripture-body ref-popout';
+                pop.innerHTML = '<p class="scripture-preview"></p>';
+                block.after(pop);
+            }
+            pop.hidden = false;
+            pop.dataset.ref = ref;
+            btn.setAttribute('aria-expanded', 'true');
+            loadPassage(ref, pop);
+            if (window._vibrate) window._vibrate(6);
+        });
+    }
 
     function scriptureLink(s) {
         const text = escapeHtml(s.referenceText);

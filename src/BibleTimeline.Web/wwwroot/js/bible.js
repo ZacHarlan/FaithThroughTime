@@ -56,9 +56,14 @@ const BibleText = (() => {
         if (!m) return null;
         const startCh = parseInt(m[2]);
         const startV = m[3] ? parseInt(m[3]) : null;
-        // "1:1–2:25" → endCh 2, endV 25 · "3:1-24" → endV 24 · "12" → chapter
-        const endCh = m[4] ? parseInt(m[4]) : startCh;
-        const endV = m[5] ? parseInt(m[5]) : startV;
+        // "1:1–2:25" → endCh 2:endV 25 · "3:1-24" → endV 24 · "12" → chapter
+        // "18-20" (no colons) → CHAPTER range 18..20, not verses 18:18-20
+        let endCh = m[4] ? parseInt(m[4]) : startCh;
+        let endV = m[5] ? parseInt(m[5]) : startV;
+        if (!m[3] && !m[4] && m[5]) {
+            endCh = parseInt(m[5]);
+            endV = null;
+        }
         return { book: m[1].trim(), startCh, startV, endCh, endV };
     }
 
@@ -108,5 +113,57 @@ const BibleText = (() => {
         return { version, versions: man.versions, verses, truncated };
     }
 
-    return { manifest, getVersion, setVersion, getPassage, parseRef };
+    // ── Inline reference linkification ───────────────────────
+    // Canonical book names + the abbreviations used in the dataset's
+    // chronology notes ("Gen 5:5", "2 Kgs 18:2", "Exod 12:40-41").
+    const CANON = {};
+    [
+        'Genesis|Gen', 'Exodus|Exod|Exo', 'Leviticus|Lev', 'Numbers|Num',
+        'Deuteronomy|Deut|Deu', 'Joshua|Josh|Jos', 'Judges|Judg|Jdg', 'Ruth',
+        '1 Samuel|1 Sam', '2 Samuel|2 Sam', '1 Kings|1 Kgs|1 Kin|1 Ki',
+        '2 Kings|2 Kgs|2 Kin|2 Ki', '1 Chronicles|1 Chr|1 Chron',
+        '2 Chronicles|2 Chr|2 Chron', 'Ezra', 'Nehemiah|Neh', 'Esther|Esth|Est',
+        'Job', 'Psalms|Psalm|Pss|Psa|Ps', 'Proverbs|Prov|Pro',
+        'Ecclesiastes|Eccl|Ecc', 'Song of Solomon|Song of Songs|Song|Sol',
+        'Isaiah|Isa', 'Jeremiah|Jer', 'Lamentations|Lam', 'Ezekiel|Ezek|Eze',
+        'Daniel|Dan', 'Hosea|Hos', 'Joel', 'Amos', 'Obadiah|Obad',
+        'Jonah|Jon', 'Micah|Mic', 'Nahum|Nah', 'Habakkuk|Hab',
+        'Zephaniah|Zeph', 'Haggai|Hag', 'Zechariah|Zech|Zec', 'Malachi|Mal',
+        'Matthew|Matt|Mat', 'Mark|Mk', 'Luke|Lk', 'John|Jn', 'Acts',
+        'Romans|Rom', '1 Corinthians|1 Cor', '2 Corinthians|2 Cor',
+        'Galatians|Gal', 'Ephesians|Eph', 'Philippians|Phil|Php',
+        'Colossians|Col', '1 Thessalonians|1 Thess|1 Thes',
+        '2 Thessalonians|2 Thess|2 Thes', '1 Timothy|1 Tim', '2 Timothy|2 Tim',
+        'Titus|Tit', 'Philemon|Phlm|Philem', 'Hebrews|Heb', 'James|Jas',
+        '1 Peter|1 Pet', '2 Peter|2 Pet', '1 John|1 Jn', '2 John|2 Jn',
+        '3 John|3 Jn', 'Jude', 'Revelation|Rev'
+    ].forEach(group => {
+        const names = group.split('|');
+        for (const n of names) CANON[n.toLowerCase()] = names[0];
+    });
+    // Longest names first so "1 Chronicles" wins over "1 Chr" etc.
+    const NAME_PATTERN = Object.keys(CANON)
+        .sort((a, b) => b.length - a.length)
+        .map(n => n.replace(/ /g, '\\s+'))
+        .join('|');
+    const REF_REGEX = new RegExp(
+        `\\b(${NAME_PATTERN})\\.?\\s+(\\d+(?::\\d+)?(?:\\s*[-–—]\\s*\\d+(?::\\d+)?)?)`,
+        'gi'
+    );
+
+    /**
+     * Wrap scripture references in ALREADY-ESCAPED prose with clickable
+     * <button class="ref-link" data-ref="Canonical C:V"> elements.
+     * Input MUST be HTML-escaped text (this only adds trusted markup).
+     */
+    function linkifyRefs(escapedText) {
+        return escapedText.replace(REF_REGEX, (match, name, tail) => {
+            const canonical = CANON[name.toLowerCase().replace(/\s+/g, ' ')];
+            if (!canonical) return match;
+            const ref = `${canonical} ${tail.replace(/\s+/g, '')}`;
+            return `<button type="button" class="ref-link" data-ref="${ref}">${match}</button>`;
+        });
+    }
+
+    return { manifest, getVersion, setVersion, getPassage, parseRef, linkifyRefs };
 })();
