@@ -1,6 +1,7 @@
 // search.js — Search functionality
 const Search = (() => {
     let debounceTimer;
+    let _kbdIndex = -1;
     const DEBOUNCE_MS = 250;
 
     function init() {
@@ -17,10 +18,26 @@ const Search = (() => {
             debounceTimer = setTimeout(() => performSearch(q), DEBOUNCE_MS);
         });
 
+        // Keyboard navigation: arrows highlight, Enter opens (the lineage
+        // autocomplete had this; the header search inexplicably didn't)
         input.addEventListener('keydown', e => {
             if (e.key === 'Escape') {
                 dropdown.classList.add('hidden');
                 input.blur();
+                return;
+            }
+            const items = [...dropdown.querySelectorAll('.search-result-item[data-id]')];
+            if (!items.length || dropdown.classList.contains('hidden')) return;
+            if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+                e.preventDefault();
+                const dir = e.key === 'ArrowDown' ? 1 : -1;
+                _kbdIndex = Math.max(0, Math.min(items.length - 1, _kbdIndex + dir));
+                items.forEach((el, i) => el.classList.toggle('kbd-active', i === _kbdIndex));
+                items[_kbdIndex].scrollIntoView({ block: 'nearest' });
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                const target = _kbdIndex >= 0 ? items[_kbdIndex] : items[0];
+                if (target) onResultClick(target);
             }
         });
 
@@ -45,15 +62,30 @@ const Search = (() => {
                 return;
             }
 
-            dropdown.innerHTML = results.map(r => `
-                <div class="search-result-item" data-type="${r.type}" data-id="${r.id}" data-year="${r.startYear || ''}">
-                    <div class="result-name">${escapeHtml(r.name)}</div>
-                    <div class="result-meta">
-                        ${capitalize(r.type)}${r.startYear ? ` · ${Timeline.formatYear(r.startYear)}` : ''}
-                        ${r.snippet ? ` — ${truncate(escapeHtml(r.snippet), 80)}` : ''}
-                    </div>
-                </div>
-            `).join('');
+            // Group like the mobile overlay: People / Events / Books headers
+            const groups = { person: [], event: [], book: [] };
+            for (const r of results) {
+                (groups[r.type] || groups.event).push(r);
+            }
+            const labels = { person: 'People', event: 'Events', book: 'Books' };
+            const parts = [];
+            for (const key of ['person', 'event', 'book']) {
+                if (!groups[key].length) continue;
+                parts.push(`<div class="result-group-header">${labels[key]} · ${groups[key].length}</div>`);
+                for (const r of groups[key]) {
+                    parts.push(`
+                        <div class="search-result-item" data-type="${r.type}" data-id="${r.id}" data-year="${r.startYear || ''}">
+                            <div class="result-name">${escapeHtml(r.name)}</div>
+                            <div class="result-meta">
+                                ${capitalize(r.type)}${r.startYear ? ` · ${Timeline.formatYear(r.startYear)}` : ''}
+                                ${r.snippet ? ` — ${truncate(escapeHtml(r.snippet), 80)}` : ''}
+                            </div>
+                        </div>
+                    `);
+                }
+            }
+            dropdown.innerHTML = parts.join('');
+            _kbdIndex = -1;
 
             dropdown.classList.remove('hidden');
 
@@ -78,7 +110,7 @@ const Search = (() => {
 
         // Zoom to year and scroll to item
         if (year !== null) {
-            Timeline.zoomToYear(year);
+            Timeline.zoomToYear(year, 250);
         }
 
         // Open detail and scroll to the item after zoom transition completes

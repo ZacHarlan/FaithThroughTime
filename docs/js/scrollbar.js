@@ -41,7 +41,9 @@ const EraScrubber = (() => {
     function fitToEra(p) {
         if (!p || typeof Timeline === 'undefined') return;
         const center = (p.startYear + p.endYear) / 2;
-        Timeline.zoomToYear(center);
+        // Actually FIT the era (with breathing room) — a same-zoom pan
+        // moved the view ~8px on a 6,000-year canvas and read as a no-op
+        Timeline.zoomToYear(center, (p.endYear - p.startYear) * 1.15);
     }
 
     function setActive(activeItem, ribbon) {

@@ -209,7 +209,6 @@
 
         <!-- Timeline Canvas -->
         <main id="timeline-container">
-            <div id="pull-to-refresh" class="pull-to-refresh mobile-only">↓ Pull to refresh</div>
             <div id="timeline-loading" class="loading">
                 <h2 class="loading-title">Faith Through Time</h2>
                 <p>Loading interactive timeline…</p>
@@ -224,8 +223,6 @@
             </div>
             <svg id="timeline-svg"></svg>
             <div id="tooltip" class="tooltip hidden"></div>
-            <!-- Long-press peek card (touch) -->
-            <div id="peek-card" class="peek-card hidden" aria-hidden="true"></div>
             <!-- Era ribbon (mobile, horizontal) -->
             <div id="era-ribbon" class="era-ribbon mobile-only" role="group" aria-label="Jump to era"></div>
             <!-- Floating timeline FAB cluster (mobile) -->
@@ -316,7 +313,7 @@
         <div id="lineage-container">
             <div class="lineage-empty">
                 <p>Select a person to view their family tree</p>
-                <p class="lineage-hint">Use the dropdown above to choose a biblical figure and see their ancestors and descendants.</p>
+                <p class="lineage-hint">Start typing a name above and pick a biblical figure to see their ancestors and descendants.</p>
             </div>
             <svg id="lineage-svg"></svg>
         </div>

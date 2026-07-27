@@ -29,12 +29,6 @@ const DetailPanel = (() => {
         initSwipeBack();
         initRefLinks();
 
-        // Prevent drag-to-pan handlers on underlying containers from
-        // intercepting scroll/touch inside the detail panel
-        const p = panel();
-        p.addEventListener('mousedown', e => e.stopPropagation());
-        p.addEventListener('touchstart', e => e.stopPropagation(), { passive: true });
-        p.addEventListener('wheel', e => e.stopPropagation(), { passive: true });
 
         // Re-evaluate on resize / orientation
         window.addEventListener('resize', () => {
@@ -61,7 +55,6 @@ const DetailPanel = (() => {
 
         const heightFor = (snap) => {
             const vh = window.innerHeight;
-            const navH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--bottom-nav-height')) || 64;
             const headerH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-height')) || 52;
             switch (snap) {
                 case 'peek': return 96;
@@ -223,6 +216,9 @@ const DetailPanel = (() => {
             _invoker = document.activeElement;
         }
 
+        // Sheet and filter drawer are mutually exclusive on mobile
+        if (isMobile() && typeof Filters !== 'undefined') Filters.closeDrawer();
+
         panel().classList.remove('hidden');
 
         // Move focus into the panel so keyboard/SR users land where the
@@ -314,9 +310,9 @@ const DetailPanel = (() => {
     const navStack = [];
 
     function close() {
-        // Consume our history entry first; popstate re-enters close() with
-        // the surface manager in its popping state, which falls through here.
-        if (window._surfaces && window._surfaces.requestClose('detail')) return;
+        // Surface-history bookkeeping (consumes our entry); closing proceeds
+        // synchronously here regardless — the old async round-trip raced.
+        if (window._surfaces) window._surfaces.requestClose('detail');
         panel().classList.add('hidden');
         setSnap('hidden', { haptic: false });
         navStack.length = 0;
@@ -805,9 +801,17 @@ const DetailPanel = (() => {
         });
     }
 
-    function chapterRefLink(text) {
-        return escapeHtml(text);
+    /** Refresh the mini-map hint when the panel is carried across tabs. */
+    function refreshMapHint() {
+        const btn = content().querySelector('#btn-open-map');
+        if (!btn) return;
+        const mapTab = document.getElementById('map-tab');
+        const onMapTab = mapTab && !mapTab.classList.contains('hidden');
+        const label = onMapTab ? 'Show on map' : 'Open in Map view';
+        btn.setAttribute('aria-label', label);
+        const hint = btn.querySelector('.mini-map-hint');
+        if (hint) hint.innerHTML = '<svg class="icon"><use href="#i-location"/></svg> ' + label;
     }
 
-    return { init, show, close };
+    return { init, show, close, refreshMapHint };
 })();
