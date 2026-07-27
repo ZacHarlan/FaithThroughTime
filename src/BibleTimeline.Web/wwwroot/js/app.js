@@ -22,9 +22,21 @@
     const Surfaces = (() => {
         const stack = [];
         const closers = {};
+        const queuedOpens = [];
         let popping = false;
+        let pendingBack = 0;   // programmatic history.back()s in flight
+        let orphaned = 0;      // history entries whose surface closed out of order
+
         function register(name, closeFn) { closers[name] = closeFn; }
+
         function opened(name, url) {
+            // A programmatic back() is still in flight: pushing now would
+            // land BEFORE the back executes and get eaten by it (this was
+            // the mobile search dead-end). Queue until the popstate settles.
+            if (pendingBack > 0) {
+                queuedOpens.push([name, url]);
+                return;
+            }
             if (stack[stack.length - 1] === name) {
                 // Already top (e.g. drill-down within the detail panel) —
                 // just keep the URL current, no extra history entry.
@@ -34,27 +46,64 @@
             stack.push(name);
             history.pushState({ surface: name }, '', url);
         }
+
+        /**
+         * Bookkeeping for a surface the CALLER is closing synchronously.
+         * Always returns false — callers proceed with their own close.
+         * (The old design returned true and relied on the async popstate to
+         * re-enter close(); the race corrupted the stack — C1/C2/C3.)
+         */
         function requestClose(name) {
-            if (popping) return false;
             const i = stack.lastIndexOf(name);
             if (i === -1) return false;
-            if (i === stack.length - 1) { history.back(); return true; }
-            // Closed out of order (e.g. tab switch closes several at once):
-            // drop from our stack; the orphaned entry is absorbed on next pop.
+            const wasTop = i === stack.length - 1;
             stack.splice(i, 1);
+            if (!popping) {
+                if (wasTop) {
+                    pendingBack++;
+                    window._suppressNextHash = (window._suppressNextHash || 0) + 1;
+                    // If the back() changes no hash, no hashchange fires and
+                    // the token would leak — expire it shortly after.
+                    setTimeout(() => {
+                        if (window._suppressNextHash > 0) window._suppressNextHash--;
+                    }, 250);
+                    history.back();
+                } else {
+                    orphaned++;
+                }
+            }
             return false;
         }
+
         function closeTop() {
             const name = stack[stack.length - 1];
-            return name ? requestClose(name) : false;
+            if (!name) return false;
+            if (closers[name]) closers[name]();
+            return true;
         }
+
         window.addEventListener('popstate', () => {
+            if (pendingBack > 0) {
+                // Our own back() settling — swallow, then flush queued opens
+                pendingBack--;
+                if (pendingBack === 0 && queuedOpens.length) {
+                    const q = queuedOpens.splice(0);
+                    for (const [n, u] of q) opened(n, u);
+                }
+                return;
+            }
             const name = stack.pop();
-            if (!name) return;
+            if (!name) {
+                // Either a real back-navigation with no surfaces open, or an
+                // orphaned entry from an out-of-order close — absorb the latter.
+                if (orphaned > 0) orphaned--;
+                return;
+            }
             popping = true;
             try { if (closers[name]) closers[name](); }
             finally { popping = false; }
         });
+
         return { register, opened, requestClose, closeTop };
     })();
     window._surfaces = Surfaces;
@@ -166,6 +215,7 @@
             // Re-measure: a rotation while another tab was visible measured
             // the hidden container at 0×0 and blanked the scale range
             if (Timeline.refresh) Timeline.refresh();
+            if (DetailPanel.refreshMapHint) DetailPanel.refreshMapHint();
         } else if (tab === 'lineage') {
             document.getElementById('lineage-tab').classList.remove('hidden');
             if (!lineageLoaded) {
@@ -182,6 +232,7 @@
                 MapView.init();
             }
             await MapView.activate();
+            if (DetailPanel.refreshMapHint) DetailPanel.refreshMapHint();
         } else if (tab === 'search') {
             // Open mobile search overlay
             if (searchOverlay) {
@@ -231,7 +282,7 @@
     const closeSearchBtn = document.getElementById('btn-close-search');
     if (closeSearchBtn) {
         closeSearchBtn.addEventListener('click', () => {
-            if (Surfaces.requestClose('search')) return; // popstate re-enters here
+            Surfaces.requestClose('search'); // bookkeeping only; close is ours
             switchTab(lastNonSearchTab || 'timeline');
         });
     }
@@ -345,16 +396,16 @@
             const detail = await Api.getPersonDetail(id);
             if (detail) {
                 State.setSelectedItem({ type: 'person', ...detail });
-                if (year) Timeline.zoomToYear(year);
+                if (year) Timeline.zoomToYear(year, 250);
             }
         } else if (type === 'event') {
             const detail = await Api.getEventDetail(id);
             if (detail) {
                 State.setSelectedItem({ type: 'event', ...detail });
-                if (year) Timeline.zoomToYear(year);
+                if (year) Timeline.zoomToYear(year, 250);
             }
         } else {
-            if (year) Timeline.zoomToYear(year);
+            if (year) Timeline.zoomToYear(year, 400);
         }
     }
 
@@ -485,6 +536,13 @@
 
     // ── Deep link handling ──
     async function handleHash() {
+        // Programmatic history.back() (surface bookkeeping) restores an old
+        // hash like #map — that must NOT re-trigger a tab switch, or leaving
+        // the Map tab bounces straight back to it (audit C3).
+        if (window._suppressNextHash > 0) {
+            window._suppressNextHash--;
+            return;
+        }
         const hash = window.location.hash.replace('#', '');
         if (['lineage', 'map', 'search', 'saved'].includes(hash)) {
             switchTab(hash);
@@ -500,13 +558,13 @@
                 const detail = await Api.getPersonDetail(id);
                 if (detail) {
                     State.setSelectedItem({ type: 'person', ...detail });
-                    Timeline.zoomToYear(detail.birthYear || detail.deathYear);
+                    Timeline.zoomToYear(detail.birthYear || detail.deathYear, 250);
                 }
             } else {
                 const detail = await Api.getEventDetail(id);
                 if (detail) {
                     State.setSelectedItem({ type: 'event', ...detail });
-                    Timeline.zoomToYear(detail.startYear || detail.endYear);
+                    Timeline.zoomToYear(detail.startYear || detail.endYear, 250);
                 }
             }
         }
@@ -539,8 +597,6 @@
         // Handle deep link on load
         handleHash();
 
-        // Pull-to-refresh (mobile)
-        initPullToRefresh();
     } catch (err) {
         console.error('Failed to initialize:', err);
         const loading = document.getElementById('timeline-loading');
@@ -572,68 +628,6 @@
         toast.addEventListener('click', dismiss);
         setTimeout(dismiss, 6000);
     })();
-
-    function initPullToRefresh() {
-        const ptr = document.getElementById('pull-to-refresh');
-        if (!ptr) return;
-        const container = document.getElementById('timeline-container');
-        let startY = 0, startX = 0, pulling = false, dist = 0;
-        const threshold = 70;
-        const MIN_PULL = 12; // ignore jitters; don't fight taps/short drags
-
-        container.addEventListener('touchstart', e => {
-            // Only activate at top (scroll = 0) and on timeline tab
-            if (container.scrollTop > 0) return;
-            if (document.getElementById('app').style.display === 'none') return;
-            startY = e.touches[0].clientY;
-            startX = e.touches[0].clientX;
-            pulling = true;
-            dist = 0;
-        }, { passive: true });
-
-        container.addEventListener('touchmove', e => {
-            if (!pulling) return;
-            const dy = e.touches[0].clientY - startY;
-            const dx = e.touches[0].clientX - startX;
-            // Horizontal gesture → this is a D3 timeline pan, not a pull.
-            // Bail out for the rest of this touch.
-            if (Math.abs(dx) > Math.max(24, dy)) {
-                pulling = false;
-                dist = 0;
-                ptr.style.transform = '';
-                ptr.style.opacity = '0';
-                return;
-            }
-            dist = dy;
-            if (dist < MIN_PULL) { ptr.style.opacity = '0'; return; }
-            const d = Math.min(dist, threshold * 1.5);
-            ptr.style.transform = `translateY(${d - 50}px)`;
-            ptr.style.opacity = Math.min(d / threshold, 1);
-            if (d >= threshold) {
-                ptr.textContent = '↻ Release to refresh';
-            } else {
-                ptr.textContent = '↓ Pull to refresh';
-            }
-        }, { passive: true });
-
-        container.addEventListener('touchend', async () => {
-            if (!pulling) return;
-            pulling = false;
-            if (dist >= threshold) {
-                ptr.textContent = 'Refreshing…';
-                ptr.style.transform = 'translateY(10px)';
-                try {
-                    await loadTimeline();
-                } catch (e) { /* ignore */ }
-            }
-            setTimeout(() => {
-                ptr.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
-                ptr.style.transform = 'translateY(-50px)';
-                ptr.style.opacity = '0';
-                setTimeout(() => { ptr.style.transition = ''; }, 300);
-            }, dist >= threshold ? 400 : 0);
-        });
-    }
 
     async function loadTimeline() {
         // Monotonic token: if a newer request started while this one was in

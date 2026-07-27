@@ -22,14 +22,15 @@ const Timeline = (() => {
     const POINT_RADIUS_MINOR = 4;
     const LABEL_PADDING = 6;
     const PERIOD_BAND_HEIGHT = 28;
-    // Pannable world bounds: creation-era start through ten years from now.
-    // Anything beyond is empty void — panning there just loses the user.
-    const MIN_YEAR = -4100;
-    const MAX_YEAR = new Date().getFullYear() + 10;
+    // Pannable world bounds with GENEROUS margins: ~5 centuries before the
+    // earliest data and ~1.25 centuries ahead. Bounded because unbounded
+    // zoom-out produced a 28,000 BC void with an unreadable tick smear;
+    // generous because a tight 10-year cap made edge labels a fight.
+    const MIN_YEAR = -4500;
+    const MAX_YEAR = new Date().getFullYear() + 124;
 
     let svg, g, xScale, zoom, width, height, container;
     let currentTransform = d3.zoomIdentity;
-    const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
     const isMobile = () => window.matchMedia('(max-width: 767px)').matches;
 
     function init() {
@@ -57,18 +58,20 @@ const Timeline = (() => {
         // ── Unified D3 zoom: handles wheel, pinch, single-finger pan, dblclick
         zoom = d3.zoom()
             .scaleExtent([0.1, 200])
+            // d3's default wheelDelta multiplies by 10 when ctrlKey is set,
+            // making ctrl+wheel zoom ~5.3x per notch. ~1.25x/notch instead.
+            .wheelDelta(event => -event.deltaY *
+                (event.deltaMode === 1 ? 0.05 : event.deltaMode ? 1 : 0.002))
             .filter(event => {
                 // Wheel: only pinch / Ctrl/⌘+wheel zooms — plain wheel and
                 // trackpad swipes PAN AND SCROLL via our own handler below.
                 // (Mac trackpad pinch arrives as wheel with ctrlKey set.)
                 if (event.type === 'wheel') return event.ctrlKey || event.metaKey;
-                // Touch: d3 gets PINCH only. Single-finger gestures go to the
-                // direction-locked handler below — d3 preventDefaults every
-                // touchmove, which real iOS WebKit treats as overriding
-                // touch-action: pan-y, killing native vertical flicks.
-                if (event.type.startsWith('touch')) {
-                    return event.touches && event.touches.length >= 2;
-                }
+                // Touch: d3 gets NONE of it. The touch FSM below owns
+                // single-finger pan AND pinch — d3 preventDefaults every
+                // touchmove (killing native scroll on iOS WebKit), and its
+                // start-only filter let post-pinch drags leak through.
+                if (event.type.startsWith('touch')) return false;
                 // Block right-click and middle-click pan
                 if (event.button) return false;
                 // Block clicks that started on an interactive element
@@ -89,48 +92,107 @@ const Timeline = (() => {
         svg.node().addEventListener('wheel', e => {
             if (e.ctrlKey || e.metaKey) return; // pinch/modifier zoom → d3
             e.preventDefault();
+            // A wheel during a held mouse drag reuses the live d3 gesture,
+            // whose stale mousemove sourceEvent would re-derive scrollTop
+            // from an old anchor — drop the anchor first.
+            _gestureClientY = null;
             if (e.deltaX) svg.call(zoom.translateBy, -e.deltaX / currentTransform.k, 0);
             if (e.deltaY) container.scrollTop += e.deltaY;
         }, { passive: false });
 
-        // Single-finger touch: direction-locked. Vertical → we do NOTHING
-        // (the browser scrolls natively via touch-action: pan-y — the only
-        // approach real iOS reliably honors). Horizontal → we pan time
-        // ourselves. Pinch stays with d3 via the filter above.
+        // ── Touch FSM: the SOLE owner of touch input ─────────────
+        // States: idle → undecided(<6px) → pan-x | native-y | pinch.
+        // Vertical → we do NOTHING (native scroll via touch-action: pan-y —
+        // the only approach real iOS honors). Horizontal → constrained pan.
+        // Pinch → constrained zoom anchored at the finger midpoint. The pan
+        // anchor is captured at axis-LOCK time, not touchstart, so grabbing
+        // a running animation doesn't jump.
         let _touch = null;
         const sn = svg.node();
-        sn.addEventListener('touchstart', e => {
-            if (e.touches.length !== 1) { _touch = null; return; }
+
+        function applyTouchTransform(x, k) {
+            const constrained = zoom.constrain()(
+                d3.zoomIdentity.translate(x, 0).scale(k),
+                [[MARGIN.left, 0], [width - MARGIN.right, height]],
+                zoom.translateExtent()
+            );
+            svg.call(zoom.transform, constrained);
+        }
+
+        function beginPinch(touches) {
+            const dx = touches[1].clientX - touches[0].clientX;
+            const dy = touches[1].clientY - touches[0].clientY;
             _touch = {
-                x: e.touches[0].clientX,
-                y: e.touches[0].clientY,
-                tx: currentTransform.x,
-                axis: null
+                mode: 'pinch',
+                k0: currentTransform.k,
+                x0: currentTransform.x,
+                dist0: Math.max(1, Math.hypot(dx, dy)),
+                mid0: (touches[0].clientX + touches[1].clientX) / 2
             };
+        }
+
+        sn.addEventListener('touchstart', e => {
+            if (e.touches.length === 1) {
+                _touch = { mode: 'undecided', x: e.touches[0].clientX, y: e.touches[0].clientY };
+            } else if (e.touches.length === 2) {
+                beginPinch(e.touches);
+            } else {
+                _touch = null;
+            }
         }, { passive: true });
+
         sn.addEventListener('touchmove', e => {
-            if (!_touch || e.touches.length !== 1) return;
+            if (!_touch) return;
+            if (_touch.mode === 'pinch') {
+                if (e.touches.length !== 2) return;
+                if (e.cancelable) e.preventDefault();
+                const ddx = e.touches[1].clientX - e.touches[0].clientX;
+                const ddy = e.touches[1].clientY - e.touches[0].clientY;
+                const dist = Math.max(1, Math.hypot(ddx, ddy));
+                const mid = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+                const se = zoom.scaleExtent();
+                const k = Math.max(se[0], Math.min(se[1], _touch.k0 * dist / _touch.dist0));
+                // Keep the world point under the initial midpoint anchored
+                const worldMid = (_touch.mid0 - _touch.x0) / _touch.k0;
+                applyTouchTransform(mid - worldMid * k, k);
+                return;
+            }
+            if (e.touches.length !== 1) return;
             const dx = e.touches[0].clientX - _touch.x;
             const dy = e.touches[0].clientY - _touch.y;
-            if (!_touch.axis) {
+            if (_touch.mode === 'undecided') {
                 if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return;
-                _touch.axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+                if (Math.abs(dx) > Math.abs(dy)) {
+                    _touch.mode = 'pan-x';
+                    // Lazy anchor: transform may have been animating until now
+                    _touch.baseTx = currentTransform.x;
+                    _touch.baseX = e.touches[0].clientX;
+                } else {
+                    _touch.mode = 'native-y';
+                }
             }
-            if (_touch.axis === 'x') {
+            if (_touch.mode === 'pan-x') {
                 if (e.cancelable) e.preventDefault();
-                svg.call(zoom.transform,
-                    d3.zoomIdentity.translate(_touch.tx + dx, 0).scale(currentTransform.k));
+                applyTouchTransform(
+                    _touch.baseTx + (e.touches[0].clientX - _touch.baseX),
+                    currentTransform.k);
             }
+            // native-y: the browser scrolls; we stay out of the way
         }, { passive: false });
-        sn.addEventListener('touchend', () => { _touch = null; });
+
+        sn.addEventListener('touchend', e => {
+            if (e.touches.length === 1) {
+                // pinch → one finger: re-enter undecided with a fresh origin
+                _touch = { mode: 'undecided', x: e.touches[0].clientX, y: e.touches[0].clientY };
+            } else if (e.touches.length === 0) {
+                _touch = null;
+            }
+        }, { passive: true });
         sn.addEventListener('touchcancel', () => { _touch = null; });
         // Disable D3's default double-click zoom so we can run our own
         // animated zoom centered on the tap.
         svg.on('dblclick.zoom', null);
         svg.on('dblclick', onDoubleTap);
-
-        // Long-press peek (touch)
-        if (isTouch) initLongPressPeek();
 
         // Resize handler
         window.addEventListener('resize', debounce(refresh, 150));
@@ -175,15 +237,19 @@ const Timeline = (() => {
     }
 
     /**
-     * Horizon clamping is DISABLED by request: the year-bound translateExtent
-     * plus edge-aware label handling caused more usability trouble than the
-     * empty-centuries problem it solved. The timeline pans freely into deep
-     * past and future; MIN_YEAR/MAX_YEAR remain only as fitAll guards.
+     * Constrain pan/zoom to [MIN_YEAR, MAX_YEAR] (generous margins around
+     * the data). extent is the PLOT area — with the default full-element
+     * extent, the constrain used to clamp MAX_YEAR into the margin strip.
      */
     function updateZoomBounds() {
         if (!zoom) return;
+        const x0 = xScale(MIN_YEAR);
+        const x1 = xScale(MAX_YEAR);
+        const plotWidth = width - MARGIN.left - MARGIN.right;
+        const minK = Math.min(1, plotWidth / (x1 - x0));
         zoom.extent([[MARGIN.left, 0], [width - MARGIN.right, height]])
-            .scaleExtent([0.1, 200]);
+            .scaleExtent([minK, 200])
+            .translateExtent([[x0, -Infinity], [x1, Infinity]]);
     }
 
     let _rafPending = false;
@@ -199,6 +265,7 @@ const Timeline = (() => {
 
     let _gestureScrollTop = 0;
     let _gestureClientY = null;
+    let _kAtGestureStart = null;
     function onZoomStart(event) {
         _gestureScrollTop = container.scrollTop;
         // Anchor on the viewport-stable clientY, NOT the D3 transform: D3
@@ -207,6 +274,7 @@ const Timeline = (() => {
         // into the next transform and oscillates (visible as violent jitter).
         const se = event.sourceEvent;
         _gestureClientY = (se && se.type === 'mousedown') ? se.clientY : null;
+        if (_kAtGestureStart === null) _kAtGestureStart = currentTransform.k;
     }
 
     function onZoom(event) {
@@ -222,105 +290,48 @@ const Timeline = (() => {
         svg.node().__zoom = constrained;
         currentTransform = constrained;
         scheduleRender();
-        // Hide peek on any pan/zoom
-        hidePeek();
     }
 
-    function onZoomEnd(event) {
-        // No additional bookkeeping currently; reserved for future inertia/edge bounce.
+    function onZoomEnd() {
+        // After a real zoom (scale changed), vertically scroll to where the
+        // visible time-window's items actually live — zooming used to land
+        // on blank lanes thousands of px away from the content.
+        const kChanged = _kAtGestureStart !== null &&
+            Math.abs(currentTransform.k / _kAtGestureStart - 1) > 0.05;
+        _kAtGestureStart = null;
+        if (kChanged) scrollToVisibleContent();
+    }
+
+    /** Scroll the container to the first lane band with items in view. */
+    function scrollToVisibleContent() {
+        if (!g || !container) return;
+        let minY = Infinity;
+        g.selectAll('.timeline-item').each(function(d) {
+            if (!d) return;
+            const xEnd = d.isRange ? d.x + d.w : d.x;
+            if (xEnd < 0 || d.x > width) return;
+            if (d.y < minY) minY = d.y;
+        });
+        if (minY === Infinity) return;
+        const cur = container.scrollTop;
+        // Leave the user alone if visible content is already on screen
+        if (minY > cur + 40 && minY < cur + container.clientHeight - 60) return;
+        container.scrollTo({
+            top: Math.max(0, minY - 70),
+            behavior: prefersReduced() ? 'auto' : 'smooth'
+        });
     }
 
     function onDoubleTap(event) {
+        // Items own their own click behavior — double-clicking one must not
+        // ALSO zoom (it used to zoom + open the panel + fetch twice)
+        if (event.target && event.target.closest && event.target.closest('.timeline-item')) return;
         // Smooth 2x zoom-in centered on tap (or zoom-out with shift)
         const dur = prefersReduced() ? 0 : 280;
         const factor = event.shiftKey ? 0.5 : 2;
         const [mx] = d3.pointer(event, svg.node());
         svg.transition().duration(dur).call(zoom.scaleBy, factor, [mx, 0]);
         if (window._vibrate) window._vibrate(10);
-    }
-
-    /**
-     * Long-press peek: hold 350ms on a timeline item to show a non-blocking
-     * preview card with name + dates. Move >8px or release before threshold
-     * cancels the peek and either pans or fires a tap.
-     */
-    function initLongPressPeek() {
-        const peekEl = document.getElementById('peek-card');
-        if (!peekEl) return;
-        let timer = null;
-        let startX = 0, startY = 0;
-        let activeData = null;
-
-        const cancel = () => {
-            if (timer) { clearTimeout(timer); timer = null; }
-        };
-
-        const onDown = (e) => {
-            if (e.touches && e.touches.length > 1) { cancel(); hidePeek(); return; }
-            const t = e.touches ? e.touches[0] : e;
-            const targetEl = e.target.closest('.timeline-item');
-            if (!targetEl) { cancel(); return; }
-            // Resolve bound D3 datum
-            const datum = d3.select(targetEl).datum();
-            if (!datum) return;
-            startX = t.clientX;
-            startY = t.clientY;
-            activeData = datum;
-            cancel();
-            timer = setTimeout(() => {
-                showPeek(datum, t.clientX, t.clientY);
-                if (window._vibrate) window._vibrate(15);
-            }, 350);
-        };
-        const onMove = (e) => {
-            if (!timer && peekEl.classList.contains('hidden')) return;
-            const t = e.touches ? e.touches[0] : e;
-            if (Math.hypot(t.clientX - startX, t.clientY - startY) > 8) {
-                cancel();
-                hidePeek();
-            }
-        };
-        const onUp = () => {
-            cancel();
-            hidePeek();
-            activeData = null;
-        };
-
-        const sn = svg.node();
-        sn.addEventListener('touchstart', onDown, { passive: true });
-        sn.addEventListener('touchmove', onMove, { passive: true });
-        sn.addEventListener('touchend', onUp);
-        sn.addEventListener('touchcancel', onUp);
-    }
-
-    function showPeek(d, clientX, clientY) {
-        const el = document.getElementById('peek-card');
-        if (!el) return;
-        const dates = formatDateRange(d);
-        const meta = `${d.type}${d.role ? ' · ' + d.role : ''}${d.category ? ' · ' + d.category : ''}`;
-        el.innerHTML = `
-            <div class="peek-meta">${escapeHtml(meta)}</div>
-            <div class="peek-name">${escapeHtml(d.name)}</div>
-            <div class="peek-dates">${dates}</div>
-        `;
-        const cRect = container.getBoundingClientRect();
-        // Default position: above the touch point
-        const pad = 12;
-        el.classList.remove('hidden');
-        const w = el.offsetWidth;
-        const h = el.offsetHeight;
-        let x = clientX - cRect.left - w / 2;
-        let y = clientY - cRect.top - h - 18;
-        if (x < pad) x = pad;
-        if (x + w > cRect.width - pad) x = cRect.width - w - pad;
-        if (y < pad) y = clientY - cRect.top + 24; // flip below if no room above
-        el.style.left = x + 'px';
-        el.style.top = y + 'px';
-    }
-
-    function hidePeek() {
-        const el = document.getElementById('peek-card');
-        if (el) el.classList.add('hidden');
     }
 
     function getVisibleXScale() {
@@ -606,10 +617,10 @@ const Timeline = (() => {
     function layoutAndRender(layer, items, xS, offsetY, type) {
         const cache = ensureLanes();
 
-        // With horizon clamping disabled there is no unreachable right edge:
-        // any label can be revealed by panning, so the flip/truncate
-        // machinery below stays dormant (Infinity never triggers it).
-        const rightEdgePx = Infinity;
+        // World right edge in current-zoom pixels — labels that cannot fit
+        // rightward before it flip left or ellipsize (last-resort logic in
+        // the culling pass below).
+        const rightEdgePx = xS(MAX_YEAR);
 
         const positioned = items.map(d => {
             const start = d.startYear ?? d.endYear;
@@ -780,6 +791,12 @@ const Timeline = (() => {
                 const labelX = d.flipLabel
                     ? (d.isRange ? d.x : d.x - r) - LABEL_PADDING
                     : (d.isRange ? d.x + d.w + LABEL_PADDING : d.x + r + LABEL_PADDING);
+                // A label starting left of the viewport renders amputated
+                // mid-word ("ision", "b Wrestles God") — hide it instead
+                if (!d.flipLabel && labelX < 2) {
+                    label.attr('display', 'none');
+                    return;
+                }
                 let labelText = d.name;
                 if (d.labelMaxPx != null) {
                     const charW = labelWidthFor(d) / Math.max(1, d.name.length);
@@ -829,8 +846,9 @@ const Timeline = (() => {
     }
 
     function showTooltip(event, d) {
-        // Don't show tooltips on touch devices — long-press peek + detail panel handle it
-        if (isTouch) return;
+        // Tooltips only where a hover-capable pointer exists (touch laptops
+        // with a mouse get them; pure touch devices use the detail panel)
+        if (!window.matchMedia('(hover: hover)').matches) return;
 
         const tooltip = document.getElementById('tooltip');
         const dates = formatDateRange(d);
@@ -889,14 +907,27 @@ const Timeline = (() => {
             .classed('selected', d => sel && d.type === sel.type && d.id === sel.id);
     }
 
-    function zoomToYear(year) {
-        const targetX = xScale(year);
-        const centerX = width / 2;
-        const tx = centerX - targetX * currentTransform.k;
-
+    /**
+     * Center on a year. With spanYears, also ZOOM so that span fills the
+     * plot — era pills and search jumps used to pan without fitting, moving
+     * the view by pixels on a 6,000-year canvas.
+     */
+    function zoomToYear(year, spanYears) {
+        let k = currentTransform.k;
+        if (spanYears && spanYears > 0) {
+            const plotWidth = width - MARGIN.left - MARGIN.right;
+            const spanPx = xScale(year + spanYears / 2) - xScale(year - spanYears / 2);
+            const se = zoom.scaleExtent();
+            k = Math.max(se[0], Math.min(se[1], plotWidth / spanPx));
+        }
+        const tx = width / 2 - xScale(year) * k;
+        const constrained = zoom.constrain()(
+            d3.zoomIdentity.translate(tx, 0).scale(k),
+            [[MARGIN.left, 0], [width - MARGIN.right, height]],
+            zoom.translateExtent()
+        );
         svg.transition().duration(prefersReduced() ? 0 : 500).call(
-            zoom.transform,
-            d3.zoomIdentity.translate(tx, currentTransform.y).scale(currentTransform.k)
+            zoom.transform, constrained
         );
     }
 
@@ -936,10 +967,6 @@ const Timeline = (() => {
     }
 
     function escapeHtml(str) { return Utils.escapeHtml(str); }
-
-    function truncate(str, len) {
-        return str.length > len ? str.slice(0, len) + '…' : str;
-    }
 
     function debounce(fn, ms) {
         let timer;

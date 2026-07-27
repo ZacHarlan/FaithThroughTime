@@ -367,6 +367,9 @@ const Filters = (() => {
         if (isOpen) {
             closeDrawer();
         } else {
+            // Drawer and detail sheet are mutually exclusive on mobile —
+            // stacked together the sheet buried the drawer's lower half
+            if (isMobile() && typeof DetailPanel !== 'undefined') DetailPanel.close();
             panel.classList.add('drawer-open');
             backdrop.classList.remove('hidden');
             requestAnimationFrame(() => backdrop.classList.add('visible'));
@@ -378,8 +381,8 @@ const Filters = (() => {
     function closeDrawer() {
         const panel = document.getElementById('filter-panel');
         if (!panel.classList.contains('drawer-open')) return;
-        // Route through history so the drawer's Back entry is consumed
-        if (window._surfaces && window._surfaces.requestClose('drawer')) return;
+        // Surface-history bookkeeping; closing proceeds synchronously
+        if (window._surfaces) window._surfaces.requestClose('drawer');
         const backdrop = document.getElementById('mobile-backdrop');
         panel.classList.remove('drawer-open');
         backdrop.classList.remove('visible');

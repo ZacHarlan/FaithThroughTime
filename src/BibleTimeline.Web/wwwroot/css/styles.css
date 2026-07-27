@@ -2750,3 +2750,45 @@ html, body {
     font-size: 13px;
     line-height: 1.6;
 }
+
+/* ── UX re-audit polish ────────────────────────────────────── */
+/* Desktop map controls: horizontal band (they stacked vertically —
+   .map-row flex rules only existed inside the mobile media query) */
+.map-header .map-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.map-row-slider { flex: 1; min-width: 220px; }
+.map-row-slider input[type="range"] { flex: 1; }
+
+/* No global .hidden rule existed — the search clear-X never hid */
+.btn-clear-search.hidden { display: none; }
+
+/* Mobile search input: text was rendered under the magnifier icon */
+.search-overlay-input-wrap { position: relative; }
+.search-overlay-input-wrap .search-overlay-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    pointer-events: none;
+    color: var(--text-muted);
+}
+.search-overlay-input-wrap input { padding-left: 40px; }
+
+/* First-visit hint: sit above the era ribbon, not on top of it */
+@media (max-width: 767px) {
+    .hint-toast {
+        bottom: calc(var(--bottom-nav-height) + var(--safe-bottom) + 72px);
+    }
+}
+
+/* Keyboard-highlighted desktop search result */
+.search-result-item.kbd-active {
+    background: var(--bg-hover);
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+}

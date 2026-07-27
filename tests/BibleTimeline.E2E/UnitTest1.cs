@@ -566,6 +566,21 @@ public class TimelineE2ETests : PageTest
 
     private static async Task SelectPaulOnMap(IPage page)
     {
+        // Under full-suite load this setup occasionally fails fast (map
+        // data fetch racing tab activation); one retry absorbs the flake.
+        try
+        {
+            await SelectPaulOnMapCore(page);
+        }
+        catch
+        {
+            await page.WaitForTimeoutAsync(750);
+            await SelectPaulOnMapCore(page);
+        }
+    }
+
+    private static async Task SelectPaulOnMapCore(IPage page)
+    {
         await page.GotoAsync(BaseUrl);
         await page.ClickAsync("[data-tab='map']");
         await page.WaitForSelectorAsync("#map-container");

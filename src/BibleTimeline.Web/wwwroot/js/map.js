@@ -176,12 +176,20 @@ const MapView = (() => {
             const slider = document.getElementById('map-year-slider');
             slider.min = minY - 5;
             slider.max = maxY + 5;
-            slider.value = maxY + 5;
-            updateYearLabel(parseInt(slider.value));
+            // Overview-first: show the FULL route polyline, but park the
+            // slider and step label at 1/N (the old end-parked slider with
+            // an empty label looked finished before it started). Stepping
+            // or playing switches to progressive filtering.
+            const first = currentJourney[0];
+            const firstYear = first.startYear ?? first.endYear ?? minY;
+            slider.value = firstYear;
+            updateYearLabel(firstYear);
+            currentStepIndex = 0;
 
             markersLayer.clearLayers();
             renderJourney();
             fitToJourney();
+            updateStepLabel(0, currentJourney.length, first.eventName);
         } catch {
             const label = document.getElementById('map-step-label');
             if (label) label.textContent = 'Couldn’t load this journey — try again.';
@@ -532,6 +540,17 @@ const MapView = (() => {
             updateYearLabel(val);
             if (currentJourney.length > 0) {
                 renderJourney(val);
+                // Keep the step label tracking the last stop reached
+                const list = getEventList();
+                let idx = -1;
+                for (let i = 0; i < list.length; i++) {
+                    const y = list[i].startYear ?? list[i].endYear;
+                    if (y != null && y <= val) idx = i;
+                }
+                if (idx >= 0 && idx !== currentStepIndex) {
+                    currentStepIndex = idx;
+                    updateStepLabel(idx, list.length, list[idx].eventName);
+                }
             } else {
                 renderMarkers(val);
             }
