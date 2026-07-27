@@ -62,6 +62,13 @@ const Timeline = (() => {
                 // trackpad swipes PAN AND SCROLL via our own handler below.
                 // (Mac trackpad pinch arrives as wheel with ctrlKey set.)
                 if (event.type === 'wheel') return event.ctrlKey || event.metaKey;
+                // Touch: d3 gets PINCH only. Single-finger gestures go to the
+                // direction-locked handler below — d3 preventDefaults every
+                // touchmove, which real iOS WebKit treats as overriding
+                // touch-action: pan-y, killing native vertical flicks.
+                if (event.type.startsWith('touch')) {
+                    return event.touches && event.touches.length >= 2;
+                }
                 // Block right-click and middle-click pan
                 if (event.button) return false;
                 // Block clicks that started on an interactive element
@@ -85,6 +92,38 @@ const Timeline = (() => {
             if (e.deltaX) svg.call(zoom.translateBy, -e.deltaX / currentTransform.k, 0);
             if (e.deltaY) container.scrollTop += e.deltaY;
         }, { passive: false });
+
+        // Single-finger touch: direction-locked. Vertical → we do NOTHING
+        // (the browser scrolls natively via touch-action: pan-y — the only
+        // approach real iOS reliably honors). Horizontal → we pan time
+        // ourselves. Pinch stays with d3 via the filter above.
+        let _touch = null;
+        const sn = svg.node();
+        sn.addEventListener('touchstart', e => {
+            if (e.touches.length !== 1) { _touch = null; return; }
+            _touch = {
+                x: e.touches[0].clientX,
+                y: e.touches[0].clientY,
+                tx: currentTransform.x,
+                axis: null
+            };
+        }, { passive: true });
+        sn.addEventListener('touchmove', e => {
+            if (!_touch || e.touches.length !== 1) return;
+            const dx = e.touches[0].clientX - _touch.x;
+            const dy = e.touches[0].clientY - _touch.y;
+            if (!_touch.axis) {
+                if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return;
+                _touch.axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+            }
+            if (_touch.axis === 'x') {
+                if (e.cancelable) e.preventDefault();
+                svg.call(zoom.transform,
+                    d3.zoomIdentity.translate(_touch.tx + dx, 0).scale(currentTransform.k));
+            }
+        }, { passive: false });
+        sn.addEventListener('touchend', () => { _touch = null; });
+        sn.addEventListener('touchcancel', () => { _touch = null; });
         // Disable D3's default double-click zoom so we can run our own
         // animated zoom centered on the tap.
         svg.on('dblclick.zoom', null);
@@ -136,24 +175,15 @@ const Timeline = (() => {
     }
 
     /**
-     * Constrain pan/zoom to [MIN_YEAR, MAX_YEAR]: translateExtent stops
-     * panning into the empty future/past, and the minimum scale is capped
-     * so zooming out can't show more than the full span.
+     * Horizon clamping is DISABLED by request: the year-bound translateExtent
+     * plus edge-aware label handling caused more usability trouble than the
+     * empty-centuries problem it solved. The timeline pans freely into deep
+     * past and future; MIN_YEAR/MAX_YEAR remain only as fitAll guards.
      */
     function updateZoomBounds() {
         if (!zoom) return;
-        const x0 = xScale(MIN_YEAR);
-        const x1 = xScale(MAX_YEAR);
-        const plotWidth = width - MARGIN.left - MARGIN.right;
-        const minK = Math.min(1, plotWidth / (x1 - x0));
-        // extent must be the PLOT area, not the full SVG: the scale maps
-        // years into [MARGIN.left, width - MARGIN.right], and with the
-        // default full-element extent the constrain clamped MAX_YEAR into
-        // the right margin strip — the modern era became unreachable
-        // (panning stopped ~1979 at typical zoom).
         zoom.extent([[MARGIN.left, 0], [width - MARGIN.right, height]])
-            .scaleExtent([minK, 200])
-            .translateExtent([[x0, -Infinity], [x1, Infinity]]);
+            .scaleExtent([0.1, 200]);
     }
 
     let _rafPending = false;
@@ -335,8 +365,8 @@ const Timeline = (() => {
         if (minY === Infinity) return;
 
         const padding = Math.max(50, (maxY - minY) * 0.05);
-        minY = Math.max(MIN_YEAR, minY - padding);
-        maxY = Math.min(MAX_YEAR, maxY + padding);
+        minY -= padding;
+        maxY += padding;
 
         const x0 = xScale(minY);
         const x1 = xScale(maxY);
@@ -554,7 +584,11 @@ const Timeline = (() => {
                 const end = d.endYear ?? d.startYear;
                 const x1 = xScale(start); // base scale — zoom-independent
                 const x2 = end !== start ? xScale(end) : x1;
-                const totalWidth = Math.max(x2 - x1, 2) + labelWidthFor(d);
+                // 1.3x label reservation: fitAll sits ~12% below base scale
+                // (its padding widens the view past the domain), and with
+                // unbounded zoom-out the margin keeps the DEFAULT view fully
+                // labeled instead of culling in dense eras
+                const totalWidth = Math.max(x2 - x1, 2) + labelWidthFor(d) * 1.3;
                 let lane = 0;
                 for (lane = 0; lane < laneEnds.length; lane++) {
                     if (laneEnds[lane] <= x1 - 12) break;
@@ -572,12 +606,10 @@ const Timeline = (() => {
     function layoutAndRender(layer, items, xS, offsetY, type) {
         const cache = ensureLanes();
 
-        // World right edge in current-zoom pixels: labels that would extend
-        // past it flip to the LEFT of their marker — otherwise items near
-        // MAX_YEAR have their names permanently clipped at the pan limit
-        // (a label is worth centuries at low zoom; no year-bound extension
-        // can absorb that).
-        const rightEdgePx = xS(MAX_YEAR);
+        // With horizon clamping disabled there is no unreachable right edge:
+        // any label can be revealed by panning, so the flip/truncate
+        // machinery below stays dormant (Infinity never triggers it).
+        const rightEdgePx = Infinity;
 
         const positioned = items.map(d => {
             const start = d.startYear ?? d.endYear;
@@ -674,66 +706,80 @@ const Timeline = (() => {
             .on('mouseenter', (event, d) => showTooltip(event, d))
             .on('mouseleave', hideTooltip);
 
-        // Merge enter + update
+        // Children are created ONCE on enter and only their attributes are
+        // updated per frame. The previous remove-and-recreate-per-frame
+        // approach (a) broke touch gestures — a touch is bound to its start
+        // target, and destroying the touched hit-rect mid-pan made the
+        // browser silently drop the rest of the gesture — and (b) churned
+        // GC/layout on every zoom frame (original review finding M6).
+        enter.each(function(d) {
+            const el = d3.select(this);
+            const isApprox = d.startApprox || d.endApprox;
+            el.append('rect')
+                .attr('class', 'hit-area')
+                .style('fill', 'transparent')
+                .style('cursor', 'pointer');
+            if (d.isRange) {
+                el.append('rect')
+                    .attr('class', `item-bar ${d.type}${isApprox ? ' approximate' : ''}`);
+            } else if (d.type === 'event') {
+                el.append('path')
+                    .attr('class', `item-point ${d.type}`)
+                    .attr('opacity', isApprox ? 0.7 : 1);
+            } else {
+                el.append('circle')
+                    .attr('class', `item-point ${d.type}`)
+                    .attr('opacity', isApprox ? 0.7 : 1);
+            }
+            el.append('text')
+                .attr('class', 'item-label')
+                .attr('y', ROW_HEIGHT / 2)
+                .style('font-weight', d.significance === 'major' ? '600' : d.significance === 'moderate' ? '500' : '400')
+                .style('font-size', d.significance === 'major' ? '14px' : d.significance === 'moderate' ? '13px' : '12px');
+        });
+
+        // Merge enter + update; per-frame attribute updates only
         const merged = enter.merge(groups);
 
         merged.attr('transform', d => `translate(0,${d.y})`);
-
-        // Clear and redraw contents
-        merged.selectAll('*').remove();
 
         merged.each(function(d) {
             const el = d3.select(this);
             const barH = d.significance === 'major' ? BAR_HEIGHT_MAJOR : d.significance === 'moderate' ? BAR_HEIGHT_MODERATE : BAR_HEIGHT_MINOR;
             const barY = (ROW_HEIGHT - barH) / 2;
-            const isApprox = d.startApprox || d.endApprox;
 
-            // Invisible hit-area rect for easier touch targeting (min 44px tall)
             const hitH = Math.max(44, ROW_HEIGHT);
-            const hitY = (ROW_HEIGHT - hitH) / 2;
             const itemW = d.isRange ? Math.max(d.w, 3) : 0;
-            el.append('rect')
-                .attr('class', 'hit-area')
+            el.select('.hit-area')
                 .attr('x', d.x - 10)
-                .attr('y', hitY)
+                .attr('y', (ROW_HEIGHT - hitH) / 2)
                 .attr('width', Math.max(44, itemW + 160))
-                .attr('height', hitH)
-                .style('fill', 'transparent')
-                .style('cursor', 'pointer');
+                .attr('height', hitH);
 
+            const r = d.significance === 'major' ? POINT_RADIUS_MAJOR : d.significance === 'moderate' ? POINT_RADIUS_MODERATE : POINT_RADIUS_MINOR;
             if (d.isRange) {
-                // Range bar
-                el.append('rect')
-                    .attr('class', `item-bar ${d.type}${isApprox ? ' approximate' : ''}`)
+                el.select('.item-bar')
                     .attr('x', d.x)
                     .attr('y', barY)
                     .attr('width', Math.max(d.w, 3))
                     .attr('height', barH);
+            } else if (d.type === 'event') {
+                el.select('.item-point')
+                    .attr('d', `M${d.x},${ROW_HEIGHT/2 - r} L${d.x + r},${ROW_HEIGHT/2} L${d.x},${ROW_HEIGHT/2 + r} L${d.x - r},${ROW_HEIGHT/2} Z`);
             } else {
-                // Point marker (diamond for events, circle for people)
-                const r = d.significance === 'major' ? POINT_RADIUS_MAJOR : d.significance === 'moderate' ? POINT_RADIUS_MODERATE : POINT_RADIUS_MINOR;
-                if (d.type === 'event') {
-                    el.append('path')
-                        .attr('class', `item-point ${d.type}`)
-                        .attr('d', `M${d.x},${ROW_HEIGHT/2 - r} L${d.x + r},${ROW_HEIGHT/2} L${d.x},${ROW_HEIGHT/2 + r} L${d.x - r},${ROW_HEIGHT/2} Z`)
-                        .attr('opacity', isApprox ? 0.7 : 1);
-                } else {
-                    el.append('circle')
-                        .attr('class', `item-point ${d.type}`)
-                        .attr('cx', d.x)
-                        .attr('cy', ROW_HEIGHT / 2)
-                        .attr('r', r)
-                        .attr('opacity', isApprox ? 0.7 : 1);
-                }
+                el.select('.item-point')
+                    .attr('cx', d.x)
+                    .attr('cy', ROW_HEIGHT / 2)
+                    .attr('r', r);
             }
 
-            // Label — right of the marker normally, flipped to the left near
-            // the world's right edge; culled when it crowds a lane neighbor
+            // Label — right of the marker normally, flipped near the world's
+            // right edge, hidden when it crowds a lane neighbor
+            const label = el.select('.item-label');
             if (d.showLabel !== false) {
-                const pointR = d.significance === 'major' ? POINT_RADIUS_MAJOR : d.significance === 'moderate' ? POINT_RADIUS_MODERATE : POINT_RADIUS_MINOR;
                 const labelX = d.flipLabel
-                    ? (d.isRange ? d.x : d.x - pointR) - LABEL_PADDING
-                    : (d.isRange ? d.x + d.w + LABEL_PADDING : d.x + pointR + LABEL_PADDING);
+                    ? (d.isRange ? d.x : d.x - r) - LABEL_PADDING
+                    : (d.isRange ? d.x + d.w + LABEL_PADDING : d.x + r + LABEL_PADDING);
                 let labelText = d.name;
                 if (d.labelMaxPx != null) {
                     const charW = labelWidthFor(d) / Math.max(1, d.name.length);
@@ -742,14 +788,12 @@ const Timeline = (() => {
                         labelText = d.name.slice(0, maxChars) + '…';
                     }
                 }
-                el.append('text')
-                    .attr('class', 'item-label')
+                label.attr('display', null)
                     .attr('x', labelX)
-                    .attr('y', ROW_HEIGHT / 2)
                     .attr('text-anchor', d.flipLabel ? 'end' : null)
-                    .text(labelText)
-                    .style('font-weight', d.significance === 'major' ? '600' : d.significance === 'moderate' ? '500' : '400')
-                    .style('font-size', d.significance === 'major' ? '14px' : d.significance === 'moderate' ? '13px' : '12px');
+                    .text(labelText);
+            } else {
+                label.attr('display', 'none');
             }
         });
 
