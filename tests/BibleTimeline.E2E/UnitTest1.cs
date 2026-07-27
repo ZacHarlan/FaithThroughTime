@@ -249,9 +249,12 @@ public class TimelineE2ETests : PageTest
         var box = await container.BoundingBoxAsync();
         Assert.That(box, Is.Not.Null);
 
-        // Wheel zoom in
+        // Zoom is Ctrl+wheel now (trackpad pinch sends ctrlKey=true);
+        // plain wheel pans/scrolls instead of zooming
         await Page.Mouse.MoveAsync(box!.X + box.Width / 2, box.Y + box.Height / 2);
+        await Page.Keyboard.DownAsync("Control");
         await Page.Mouse.WheelAsync(0, -300);
+        await Page.Keyboard.UpAsync("Control");
 
         await Page.WaitForTimeoutAsync(300);
 

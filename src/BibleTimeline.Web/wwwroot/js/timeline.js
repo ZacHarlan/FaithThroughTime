@@ -58,6 +58,10 @@ const Timeline = (() => {
         zoom = d3.zoom()
             .scaleExtent([0.1, 200])
             .filter(event => {
+                // Wheel: only pinch / Ctrl/⌘+wheel zooms — plain wheel and
+                // trackpad swipes PAN AND SCROLL via our own handler below.
+                // (Mac trackpad pinch arrives as wheel with ctrlKey set.)
+                if (event.type === 'wheel') return event.ctrlKey || event.metaKey;
                 // Block right-click and middle-click pan
                 if (event.button) return false;
                 // Block clicks that started on an interactive element
@@ -70,6 +74,17 @@ const Timeline = (() => {
 
         updateZoomBounds();
         svg.call(zoom);
+
+        // Trackpad/wheel navigation: horizontal swipe pans time (D3 ignored
+        // deltaX, so two-finger swipes did NOTHING); vertical wheel scrolls
+        // the lanes natively. translateBy runs through D3's constrain, so
+        // the world bounds still hold.
+        svg.node().addEventListener('wheel', e => {
+            if (e.ctrlKey || e.metaKey) return; // pinch/modifier zoom → d3
+            e.preventDefault();
+            if (e.deltaX) svg.call(zoom.translateBy, -e.deltaX / currentTransform.k, 0);
+            if (e.deltaY) container.scrollTop += e.deltaY;
+        }, { passive: false });
         // Disable D3's default double-click zoom so we can run our own
         // animated zoom centered on the tap.
         svg.on('dblclick.zoom', null);
