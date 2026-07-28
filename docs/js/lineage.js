@@ -1,7 +1,7 @@
 // lineage.js — Family tree visualization using D3
 const Lineage = (() => {
     let allPeople = [];
-    let activeIndex = -1;
+    let kbdNav = null;
     let _zoomBehavior = null;
     let _svgInner = null;
     let _lastTreeBounds = null;
@@ -20,26 +20,15 @@ const Lineage = (() => {
             showSuggestions(matches);
         });
 
+        kbdNav = Utils.listKeyNav({
+            getItems: () => [...list.querySelectorAll('li')],
+            activeClass: 'active',
+            isOpen: () => !list.classList.contains('hidden'),
+            onPick: li => li.click()
+        });
         input.addEventListener('keydown', (e) => {
-            const items = list.querySelectorAll('li');
-            if (!items.length || list.classList.contains('hidden')) return;
-            if (e.key === 'ArrowDown') {
-                e.preventDefault();
-                activeIndex = Math.min(activeIndex + 1, items.length - 1);
-                updateActive(items);
-            } else if (e.key === 'ArrowUp') {
-                e.preventDefault();
-                activeIndex = Math.max(activeIndex - 1, 0);
-                updateActive(items);
-            } else if (e.key === 'Enter') {
-                e.preventDefault();
-                // Default to the first suggestion when none is highlighted —
-                // typing a name and pressing Enter must always do something.
-                const idx = activeIndex >= 0 ? activeIndex : 0;
-                if (idx < items.length) items[idx].click();
-            } else if (e.key === 'Escape') {
-                hideList();
-            }
+            if (e.key === 'Escape') { hideList(); return; }
+            kbdNav.handle(e);
         });
 
         // Close list on outside click
@@ -60,7 +49,7 @@ const Lineage = (() => {
     function showSuggestions(people) {
         const list = document.getElementById('lineage-suggestions');
         list.innerHTML = '';
-        activeIndex = -1;
+        if (kbdNav) kbdNav.reset();
         if (!people.length) {
             const li = document.createElement('li');
             li.textContent = 'No matches';
@@ -89,12 +78,7 @@ const Lineage = (() => {
     function hideList() {
         const list = document.getElementById('lineage-suggestions');
         list.classList.add('hidden');
-        activeIndex = -1;
-    }
-
-    function updateActive(items) {
-        items.forEach((li, i) => li.classList.toggle('active', i === activeIndex));
-        if (activeIndex >= 0) items[activeIndex].scrollIntoView({ block: 'nearest' });
+        if (kbdNav) kbdNav.reset();
     }
 
     async function selectPerson(p) {

@@ -15,7 +15,7 @@ const MapView = (() => {
     let playInterval = null;
     let isPlaying = false;
     let playSpeed = 1;
-    let activated = false;
+    let activation = null;   // in-flight/settled activation promise
     let currentStepIndex = -1;
 
     // Normalized OKLCH-derived hues — same family as the period palette in
@@ -53,17 +53,30 @@ const MapView = (() => {
         document.getElementById('map-next-btn').addEventListener('click', () => stepEvent(1));
     }
 
+    /**
+     * Idempotent AND awaitable. The old guard flag was set before the async
+     * work finished, so a second call during activation returned while the
+     * map was still null and its data unloaded — journey selection then ran
+     * against an unready map (a real race under load, not just test flake).
+     */
     async function activate() {
-        if (activated) {
+        if (activation) {
+            await activation;
             if (map) map.invalidateSize();
             return;
         }
-        activated = true;
-
-        // Small delay so the container is visible before Leaflet measures it
-        await new Promise(r => setTimeout(r, 50));
-        initMap();
-        await loadData();
+        activation = (async () => {
+            // Small delay so the container is visible before Leaflet measures it
+            await new Promise(r => setTimeout(r, 50));
+            initMap();
+            await loadData();
+        })();
+        try {
+            await activation;
+        } catch (err) {
+            activation = null;   // allow a retry on the next tab visit
+            throw err;
+        }
     }
 
     function initMap() {
@@ -180,7 +193,12 @@ const MapView = (() => {
             // slider and step label at 1/N (the old end-parked slider with
             // an empty label looked finished before it started). Stepping
             // or playing switches to progressive filtering.
-            const first = currentJourney[0];
+            // Count/label from getEventList() — the same coordinate-filtered
+            // list stepEvent() and playback index into, so '1/N' and Next
+            // never disagree about which stop is which.
+            const mapped = getEventList();
+            const first = mapped[0];
+            if (!first) { journeyLayer.clearLayers(); return; }
             const firstYear = first.startYear ?? first.endYear ?? minY;
             slider.value = firstYear;
             updateYearLabel(firstYear);
@@ -189,7 +207,7 @@ const MapView = (() => {
             markersLayer.clearLayers();
             renderJourney();
             fitToJourney();
-            updateStepLabel(0, currentJourney.length, first.eventName);
+            updateStepLabel(0, mapped.length, first.eventName);
         } catch {
             const label = document.getElementById('map-step-label');
             if (label) label.textContent = 'Couldn’t load this journey — try again.';
@@ -530,6 +548,13 @@ const MapView = (() => {
         const speeds = [200, 100, 30];
         const interval = speeds[playSpeed - 1] || 100;
 
+        // Hoisted once per play: the stop list and its years. Rebuilding and
+        // rescanning them on every tick (up to 33/s) was pure waste, and a
+        // year-only scan assumed journey stops are year-ascending — they
+        // follow ITINERARY order, which can tie or invert.
+        const stops = currentJourney.length > 0 ? getEventList() : [];
+        const stopYears = stops.map(s => s.startYear ?? s.endYear);
+
         playInterval = setInterval(() => {
             let val = parseInt(slider.value) + 1;
             if (val > max) {
@@ -540,16 +565,14 @@ const MapView = (() => {
             updateYearLabel(val);
             if (currentJourney.length > 0) {
                 renderJourney(val);
-                // Keep the step label tracking the last stop reached
-                const list = getEventList();
-                let idx = -1;
-                for (let i = 0; i < list.length; i++) {
-                    const y = list[i].startYear ?? list[i].endYear;
-                    if (y != null && y <= val) idx = i;
-                }
-                if (idx >= 0 && idx !== currentStepIndex) {
+                // Advance a persistent pointer in itinerary order; undated
+                // stops advance with the neighbour that follows them.
+                let idx = currentStepIndex;
+                while (idx + 1 < stops.length &&
+                       (stopYears[idx + 1] == null || stopYears[idx + 1] <= val)) idx++;
+                if (idx !== currentStepIndex && idx >= 0 && stops[idx]) {
                     currentStepIndex = idx;
-                    updateStepLabel(idx, list.length, list[idx].eventName);
+                    updateStepLabel(idx, stops.length, stops[idx].eventName);
                 }
             } else {
                 renderMarkers(val);

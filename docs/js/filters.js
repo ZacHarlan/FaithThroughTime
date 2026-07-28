@@ -367,9 +367,9 @@ const Filters = (() => {
         if (isOpen) {
             closeDrawer();
         } else {
-            // Drawer and detail sheet are mutually exclusive on mobile —
-            // stacked together the sheet buried the drawer's lower half
-            if (isMobile() && typeof DetailPanel !== 'undefined') DetailPanel.close();
+            // Exclusivity with the detail sheet is enforced centrally by
+            // the Surfaces manager (see app.js EXCLUSIVE), which also closes
+            // the other surface BEFORE this one's history entry is pushed.
             panel.classList.add('drawer-open');
             backdrop.classList.remove('hidden');
             requestAnimationFrame(() => backdrop.classList.add('visible'));

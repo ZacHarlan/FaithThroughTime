@@ -29,6 +29,13 @@ const Timeline = (() => {
     const MIN_YEAR = -4500;
     const MAX_YEAR = new Date().getFullYear() + 124;
 
+    // Default focus window for zoomToYear() — one policy, not a literal
+    // repeated at every call site.
+    const DEFAULT_FOCUS_SPAN = 250;
+    // Live MediaQueryList (stays current as input devices change) — built
+    // once, not per mouseenter in the hover hot path.
+    const HOVER_MQ = window.matchMedia('(hover: hover)');
+
     let svg, g, xScale, zoom, width, height, container;
     let currentTransform = d3.zoomIdentity;
     const isMobile = () => window.matchMedia('(max-width: 767px)').matches;
@@ -108,20 +115,23 @@ const Timeline = (() => {
         // anchor is captured at axis-LOCK time, not touchstart, so grabbing
         // a running animation doesn't jump.
         let _touch = null;
+        let _pinchK0 = null;   // k when the current pinch began (gesture-scoped)
         const sn = svg.node();
 
         function applyTouchTransform(x, k) {
-            const constrained = zoom.constrain()(
-                d3.zoomIdentity.translate(x, 0).scale(k),
-                [[MARGIN.left, 0], [width - MARGIN.right, height]],
-                zoom.translateExtent()
-            );
-            svg.call(zoom.transform, constrained);
+            // Apply DIRECTLY — routing through zoom.transform fires a full
+            // d3 start/zoom/end cycle per touchmove, which fragmented
+            // gesture-scoped logic into hundreds of one-frame "gestures".
+            const constrained = constrainTransform(x, k);
+            svg.node().__zoom = constrained;
+            currentTransform = constrained;
+            scheduleRender();
         }
 
         function beginPinch(touches) {
             const dx = touches[1].clientX - touches[0].clientX;
             const dy = touches[1].clientY - touches[0].clientY;
+            if (_pinchK0 === null) _pinchK0 = currentTransform.k;
             _touch = {
                 mode: 'pinch',
                 k0: currentTransform.k,
@@ -132,6 +142,10 @@ const Timeline = (() => {
         }
 
         sn.addEventListener('touchstart', e => {
+            // A finger is down: never animate-scroll under the user, and
+            // kill any smooth scroll still running from a previous zoom.
+            _interacting = true;
+            cancelSmoothScroll();
             if (e.touches.length === 1) {
                 _touch = { mode: 'undecided', x: e.touches[0].clientX, y: e.touches[0].clientY };
             } else if (e.touches.length === 2) {
@@ -184,11 +198,24 @@ const Timeline = (() => {
             if (e.touches.length === 1) {
                 // pinch → one finger: re-enter undecided with a fresh origin
                 _touch = { mode: 'undecided', x: e.touches[0].clientX, y: e.touches[0].clientY };
-            } else if (e.touches.length === 0) {
-                _touch = null;
+                return;
             }
+            if (e.touches.length !== 0) return;
+            // Gesture fully released: THIS is the one true gesture end for
+            // touch (d3 no longer sees touch at all). Run the after-zoom
+            // content scroll here — once, not per touchmove frame.
+            _touch = null;
+            _interacting = false;
+            const zoomed = _pinchK0 !== null &&
+                Math.abs(currentTransform.k / _pinchK0 - 1) > 0.05;
+            _pinchK0 = null;
+            if (zoomed) requestContentScroll();
         }, { passive: true });
-        sn.addEventListener('touchcancel', () => { _touch = null; });
+        sn.addEventListener('touchcancel', () => {
+            _touch = null;
+            _pinchK0 = null;
+            _interacting = false;
+        });
         // Disable D3's default double-click zoom so we can run our own
         // animated zoom centered on the tap.
         svg.on('dblclick.zoom', null);
@@ -217,6 +244,29 @@ const Timeline = (() => {
 
     function prefersReduced() {
         return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    }
+
+    /** The zoomable viewport: the plot area, not the full SVG element. */
+    function plotExtent() {
+        return [[MARGIN.left, 0], [width - MARGIN.right, height]];
+    }
+
+    /** Constrained x/k transform (single source for touch + programmatic). */
+    function constrainTransform(x, k) {
+        return zoom.constrain()(
+            d3.zoomIdentity.translate(x, 0).scale(k),
+            plotExtent(),
+            zoom.translateExtent()
+        );
+    }
+
+    /**
+     * Stop any in-flight smooth scroll. A running scrollTo() animation and
+     * a drag's per-frame scrollTop writes fight each other frame by frame,
+     * which the user sees as violent jitter.
+     */
+    function cancelSmoothScroll() {
+        if (container) container.scrollTop = container.scrollTop;
     }
 
     /**
@@ -260,13 +310,25 @@ const Timeline = (() => {
             _rafPending = false;
             render();
             updateYearDisplay();
+            if (_scrollAfterRender && !_interacting) {
+                _scrollAfterRender = false;
+                scrollToVisibleContent();
+            }
         });
     }
 
     let _gestureScrollTop = 0;
     let _gestureClientY = null;
     let _kAtGestureStart = null;
+    let _interacting = false;      // a pointer/touch gesture is in progress
+    let _scrollAfterRender = false; // auto-scroll queued for the next frame
+
     function onZoomStart(event) {
+        const src = event.sourceEvent;
+        if (src && (src.type === 'mousedown' || src.type === 'mousemove')) {
+            _interacting = true;
+            cancelSmoothScroll();
+        }
         _gestureScrollTop = container.scrollTop;
         // Anchor on the viewport-stable clientY, NOT the D3 transform: D3
         // measures the pointer relative to the SVG, and the SVG moves when
@@ -293,25 +355,41 @@ const Timeline = (() => {
     }
 
     function onZoomEnd() {
+        _interacting = false;
         // After a real zoom (scale changed), vertically scroll to where the
         // visible time-window's items actually live — zooming used to land
         // on blank lanes thousands of px away from the content.
         const kChanged = _kAtGestureStart !== null &&
             Math.abs(currentTransform.k / _kAtGestureStart - 1) > 0.05;
         _kAtGestureStart = null;
-        if (kChanged) scrollToVisibleContent();
+        if (kChanged) requestContentScroll();
     }
 
-    /** Scroll the container to the first lane band with items in view. */
+    /**
+     * Queue the after-zoom content scroll for AFTER the next render, so it
+     * reads fresh layout positions — and never while a gesture is active,
+     * where an animated scroll would fight the user's own input.
+     */
+    function requestContentScroll() {
+        _scrollAfterRender = true;
+        scheduleRender();
+    }
+
+    /**
+     * Scroll to the first lane band holding items in the visible time
+     * window. Reads the cached layout arrays rather than re-querying every
+     * .timeline-item node in an ~8,000px-tall SVG.
+     */
     function scrollToVisibleContent() {
-        if (!g || !container) return;
+        if (!container) return;
         let minY = Infinity;
-        g.selectAll('.timeline-item').each(function(d) {
-            if (!d) return;
-            const xEnd = d.isRange ? d.x + d.w : d.x;
-            if (xEnd < 0 || d.x > width) return;
-            if (d.y < minY) minY = d.y;
-        });
+        for (const list of Object.values(_positioned)) {
+            for (const d of list) {
+                const xEnd = d.isRange ? d.x + d.w : d.x;
+                if (xEnd < 0 || d.x > width) continue;
+                if (d.y < minY) minY = d.y;
+            }
+        }
         if (minY === Infinity) return;
         const cur = container.scrollTop;
         // Leave the user alone if visible content is already on screen
@@ -575,6 +653,8 @@ const Timeline = (() => {
     }
 
     let _laneCache = null; // { itemsRef, width, mobile, lanes: Map(key→lane), counts: {event, person} }
+    // Last laid-out positions per type — reused by scrollToVisibleContent
+    const _positioned = { event: [], person: [] };
 
     function ensureLanes() {
         const items = State.items;
@@ -642,6 +722,8 @@ const Timeline = (() => {
                 isRange
             };
         }).filter(Boolean);
+
+        _positioned[type] = positioned;
 
         // Per-frame label culling: lanes are fixed, so when zoomed out far
         // enough that neighbors within a lane would overlap, hide the
@@ -848,7 +930,7 @@ const Timeline = (() => {
     function showTooltip(event, d) {
         // Tooltips only where a hover-capable pointer exists (touch laptops
         // with a mouse get them; pure touch devices use the detail panel)
-        if (!window.matchMedia('(hover: hover)').matches) return;
+        if (!HOVER_MQ.matches) return;
 
         const tooltip = document.getElementById('tooltip');
         const dates = formatDateRange(d);
@@ -912,7 +994,7 @@ const Timeline = (() => {
      * plot — era pills and search jumps used to pan without fitting, moving
      * the view by pixels on a 6,000-year canvas.
      */
-    function zoomToYear(year, spanYears) {
+    function zoomToYear(year, spanYears = DEFAULT_FOCUS_SPAN) {
         let k = currentTransform.k;
         if (spanYears && spanYears > 0) {
             const plotWidth = width - MARGIN.left - MARGIN.right;
@@ -920,12 +1002,7 @@ const Timeline = (() => {
             const se = zoom.scaleExtent();
             k = Math.max(se[0], Math.min(se[1], plotWidth / spanPx));
         }
-        const tx = width / 2 - xScale(year) * k;
-        const constrained = zoom.constrain()(
-            d3.zoomIdentity.translate(tx, 0).scale(k),
-            [[MARGIN.left, 0], [width - MARGIN.right, height]],
-            zoom.translateExtent()
-        );
+        const constrained = constrainTransform(width / 2 - xScale(year) * k, k);
         svg.transition().duration(prefersReduced() ? 0 : 500).call(
             zoom.transform, constrained
         );
