@@ -566,24 +566,20 @@ public class TimelineE2ETests : PageTest
 
     private static async Task SelectPaulOnMap(IPage page)
     {
-        // Under full-suite load this setup occasionally fails fast (map
-        // data fetch racing tab activation); one retry absorbs the flake.
-        try
-        {
-            await SelectPaulOnMapCore(page);
-        }
-        catch
-        {
-            await page.WaitForTimeoutAsync(750);
-            await SelectPaulOnMapCore(page);
-        }
-    }
-
-    private static async Task SelectPaulOnMapCore(IPage page)
-    {
+        // Wait on real readiness signals rather than retrying after a sleep:
+        // a blind retry hid the very map-activation race it was named for.
         await page.GotoAsync(BaseUrl);
         await page.ClickAsync("[data-tab='map']");
         await page.WaitForSelectorAsync("#map-container");
+        // Leaflet has laid out its panes before any journey can be drawn.
+        // Attached, not visible: the overlay pane is a zero-size positioned
+        // div until a vector layer gives it content.
+        await page.WaitForSelectorAsync("#map-tab .leaflet-overlay-pane",
+            new PageWaitForSelectorOptions
+            {
+                State = WaitForSelectorState.Attached,
+                Timeout = 15000
+            });
         // Wait for map data to load and Leaflet to lay out the SVG overlay
         await page.WaitForFunctionAsync(
             "() => document.querySelectorAll('#map-person-select option').length > 5",

@@ -20,91 +20,126 @@
     // UI close paths call requestClose() so the entry is consumed via
     // history.back() instead of leaking (Android Back then works as expected).
     const Surfaces = (() => {
+        // Stack entries mirror the history entries we pushed. `closed` marks
+        // a surface closed out of order: its history entry still exists, so
+        // we keep the slot and skip its closer when that entry pops.
         const stack = [];
         const closers = {};
-        const queuedOpens = [];
+        const pendingOps = [];   // opens / url writes deferred behind a back()
+        // Surfaces that may not be open together on mobile. Exclusivity is
+        // POLICY here — previously it was pairwise cross-module close-calls,
+        // which also ran after the opener pushed its entry and leaked one.
+        const EXCLUSIVE = [['detail', 'drawer']];
         let popping = false;
-        let pendingBack = 0;   // programmatic history.back()s in flight
-        let orphaned = 0;      // history entries whose surface closed out of order
+        let pendingBack = 0;     // programmatic history.back()s in flight
+        let navLock = 0;         // hashchanges owed to those back()s
 
         function register(name, closeFn) { closers[name] = closeFn; }
+        function isMobile() { return window.matchMedia('(max-width: 767px)').matches; }
+        function liveIndex(name) {
+            for (let i = stack.length - 1; i >= 0; i--) {
+                if (stack[i].name === name && !stack[i].closed) return i;
+            }
+            return -1;
+        }
+
+        function closeConflicts(name) {
+            if (!isMobile()) return;
+            for (const group of EXCLUSIVE) {
+                if (!group.includes(name)) continue;
+                for (const other of group) {
+                    if (other !== name && liveIndex(other) !== -1 && closers[other]) {
+                        closers[other]();
+                    }
+                }
+            }
+        }
 
         function opened(name, url) {
             // A programmatic back() is still in flight: pushing now would
-            // land BEFORE the back executes and get eaten by it (this was
-            // the mobile search dead-end). Queue until the popstate settles.
-            if (pendingBack > 0) {
-                queuedOpens.push([name, url]);
-                return;
-            }
-            if (stack[stack.length - 1] === name) {
-                // Already top (e.g. drill-down within the detail panel) —
-                // just keep the URL current, no extra history entry.
+            // land BEFORE the back executes and be eaten by it (this was the
+            // mobile search dead-end). Defer until the popstate settles.
+            if (pendingBack > 0) { pendingOps.push(() => opened(name, url)); return; }
+            closeConflicts(name);
+            if (pendingBack > 0) { pendingOps.push(() => opened(name, url)); return; }
+
+            const top = stack[stack.length - 1];
+            if (top && top.name === name && !top.closed) {
+                // Already top (e.g. drill-down inside the detail panel) —
+                // keep the URL current without a second history entry.
                 if (url) history.replaceState({ surface: name }, '', url);
                 return;
             }
-            stack.push(name);
+            stack.push({ name, closed: false });
             history.pushState({ surface: name }, '', url);
         }
 
-        /**
-         * Bookkeeping for a surface the CALLER is closing synchronously.
-         * Always returns false — callers proceed with their own close.
-         * (The old design returned true and relied on the async popstate to
-         * re-enter close(); the race corrupted the stack — C1/C2/C3.)
-         */
+        /** Bookkeeping for a surface the CALLER closes synchronously. */
         function requestClose(name) {
-            const i = stack.lastIndexOf(name);
-            if (i === -1) return false;
-            const wasTop = i === stack.length - 1;
-            stack.splice(i, 1);
-            if (!popping) {
-                if (wasTop) {
-                    pendingBack++;
-                    window._suppressNextHash = (window._suppressNextHash || 0) + 1;
-                    // If the back() changes no hash, no hashchange fires and
-                    // the token would leak — expire it shortly after.
-                    setTimeout(() => {
-                        if (window._suppressNextHash > 0) window._suppressNextHash--;
-                    }, 250);
-                    history.back();
-                } else {
-                    orphaned++;
-                }
+            const i = liveIndex(name);
+            if (i === -1) return;
+            if (popping) { stack.splice(i, 1); return; }
+            if (i === stack.length - 1) {
+                stack.splice(i, 1);
+                goBack();
+            } else {
+                // Cannot back() past a surface that is still open above us:
+                // keep the slot so its entry pops harmlessly later.
+                stack[i].closed = true;
+            }
+        }
+
+        function goBack() {
+            pendingBack++;
+            navLock++;
+            history.back();
+        }
+
+        /**
+         * True when the hashchange being handled was produced by our own
+         * history.back(). Ordering-based, not a wall-clock timer: the token
+         * is released in a task queued from the popstate handler, which runs
+         * after the same traversal's hashchange.
+         */
+        function consumeSuppressedHash() {
+            if (navLock <= 0) return false;
+            navLock--;
+            return true;
+        }
+
+        /** replaceState that waits for any in-flight back() to land first. */
+        function replaceUrl(url) {
+            if (pendingBack > 0) { pendingOps.push(() => replaceUrl(url)); return; }
+            history.replaceState(null, '', url);
+        }
+
+        function closeTop() {
+            for (let i = stack.length - 1; i >= 0; i--) {
+                if (stack[i].closed) continue;
+                const name = stack[i].name;
+                if (closers[name]) closers[name]();
+                return true;
             }
             return false;
         }
 
-        function closeTop() {
-            const name = stack[stack.length - 1];
-            if (!name) return false;
-            if (closers[name]) closers[name]();
-            return true;
-        }
-
         window.addEventListener('popstate', () => {
             if (pendingBack > 0) {
-                // Our own back() settling — swallow, then flush queued opens
                 pendingBack--;
-                if (pendingBack === 0 && queuedOpens.length) {
-                    const q = queuedOpens.splice(0);
-                    for (const [n, u] of q) opened(n, u);
+                setTimeout(() => { if (navLock > 0) navLock--; }, 0);
+                if (pendingBack === 0 && pendingOps.length) {
+                    for (const op of pendingOps.splice(0)) op();
                 }
                 return;
             }
-            const name = stack.pop();
-            if (!name) {
-                // Either a real back-navigation with no surfaces open, or an
-                // orphaned entry from an out-of-order close — absorb the latter.
-                if (orphaned > 0) orphaned--;
-                return;
-            }
+            const entry = stack.pop();
+            if (!entry || entry.closed) return; // stale slot — nothing to close
             popping = true;
-            try { if (closers[name]) closers[name](); }
+            try { if (closers[entry.name]) closers[entry.name](); }
             finally { popping = false; }
         });
 
-        return { register, opened, requestClose, closeTop };
+        return { register, opened, requestClose, replaceUrl, closeTop, consumeSuppressedHash };
     })();
     window._surfaces = Surfaces;
 
@@ -251,12 +286,11 @@
             }
         }
 
-        // Update URL hash for deep linking
-        if (tab !== 'timeline') {
-            history.replaceState(null, '', '#' + tab);
-        } else {
-            history.replaceState(null, '', window.location.pathname);
-        }
+        // Update URL hash for deep linking. Routed through Surfaces so it
+        // cannot rewrite an entry that an in-flight back() is about to
+        // discard (which left the app showing Timeline with '#map' in the
+        // address bar, so reload/share reopened the Map tab).
+        Surfaces.replaceUrl(tab !== 'timeline' ? '#' + tab : window.location.pathname);
     }
 
     // Expose for the detail panel's "Open in Map view" navigation
@@ -342,23 +376,13 @@
                 container.innerHTML = '<div class="search-result-item" style="justify-content:center"><span class="result-meta">No results found</span></div>';
                 return;
             }
-            // Group by type ('scripture' is the legacy name for book results)
-            const groups = { person: [], event: [], book: [] };
-            for (const r of results) {
-                const key = groups[r.type] ? r.type : (r.type === 'scripture' ? 'book' : 'event');
-                groups[key].push(r);
-            }
-            const sectionLabels = { person: 'People', event: 'Events', book: 'Books' };
-            const sectionIcons = { person: '#i-person', event: '#i-calendar', book: '#i-book' };
             const parts = [];
-            for (const key of ['person', 'event', 'book']) {
-                const list = groups[key];
-                if (!list.length) continue;
-                parts.push(`<div class="result-group-header">${sectionLabels[key]} · ${list.length}</div>`);
-                for (const r of list) {
+            for (const group of Utils.groupSearchResults(results)) {
+                parts.push(`<div class="result-group-header">${group.label} · ${group.items.length}</div>`);
+                for (const r of group.items) {
                     parts.push(`
                         <div class="search-result-item" data-type="${r.type}" data-id="${r.id}" data-year="${r.startYear || ''}">
-                            <span class="result-icon ${r.type}"><svg class="icon"><use href="${sectionIcons[key]}"/></svg></span>
+                            <span class="result-icon ${r.type}"><svg class="icon"><use href="${group.icon}"/></svg></span>
                             <div class="result-info">
                                 <div class="result-name">${escapeHtml(r.name)}</div>
                                 <div class="result-meta">
@@ -396,16 +420,16 @@
             const detail = await Api.getPersonDetail(id);
             if (detail) {
                 State.setSelectedItem({ type: 'person', ...detail });
-                if (year) Timeline.zoomToYear(year, 250);
+                if (year) Timeline.zoomToYear(year);
             }
         } else if (type === 'event') {
             const detail = await Api.getEventDetail(id);
             if (detail) {
                 State.setSelectedItem({ type: 'event', ...detail });
-                if (year) Timeline.zoomToYear(year, 250);
+                if (year) Timeline.zoomToYear(year);
             }
         } else {
-            if (year) Timeline.zoomToYear(year, 400);
+            if (year) Timeline.zoomToYear(year);
         }
     }
 
@@ -536,16 +560,15 @@
 
     // ── Deep link handling ──
     async function handleHash() {
-        // Programmatic history.back() (surface bookkeeping) restores an old
-        // hash like #map — that must NOT re-trigger a tab switch, or leaving
-        // the Map tab bounces straight back to it (audit C3).
-        if (window._suppressNextHash > 0) {
-            window._suppressNextHash--;
-            return;
-        }
+        // A programmatic history.back() (surface bookkeeping) restores an
+        // old hash like '#map'; that must not re-trigger a tab switch or
+        // leaving the Map tab bounces straight back to it.
+        if (Surfaces.consumeSuppressedHash()) return;
         const hash = window.location.hash.replace('#', '');
         if (['lineage', 'map', 'search', 'saved'].includes(hash)) {
-            switchTab(hash);
+            // Never re-enter the tab we are already displaying — belt and
+            // braces so a stale hash can never cause a bounce.
+            if (hash !== currentTab) switchTab(hash);
             return;
         }
         // Handle person/event deep links: #person/123 or #event/456
@@ -558,13 +581,13 @@
                 const detail = await Api.getPersonDetail(id);
                 if (detail) {
                     State.setSelectedItem({ type: 'person', ...detail });
-                    Timeline.zoomToYear(detail.birthYear || detail.deathYear, 250);
+                    Timeline.zoomToYear(detail.birthYear || detail.deathYear);
                 }
             } else {
                 const detail = await Api.getEventDetail(id);
                 if (detail) {
                     State.setSelectedItem({ type: 'event', ...detail });
-                    Timeline.zoomToYear(detail.startYear || detail.endYear, 250);
+                    Timeline.zoomToYear(detail.startYear || detail.endYear);
                 }
             }
         }

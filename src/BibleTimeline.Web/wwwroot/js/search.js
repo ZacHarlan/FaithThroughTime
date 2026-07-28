@@ -1,7 +1,7 @@
 // search.js — Search functionality
 const Search = (() => {
     let debounceTimer;
-    let _kbdIndex = -1;
+    let kbdNav = null;
     const DEBOUNCE_MS = 250;
 
     function init() {
@@ -18,27 +18,21 @@ const Search = (() => {
             debounceTimer = setTimeout(() => performSearch(q), DEBOUNCE_MS);
         });
 
-        // Keyboard navigation: arrows highlight, Enter opens (the lineage
-        // autocomplete had this; the header search inexplicably didn't)
+        // Keyboard navigation (shared implementation with the lineage
+        // autocomplete): arrows highlight, Enter opens.
+        kbdNav = Utils.listKeyNav({
+            getItems: () => [...dropdown.querySelectorAll('.search-result-item[data-id]')],
+            activeClass: 'kbd-active',
+            isOpen: () => !dropdown.classList.contains('hidden'),
+            onPick: el => onResultClick(el)
+        });
         input.addEventListener('keydown', e => {
             if (e.key === 'Escape') {
                 dropdown.classList.add('hidden');
                 input.blur();
                 return;
             }
-            const items = [...dropdown.querySelectorAll('.search-result-item[data-id]')];
-            if (!items.length || dropdown.classList.contains('hidden')) return;
-            if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-                e.preventDefault();
-                const dir = e.key === 'ArrowDown' ? 1 : -1;
-                _kbdIndex = Math.max(0, Math.min(items.length - 1, _kbdIndex + dir));
-                items.forEach((el, i) => el.classList.toggle('kbd-active', i === _kbdIndex));
-                items[_kbdIndex].scrollIntoView({ block: 'nearest' });
-            } else if (e.key === 'Enter') {
-                e.preventDefault();
-                const target = _kbdIndex >= 0 ? items[_kbdIndex] : items[0];
-                if (target) onResultClick(target);
-            }
+            kbdNav.handle(e);
         });
 
         // Close dropdown when clicking outside
@@ -62,17 +56,10 @@ const Search = (() => {
                 return;
             }
 
-            // Group like the mobile overlay: People / Events / Books headers
-            const groups = { person: [], event: [], book: [] };
-            for (const r of results) {
-                (groups[r.type] || groups.event).push(r);
-            }
-            const labels = { person: 'People', event: 'Events', book: 'Books' };
             const parts = [];
-            for (const key of ['person', 'event', 'book']) {
-                if (!groups[key].length) continue;
-                parts.push(`<div class="result-group-header">${labels[key]} · ${groups[key].length}</div>`);
-                for (const r of groups[key]) {
+            for (const group of Utils.groupSearchResults(results)) {
+                parts.push(`<div class="result-group-header">${group.label} · ${group.items.length}</div>`);
+                for (const r of group.items) {
                     parts.push(`
                         <div class="search-result-item" data-type="${r.type}" data-id="${r.id}" data-year="${r.startYear || ''}">
                             <div class="result-name">${escapeHtml(r.name)}</div>
@@ -85,7 +72,7 @@ const Search = (() => {
                 }
             }
             dropdown.innerHTML = parts.join('');
-            _kbdIndex = -1;
+            kbdNav.reset();
 
             dropdown.classList.remove('hidden');
 
@@ -110,7 +97,7 @@ const Search = (() => {
 
         // Zoom to year and scroll to item
         if (year !== null) {
-            Timeline.zoomToYear(year, 250);
+            Timeline.zoomToYear(year);
         }
 
         // Open detail and scroll to the item after zoom transition completes

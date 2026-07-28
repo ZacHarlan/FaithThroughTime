@@ -216,9 +216,6 @@ const DetailPanel = (() => {
             _invoker = document.activeElement;
         }
 
-        // Sheet and filter drawer are mutually exclusive on mobile
-        if (isMobile() && typeof Filters !== 'undefined') Filters.closeDrawer();
-
         panel().classList.remove('hidden');
 
         // Move focus into the panel so keyboard/SR users land where the
@@ -522,14 +519,23 @@ const DetailPanel = (() => {
      * view" normally, but "Show on map" when the Map tab is already active
      * (offering to open a view you're already in reads as a bug).
      */
-    function miniMapSection() {
+    /** Contextual label: offering to "open" a view you're already in reads as a bug. */
+    function mapHintLabel() {
         const mapTab = document.getElementById('map-tab');
-        const onMapTab = mapTab && !mapTab.classList.contains('hidden');
-        const label = onMapTab ? 'Show on map' : 'Open in Map view';
+        return (mapTab && !mapTab.classList.contains('hidden'))
+            ? 'Show on map' : 'Open in Map view';
+    }
+
+    function mapHintInner(label) {
+        return `<svg class="icon"><use href="#i-location"/></svg> ${label}`;
+    }
+
+    function miniMapSection() {
+        const label = mapHintLabel();
         return '<div class="detail-section"><h3>Map</h3><div class="mini-map-wrap">'
             + '<div id="detail-mini-map" class="detail-mini-map"></div>'
             + `<button type="button" id="btn-open-map" class="mini-map-overlay" aria-label="${label}">`
-            + `<span class="mini-map-hint"><svg class="icon"><use href="#i-location"/></svg> ${label}</span>`
+            + `<span class="mini-map-hint">${mapHintInner(label)}</span>`
             + '</button></div></div>';
     }
 
@@ -805,12 +811,10 @@ const DetailPanel = (() => {
     function refreshMapHint() {
         const btn = content().querySelector('#btn-open-map');
         if (!btn) return;
-        const mapTab = document.getElementById('map-tab');
-        const onMapTab = mapTab && !mapTab.classList.contains('hidden');
-        const label = onMapTab ? 'Show on map' : 'Open in Map view';
+        const label = mapHintLabel();
         btn.setAttribute('aria-label', label);
         const hint = btn.querySelector('.mini-map-hint');
-        if (hint) hint.innerHTML = '<svg class="icon"><use href="#i-location"/></svg> ' + label;
+        if (hint) hint.innerHTML = mapHintInner(label);
     }
 
     return { init, show, close, refreshMapHint };
