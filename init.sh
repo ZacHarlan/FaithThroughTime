@@ -41,7 +41,7 @@ ok ".NET SDK $DOTNET_VERSION"
 # ─── Step 2: Kill stale processes on known ports ─────────────────────────────
 log "Checking for stale processes on port $APP_PORT..."
 
-STALE_PID=$(lsof -ti tcp:$APP_PORT 2>/dev/null || true)
+STALE_PID=$(lsof -ti tcp:$APP_PORT -sTCP:LISTEN 2>/dev/null || true)
 if [[ -n "$STALE_PID" ]]; then
     warn "Killing stale process(es) on port $APP_PORT: PID $STALE_PID"
     echo "$STALE_PID" | xargs kill -9 2>/dev/null || true
@@ -59,16 +59,17 @@ log "Building solution..."
 dotnet build --no-restore --verbosity quiet >> "$LOG_FILE" 2>&1
 ok "Build succeeded"
 
-# ─── Step 5: Remove stale database (forces re-seed if schema changed) ───────
+# ─── Step 5: Database ───────────────────────────────────────────────────────
+# The app seeds the database only when the people table is empty. After editing
+# SeedData.sql, delete the file (and its -wal/-shm) before running this script.
 DB_FILE="$ROOT_DIR/$PROJECT_DIR/bin/Debug/net9.0/faith-through-time.db"
 if [[ -f "$DB_FILE" ]]; then
-    log "Existing database found — will re-seed if empty"
+    log "Existing database found — it is reused as is (delete it to re-seed from SeedData.sql)"
 fi
 
 # ─── Step 6: Run tests ──────────────────────────────────────────────────────
 log "Running unit & integration tests..."
 if dotnet test tests/BibleTimeline.Tests --no-build --verbosity quiet >> "$LOG_FILE" 2>&1; then
-    TESTS_PASSED=$(grep -c "Passed" "$LOG_FILE" 2>/dev/null || echo "all")
     ok "Tests passed"
 else
     warn "Some tests failed — check $LOG_FILE for details"
@@ -88,7 +89,7 @@ log "Waiting for health check..."
 MAX_WAIT=30
 WAITED=0
 while [[ $WAITED -lt $MAX_WAIT ]]; do
-    if curl -sf "$APP_URL/api/timeline/periods" > /dev/null 2>&1; then
+    if curl -sf "$APP_URL/data/dataset.json" > /dev/null 2>&1; then
         break
     fi
     sleep 1
@@ -107,7 +108,7 @@ echo -e "${GREEN}═════════════════════
 echo ""
 echo -e "  App URL:    ${CYAN}$APP_URL${NC}"
 echo -e "  App PID:    ${CYAN}$APP_PID${NC}"
-echo -e "  API:        ${CYAN}$APP_URL/api/timeline${NC}"
+echo -e "  Dataset:    ${CYAN}$APP_URL/api/dataset${NC}  (also /data/dataset.json)"
 echo -e "  Log file:   ${CYAN}$LOG_FILE${NC}"
 echo ""
 echo -e "  To stop:    ${YELLOW}kill $APP_PID${NC}"

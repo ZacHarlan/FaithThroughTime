@@ -1,250 +1,144 @@
-# Faith Through Time — Architecture & Design Document
+# Faith Through Time — Architecture & Design
 
-## High-Level Architecture
+## Overview
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                      Browser (Client)                       │
-│  ┌──────────┐  ┌──────────────────┐  ┌───────────────────┐  │
-│  │ Filter   │  │   D3.js SVG      │  │  Detail Panel     │  │
-│  │ Panel    │  │   Timeline       │  │  (drill-down)     │  │
-│  │          │  │   (zoom/pan)     │  │                   │  │
-│  └────┬─────┘  └────────┬─────────┘  └────────┬──────────┘  │
-│       │                 │                     │              │
-│       └─────────────────┼─────────────────────┘              │
-│                         │                                    │
-│              ┌──────────┴──────────┐                         │
-│              │   JS State + API    │                         │
-│              │   (vanilla JS)      │                         │
-│              └──────────┬──────────┘                         │
-└─────────────────────────┼───────────────────────────────────┘
-                          │ HTTP/JSON
-┌─────────────────────────┼───────────────────────────────────┐
-│                   .NET 9 Backend                            │
-│  ┌──────────────────────┴──────────────────────────────┐    │
-│  │           Minimal API Endpoints                      │    │
-│  │  /api/timeline  /api/people/{id}  /api/search       │    │
-│  │  /api/events/{id}  /api/timeline/periods            │    │
-│  └──────────────────────┬──────────────────────────────┘    │
-│                         │                                    │
-│  ┌──────────────────────┴──────────────────────────────┐    │
-│  │         BibleTimelineDb (Dapper + SQLite)            │    │
-│  │  - Timeline queries with filtering                   │    │
-│  │  - Detail queries with joins                         │    │
-│  │  - Full-text search (FTS5)                           │    │
-│  └──────────────────────┬──────────────────────────────┘    │
-│                         │                                    │
-│  ┌──────────────────────┴──────────────────────────────┐    │
-│  │              SQLite Database                         │    │
-│  │  faith-through-time.db (single file, portable)          │    │
-│  └─────────────────────────────────────────────────────┘    │
-└─────────────────────────────────────────────────────────────┘
-```
-
-## Key Design Decisions
-
-### 1. Vanilla JS over React — Justified
-
-**Chosen: Vanilla JS + D3.js**
-
-The UI has three distinct interaction zones (filter panel, timeline, detail panel) with a
-single shared state object. The complexity doesn't warrant React because:
-
-- **D3.js owns the DOM** for the timeline — React's virtual DOM adds friction here, not value
-- **No component reuse** — the filter panel, search bar, and detail panel are each unique
-- **State is simple** — a single `State` object with pub/sub handles all reactivity
-- **Zero build step** — no webpack, no JSX compilation, no node_modules
-- **Smaller payload** — ~10KB of app JS vs 40KB+ for React alone
-
-React would be justified if: (a) the app grows to 10+ interactive views, (b) complex form
-editing for data entry is added, or (c) a team of React developers maintains it.
-
-### 2. SVG over Canvas — Justified
-
-**Chosen: SVG (via D3.js)**
-
-| Factor | SVG | Canvas | Winner |
-|--------|-----|--------|--------|
-| Dataset size (~200 visible items) | Excellent | Overkill | SVG |
-| Click/hover events | Free (DOM) | Manual hit testing | SVG |
-| Accessibility | Semantic elements | Opaque bitmap | SVG |
-| CSS styling | Full support | None | SVG |
-| Text rendering | Native, crisp | Manual, blurry at zoom | SVG |
-| Performance at 10K+ elements | Degrades | Excellent | Canvas |
-
-At biblical dataset scale (~500 total entities, ~200 visible at any zoom level), SVG
-performs well. Canvas would only be needed if displaying 10,000+ simultaneous elements
-(e.g., adding every verse as a data point).
-
-**Hybrid approach** (Canvas for background + SVG for interactive elements) adds complexity
-without measurable benefit at this scale.
-
-### 3. Representing Uncertain/Disputed Dates
-
-Biblical chronology is one of the most complex aspects of this application. Our schema
-handles uncertainty at three levels:
-
-1. **Approximate flags** (`birth_approx`, `start_approx`) — renders dashed borders
-   and tilde (~) prefixes in date display
-2. **Confidence levels** — four tiers with visual opacity:
-   - `certain` (100% opacity) — corroborated by external records (e.g., Fall of Jerusalem 586 BC)
-   - `probable` (85%) — strong internal evidence (e.g., David's reign ~1010-970 BC)
-   - `possible` (65%) — scholarly consensus with debate (e.g., Judges chronology)
-   - `traditional` (55%) — based on genealogical calculations (e.g., Creation, early patriarchs)
-3. **Date notes** — free-text field explaining specific chronological debates
-   (e.g., early vs. late date for the Exodus)
-
-### 4. Performance Considerations
-
-| Concern | Current Scale | Mitigation | At Scale |
-|---------|---------------|------------|----------|
-| DB queries | ~500 entities | Indexed columns, FTS5 | Add pagination if >5000 |
-| SVG rendering | ~200 visible | D3 data join (enter/update/exit) | Switch to Canvas at 10K+ |
-| JSON payload | ~50KB | Single fetch, client-side filter | Add server-side windowing |
-| Search | FTS5 prefix match | Near-instant | Already optimized |
-
-### 5. Risks & Mitigations
-
-| Risk | Impact | Mitigation |
-|------|--------|------------|
-| Date accuracy disputes | Users lose trust | Show confidence badges, cite sources, include date_notes |
-| UX overload at full zoom-out | Visual clutter | Significance-based filtering, semantic zoom (hide minor items) |
-| SVG rendering with 1000+ items | Performance drop | D3 enter/update/exit pattern, viewport culling |
-| Schema changes break seed data | Data integrity | Embedded resources, FTS triggers keep search in sync |
-| Mobile viewport too small | Unusable UX | Responsive CSS, hide filter panel on mobile |
-
-## Project Structure
+A browser app over a SQLite database. The server's job is small: hold the data, apply the schema and seed, and hand the
+whole dataset to the browser as one JSON document. Everything the user sees is computed in the browser from that document.
 
 ```
-Bible-Timeline/
-├── BibleTimeline.sln
-├── ARCHITECTURE.md                          ← This file
-├── src/
-│   └── BibleTimeline.Web/
-│       ├── BibleTimeline.Web.csproj
-│       ├── Program.cs                       ← App entry, DI, middleware
-│       ├── Data/
-│       │   ├── BibleTimelineDb.cs           ← Dapper data access layer
-│       │   ├── DatabaseInitializer.cs       ← Schema + seed on startup
-│       │   ├── Schema.sql                   ← DDL (embedded resource)
-│       │   └── SeedData.sql                 ← 47 people, 52 events, 66 books
-│       ├── Models/
-│       │   ├── Entities.cs                  ← Person, Event, TimePeriod, etc.
-│       │   └── Dtos.cs                      ← TimelineItemDto, PersonDetailDto, etc.
-│       ├── Endpoints/
-│       │   └── AllEndpoints.cs              ← Minimal API route definitions
-│       └── wwwroot/
-│           ├── index.html                   ← Single-page entry
-│           ├── css/styles.css               ← Dark theme, responsive layout
-│           └── js/
-│               ├── api.js                   ← Fetch wrapper
-│               ├── state.js                 ← Centralized state + pub/sub
-│               ├── timeline.js              ← D3.js SVG renderer
-│               ├── filters.js               ← Filter panel binding
-│               ├── detail-panel.js          ← Drill-down detail view
-│               ├── search.js                ← FTS search with debounce
-│               └── app.js                   ← Orchestration entry point
+ SeedData.sql ──► SQLite ──► DatasetBuilder ──► GET /data/dataset.json ──► Store (in memory) ──► views
+ (the data)      (runtime)   (slugs, joins)     (one request)              (indexes, family,     (home, timeline,
+                                                                           overlap, search)      tours, meet, family,
+                                                                                                 map, read, about)
+```
+
+## One dataset request, one in-browser store
+
+`Data/DatasetBuilder.cs` joins the tables into a single JSON body: `meta` (version, chronology, generation time, counts),
+`periods`, `people` (each with its events and scripture), `events` (each with its people, location ids and scripture),
+`relationships`, `locations`, `books`, `journeys`. It is served at `/api/dataset` and at `/data/dataset.json`; the second
+path is where the static export puts the same file, so `js/api.js` has one relative URL that works in both deployments.
+Each row gets a URL-safe `slug`; where names collide, the more significant row keeps the bare slug and later rows get
+`-2`, `-3`.
+
+The dataset is a few hundred kilobytes. Loading it once costs less than the round trips of a query-per-interaction design,
+and it makes filtering, search, family walks and "did they meet?" instantaneous and available offline.
+
+`js/store.js` holds two pieces:
+
+- `Time`: year arithmetic. There is no year 0, so BC years are mapped onto a continuous axis (`-1` → `0`) for distances and
+  layout, and formatted back (`1996–1821 BC`, `5 BC – AD 33`).
+- `Store`: loads the dataset once, indexes it by id and slug, derives children and relationships (with inverses), and
+  answers every pure question: lookups, family lines, lifetime overlap between two people, contemporaries, search.
+
+`js/api.js` is the only module that calls `fetch()`. The older query endpoints remain on the server and are tested, but
+the frontend no longer uses them.
+
+## Hash router and view registry
+
+`js/app.js` contains `Router` and `App`. Routes are hash-based (`#/timeline?y=&span=`, `#/story/<tour>/<step>`,
+`#/meet/<a>/<b>`, `#/family/<slug>`, `#/map/<journey>`, `#/read/<book>/<chapter>`, `#/about`), so they work on any static
+host, on `file://`, and under a sub-path. The URL is the single source of truth for what is on screen.
+
+Each view module registers itself with `App` (`init`, `show`, `hide`, `title`). `App` shows one base view at a time and may
+open an overlay on top; person and event routes (`#/person/<slug>`, `#/event/<slug>`) are overlays handled by `detail.js`, so
+the timeline or map stays underneath. Modules communicate through a small event bus (`route`, `theme`, `focus-item`,
+`open-search`, `data-ready`). Scripts are classic (non-module) scripts loaded in order from `index.html`; each exposes at
+most one global (`Api`, `Time`, `Store`, `UI`, `Router`, `App`, `BibleText`, `Share`, `Search`, `Timeline`, `Read`, …).
+
+Views: home, timeline (canvas, zoom/pan, lanes packed per zoom level), tours (narrated flights over the timeline, from
+`data/tours.json`), meet (lifetime overlap; curated pairs in `data/discoveries.json`), family (line of descent and
+per-person trees), map (Leaflet, journeys), read (local Bible text with links back to history), about (dates and sources).
+`search.js` is a command palette; `share.js` renders share cards on a canvas.
+
+DOM is built with `UI.h(tag, props, ...children)`, which sets text as text. Assigning HTML strings (`innerHTML`,
+`insertAdjacentHTML`, `document.write`) is forbidden in `wwwroot/js` and enforced by an architecture test.
+
+## Design tokens
+
+`css/base.css` defines the design tokens (colour, type, spacing, radii, motion) as CSS custom properties, with dark and
+light themes selected by `data-theme` on the root element (stored under `ftt-theme`). Each view has its own stylesheet that
+uses only tokens. There is no CSS preprocessor.
+
+## Why no build step
+
+The code is a few thousand lines of plain JavaScript and CSS served as files. No bundler, transpiler or package install means
+a browser reload is the whole development loop, the deployed files are the source files, and the static export is a copy plus
+the dataset. D3 and Leaflet are vendored under `wwwroot/vendor/` so nothing is fetched from a CDN at runtime (fonts and the
+map tiles are the exceptions). The cost is manual script ordering in `index.html` and a hand-maintained precache list in
+`sw.js`; the architecture tests check that every referenced file exists.
+
+## Offline
+
+`sw.js` precaches the shell, code, data and manifest (network first, so a deploy is picked up on the next load) and
+caches Bible text, vendor libraries and fonts cache first. Bump `CACHE_NAME` when the shell file list changes.
+
+## The data audit and chronology decisions
+
+`Data/SeedData.sql` was regenerated after a full audit and now holds 375 people, 241 events, 95 locations, 536 scripture
+references, 18 time periods, 66 books and 5 journeys.
+
+- **One chronology.** Old Testament dates follow Ussher (Masoretic text); foreign rulers and church history use standard
+  dates. Anchors the tests check: Creation 4004 BC, Flood 2349 BC, Abraham born 1996 BC, Exodus 1491 BC, kingdom divides
+  975 BC, fall of Jerusalem 588 BC. Differences from mainstream scholarship are written in `date_notes`.
+- **Explicit stable ids.** Rows carry explicit ids so links, slugs' tie-breaks, shared URLs and tests do not shift when
+  rows are added. The seed is a single transaction with deferred foreign keys.
+- **Disambiguated names.** People who shared a name were renamed ("Mary, mother of Jesus", "John the Apostle", "James, son
+  of Zebedee", "James, brother of Jesus", "Joshua son of Nun"). An invented row ("Father of Lazarus") was removed.
+- **Controlled vocabularies** for `people.role` and `events.category` (listed in `Schema.sql` and `AGENTS.md`).
+- **Parentage.** Parent links are `father_id`/`mother_id` only; duplicate `parent`/`child` relationship rows were removed.
+  The brothers of Jesus have no parents recorded because Catholic, Orthodox and Protestant traditions read Mark 6:3
+  differently; they are `sibling` rows. `GetLineageAsync` includes `sibling` rows, so they appear as siblings.
+- **Dates are marked uncertain** with `birth_approx`/`death_approx` (and start/end), `date_confidence` and `date_notes`.
+
+`DataIntegrityTests` turns the audit into tests: vocabularies, no year 0, no death before birth or event end before start,
+parents at least 12 years older (three documented exceptions), a father chain from Jesus to Adam without a cycle,
+contiguous periods, unique names, scripture references that exist in the local KJV, and the Ussher anchors.
+
+## Static export
+
+`dotnet run --project src/BibleTimeline.Web -- --export-dataset <path>` initialises the database, writes the dataset JSON
+and exits. `python3 build-static.py` builds the static site into `docs/` (served by GitHub Pages), and
+`python3 test-static.py` validates it. The script is being rewritten for the new frontend; treat its documentation as
+authoritative over this paragraph once it lands. Because the frontend only needs `data/dataset.json`, `data/tours.json`,
+`data/discoveries.json` and files, no server is required.
+
+## Backend layers
+
+```
+Endpoints/  →  Data/  →  Models/
+```
+
+`Endpoints/` maps routes and never contains SQL; `Data/` holds Dapper queries, the dataset builder and the schema/seed
+initialiser; `Models/` holds POCOs. `ArchitectureTests` enforces the imports. SQLite is a single file; FTS5 tables for
+people and events are kept in sync by triggers (used by `/api/search`).
+
+## Project structure
+
+```
+FaithThroughTime/
+├── src/BibleTimeline.Web/
+│   ├── Program.cs
+│   ├── Endpoints/        AllEndpoints.cs (legacy routes), DatasetEndpoints.cs
+│   ├── Data/             BibleTimelineDb.cs, DatasetBuilder.cs, DatabaseInitializer.cs, Schema.sql, SeedData.sql
+│   ├── Models/           Entities.cs, Dtos.cs, DatasetDtos.cs
+│   └── wwwroot/          index.html, css/, js/, data/, vendor/, bibles/, icons/, manifest.json, sw.js
 ├── tests/
-│   ├── BibleTimeline.Tests/                 ← xUnit: unit + integration
-│   │   ├── UnitTest1.cs                     ← BibleTimelineDb unit tests
-│   │   └── IntegrationTests.cs              ← WebApplicationFactory API tests
-│   └── BibleTimeline.E2E/                   ← Playwright NUnit E2E tests
-│       └── UnitTest1.cs                     ← Browser interaction tests
+│   ├── BibleTimeline.Tests/   UnitTest1, IntegrationTests, DatasetTests, DataIntegrityTests, ArchitectureTests
+│   └── BibleTimeline.E2E/     Playwright; targets the old UI, to be rewritten
+├── init.sh, agent-status.sh, quality-sweep.sh
+├── build-static.py, test-static.py, docs/
+└── AGENTS.md, ARCHITECTURE.md, README.md, feature_list.json, claude-progress.txt
 ```
 
-## SQLite Schema (Entity Relationship Summary)
+## Testing
 
-```
-┌──────────┐     ┌──────────────┐     ┌──────────┐
-│  people  │────▶│ person_events│◀────│  events  │
-│          │     │              │     │          │
-│ id       │     │ person_id    │     │ id       │
-│ name     │     │ event_id     │     │ name     │
-│ birth_yr │     │ role_in_event│     │ start_yr │
-│ death_yr │     └──────────────┘     │ end_yr   │
-│ role     │                          │ category │
-│ signif.  │     ┌──────────────┐     │ signif.  │
-│ tribe    ├────▶│person_relati-│     └────┬─────┘
-│ approx   │     │  onships     │          │
-│ confidence│    │ type         │     ┌────┴──────┐
-└─────┬────┘     └──────────────┘     │event_     │
-      │                               │locations  │
-      │          ┌──────────────┐     └────┬──────┘
-      ├─────────▶│person_       │          │
-      │          │ scripture    │     ┌────┴──────┐
-      │          └──────┬───────┘     │ locations │
-      │                 │             │           │
-      │          ┌──────┴───────┐     │ name      │
-      │          │ scripture_   │     │ lat/lon   │
-      │          │ references   │     └───────────┘
-      │          │              │
-      │          │ reference_   │     ┌───────────┐
-      │          │ text         │◀────│ biblical_ │
-      │          └──────────────┘     │ books     │
-      │                               │ (66 books)│
-      │          ┌──────────────┐     └───────────┘
-      └─────────▶│ time_periods │
-    (via dates)  │ (11 eras)   │
-                 └──────────────┘
+`dotnet test tests/BibleTimeline.Tests` runs unit tests (in-memory SQLite), integration tests (`WebApplicationFactory`),
+dataset tests, data-integrity tests (against the real seed in a temporary database) and architecture tests. Integration
+tests use a database file next to the test assembly that the app seeds only when empty; a module initializer deletes it
+before each run so a stale seed cannot mask failures. Test classes run sequentially because they share that file.
 
-    FTS5 virtual tables: people_fts, events_fts
-    (auto-synced via triggers)
-```
+## Possible future work
 
-## API Endpoints
-
-| Method | Endpoint | Purpose | Key Parameters |
-|--------|----------|---------|----------------|
-| GET | `/api/timeline` | All timeline items | `startYear`, `endYear`, `role`, `category`, `significance`, `period`, `tribe`, `includePeople`, `includeEvents` |
-| GET | `/api/timeline/periods` | Time period bands | — |
-| GET | `/api/timeline/books` | Biblical books | — |
-| GET | `/api/timeline/filters` | Available filter options | — |
-| GET | `/api/people/{id}` | Person detail + relationships | — |
-| GET | `/api/events/{id}` | Event detail + people + locations | — |
-| GET | `/api/search?q=` | Full-text search | `q` (min 2 chars), `type` (person/event/book) |
-
-## Testing Strategy
-
-### Unit Tests (xUnit) — `BibleTimeline.Tests/UnitTest1.cs`
-- **BibleTimelineDb** tests against in-memory SQLite
-- Tests all filter combinations, detail queries, search, FTS prefix matching
-- 16 tests covering data access layer
-
-### Integration Tests (xUnit + WebApplicationFactory) — `BibleTimeline.Tests/IntegrationTests.cs`
-- Full HTTP pipeline tests against real API endpoints
-- Tests filter behavior, relationship loading, 404 handling, search
-- 23 tests covering all API endpoints
-
-### E2E Tests (Playwright + NUnit) — `BibleTimeline.E2E/UnitTest1.cs`
-- Browser-based interaction tests
-- Tests: page load, search, detail panel, filters, zoom, close behavior
-- 9 scenarios covering core user workflows
-
-## Running the Application
-
-```bash
-# Build and run
-cd src/BibleTimeline.Web
-dotnet run
-
-# Run unit/integration tests
-dotnet test tests/BibleTimeline.Tests
-
-# Run E2E tests (app must be running on port 5000)
-# First install Playwright browsers:
-pwsh tests/BibleTimeline.E2E/bin/Debug/net9.0/playwright.ps1 install
-dotnet test tests/BibleTimeline.E2E
-```
-
-## Future Extensibility
-
-| Feature | Effort | Schema Change | Notes |
-|---------|--------|---------------|-------|
-| World history events | Low | Add `source` column to events | Filter by source='biblical' vs 'secular' |
-| Interactive maps | Medium | Locations table already has lat/lon | Add Leaflet.js map panel |
-| Scripture text display | Medium | Add bible_text table or API | Link to external Bible API |
-| User annotations | Medium | Add users + annotations tables | Auth required |
-| AI-assisted insights | High | None initially | LLM for cross-reference discovery |
-| Comparison mode | Medium | Frontend only | Side-by-side timeline view |
-| Data import/export | Low | None | CSV/JSON export of current view |
-| Print-friendly timeline | Low | CSS @media print | Generate static SVG |
+Rewrite the Playwright suite for the new UI; add browser-level tests of the router and views; extend the data with more
+post-biblical people and events under the same rules.

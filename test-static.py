@@ -1,119 +1,200 @@
 #!/usr/bin/env python3
-"""Validate the exported static data (inline in index.html)."""
-import json, sys, os, re
+"""Validate the built docs/ folder without a browser.
 
-ROOT = os.path.dirname(os.path.abspath(__file__))
-DOCS = os.path.join(ROOT, "docs")
+    python3 test-static.py        (run build-static.py first)
 
-def load_inline_data():
-    """Extract window.__BIBLE_DATA__ from docs/index.html."""
-    html_path = os.path.join(DOCS, "index.html")
-    with open(html_path) as f:
-        html = f.read()
-    m = re.search(r'window\.__BIBLE_DATA__\s*=\s*(\{.*?\});\s*</script>', html, re.DOTALL)
-    if not m:
-        print("FAIL: Could not find window.__BIBLE_DATA__ in docs/index.html")
-        sys.exit(1)
-    return json.loads(m.group(1))
+Prints every failure and exits non-zero if there are any.
+"""
 
-errors = 0
-def check(condition, msg):
-    global errors
-    if not condition:
-        print(f"  FAIL: {msg}")
-        errors += 1
-    return condition
+import html
+import json
+import re
+import sys
+import xml.etree.ElementTree as ET
+from html.parser import HTMLParser
+from pathlib import Path
 
-print("Validating static data export...")
+ROOT = Path(__file__).resolve().parent
+DOCS = ROOT / "docs"
+SITE_NAME = "Faith Through Time"
+KEYS = ["meta", "periods", "people", "events", "relationships", "locations", "books", "journeys"]
+failures: list[str] = []
 
-data = load_inline_data()
 
-# Timeline
-items = data["timeline"]
-check(len(items) > 100, f"Expected 100+ timeline items, got {len(items)}")
-people_count = sum(1 for x in items if x["type"] == "person")
-events_count = sum(1 for x in items if x["type"] == "event")
-check(people_count > 50, f"Expected 50+ people, got {people_count}")
-check(events_count > 30, f"Expected 30+ events, got {events_count}")
+def check(ok: bool, message: str) -> None:
+    if not ok:
+        failures.append(message)
 
-for item in items[:10]:
-    for key in ["id", "type", "name", "startYear", "endYear", "startApprox", "endApprox",
-                "dateConfidence", "significance", "category", "bookIds", "locationIds"]:
-        check(key in item, f"Missing '{key}' in timeline item {item.get('name','?')}")
 
-# People details
-people = data["people"]
-check(len(people) > 50, f"Expected 50+ people details, got {len(people)}")
-adam = people.get("1", {})
-check(adam.get("name") == "Adam", f"Expected Adam at id=1, got {adam.get('name')}")
-check("events" in adam, "Adam missing events")
-check("relationships" in adam, "Adam missing relationships")
-check("scriptureReferences" in adam, "Adam missing scriptureReferences")
+def load_json(path: Path):
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError) as err:
+        failures.append(f"{path.relative_to(DOCS)}: cannot parse ({err})")
+        return None
 
-# Events details
-events = data["events"]
-check(len(events) > 30, f"Expected 30+ event details, got {len(events)}")
-first = list(events.values())[0]
-check("people" in first, "Event missing people")
-check("locations" in first, "Event missing locations")
-check("scriptureReferences" in first, "Event missing scriptureReferences")
 
-# Filters
-filters = data["filters"]
-check(len(filters.get("roles", [])) > 0, "No roles in filters")
-check(len(filters.get("eventCategories", [])) > 0, "No eventCategories")
-check(len(filters.get("timePeriods", [])) > 5, "Expected 5+ time periods")
-check(len(filters.get("locations", [])) > 5, "Expected 5+ locations")
-check(len(filters.get("books", [])) > 60, "Expected 60+ books")
+class Head(HTMLParser):
+    """Collects title, meta tags, canonical, and local file references."""
 
-# Periods
-periods = data["periods"]
-check(len(periods) > 5, f"Expected 5+ periods, got {len(periods)}")
-check("name" in periods[0], "Period missing name")
-check("startYear" in periods[0], "Period missing startYear")
-check("color" in periods[0], "Period missing color")
+    def __init__(self):
+        super().__init__()
+        self.title, self.meta, self.canonical, self.refs = "", {}, None, []
+        self._in_title = False
 
-# Books
-books = data["books"]
-check(len(books) >= 66, f"Expected 66 books, got {len(books)}")
+    def handle_starttag(self, tag, attrs):
+        a = dict(attrs)
+        if tag == "title":
+            self._in_title = True
+        elif tag == "meta":
+            self.meta[a.get("property") or a.get("name")] = a.get("content")
+        elif tag == "link":
+            if a.get("rel") == "canonical":
+                self.canonical = a.get("href")
+            elif a.get("href"):
+                self.refs.append(a["href"])
+        elif tag == "script" and a.get("src"):
+            self.refs.append(a["src"])
 
-# Lineage
-lineage = data["lineagePeople"]
-check(len(lineage) > 50, f"Expected 50+ lineage people, got {len(lineage)}")
-jesus = next((p for p in lineage if p["name"] == "Jesus"), None)
-check(jesus is not None, "Jesus not found in lineage")
-if jesus:
-    check(jesus["fatherId"] is not None, "Jesus missing fatherId")
-    check(jesus["motherId"] is not None, "Jesus missing motherId")
+    def handle_endtag(self, tag):
+        if tag == "title":
+            self._in_title = False
 
-has_father = sum(1 for p in lineage if p.get("fatherId"))
-check(has_father > 50, f"Expected 50+ people with fatherId, got {has_father}")
+    def handle_data(self, data):
+        if self._in_title:
+            self.title += data
 
-# PWA assets — without these, the previously-installed service worker on
-# returning users keeps serving stale map.js and index.html. Stale SW was
-# the root cause of disappearing journey lines and broken marker clicks.
-sw_path = os.path.join(DOCS, "sw.js")
-manifest_path = os.path.join(DOCS, "manifest.json")
-check(os.path.exists(sw_path), "docs/sw.js missing — PWA service worker not deployed")
-check(os.path.exists(manifest_path), "docs/manifest.json missing — PWA manifest not deployed")
-if os.path.exists(sw_path):
-    sw_content = open(sw_path).read()
-    # The cache name MUST change between deploys, otherwise the activate
-    # handler can't evict old entries (cache-first / stale-while-revalidate
-    # would keep handing out yesterday's map.js).
-    m = re.search(r"CACHE_NAME\s*=\s*['\"]([^'\"]+)['\"]", sw_content)
-    check(m is not None, "sw.js does not declare a CACHE_NAME constant")
-    if m:
-        cache_name = m.group(1)
-        check(cache_name != "faith-through-time-v1",
-              f"sw.js still uses the original CACHE_NAME ('{cache_name}') — bump it on each deploy")
 
-if errors:
-    print(f"\n{errors} check(s) FAILED")
-    sys.exit(1)
-else:
-    print(f"\nAll checks passed!")
-    print(f"  {len(items)} timeline items ({people_count} people, {events_count} events)")
-    print(f"  {len(people)} people details, {len(events)} event details")
-    print(f"  {len(lineage)} lineage people ({has_father} with parents)")
-    print(f"  {len(periods)} periods, {len(books)} books")
+def parse(path: Path) -> Head:
+    head = Head()
+    head.feed(path.read_text(encoding="utf-8"))
+    return head
+
+
+def local(ref: str) -> bool:
+    return not re.match(r"^(https?:)?//|^data:|^#", ref)
+
+
+def check_dataset() -> dict | None:
+    data = load_json(DOCS / "data" / "dataset.json")
+    if data is None:
+        return None
+    for key in KEYS:
+        check(key in data, f"dataset.json: missing key '{key}'")
+    for key, minimum in (("people", 100), ("events", 100), ("locations", 5), ("books", 60), ("periods", 5)):
+        check(len(data.get(key, [])) >= minimum, f"dataset.json: '{key}' has fewer than {minimum} entries")
+    return data
+
+
+def check_index_refs() -> None:
+    index = DOCS / "index.html"
+    if not index.exists():
+        failures.append("index.html is missing")
+        return
+    for ref in parse(index).refs:
+        if local(ref):
+            check((DOCS / ref.split("?")[0].split("#")[0]).exists(), f"index.html references missing file: {ref}")
+
+
+def check_sw_precache() -> None:
+    sw = (DOCS / "sw.js").read_text(encoding="utf-8")
+    check(re.search(r"const CACHE_NAME = 'ftt-[0-9a-f]{12}'", sw) is not None, "sw.js: CACHE_NAME is not the hashed value")
+    check(re.search(r"const LIBRARY_CACHE = 'ftt-library-[0-9a-f]{12}'", sw) is not None, "sw.js: LIBRARY_CACHE is not the hashed value")
+    shell = re.search(r"const SHELL = \[(.*?)\];", sw, re.S)
+    if not shell:
+        failures.append("sw.js: SHELL list not found")
+        return
+    for ref in re.findall(r"'([^']+)'", shell.group(1)):
+        if re.match(r"^(js|css)/", ref):
+            check((DOCS / ref).exists(), f"sw.js precaches missing file: {ref}")
+
+
+def check_authored(data: dict) -> None:
+    slugs = {"person": {p["slug"] for p in data["people"]}, "event": {e["slug"] for e in data["events"]}}
+    for name, key in (("tours.json", "tours"), ("discoveries.json", "discoveries")):
+        doc = load_json(DOCS / "data" / name)
+        if doc is None:
+            continue
+        check(bool(doc.get(key)), f"{name}: '{key}' is empty or missing")
+        walk(doc, name, slugs)
+
+
+def walk(node, name: str, slugs: dict) -> None:
+    if isinstance(node, dict):
+        for k in ("a", "b"):
+            if isinstance(node.get(k), str):
+                check(node[k] in slugs["person"], f"{name}: unknown person slug '{node[k]}' (key {k})")
+        if node.get("kind") in slugs and isinstance(node.get("slug"), str):
+            check(node["slug"] in slugs[node["kind"]], f"{name}: unknown {node['kind']} slug '{node['slug']}'")
+        for v in node.values():
+            walk(v, name, slugs)
+    elif isinstance(node, list):
+        for v in node:
+            walk(v, name, slugs)
+
+
+def check_pages(data: dict) -> list[str]:
+    expected = [("person", p["slug"], p["name"]) for p in data["people"]] + \
+               [("event", e["slug"], e["name"]) for e in data["events"]]
+    urls = []
+    for kind, slug, name in expected:
+        rel = f"{kind}/{slug}/index.html"
+        path = DOCS / rel
+        if not path.exists():
+            failures.append(f"missing page: {rel}")
+            continue
+        head = parse(path)
+        urls.append(f"/{kind}/{slug}/")
+        check(head.title == f"{name} — {SITE_NAME}", f"{rel}: title {head.title!r} does not match expected name-based title")
+        for key in ("description", "og:title", "og:image", "og:description", "og:url", "twitter:card"):
+            check(bool(head.meta.get(key)), f"{rel}: missing meta {key}")
+        check(head.canonical is not None and head.canonical.endswith(f"/{kind}/{slug}/"), f"{rel}: bad canonical {head.canonical!r}")
+        check(head.meta.get("og:title") == head.title, f"{rel}: og:title differs from title")
+    return urls
+
+
+def check_sitemap(urls: list[str]) -> None:
+    try:
+        root = ET.parse(DOCS / "sitemap.xml").getroot()
+    except (ET.ParseError, OSError) as err:
+        failures.append(f"sitemap.xml: not well-formed ({err})")
+        return
+    locs = [el.text for el in root.iter() if el.tag.endswith("loc")]
+    domain = (ROOT / "CNAME").read_text().strip()
+    expected = {f"https://{domain}/"} | {f"https://{domain}{u}" for u in urls}
+    check(len(locs) == len(set(locs)), "sitemap.xml: duplicate URLs")
+    check(set(locs) == expected, f"sitemap.xml: URL set differs from pages (missing {len(expected - set(locs))}, extra {len(set(locs) - expected)})")
+
+
+def check_misc() -> None:
+    for name in (".nojekyll", "CNAME", "robots.txt", "404.html"):
+        check((DOCS / name).exists(), f"missing {name}")
+    robots = DOCS / "robots.txt"
+    if robots.exists():
+        check("Sitemap:" in robots.read_text(), "robots.txt: no Sitemap line")
+
+
+def main() -> int:
+    if not DOCS.exists():
+        print("docs/ does not exist. Run build-static.py first.")
+        return 1
+    data = check_dataset()
+    check_index_refs()
+    check_sw_precache()
+    check_misc()
+    urls = []
+    if data:
+        check_authored(data)
+        urls = check_pages(data)
+        check_sitemap(urls)
+    if failures:
+        print(f"{len(failures)} failure(s):")
+        for f in failures:
+            print(f"  - {f}")
+        return 1
+    print(f"OK: dataset, {len(urls)} entity pages, sitemap, service worker, tours and discoveries all valid.")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

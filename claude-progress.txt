@@ -71,3 +71,53 @@
 | claude-progress.txt | 6 | Session continuity log (this file) |
 | .githooks/pre-commit | — | Quality gate hook |
 | .gitignore | — | Git ignore rules |
+
+---
+
+## Session — v2 rebuild
+
+**Goal:** Rebuild data and frontend; bring tests, harness and docs up to date (branch rebuild/v2).
+
+**What changed**
+- Data: SeedData.sql regenerated after an audit. 375 people, 241 events, 95 locations, 536 scripture references, 18 periods,
+  66 books, 5 journeys. Explicit stable ids, one transaction with deferred foreign keys. One chronology (Ussher for the OT,
+  standard dates for foreign rulers and church history). People renamed to be unique ("Mary, mother of Jesus", "John the
+  Apostle", "James, brother of Jesus", ...). "Father of Lazarus" deleted. Brothers of Jesus have no father_id/mother_id
+  (traditions differ) and are linked to Jesus by `sibling` rows. Duplicate parent/child relationship rows removed.
+  Controlled vocabularies for people.role and events.category.
+- Backend: GET /api/dataset and /data/dataset.json (Data/DatasetBuilder.cs, Models/DatasetDtos.cs,
+  Endpoints/DatasetEndpoints.cs), `--export-dataset <path>` mode. Legacy endpoints kept.
+- Frontend rebuilt under wwwroot/: hash router and view registry (app.js), Store/Time (store.js), UI.h (ui.js), one stylesheet
+  per view on design tokens (base.css), views home/timeline/tour/meet/family/map/read/about, search palette, share cards,
+  detail sheet, tours and discoveries as JSON. D3 and Leaflet vendored.
+
+**Tests (this session)**
+- Before: 214 tests, 4 failing (LineageEndpointsTests: Mary as ancestor, both parents, brother James, all four brothers).
+- After: 233 tests, all passing.
+- Fixed lookups for the new name 'Mary, mother of Jesus' (MaryIsAncestor, BothParentsInAncestors).
+- Rewrote HasBrotherJames and HasAllFourBrothers to assert the new intended behaviour (siblings via person_relationships, no
+  father_id/mother_id). Added GetLineage_BrotherOfJesus_HasJesusAsSibling.
+- BibleTimelineDb.GetLineageAsync: siblings now also come from `sibling` rows in person_relationships (either direction).
+- Test database: a module initializer in AssemblyInfo.cs deletes faith-through-time.db* next to the test assembly before
+  each run, so a stale seed cannot mask failures.
+- New DataIntegrityTests (vocabularies, no year 0, death/birth, event dates, parent age with three named exceptions, father
+  chain Jesus to Adam, parent cycles, contiguous periods, unique person and event names, brothers of Jesus, scripture refs
+  vs local KJV, Ussher anchors). All passed on the current seed. Of the three parent-age exceptions only Hezekiah/Ahaz is
+  needed today (11 years); the two Boaz pairs are 240+ years apart.
+- New ArchitectureTests: no innerHTML/outerHTML/insertAdjacentHTML/document.write in wwwroot/js (empty allowlist; no
+  violations existed), index.html local assets exist (PendingAssets list: js/timeline.js, css/timeline.css, both present now),
+  tours.json and discoveries.json parse.
+
+**Harness and docs**
+- Rewrote AGENTS.md, ARCHITECTURE.md, README.md, feature_list.json (30 features, same keys). Schema.sql comments for role and
+  category list the vocabularies (no DDL change).
+- init.sh, agent-status.sh, quality-sweep.sh: health check uses /data/dataset.json; test-summary parsing fixed for the current
+  dotnet output; quality-sweep also scans for HTML injection and exempts Program.cs from the Console.Write check; counts
+  include locations and scripture references.
+
+**Known gaps**
+- tests/BibleTimeline.E2E targets the old UI and will be rewritten separately.
+- build-static.py, test-static.py and docs/ are being rewritten by someone else.
+- Empty ArchitectureTests.PendingAssets when convenient.
+
+**Current state:** app on port 5180; 233 tests passing.

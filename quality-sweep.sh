@@ -31,9 +31,11 @@ JS_DIR="$WEB_DIR/wwwroot/js"
 section "ARCHITECTURE TESTS"
 
 ARCH_OUTPUT=$(dotnet test tests/BibleTimeline.Tests --filter "FullyQualifiedName~ArchitectureTests" --no-build --verbosity quiet 2>&1 || true)
-ARCH_FAILED=$(echo "$ARCH_OUTPUT" | grep -c "Failed" 2>/dev/null || echo 0)
+ARCH_FAILED=$(echo "$ARCH_OUTPUT" | grep -E "^(Passed|Failed)!" | grep -oE "Failed: +[0-9]+" | grep -oE "[0-9]+" | tail -1)
 
-if [[ "$ARCH_FAILED" -gt 0 ]]; then
+if [[ -z "$ARCH_FAILED" ]]; then
+    issue "Architecture tests produced no summary (build error?)"
+elif [[ "$ARCH_FAILED" -gt 0 ]]; then
     issue "Architecture tests have failures — run: dotnet test --filter ArchitectureTests --verbosity normal"
 else
     pass "Architecture tests pass"
@@ -42,7 +44,7 @@ fi
 # ─── 2. Build Status ────────────────────────────────────────────────────────
 section "BUILD"
 
-if dotnet build --no-restore --verbosity quiet 2>/dev/null; then
+if dotnet build --no-restore --verbosity quiet >/dev/null 2>&1; then
     pass "Solution builds"
 else
     issue "Build fails"
@@ -52,12 +54,15 @@ fi
 section "FULL TEST SUITE"
 
 ALL_TESTS=$(dotnet test tests/BibleTimeline.Tests --no-build --verbosity quiet 2>&1 || true)
-ALL_FAILED=$(echo "$ALL_TESTS" | grep -oE "Failed: [0-9]+" | grep -oE "[0-9]+" || echo "0")
+ALL_SUMMARY=$(echo "$ALL_TESTS" | grep -E "^(Passed|Failed)!" | tail -1)
+ALL_FAILED=$(echo "$ALL_SUMMARY" | grep -oE "Failed: +[0-9]+" | grep -oE "[0-9]+" || echo "")
 
-if [[ "$ALL_FAILED" -gt 0 ]]; then
+if [[ -z "$ALL_FAILED" ]]; then
+    issue "Test run produced no summary (build error?)"
+elif [[ "$ALL_FAILED" -gt 0 ]]; then
     issue "$ALL_FAILED test(s) failing"
 else
-    TOTAL=$(echo "$ALL_TESTS" | grep -oE "Total tests: [0-9]+" | grep -oE "[0-9]+" || echo "?")
+    TOTAL=$(echo "$ALL_SUMMARY" | grep -oE "Total: +[0-9]+" | grep -oE "[0-9]+" || echo "?")
     pass "All $TOTAL tests pass"
 fi
 
@@ -83,8 +88,20 @@ if [[ -d "$JS_DIR" ]]; then
     fi
 fi
 
+# JavaScript: HTML string injection (DOM is built with UI.h; also enforced by ArchitectureTests)
+if [[ -d "$JS_DIR" ]]; then
+    HTML_HITS=$(grep -rnE "\.(innerHTML|outerHTML)[[:space:]]*\+?=[^=]|insertAdjacentHTML[[:space:]]*\(|document\.write" "$JS_DIR" --include="*.js" 2>/dev/null || true)
+    if [[ -n "$HTML_HITS" ]]; then
+        issue "innerHTML/insertAdjacentHTML/document.write in JS (use UI.h):"
+        echo "$HTML_HITS" | head -5 | sed 's/^/    /'
+    else
+        pass "No HTML string injection in JS"
+    fi
+fi
+
 # C#: Console.WriteLine, System.Diagnostics.Debug
-CS_DEBUG=$(grep -rn "Console\.Write\|System\.Diagnostics\.Debug\.Write" "$WEB_DIR" --include="*.cs" 2>/dev/null || true)
+# Program.cs is exempt: --export-dataset reports to the console by design.
+CS_DEBUG=$(grep -rn "Console\.Write\|System\.Diagnostics\.Debug\.Write" "$WEB_DIR" --include="*.cs" --exclude=Program.cs --exclude-dir=bin --exclude-dir=obj 2>/dev/null || true)
 if [[ -n "$CS_DEBUG" ]]; then
     issue "Debug output found in C#:"
     echo "$CS_DEBUG" | head -5 | sed 's/^/    /'
@@ -118,6 +135,7 @@ check_doc_exists() {
 }
 
 check_doc_exists "AGENTS.md" "AGENTS.md"
+check_doc_exists "README.md" "README.md"
 check_doc_exists "ARCHITECTURE.md" "ARCHITECTURE.md"
 check_doc_exists "feature_list.json" "Feature Registry"
 check_doc_exists "claude-progress.txt" "Progress Log"

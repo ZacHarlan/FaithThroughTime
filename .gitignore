@@ -29,3 +29,6 @@ playwright/.cache/
 
 # Source Bible PDFs (copyrighted; JSON extraction lives in wwwroot/bibles)
 bibles/
+
+# Python
+__pycache__/

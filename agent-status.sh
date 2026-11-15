@@ -26,7 +26,7 @@ section() { echo -e "\n${BOLD}── $* ──${NC}"; }
 section "SERVICE STATUS"
 
 # Check if app is running
-APP_PID=$(lsof -ti tcp:$APP_PORT 2>/dev/null || true)
+APP_PID=$(lsof -ti tcp:$APP_PORT -sTCP:LISTEN 2>/dev/null || true)
 if [[ -n "$APP_PID" ]]; then
     echo -e "  App:        ${GREEN}RUNNING${NC} (PID $APP_PID on port $APP_PORT)"
 else
@@ -34,7 +34,7 @@ else
 fi
 
 # Health check
-if curl -sf "$APP_URL/api/timeline/periods" > /dev/null 2>&1; then
+if curl -sf "$APP_URL/data/dataset.json" > /dev/null 2>&1; then
     echo -e "  API Health: ${GREEN}HEALTHY${NC} ($APP_URL)"
 else
     echo -e "  API Health: ${RED}UNREACHABLE${NC}"
@@ -55,10 +55,14 @@ if [[ -f "$DB_FILE" ]]; then
         BOOKS_COUNT=$(sqlite3 "$DB_FILE" "SELECT COUNT(*) FROM biblical_books;" 2>/dev/null || echo "?")
         PERIODS_COUNT=$(sqlite3 "$DB_FILE" "SELECT COUNT(*) FROM time_periods;" 2>/dev/null || echo "?")
         PE_COUNT=$(sqlite3 "$DB_FILE" "SELECT COUNT(*) FROM person_events;" 2>/dev/null || echo "?")
+        LOC_COUNT=$(sqlite3 "$DB_FILE" "SELECT COUNT(*) FROM locations;" 2>/dev/null || echo "?")
+        REF_COUNT=$(sqlite3 "$DB_FILE" "SELECT COUNT(*) FROM scripture_references;" 2>/dev/null || echo "?")
         echo "  People:     $PEOPLE_COUNT"
         echo "  Events:     $EVENTS_COUNT"
         echo "  Books:      $BOOKS_COUNT"
         echo "  Periods:    $PERIODS_COUNT"
+        echo "  Locations:  $LOC_COUNT"
+        echo "  Scripture:  $REF_COUNT references"
         echo "  Relations:  $PE_COUNT person-event links"
     fi
 else
@@ -68,7 +72,7 @@ fi
 # ─── Build Status ────────────────────────────────────────────────────────────
 section "BUILD"
 
-if dotnet build --no-restore --verbosity quiet 2>/dev/null; then
+if dotnet build --no-restore --verbosity quiet >/dev/null 2>&1; then
     echo -e "  Build:      ${GREEN}PASSES${NC}"
 else
     echo -e "  Build:      ${RED}FAILS${NC}"
@@ -78,9 +82,12 @@ fi
 section "TESTS"
 
 TEST_OUTPUT=$(dotnet test tests/BibleTimeline.Tests --no-build --verbosity quiet 2>&1 || true)
-PASSED=$(echo "$TEST_OUTPUT" |  grep -oE "Passed: [0-9]+" | head -1 || echo "")
-FAILED=$(echo "$TEST_OUTPUT" | grep -oE "Failed: [0-9]+" | head -1 || echo "")
-TOTAL=$(echo "$TEST_OUTPUT" | grep -oE "Total tests: [0-9]+" | head -1 || echo "")
+# Summary line looks like: "Passed!  - Failed:     0, Passed:   233, Skipped:     0, Total:   233, ..."
+SUMMARY=$(echo "$TEST_OUTPUT" | grep -E "^(Passed|Failed)!" | tail -1)
+PASSED=$(echo "$SUMMARY" | grep -oE "Passed: +[0-9]+" | tr -s ' ' || echo "")
+FAILED=$(echo "$SUMMARY" | grep -oE "Failed: +[0-9]+" | tr -s ' ' || echo "")
+TOTAL=$(echo "$SUMMARY" | grep -oE "Total: +[0-9]+" | tr -s ' ' || echo "")
+[[ -z "$SUMMARY" ]] && FAILED="Failed: ?" && TOTAL="no test summary (build error?)"
 
 if [[ -n "$FAILED" && "$FAILED" != "Failed: 0" ]]; then
     echo -e "  Tests:      ${RED}$TOTAL | $PASSED | $FAILED${NC}"
