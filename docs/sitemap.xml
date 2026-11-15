@@ -273,6 +273,7 @@
   <url><loc>https://faiththroughtime.com/person/cyrus/</loc></url>
   <url><loc>https://faiththroughtime.com/person/shealtiel/</loc></url>
   <url><loc>https://faiththroughtime.com/person/belshazzar/</loc></url>
+  <url><loc>https://faiththroughtime.com/person/jeshua-the-high-priest/</loc></url>
   <url><loc>https://faiththroughtime.com/person/zerubbabel/</loc></url>
   <url><loc>https://faiththroughtime.com/person/haggai/</loc></url>
   <url><loc>https://faiththroughtime.com/person/darius-i/</loc></url>
@@ -302,6 +303,7 @@
   <url><loc>https://faiththroughtime.com/person/judas-maccabeus/</loc></url>
   <url><loc>https://faiththroughtime.com/person/eleazar-son-of-eliud/</loc></url>
   <url><loc>https://faiththroughtime.com/person/matthan/</loc></url>
+  <url><loc>https://faiththroughtime.com/person/pompey/</loc></url>
   <url><loc>https://faiththroughtime.com/person/simeon-of-jerusalem/</loc></url>
   <url><loc>https://faiththroughtime.com/person/anna/</loc></url>
   <url><loc>https://faiththroughtime.com/person/matthat-father-of-heli/</loc></url>
@@ -411,6 +413,7 @@
   <url><loc>https://faiththroughtime.com/person/gregory-of-nazianzus/</loc></url>
   <url><loc>https://faiththroughtime.com/person/monica-of-hippo/</loc></url>
   <url><loc>https://faiththroughtime.com/person/gregory-of-nyssa/</loc></url>
+  <url><loc>https://faiththroughtime.com/person/ambrose-of-milan/</loc></url>
   <url><loc>https://faiththroughtime.com/person/jerome/</loc></url>
   <url><loc>https://faiththroughtime.com/person/john-chrysostom/</loc></url>
   <url><loc>https://faiththroughtime.com/person/theodosius-i/</loc></url>
@@ -426,6 +429,7 @@
   <url><loc>https://faiththroughtime.com/person/romulus-augustulus/</loc></url>
   <url><loc>https://faiththroughtime.com/person/benedict-of-nursia/</loc></url>
   <url><loc>https://faiththroughtime.com/person/gregory-the-great/</loc></url>
+  <url><loc>https://faiththroughtime.com/person/aethelberht-of-kent/</loc></url>
   <url><loc>https://faiththroughtime.com/person/muhammad/</loc></url>
   <url><loc>https://faiththroughtime.com/person/emperor-taizong-of-tang/</loc></url>
   <url><loc>https://faiththroughtime.com/person/oswiu-of-northumbria/</loc></url>
@@ -451,13 +455,16 @@
   <url><loc>https://faiththroughtime.com/person/pope-paul-iii/</loc></url>
   <url><loc>https://faiththroughtime.com/person/martin-luther/</loc></url>
   <url><loc>https://faiththroughtime.com/person/bartolome-de-las-casas/</loc></url>
+  <url><loc>https://faiththroughtime.com/person/ignatius-of-loyola/</loc></url>
   <url><loc>https://faiththroughtime.com/person/william-tyndale/</loc></url>
+  <url><loc>https://faiththroughtime.com/person/juan-gines-de-sepulveda/</loc></url>
   <url><loc>https://faiththroughtime.com/person/katharina-von-bora/</loc></url>
   <url><loc>https://faiththroughtime.com/person/francis-xavier/</loc></url>
   <url><loc>https://faiththroughtime.com/person/john-calvin/</loc></url>
   <url><loc>https://faiththroughtime.com/person/john-knox/</loc></url>
   <url><loc>https://faiththroughtime.com/person/lancelot-andrewes/</loc></url>
   <url><loc>https://faiththroughtime.com/person/james-vi-and-i/</loc></url>
+  <url><loc>https://faiththroughtime.com/person/john-bunyan/</loc></url>
   <url><loc>https://faiththroughtime.com/person/samuel-wesley/</loc></url>
   <url><loc>https://faiththroughtime.com/person/susanna-wesley/</loc></url>
   <url><loc>https://faiththroughtime.com/person/john-wesley/</loc></url>
@@ -469,6 +476,7 @@
   <url><loc>https://faiththroughtime.com/person/william-wilberforce/</loc></url>
   <url><loc>https://faiththroughtime.com/person/william-carey/</loc></url>
   <url><loc>https://faiththroughtime.com/person/samuel-ajayi-crowther/</loc></url>
+  <url><loc>https://faiththroughtime.com/person/hudson-taylor/</loc></url>
   <url><loc>https://faiththroughtime.com/person/charles-spurgeon/</loc></url>
   <url><loc>https://faiththroughtime.com/person/d-l-moody/</loc></url>
   <url><loc>https://faiththroughtime.com/person/john-r-mott/</loc></url>
@@ -479,8 +487,10 @@
   <url><loc>https://faiththroughtime.com/person/pope-paul-vi/</loc></url>
   <url><loc>https://faiththroughtime.com/person/c-s-lewis/</loc></url>
   <url><loc>https://faiththroughtime.com/person/dietrich-bonhoeffer/</loc></url>
+  <url><loc>https://faiththroughtime.com/person/mother-teresa/</loc></url>
   <url><loc>https://faiththroughtime.com/person/john-c-trever/</loc></url>
   <url><loc>https://faiththroughtime.com/person/billy-graham/</loc></url>
+  <url><loc>https://faiththroughtime.com/person/martin-luther-king-jr/</loc></url>
   <url><loc>https://faiththroughtime.com/person/melchizedek/</loc></url>
   <url><loc>https://faiththroughtime.com/person/felix/</loc></url>
   <url><loc>https://faiththroughtime.com/person/mattatha/</loc></url>
@@ -582,6 +592,8 @@
   <url><loc>https://faiththroughtime.com/person/colman-of-lindisfarne/</loc></url>
   <url><loc>https://faiththroughtime.com/person/rastislav-of-moravia/</loc></url>
   <url><loc>https://faiththroughtime.com/person/muhammed-edh-dhib/</loc></url>
+  <url><loc>https://faiththroughtime.com/person/augustine-of-canterbury/</loc></url>
+  <url><loc>https://faiththroughtime.com/person/sheshbazzar/</loc></url>
   <url><loc>https://faiththroughtime.com/event/creation/</loc></url>
   <url><loc>https://faiththroughtime.com/event/the-fall/</loc></url>
   <url><loc>https://faiththroughtime.com/event/cain-kills-abel/</loc></url>
@@ -603,51 +615,134 @@
   <url><loc>https://faiththroughtime.com/event/joseph-sold-into-slavery/</loc></url>
   <url><loc>https://faiththroughtime.com/event/joseph-made-ruler-of-egypt/</loc></url>
   <url><loc>https://faiththroughtime.com/event/seven-years-of-famine-begin/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/judah-and-tamar/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/joseph-reveals-himself-to-his-brothers/</loc></url>
   <url><loc>https://faiththroughtime.com/event/israel-enters-egypt/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/jacob-blesses-his-sons-and-dies/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/birth-of-moses/</loc></url>
   <url><loc>https://faiththroughtime.com/event/the-exodus/</loc></url>
   <url><loc>https://faiththroughtime.com/event/crossing-the-red-sea/</loc></url>
   <url><loc>https://faiththroughtime.com/event/giving-of-the-law/</loc></url>
   <url><loc>https://faiththroughtime.com/event/wilderness-wandering/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/moses-at-the-burning-bush/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/the-ten-plagues-and-the-first-passover/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/the-golden-calf/</loc></url>
   <url><loc>https://faiththroughtime.com/event/tabernacle-completed/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/the-twelve-spies-at-kadesh/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/balaam-and-balak/</loc></url>
   <url><loc>https://faiththroughtime.com/event/conquest-of-canaan/</loc></url>
   <url><loc>https://faiththroughtime.com/event/fall-of-jericho/</loc></url>
   <url><loc>https://faiththroughtime.com/event/death-of-moses/</loc></url>
   <url><loc>https://faiththroughtime.com/event/israel-crosses-the-jordan/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/achan-s-sin-and-the-defeat-at-ai/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/the-sun-stands-still-at-gibeon/</loc></url>
   <url><loc>https://faiththroughtime.com/event/period-of-the-judges/</loc></url>
   <url><loc>https://faiththroughtime.com/event/death-of-joshua/</loc></url>
   <url><loc>https://faiththroughtime.com/event/deborah-defeats-sisera/</loc></url>
   <url><loc>https://faiththroughtime.com/event/gideon-defeats-midian/</loc></url>
   <url><loc>https://faiththroughtime.com/event/jephthah-defeats-the-ammonites/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/ruth-and-boaz/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/birth-of-samson/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/hannah-s-prayer-and-the-birth-of-samuel/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/the-call-of-samuel/</loc></url>
   <url><loc>https://faiththroughtime.com/event/death-of-samson/</loc></url>
   <url><loc>https://faiththroughtime.com/event/ark-captured-by-philistines/</loc></url>
   <url><loc>https://faiththroughtime.com/event/samuel-judges-israel-at-mizpah/</loc></url>
   <url><loc>https://faiththroughtime.com/event/saul-anointed-king/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/saul-rejected-as-king/</loc></url>
   <url><loc>https://faiththroughtime.com/event/david-anointed-by-samuel/</loc></url>
   <url><loc>https://faiththroughtime.com/event/david-defeats-goliath/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/david-spares-saul-at-en-gedi/</loc></url>
   <url><loc>https://faiththroughtime.com/event/death-of-saul-at-gilboa/</loc></url>
   <url><loc>https://faiththroughtime.com/event/david-made-king-at-hebron/</loc></url>
   <url><loc>https://faiththroughtime.com/event/david-captures-jerusalem/</loc></url>
   <url><loc>https://faiththroughtime.com/event/david-anointed-king-over-all-israel/</loc></url>
   <url><loc>https://faiththroughtime.com/event/david-brings-the-ark-to-jerusalem/</loc></url>
   <url><loc>https://faiththroughtime.com/event/davidic-covenant/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/david-and-bathsheba/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/absalom-kills-amnon/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/absalom-s-revolt/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/solomon-anointed-king/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/solomon-asks-for-wisdom/</loc></url>
   <url><loc>https://faiththroughtime.com/event/solomon-builds-temple/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/dedication-of-the-temple/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/solomon-s-apostasy/</loc></url>
   <url><loc>https://faiththroughtime.com/event/kingdom-divides/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/jeroboam-s-golden-calves/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/shishak-invades-judah/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/abijah-defeats-jeroboam-at-mount-zemaraim/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/baasha-destroys-the-house-of-jeroboam/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/asa-s-reform-and-covenant/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/zimri-s-coup-and-omri-s-rise/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/omri-founds-samaria/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/jehoshaphat-s-reforms/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/elijah-fed-by-ravens-and-the-widow-of-zarephath/</loc></url>
   <url><loc>https://faiththroughtime.com/event/elijah-on-mount-carmel/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/elijah-at-mount-horeb/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/naboth-s-vineyard/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/death-of-ahab-at-ramoth-gilead/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/elijah-calls-fire-on-ahaziah-s-messengers/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/elijah-taken-up-and-elisha-succeeds-him/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/israel-and-judah-attack-moab/</loc></url>
   <url><loc>https://faiththroughtime.com/event/healing-of-naaman/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/hazael-becomes-king-of-aram/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/jehu-s-revolt/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/athaliah-seizes-the-throne-of-judah/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/joash-crowned-by-jehoiada/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/joash-repairs-the-temple/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/jeroboam-ii-restores-israel-s-borders/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/jonah-s-mission-to-nineveh/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/amos-prophesies-at-bethel/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/hosea-s-ministry-to-israel/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/uzziah-struck-with-leprosy/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/isaiah-s-vision-and-call/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/micah-s-ministry/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/syro-ephraimite-war/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/tiglath-pileser-takes-damascus-and-galilee/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/hezekiah-s-reform-and-passover/</loc></url>
   <url><loc>https://faiththroughtime.com/event/fall-of-samaria/</loc></url>
   <url><loc>https://faiththroughtime.com/event/hezekiah-s-deliverance/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/hezekiah-s-illness-and-the-babylonian-envoys/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/manasseh-s-apostasy/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/sennacherib-assassinated/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/manasseh-s-captivity-and-repentance/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/jeremiah-s-call/</loc></url>
   <url><loc>https://faiththroughtime.com/event/josiah-s-reforms/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/josiah-s-passover/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/fall-of-nineveh/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/death-of-josiah-at-megiddo/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/daniel-taken-to-babylon/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/nebuchadnezzar-s-dream-of-the-statue/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/jehoiachin-exiled-to-babylon/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/ezekiel-s-call-by-the-chebar/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/siege-of-jerusalem-begins/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/jeremiah-cast-into-the-cistern/</loc></url>
   <url><loc>https://faiththroughtime.com/event/fall-of-jerusalem/</loc></url>
   <url><loc>https://faiththroughtime.com/event/babylonian-exile/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/the-fiery-furnace/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/jehoiachin-released-by-evil-merodach/</loc></url>
   <url><loc>https://faiththroughtime.com/event/fall-of-babylon-to-cyrus/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/daniel-in-the-lions-den/</loc></url>
   <url><loc>https://faiththroughtime.com/event/edict-of-cyrus/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/first-return-under-zerubbabel-and-jeshua/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/altar-rebuilt-and-temple-foundation-laid/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/haggai-and-zechariah-rouse-the-rebuilding/</loc></url>
   <url><loc>https://faiththroughtime.com/event/second-temple-built/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/vashti-deposed/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/esther-made-queen/</loc></url>
   <url><loc>https://faiththroughtime.com/event/esther-saves-her-people/</loc></url>
   <url><loc>https://faiththroughtime.com/event/ezra-s-return/</loc></url>
   <url><loc>https://faiththroughtime.com/event/nehemiah-rebuilds-walls/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/ezra-reads-the-law-at-the-water-gate/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/malachi-s-ministry/</loc></url>
   <url><loc>https://faiththroughtime.com/event/alexander-conquers-the-persian-empire/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/septuagint-translation-begun-in-alexandria/</loc></url>
   <url><loc>https://faiththroughtime.com/event/maccabean-revolt/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/antiochus-iv-desecrates-the-temple/</loc></url>
   <url><loc>https://faiththroughtime.com/event/rededication-of-the-temple/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/pompey-takes-jerusalem/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/herod-made-king-of-judea-by-rome/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/herod-begins-rebuilding-the-temple/</loc></url>
   <url><loc>https://faiththroughtime.com/event/birth-of-jesus/</loc></url>
   <url><loc>https://faiththroughtime.com/event/annunciation-to-mary/</loc></url>
   <url><loc>https://faiththroughtime.com/event/birth-of-john-the-baptist/</loc></url>
@@ -684,6 +779,7 @@
   <url><loc>https://faiththroughtime.com/event/coin-in-the-fish-s-mouth/</loc></url>
   <url><loc>https://faiththroughtime.com/event/healing-of-the-man-born-blind/</loc></url>
   <url><loc>https://faiththroughtime.com/event/healing-of-a-crippled-woman/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/death-of-john-the-baptist/</loc></url>
   <url><loc>https://faiththroughtime.com/event/crucifixion/</loc></url>
   <url><loc>https://faiththroughtime.com/event/resurrection/</loc></url>
   <url><loc>https://faiththroughtime.com/event/ascension/</loc></url>
@@ -704,6 +800,8 @@
   <url><loc>https://faiththroughtime.com/event/triumphal-entry-into-jerusalem/</loc></url>
   <url><loc>https://faiththroughtime.com/event/last-supper/</loc></url>
   <url><loc>https://faiththroughtime.com/event/arrest-and-trials-of-jesus/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/zacchaeus-meets-jesus-in-jericho/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/gamaliel-s-counsel-before-the-sanhedrin/</loc></url>
   <url><loc>https://faiththroughtime.com/event/stoning-of-stephen/</loc></url>
   <url><loc>https://faiththroughtime.com/event/conversion-of-paul/</loc></url>
   <url><loc>https://faiththroughtime.com/event/philip-preaches-in-samaria/</loc></url>
@@ -712,6 +810,7 @@
   <url><loc>https://faiththroughtime.com/event/peter-and-cornelius-in-caesarea/</loc></url>
   <url><loc>https://faiththroughtime.com/event/church-established-in-antioch/</loc></url>
   <url><loc>https://faiththroughtime.com/event/james-killed-and-peter-imprisoned-by-agrippa-i/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/famine-relief-sent-from-antioch-to-judea/</loc></url>
   <url><loc>https://faiththroughtime.com/event/paul-s-first-missionary-journey/</loc></url>
   <url><loc>https://faiththroughtime.com/event/barnabas-and-saul-in-cyprus/</loc></url>
   <url><loc>https://faiththroughtime.com/event/paul-preaches-in-pisidian-antioch/</loc></url>
@@ -721,6 +820,7 @@
   <url><loc>https://faiththroughtime.com/event/council-of-jerusalem/</loc></url>
   <url><loc>https://faiththroughtime.com/event/james-written/</loc></url>
   <url><loc>https://faiththroughtime.com/event/galatians-written/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/claudius-expels-the-jews-from-rome/</loc></url>
   <url><loc>https://faiththroughtime.com/event/paul-s-second-missionary-journey/</loc></url>
   <url><loc>https://faiththroughtime.com/event/macedonian-vision-at-troas/</loc></url>
   <url><loc>https://faiththroughtime.com/event/lydia-converted-in-philippi/</loc></url>
@@ -770,20 +870,27 @@
   <url><loc>https://faiththroughtime.com/event/martyrdom-of-ignatius-of-antioch/</loc></url>
   <url><loc>https://faiththroughtime.com/event/martyrdom-of-polycarp/</loc></url>
   <url><loc>https://faiththroughtime.com/event/irenaeus-writes-against-heresies/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/tertullian-writes-the-apology/</loc></url>
   <url><loc>https://faiththroughtime.com/event/origen-opens-catechetical-school/</loc></url>
   <url><loc>https://faiththroughtime.com/event/conversion-of-armenia/</loc></url>
   <url><loc>https://faiththroughtime.com/event/diocletian-persecution-begins/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/constantine-proclaimed-emperor-at-york/</loc></url>
   <url><loc>https://faiththroughtime.com/event/edict-of-milan/</loc></url>
   <url><loc>https://faiththroughtime.com/event/council-of-nicaea/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/helena-journeys-to-the-holy-land/</loc></url>
   <url><loc>https://faiththroughtime.com/event/conversion-of-the-kingdom-of-aksum-ethiopia/</loc></url>
   <url><loc>https://faiththroughtime.com/event/athanasius-lists-the-27-nt-books/</loc></url>
   <url><loc>https://faiththroughtime.com/event/council-of-constantinople/</loc></url>
   <url><loc>https://faiththroughtime.com/event/jerome-translates-the-latin-bible-the-vulgate/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/augustines-conversion-and-baptism/</loc></url>
   <url><loc>https://faiththroughtime.com/event/council-of-carthage-affirms-the-biblical-canon/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/john-chrysostom-preaches-at-constantinople/</loc></url>
   <url><loc>https://faiththroughtime.com/event/council-of-ephesus/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/patricks-mission-to-ireland/</loc></url>
   <url><loc>https://faiththroughtime.com/event/council-of-chalcedon/</loc></url>
   <url><loc>https://faiththroughtime.com/event/fall-of-the-western-roman-empire/</loc></url>
   <url><loc>https://faiththroughtime.com/event/benedict-writes-his-rule/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/gregory-the-great-sends-augustine-to-england/</loc></url>
   <url><loc>https://faiththroughtime.com/event/rise-of-islam-and-muslim-conquests/</loc></url>
   <url><loc>https://faiththroughtime.com/event/alopen-brings-christianity-to-china/</loc></url>
   <url><loc>https://faiththroughtime.com/event/synod-of-whitby/</loc></url>
@@ -800,26 +907,42 @@
   <url><loc>https://faiththroughtime.com/event/gutenberg-prints-the-bible/</loc></url>
   <url><loc>https://faiththroughtime.com/event/martin-luther-posts-the-95-theses/</loc></url>
   <url><loc>https://faiththroughtime.com/event/diet-of-worms/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/luther-marries-katharina-von-bora/</loc></url>
   <url><loc>https://faiththroughtime.com/event/tyndale-s-new-testament-published/</loc></url>
   <url><loc>https://faiththroughtime.com/event/calvin-publishes-institutes-of-the-christian-religion/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/william-tyndale-executed/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/ignatius-founds-the-jesuits/</loc></url>
   <url><loc>https://faiththroughtime.com/event/council-of-trent/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/francis-xavier-reaches-japan/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/valladolid-debate-on-the-indies/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/scottish-reformation/</loc></url>
   <url><loc>https://faiththroughtime.com/event/king-james-version-published/</loc></url>
   <url><loc>https://faiththroughtime.com/event/westminster-confession-of-faith/</loc></url>
   <url><loc>https://faiththroughtime.com/event/peace-of-westphalia/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/pilgrims-progress-published/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/rescue-from-the-epworth-rectory-fire/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/the-holy-club-at-oxford/</loc></url>
   <url><loc>https://faiththroughtime.com/event/jonathan-edwards-and-the-first-great-awakening/</loc></url>
   <url><loc>https://faiththroughtime.com/event/john-wesley-s-aldersgate-experience/</loc></url>
   <url><loc>https://faiththroughtime.com/event/william-carey-sails-for-india/</loc></url>
   <url><loc>https://faiththroughtime.com/event/british-and-foreign-bible-society-founded/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/slave-trade-abolished-in-the-british-empire/</loc></url>
   <url><loc>https://faiththroughtime.com/event/american-bible-society-founded/</loc></url>
   <url><loc>https://faiththroughtime.com/event/charles-spurgeon-begins-preaching-in-london/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/samuel-ajayi-crowther-consecrated-bishop/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/hudson-taylor-founds-the-china-inland-mission/</loc></url>
   <url><loc>https://faiththroughtime.com/event/d-l-moody-s-revival-campaigns/</loc></url>
   <url><loc>https://faiththroughtime.com/event/azusa-street-revival/</loc></url>
   <url><loc>https://faiththroughtime.com/event/edinburgh-missionary-conference/</loc></url>
   <url><loc>https://faiththroughtime.com/event/barmen-declaration/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/c-s-lewis-broadcasts-on-the-bbc/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/bonhoeffer-executed-at-flossenburg/</loc></url>
   <url><loc>https://faiththroughtime.com/event/discovery-of-the-dead-sea-scrolls/</loc></url>
   <url><loc>https://faiththroughtime.com/event/state-of-israel-established/</loc></url>
   <url><loc>https://faiththroughtime.com/event/billy-graham-s-global-crusades/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/mother-teresa-founds-the-missionaries-of-charity/</loc></url>
   <url><loc>https://faiththroughtime.com/event/second-vatican-council/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/letter-from-birmingham-jail/</loc></url>
   <url><loc>https://faiththroughtime.com/event/lausanne-congress-on-world-evangelization/</loc></url>
   <url><loc>https://faiththroughtime.com/event/christianity-shifts-to-the-global-south/</loc></url>
   <url><loc>https://faiththroughtime.com/event/fall-of-the-soviet-union/</loc></url>
