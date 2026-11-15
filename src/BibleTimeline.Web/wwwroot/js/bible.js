@@ -21,11 +21,19 @@ const BibleText = (() => {
         return _manifest;
     }
 
+    // Storage can throw (private mode, blocked cookies); the reader must still work.
+    const DEFAULT_VERSION = 'esv';
     function getVersion() {
-        return localStorage.getItem(VERSION_KEY) || 'kjv';
+        try {
+            return localStorage.getItem(VERSION_KEY) || DEFAULT_VERSION;
+        } catch {
+            return DEFAULT_VERSION;
+        }
     }
     function setVersion(id) {
-        localStorage.setItem(VERSION_KEY, id);
+        try {
+            localStorage.setItem(VERSION_KEY, id);
+        } catch { /* the choice just won't be remembered */ }
     }
 
     // Book-name variants that differ from the canonical slug list
@@ -113,105 +121,5 @@ const BibleText = (() => {
         return { version, versions: man.versions, verses, truncated };
     }
 
-    // ── Inline reference linkification ───────────────────────
-    // Canonical book names + the abbreviations used in the dataset's
-    // chronology notes ("Gen 5:5", "2 Kgs 18:2", "Exod 12:40-41").
-    const CANON = {};
-    [
-        'Genesis|Gen', 'Exodus|Exod|Exo', 'Leviticus|Lev', 'Numbers|Num',
-        'Deuteronomy|Deut|Deu', 'Joshua|Josh|Jos', 'Judges|Judg|Jdg', 'Ruth',
-        '1 Samuel|1 Sam', '2 Samuel|2 Sam', '1 Kings|1 Kgs|1 Kin|1 Ki',
-        '2 Kings|2 Kgs|2 Kin|2 Ki', '1 Chronicles|1 Chr|1 Chron',
-        '2 Chronicles|2 Chr|2 Chron', 'Ezra', 'Nehemiah|Neh', 'Esther|Esth|Est',
-        'Job', 'Psalms|Psalm|Pss|Psa|Ps', 'Proverbs|Prov|Pro',
-        'Ecclesiastes|Eccl|Ecc', 'Song of Solomon|Song of Songs|Song|Sol',
-        'Isaiah|Isa', 'Jeremiah|Jer', 'Lamentations|Lam', 'Ezekiel|Ezek|Eze',
-        'Daniel|Dan', 'Hosea|Hos', 'Joel', 'Amos', 'Obadiah|Obad',
-        'Jonah|Jon', 'Micah|Mic', 'Nahum|Nah', 'Habakkuk|Hab',
-        'Zephaniah|Zeph', 'Haggai|Hag', 'Zechariah|Zech|Zec', 'Malachi|Mal',
-        'Matthew|Matt|Mat', 'Mark|Mk', 'Luke|Lk', 'John|Jn', 'Acts',
-        'Romans|Rom', '1 Corinthians|1 Cor', '2 Corinthians|2 Cor',
-        'Galatians|Gal', 'Ephesians|Eph', 'Philippians|Phil|Php',
-        'Colossians|Col', '1 Thessalonians|1 Thess|1 Thes',
-        '2 Thessalonians|2 Thess|2 Thes', '1 Timothy|1 Tim', '2 Timothy|2 Tim',
-        'Titus|Tit', 'Philemon|Phlm|Philem', 'Hebrews|Heb', 'James|Jas',
-        '1 Peter|1 Pet', '2 Peter|2 Pet', '1 John|1 Jn', '2 John|2 Jn',
-        '3 John|3 Jn', 'Jude', 'Revelation|Rev'
-    ].forEach(group => {
-        const names = group.split('|');
-        for (const n of names) CANON[n.toLowerCase()] = names[0];
-    });
-    // Longest names first so "1 Chronicles" wins over "1 Chr" etc.
-    const NAME_PATTERN = Object.keys(CANON)
-        .sort((a, b) => b.length - a.length)
-        .map(n => n.replace(/ /g, '\\s+'))
-        .join('|');
-    const REF_REGEX = new RegExp(
-        `\\b(${NAME_PATTERN})\\.?\\s+(\\d+(?::\\d+)?(?:\\s*[-–—]\\s*\\d+(?::\\d+)?)?)`,
-        'gi'
-    );
-
-    // Continuation segments after a reference: ", 47-50" (same chapter) or
-    // "; 27:3-10" (same book, new chapter). Guarded against consuming year
-    // ranges — a segment followed by BC/AD/"years" is prose, not scripture.
-    const CONT_REGEX = /^([;,]\s*)(\d+(?::\d+)?(?:\s*[-–—]\s*\d+(?::\d+)?)?)(?!\s*(?:BC|AD|B\.C\.|A\.D\.|years?)\b)(?![:\d])/;
-
-    function refBtn(ref, label) {
-        return `<button type="button" class="ref-link" data-ref="${ref}" aria-expanded="false">${label}</button>`;
-    }
-
-    /**
-     * Wrap scripture references in ALREADY-ESCAPED prose with clickable
-     * <button class="ref-link" data-ref="Canonical C:V"> elements.
-     * Compound citations carry context forward: in
-     * "Matthew 26:14-16, 47-50; 27:3-10" the comma segment inherits book
-     * AND chapter (Matthew 26:47-50), the semicolon segment inherits the
-     * book (Matthew 27:3-10). Input MUST be HTML-escaped text.
-     */
-    function linkifyRefs(escapedText) {
-        let out = '';
-        let i = 0;
-        REF_REGEX.lastIndex = 0;
-        let m;
-        while ((m = REF_REGEX.exec(escapedText)) !== null) {
-            out += escapedText.slice(i, m.index);
-            const canonical = CANON[m[1].toLowerCase().replace(/\s+/g, ' ')];
-            if (!canonical) {
-                out += m[0];
-                i = REF_REGEX.lastIndex;
-                continue;
-            }
-            const baseTail = m[2].replace(/\s+/g, '');
-            let curChapter = baseTail.includes(':') ? baseTail.split(':')[0] : null;
-            out += refBtn(`${canonical} ${baseTail}`, m[0]);
-            i = REF_REGEX.lastIndex;
-
-            // Consume continuation segments while they read as citations
-            let c;
-            while ((c = escapedText.slice(i).match(CONT_REGEX)) !== null) {
-                const sep = c[1];
-                const seg = c[2].replace(/\s+/g, '');
-                let ref;
-                if (seg.includes(':')) {
-                    // "; 27:3-10" — explicit chapter:verse, same book
-                    ref = `${canonical} ${seg}`;
-                    curChapter = seg.split(':')[0];
-                } else if (sep.trimEnd().startsWith(',') && curChapter) {
-                    // ", 47-50" — verses within the current chapter
-                    ref = `${canonical} ${curChapter}:${seg}`;
-                } else {
-                    // "; 11" — whole chapter(s), same book
-                    ref = `${canonical} ${seg}`;
-                    curChapter = null;
-                }
-                out += sep + refBtn(ref, c[2]);
-                i += c[0].length;
-            }
-            REF_REGEX.lastIndex = i;
-        }
-        out += escapedText.slice(i);
-        return out;
-    }
-
-    return { manifest, getVersion, setVersion, getPassage, parseRef, linkifyRefs };
+    return { manifest, getVersion, setVersion, getPassage, parseRef };
 })();

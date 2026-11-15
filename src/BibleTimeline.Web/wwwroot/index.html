@@ -1,408 +1,182 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="color-scheme" content="dark">
-    <meta name="description" content="Explore biblical history with an interactive timeline spanning from Creation to the Modern Era. Discover people, events, and journeys from Scripture.">
-    <title>Faith Through Time — Interactive Biblical History</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='28' font-size='28'>📖</text></svg>">
-    <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#16213e">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Faith Through Time — the whole story of Scripture on one timeline</title>
+    <meta name="description" content="Six thousand years of biblical and church history on one living timeline. See whose lives overlapped, trace the line from Adam to Jesus, follow the journeys on the map, and read the passages as you go.">
+    <meta name="theme-color" content="#0a0c12">
+    <link rel="canonical" href="https://faiththroughtime.com/">
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Faith Through Time">
+    <meta property="og:title" content="Faith Through Time — the whole story of Scripture on one timeline">
+    <meta property="og:description" content="See whose lives overlapped, trace the line from Adam to Jesus, and follow six thousand years of history as one story.">
+    <meta property="og:url" content="https://faiththroughtime.com/">
+    <meta property="og:image" content="https://faiththroughtime.com/icons/og-default.png">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="/icons/icon-192.png">
+
+    <!-- Apply the saved theme before first paint. -->
+    <script>
+        try {
+            var t = localStorage.getItem('ftt-theme');
+            if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+        } catch (e) { /* storage unavailable */ }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..600,0..100;1,9..144,300..600,0..100&family=Hanken+Grotesk:wght@400;500;600;700&display=swap">
+
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="css/timeline.css">
+    <link rel="stylesheet" href="css/tour.css">
+    <link rel="stylesheet" href="css/detail.css">
+    <link rel="stylesheet" href="css/meet.css">
+    <link rel="stylesheet" href="css/family.css">
+    <link rel="stylesheet" href="css/map.css">
+    <link rel="stylesheet" href="css/read.css">
+    <link rel="stylesheet" href="css/search.css">
+    <link rel="stylesheet" href="css/share.css">
+    <link rel="stylesheet" href="css/about.css">
+
     <!-- Google Analytics 4 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-7FEHLW6BD9"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-7FEHLW6BD9');
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-7FEHLW6BD9');
     </script>
-    <link rel="preconnect" href="https://d3js.org" crossorigin>
-    <link rel="preconnect" href="https://unpkg.com" crossorigin>
-    <link rel="stylesheet" href="/css/styles.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-          crossorigin="" media="print" onload="this.media='all'" />
 </head>
 <body>
-    <!-- ============================================== -->
-    <!-- SVG Icon Sprite (single source of truth)       -->
-    <!-- ============================================== -->
-    <svg id="icon-sprite" aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0;overflow:hidden">
+    <!-- Icon sprite: UI.icon('name') renders <use href="#i-name">. Stroke icons, 24×24. -->
+    <svg aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0;overflow:hidden">
         <defs>
-            <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></symbol>
-            <symbol id="i-filter" viewBox="0 0 24 24"><path d="M3 5h18M6 12h12M10 19h4"/></symbol>
-            <symbol id="i-close" viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></symbol>
-            <symbol id="i-share" viewBox="0 0 24 24"><circle cx="6" cy="12" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><line x1="8.6" y1="10.7" x2="15.4" y2="7.3"/><line x1="8.6" y1="13.3" x2="15.4" y2="16.7"/></symbol>
-            <symbol id="i-bookmark" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></symbol>
-            <symbol id="i-bookmark-fill" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" fill="currentColor"/></symbol>
-            <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="4.2" y1="4.2" x2="6.3" y2="6.3"/><line x1="17.7" y1="17.7" x2="19.8" y2="19.8"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/><line x1="4.2" y1="19.8" x2="6.3" y2="17.7"/><line x1="17.7" y1="6.3" x2="19.8" y2="4.2"/></symbol>
+            <symbol id="i-mark" viewBox="0 0 32 32"><circle cx="16" cy="16" r="13.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M16 4v24M8 12h16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M16 19.5l2.6 2.6-2.6 2.6-2.6-2.6z" fill="currentColor" stroke="none"/></symbol>
+            <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></symbol>
+            <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+            <symbol id="i-share" viewBox="0 0 24 24"><path d="M12 15V3M8 7l4-4 4 4M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></symbol>
+            <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></symbol>
+            <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12M8 11l4 4 4-4M5 21h14"/></symbol>
+            <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></symbol>
             <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></symbol>
-            <symbol id="i-plus" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></symbol>
-            <symbol id="i-minus" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/></symbol>
+            <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+            <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
             <symbol id="i-fit" viewBox="0 0 24 24"><path d="M4 9V5a1 1 0 0 1 1-1h4M20 9V5a1 1 0 0 0-1-1h-4M4 15v4a1 1 0 0 0 1 1h4M20 15v4a1 1 0 0 1-1 1h-4"/></symbol>
-            <symbol id="i-play" viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4" fill="currentColor" stroke="none"/></symbol>
-            <symbol id="i-pause" viewBox="0 0 24 24"><rect x="6" y="5" width="4" height="14" fill="currentColor" stroke="none"/><rect x="14" y="5" width="4" height="14" fill="currentColor" stroke="none"/></symbol>
-            <symbol id="i-prev" viewBox="0 0 24 24"><polygon points="19 5 9 12 19 19 19 5" fill="currentColor" stroke="none"/><line x1="5" y1="5" x2="5" y2="19" stroke-width="2.5"/></symbol>
-            <symbol id="i-next" viewBox="0 0 24 24"><polygon points="5 5 15 12 5 19 5 5" fill="currentColor" stroke="none"/><line x1="19" y1="5" x2="19" y2="19" stroke-width="2.5"/></symbol>
-            <symbol id="i-chevron-down" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></symbol>
-            <symbol id="i-chevron-left" viewBox="0 0 24 24"><polyline points="15 6 9 12 15 18"/></symbol>
-            <symbol id="i-chevron-right" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></symbol>
+            <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5l12 7.5-12 7.5z" fill="currentColor" stroke="none"/></symbol>
+            <symbol id="i-pause" viewBox="0 0 24 24"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" fill="currentColor" stroke="none"/></symbol>
+            <symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></symbol>
+            <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
+            <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+            <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
             <symbol id="i-person" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
-            <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="16" y1="3" x2="16" y2="7"/></symbol>
-            <symbol id="i-location" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></symbol>
-            <symbol id="i-tree" viewBox="0 0 24 24"><circle cx="12" cy="4" r="2"/><circle cx="6" cy="12" r="2"/><circle cx="18" cy="12" r="2"/><circle cx="4" cy="20" r="2"/><circle cx="10" cy="20" r="2"/><circle cx="16" cy="20" r="2"/><circle cx="22" cy="20" r="2"/><line x1="12" y1="6" x2="6" y2="10"/><line x1="12" y1="6" x2="18" y2="10"/><line x1="6" y1="14" x2="4" y2="18"/><line x1="6" y1="14" x2="10" y2="18"/><line x1="18" y1="14" x2="16" y2="18"/><line x1="18" y1="14" x2="22" y2="18"/></symbol>
-            <symbol id="i-timeline" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/><circle cx="7" cy="6" r="2" fill="currentColor" stroke="none"/><circle cx="14" cy="12" r="2" fill="currentColor" stroke="none"/><circle cx="10" cy="18" r="2" fill="currentColor" stroke="none"/></symbol>
-            <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.5" fill="currentColor" stroke="none"/></symbol>
-            <symbol id="i-trash" viewBox="0 0 24 24"><polyline points="4 7 20 7"/><path d="M9 7V4h6v3M6 7l1 13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-13"/></symbol>
-            <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 4h7a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H4z"/><path d="M20 4h-7a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h8z"/></symbol>
+            <symbol id="i-people" viewBox="0 0 24 24"><circle cx="8.5" cy="8.5" r="3.5"/><circle cx="16.5" cy="9.5" r="2.8"/><path d="M2 20a6.5 6.5 0 0 1 13 0M15 20a5 5 0 0 1 7-4.6"/></symbol>
+            <symbol id="i-event" viewBox="0 0 24 24"><path d="M12 3l9 9-9 9-9-9z"/></symbol>
+            <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 22s7-7.2 7-13a7 7 0 0 0-14 0c0 5.8 7 13 7 13z"/><circle cx="12" cy="9" r="2.5"/></symbol>
+            <symbol id="i-map" viewBox="0 0 24 24"><path d="M9 4L3 6.5v13.5l6-2.5 6 2.5 6-2.5V4l-6 2.5zM9 4v13.5M15 6.5V20"/></symbol>
+            <symbol id="i-tree" viewBox="0 0 24 24"><circle cx="12" cy="5" r="2.2"/><circle cx="5.5" cy="18.5" r="2.2"/><circle cx="18.5" cy="18.5" r="2.2"/><path d="M12 7.2v4.3M5.5 16.3v-2a2.8 2.8 0 0 1 2.8-2.8h7.4a2.8 2.8 0 0 1 2.8 2.8v2"/></symbol>
+            <symbol id="i-timeline" viewBox="0 0 24 24"><path d="M3 12h18M7 12V7.5M12 12v6M17 12V6"/><circle cx="7" cy="6" r="1.6"/><circle cx="12" cy="19" r="1.6"/><circle cx="17" cy="4.6" r="1.6"/></symbol>
+            <symbol id="i-overlap" viewBox="0 0 24 24"><circle cx="9" cy="12" r="6.5"/><circle cx="15" cy="12" r="6.5"/></symbol>
+            <symbol id="i-book" viewBox="0 0 24 24"><path d="M12 6.5C10.5 5 8 4.5 4 4.5v14c4 0 6.5.5 8 2 1.5-1.5 4-2 8-2v-14c-4 0-6.5.5-8 2zM12 6.5v14"/></symbol>
+            <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v8.5a1.5 1.5 0 0 1-1.5 1.5H5.5A1.5 1.5 0 0 1 4 19.5zM9.5 21v-6h5v6"/></symbol>
+            <symbol id="i-filter" viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4"/></symbol>
+            <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.6v.2"/></symbol>
+            <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 3l1.9 5.6L19.5 10l-5.6 1.9L12 17.5l-1.9-5.6L4.5 10l5.6-1.4zM19 16l.7 2.3L22 19l-2.3.7L19 22l-.7-2.3L16 19l2.3-.7z"/></symbol>
+            <symbol id="i-swap" viewBox="0 0 24 24"><path d="M4 8h14M14 4l4 4-4 4M20 16H6M10 12l-4 4 4 4"/></symbol>
+            <symbol id="i-crown" viewBox="0 0 24 24"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z"/></symbol>
+            <symbol id="i-scroll" viewBox="0 0 24 24"><path d="M7 4h11a2 2 0 0 1 2 2v1h-4M7 4a2 2 0 0 0-2 2v12a2 2 0 0 1-2 2h11a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2M9 9h4M9 13h4"/></symbol>
         </defs>
     </svg>
 
-    <!-- Top Bar -->
-    <header id="header">
-        <div class="header-left">
-            <button id="btn-mobile-filters" class="mobile-only btn-icon btn-hamburger" title="Filters" aria-label="Open filters">
-                <svg class="icon"><use href="#i-filter"/></svg>
-            </button>
-            <h1>Faith Through Time</h1>
-            <nav class="tab-nav">
-                <button class="tab-btn active" data-tab="timeline">Timeline</button>
-                <button class="tab-btn" data-tab="lineage">Family Tree</button>
-                <button class="tab-btn" data-tab="map">Map</button>
-            </nav>
-        </div>
-        <div class="header-center">
-            <div class="search-container">
-                <input type="text" id="search-input" placeholder="Search people, events, scripture…" autocomplete="off" />
-                <div id="search-results" class="search-dropdown hidden"></div>
-            </div>
-        </div>
-        <div class="header-right">
-            <button id="btn-mobile-search" class="mobile-only btn-icon" title="Search" aria-label="Search">
-                <svg class="icon"><use href="#i-search"/></svg>
-            </button>
-            <button id="btn-theme-toggle" class="btn-icon btn-theme-toggle" title="Toggle light/dark mode" aria-label="Toggle theme">
-                <svg class="icon"><use href="#i-moon"/></svg>
-            </button>
-            <button id="btn-zoom-in" class="btn-icon desktop-only" title="Zoom In" aria-label="Zoom in">
-                <svg class="icon"><use href="#i-plus"/></svg>
-            </button>
-            <button id="btn-zoom-out" class="btn-icon desktop-only" title="Zoom Out" aria-label="Zoom out">
-                <svg class="icon"><use href="#i-minus"/></svg>
-            </button>
-            <button id="btn-fit" class="btn-icon desktop-only" title="Fit All" aria-label="Fit all">
-                <svg class="icon"><use href="#i-fit"/></svg>
-            </button>
-            <span id="year-display" class="year-display"></span>
-        </div>
+    <a class="skip-link" id="skip-link" href="#/">Skip to content</a>
+
+    <header class="topbar">
+        <a class="brand" href="#/" aria-label="Faith Through Time — home">
+            <svg class="brand-mark" aria-hidden="true"><use href="#i-mark"/></svg>
+            <span>Faith <em>Through</em> Time</span>
+        </a>
+        <nav class="nav" aria-label="Primary">
+            <a href="#/timeline" data-nav="timeline">Timeline</a>
+            <a href="#/meet" data-nav="meet">Did They Meet?</a>
+            <a href="#/family" data-nav="family">Family Tree</a>
+            <a href="#/map" data-nav="map">Map</a>
+            <a href="#/read" data-nav="read">Read</a>
+        </nav>
+        <div class="topbar-spacer"></div>
+        <button class="search-trigger" type="button" data-open-search aria-label="Search people, events and places">
+            <svg class="icon icon-sm" aria-hidden="true"><use href="#i-search"/></svg>
+            <span>Search people, events, places…</span>
+            <kbd>/</kbd>
+        </button>
+        <button class="icon-btn mobile-only" type="button" data-open-search aria-label="Search">
+            <svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>
+        </button>
+        <a class="icon-btn" href="#/about" aria-label="About the dates and sources">
+            <svg class="icon" aria-hidden="true"><use href="#i-info"/></svg>
+        </a>
+        <button class="icon-btn" id="btn-theme" type="button" aria-label="Switch to light theme">
+            <svg class="icon" aria-hidden="true"><use id="theme-icon" href="#i-sun"/></svg>
+        </button>
     </header>
 
-    <div id="app">
-        <!-- Filter Sidebar -->
-        <aside id="filter-panel" class="panel-left">
-            <div class="panel-header">
-                <h2>Filters</h2>
-                <button id="btn-clear-filters" class="btn-link">Clear All</button>
-            </div>
+    <!-- Each view owns the inside of its section. `view-fill` sections do not scroll. -->
+    <main id="views" tabindex="-1">
+        <section class="view" id="view-home" hidden></section>
+        <section class="view view-fill" id="view-timeline" hidden aria-label="Timeline"></section>
+        <section class="view" id="view-meet" hidden aria-label="Did they meet?"></section>
+        <section class="view view-fill" id="view-family" hidden aria-label="Family tree"></section>
+        <section class="view view-fill" id="view-map" hidden aria-label="Map"></section>
+        <section class="view" id="view-read" hidden aria-label="Read Scripture"></section>
+        <section class="view" id="view-about" hidden aria-label="About the dates"></section>
+    </main>
 
-            <!-- Active filter chips -->
-            <div id="active-filters" class="active-filters hidden">
-                <div id="filter-chips" class="filter-chips"></div>
-                <div id="filter-count" class="filter-count" role="status"></div>
-            </div>
+    <!-- Overlays. Each is owned by one module. -->
+    <aside id="detail" class="detail" hidden aria-label="Details"></aside>
+    <div id="search" class="search" hidden role="dialog" aria-modal="true" aria-label="Search"></div>
+    <div id="share" class="share" hidden role="dialog" aria-modal="true" aria-label="Share"></div>
 
-            <!-- Show toggles -->
-            <div class="filter-section">
-                <h3>Show</h3>
-                <label><input type="checkbox" id="filter-people" checked /> People</label>
-                <label><input type="checkbox" id="filter-events" checked /> Events</label>
-            </div>
-
-            <!-- Significance -->
-            <div class="filter-section">
-                <h3>Significance</h3>
-                <div class="toggle-group" id="significance-toggle">
-                    <button class="toggle-btn active" data-value="">All</button>
-                    <button class="toggle-btn" data-value="major">Major</button>
-                    <button class="toggle-btn" data-value="moderate">Moderate</button>
-                    <button class="toggle-btn" data-value="minor">Minor</button>
-                </div>
-            </div>
-
-            <!-- Date Range Slider -->
-            <div class="filter-section">
-                <h3>Date Range</h3>
-                <div class="range-slider-container">
-                    <div class="range-labels">
-                        <span id="range-start-label">4000 BC</span>
-                        <span id="range-end-label">AD 2030</span>
-                    </div>
-                    <div class="dual-range">
-                        <input type="range" id="range-start" min="-4100" max="2030" value="-4100" step="10" aria-label="Date range start" />
-                        <input type="range" id="range-end" min="-4100" max="2030" value="2030" step="10" aria-label="Date range end" />
-                    </div>
-                </div>
-            </div>
-
-            <!-- Time Period -->
-            <div class="filter-section">
-                <h3 id="label-period">Time Period</h3>
-                <select id="filter-period" aria-labelledby="label-period">
-                    <option value="">All Periods</option>
-                </select>
-            </div>
-
-            <!-- Date Confidence -->
-            <div class="filter-section">
-                <h3 id="label-confidence">Date Confidence</h3>
-                <select id="filter-confidence" aria-labelledby="label-confidence">
-                    <option value="">All Confidence Levels</option>
-                </select>
-            </div>
-
-            <!-- Role (people only) -->
-            <div class="filter-section filter-people-only" id="section-role">
-                <h3>Role <span class="filter-tag">People</span></h3>
-                <div id="role-checkboxes" class="checkbox-group"></div>
-            </div>
-
-            <!-- Event Category (events only) -->
-            <div class="filter-section filter-events-only" id="section-category">
-                <h3>Category <span class="filter-tag">Events</span></h3>
-                <div id="category-checkboxes" class="checkbox-group"></div>
-            </div>
-
-            <!-- Tribe (people only) -->
-            <div class="filter-section filter-people-only" id="section-tribe">
-                <h3 id="label-tribe">Tribe <span class="filter-tag">People</span></h3>
-                <select id="filter-tribe" aria-labelledby="label-tribe">
-                    <option value="">All Tribes</option>
-                </select>
-            </div>
-
-            <!-- Scripture Book -->
-            <div class="filter-section">
-                <h3 id="label-book">Scripture Book</h3>
-                <select id="filter-book" aria-labelledby="label-book">
-                    <option value="">All Books</option>
-                </select>
-            </div>
-
-            <!-- Location (events only) -->
-            <div class="filter-section filter-events-only" id="section-location">
-                <h3 id="label-location">Location <span class="filter-tag">Events</span></h3>
-                <select id="filter-location" aria-labelledby="label-location">
-                    <option value="">All Locations</option>
-                </select>
-            </div>
-
-            <div class="filter-section legend">
-                <h3>Legend</h3>
-                <div id="legend-items"></div>
-            </div>
-        </aside>
-
-        <!-- Timeline Canvas -->
-        <main id="timeline-container">
-            <div id="timeline-loading" class="loading">
-                <h2 class="loading-title">Faith Through Time</h2>
-                <p>Loading interactive timeline…</p>
-                <div class="skeleton-timeline" aria-hidden="true">
-                    <div class="skeleton-bar skeleton-pulse" style="width:60%;margin-left:5%"></div>
-                    <div class="skeleton-bar skeleton-pulse" style="width:40%;margin-left:20%"></div>
-                    <div class="skeleton-bar skeleton-pulse" style="width:70%;margin-left:10%"></div>
-                    <div class="skeleton-bar skeleton-pulse" style="width:30%;margin-left:35%"></div>
-                    <div class="skeleton-bar skeleton-pulse" style="width:55%;margin-left:15%"></div>
-                    <div class="skeleton-bar skeleton-pulse" style="width:45%;margin-left:8%"></div>
-                </div>
-            </div>
-            <svg id="timeline-svg"></svg>
-            <div id="tooltip" class="tooltip hidden"></div>
-            <!-- Era ribbon (mobile, horizontal) -->
-            <div id="era-ribbon" class="era-ribbon mobile-only" role="group" aria-label="Jump to era"></div>
-            <!-- Floating timeline FAB cluster (mobile) -->
-            <div id="timeline-fabs" class="timeline-fabs mobile-only">
-                <button class="fab" id="fab-zoom-in" aria-label="Zoom in">
-                    <svg class="icon"><use href="#i-plus"/></svg>
-                </button>
-                <button class="fab" id="fab-zoom-out" aria-label="Zoom out">
-                    <svg class="icon"><use href="#i-minus"/></svg>
-                </button>
-                <button class="fab" id="fab-fit" aria-label="Fit all">
-                    <svg class="icon"><use href="#i-fit"/></svg>
-                </button>
-            </div>
-        </main>
-
-    </div>
-
-    <!-- Mobile Backdrop -->
-    <div id="mobile-backdrop" class="mobile-backdrop hidden"></div>
-
-    <!-- Mobile Search Overlay -->
-    <div id="search-overlay" class="search-overlay hidden" role="dialog" aria-label="Search">
-        <div class="search-overlay-header">
-            <button id="btn-close-search" class="btn-icon btn-close" title="Close" aria-label="Close search">
-                <svg class="icon"><use href="#i-chevron-left"/></svg>
-            </button>
-            <div class="search-overlay-input-wrap">
-                <svg class="icon search-overlay-icon"><use href="#i-search"/></svg>
-                <input type="text" id="mobile-search-input" placeholder="Search people, events, scripture…" autocomplete="off" enterkeyhint="search" />
-                <button id="btn-clear-search" class="btn-icon btn-clear-search hidden" aria-label="Clear search">
-                    <svg class="icon"><use href="#i-close"/></svg>
-                </button>
-            </div>
-        </div>
-        <div id="mobile-search-results" class="mobile-search-results" aria-live="polite"></div>
-        <div id="recent-searches" class="recent-searches">
-            <div class="recent-searches-header">
-                <h3>Recent</h3>
-                <button id="btn-clear-recent" class="btn-link" type="button">Clear all</button>
-            </div>
-            <ul id="recent-searches-list" class="recent-chip-list"></ul>
-        </div>
-    </div>
-
-    <!-- Saved / Bookmarks Panel -->
-    <div id="saved-tab" class="tab-content hidden">
-        <div class="saved-header">
-            <h2>Saved Items</h2>
-        </div>
-        <div id="saved-empty" class="lineage-empty">
-            <p>No saved items yet</p>
-            <p class="lineage-hint">Tap the bookmark icon on any person or event to save it here.</p>
-        </div>
-        <ul id="saved-list" class="saved-list"></ul>
-    </div>
-
-    <!-- Detail Panel (shared across all tabs; bottom sheet on mobile) -->
-    <aside id="detail-panel" class="panel-right hidden" data-snap="hidden" aria-label="Details">
-        <div class="detail-drag-handle mobile-only" aria-hidden="true"><span></span></div>
-        <div class="panel-header">
-            <h2 id="detail-title">Details</h2>
-            <button id="btn-close-detail" class="btn-icon btn-close" title="Close" aria-label="Close details">
-                <svg class="icon"><use href="#i-close"/></svg>
-            </button>
-        </div>
-        <div id="detail-content"></div>
-    </aside>
-
-    <!-- Family Tree Tab -->
-    <div id="lineage-tab" class="tab-content hidden">
-        <div class="lineage-header">
-            <div class="lineage-picker">
-                <label for="lineage-search">Person:</label>
-                <div class="lineage-autocomplete">
-                    <input type="text" id="lineage-search" placeholder="Type a name…" autocomplete="off" />
-                    <ul id="lineage-suggestions" class="autocomplete-list hidden"></ul>
-                </div>
-            </div>
-            <div class="lineage-info hidden">
-                <span id="lineage-subject-name"></span>
-                <span id="lineage-count"></span>
-            </div>
-            <button id="btn-lineage-recenter" class="btn-icon mobile-only lineage-recenter-btn" type="button" aria-label="Recenter" title="Recenter">
-                <svg class="icon"><use href="#i-fit"/></svg>
-            </button>
-        </div>
-        <div id="lineage-container">
-            <div class="lineage-empty">
-                <p>Select a person to view their family tree</p>
-                <p class="lineage-hint">Start typing a name above and pick a biblical figure to see their ancestors and descendants.</p>
-            </div>
-            <svg id="lineage-svg"></svg>
-        </div>
-    </div>
-
-    <!-- Map Tab -->
-    <div id="map-tab" class="tab-content hidden">
-        <div class="map-header">
-            <div class="map-row map-row-select">
-                <label for="map-person-select" class="map-label">Journey:</label>
-                <select id="map-person-select">
-                    <option value="">All Events</option>
-                </select>
-            </div>
-            <div class="map-row map-row-controls">
-                <button id="map-prev-btn" class="btn-icon map-btn" title="Previous Event" aria-label="Previous event">
-                    <svg class="icon"><use href="#i-prev"/></svg>
-                </button>
-                <button id="map-play-btn" class="btn-icon map-btn map-play-btn" title="Play" aria-label="Play">
-                    <svg class="icon" id="map-play-icon"><use href="#i-play"/></svg>
-                </button>
-                <button id="map-next-btn" class="btn-icon map-btn" title="Next Event" aria-label="Next event">
-                    <svg class="icon"><use href="#i-next"/></svg>
-                </button>
-                <button id="map-speed-btn" class="btn-icon map-btn map-speed" title="Speed" aria-label="Speed">1×</button>
-                <span id="map-step-label" class="map-step-label"></span>
-            </div>
-            <div class="map-row map-row-slider">
-                <input type="range" id="map-year-slider" min="-4100" max="2030" value="2030" step="1" aria-label="Year" />
-                <span id="map-year-label">AD 2030</span>
-            </div>
-            <div class="map-legend">
-                <span class="map-legend-item"><span class="legend-dot" style="background:#d8bd51"></span>Miracle</span>
-                <span class="map-legend-item"><span class="legend-dot" style="background:#e1707c"></span>War</span>
-                <span class="map-legend-item"><span class="legend-dot" style="background:#567cd3"></span>Covenant</span>
-                <span class="map-legend-item"><span class="legend-dot" style="background:#55b486"></span>Other</span>
-            </div>
-        </div>
-        <div id="map-container"></div>
-    </div>
-
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-            crossorigin="" defer></script>
-    <script src="https://d3js.org/d3.v7.min.js" defer></script>
-    <script src="/js/utils.js" defer></script>
-    <script src="/js/api.js" defer></script>
-    <script src="/js/bible.js" defer></script>
-    <script src="/js/state.js" defer></script>
-    <script src="/js/timeline.js" defer></script>
-    <script src="/js/filters.js" defer></script>
-    <script src="/js/detail-panel.js" defer></script>
-    <script src="/js/search.js" defer></script>
-    <script src="/js/lineage.js" defer></script>
-    <script src="/js/scrollbar.js" defer></script>
-    <script src="/js/map.js" defer></script>
-    <script src="/js/app.js" defer></script>
-    <script>
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw.js').catch(() => {});
-      }
-    </script>
-
-    <!-- Bottom Navigation (mobile) -->
-    <nav id="bottom-nav" class="bottom-nav mobile-only" aria-label="Primary">
-        <button class="bottom-nav-btn active" data-tab="timeline" aria-label="Timeline">
-            <span class="bottom-nav-pill" aria-hidden="true"></span>
-            <svg class="icon bottom-nav-icon"><use href="#i-timeline"/></svg>
-            <span class="bottom-nav-label">Timeline</span>
-        </button>
-        <button class="bottom-nav-btn" data-tab="lineage" aria-label="Family tree">
-            <span class="bottom-nav-pill" aria-hidden="true"></span>
-            <svg class="icon bottom-nav-icon"><use href="#i-tree"/></svg>
-            <span class="bottom-nav-label">Family</span>
-        </button>
-        <button class="bottom-nav-btn" data-tab="map" aria-label="Map">
-            <span class="bottom-nav-pill" aria-hidden="true"></span>
-            <svg class="icon bottom-nav-icon"><use href="#i-location"/></svg>
-            <span class="bottom-nav-label">Map</span>
-        </button>
-        <button class="bottom-nav-btn" data-tab="search" aria-label="Search">
-            <span class="bottom-nav-pill" aria-hidden="true"></span>
-            <svg class="icon bottom-nav-icon"><use href="#i-search"/></svg>
-            <span class="bottom-nav-label">Search</span>
-        </button>
-        <button class="bottom-nav-btn" data-tab="saved" aria-label="Saved">
-            <span class="bottom-nav-pill" aria-hidden="true"></span>
-            <svg class="icon bottom-nav-icon"><use href="#i-bookmark"/></svg>
-            <span class="bottom-nav-label">Saved</span>
-        </button>
+    <nav class="tabbar" aria-label="Primary">
+        <a href="#/timeline" data-nav="timeline"><svg class="icon" aria-hidden="true"><use href="#i-timeline"/></svg>Timeline</a>
+        <a href="#/meet" data-nav="meet"><svg class="icon" aria-hidden="true"><use href="#i-overlap"/></svg>Meet</a>
+        <a href="#/family" data-nav="family"><svg class="icon" aria-hidden="true"><use href="#i-tree"/></svg>Family</a>
+        <a href="#/map" data-nav="map"><svg class="icon" aria-hidden="true"><use href="#i-map"/></svg>Map</a>
+        <a href="#/read" data-nav="read"><svg class="icon" aria-hidden="true"><use href="#i-book"/></svg>Read</a>
     </nav>
+
+    <div id="toast" role="status" aria-live="polite"></div>
+
+    <div id="splash" aria-hidden="true">
+        <div>
+            <svg class="splash-mark"><use href="#i-mark"/></svg>
+            <p class="display" style="font-size:1.5rem">Faith <em>Through</em> Time</p>
+            <p class="splash-error">The timeline could not load. Check your connection and refresh the page.</p>
+        </div>
+    </div>
+
+    <script src="vendor/d3.v7.min.js" defer></script>
+    <script src="js/api.js" defer></script>
+    <script src="js/store.js" defer></script>
+    <script src="js/ui.js" defer></script>
+    <script src="js/app.js" defer></script>
+    <script src="js/bible.js" defer></script>
+    <script src="js/share.js" defer></script>
+    <script src="js/search.js" defer></script>
+    <script src="js/detail.js" defer></script>
+    <script src="js/home.js" defer></script>
+    <script src="js/timeline.js" defer></script>
+    <script src="js/tour.js" defer></script>
+    <script src="js/meet.js" defer></script>
+    <script src="js/family.js" defer></script>
+    <script src="js/map.js" defer></script>
+    <script src="js/read.js" defer></script>
+    <script src="js/about.js" defer></script>
 </body>
 </html>

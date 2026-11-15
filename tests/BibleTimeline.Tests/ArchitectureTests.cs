@@ -1,3 +1,4 @@
+using System.Text.Json;
 using System.Text.RegularExpressions;
 
 namespace BibleTimeline.Tests;
@@ -278,6 +279,98 @@ public class ArchitectureTests
             - Add a method to the Api object in api.js
             - Call that method from your file instead of hardcoding the URL
             """);
+    }
+
+    [Fact]
+    public void NoHtmlStringInjection_InJs()
+    {
+        // The rule: DOM is built with UI.h(...) and text is set as text. Assigning HTML strings
+        // invites injection and bypasses the single place that builds elements.
+        // Files listed here are known violations that predate the rule. Today the list is empty;
+        // add a file only with a comment saying why, and remove it when the file is fixed.
+        var allowlist = new HashSet<string>(StringComparer.Ordinal)
+        {
+        };
+
+        if (!Directory.Exists(JsRoot)) return;
+        var regex = new Regex(@"\.(innerHTML|outerHTML)\s*(\+?=)(?!=)|insertAdjacentHTML\s*\(|document\.write(ln)?\s*\(", RegexOptions.None);
+        var violations = new List<string>();
+
+        foreach (var file in Directory.GetFiles(JsRoot, "*.js"))
+        {
+            var fileName = Path.GetFileName(file);
+            if (allowlist.Contains(fileName)) continue;
+            var lines = File.ReadAllLines(file);
+            for (int i = 0; i < lines.Length; i++)
+            {
+                if (regex.IsMatch(lines[i]))
+                    violations.Add($"  {fileName}:{i + 1} — {lines[i].Trim()}");
+            }
+        }
+
+        Assert.True(violations.Count == 0,
+            $"""
+            ARCHITECTURE VIOLATION: innerHTML/outerHTML assignment, insertAdjacentHTML or document.write in wwwroot/js.
+
+            Found {violations.Count} violation(s):
+            {string.Join("\n", violations)}
+
+            HOW TO FIX:
+            - Build elements with UI.h(tag, attributes, children) and set text as text
+            - Do not add the file to the allowlist unless the violation predates this rule
+            """);
+    }
+
+    // ─── index.html references ────────────────────────────────────────
+
+    // Files index.html references before they are written. A file named here is skipped only
+    // while it is missing from disk; once it exists it is checked like any other. Keep it empty
+    // unless a view is being added in stages.
+    private static readonly string[] PendingAssets = [];
+
+    [Fact]
+    public void IndexHtml_LocalAssets_Exist()
+    {
+        var wwwroot = Path.Combine(WebRoot, "wwwroot");
+        var html = File.ReadAllText(Path.Combine(wwwroot, "index.html"));
+
+        var refs = new List<string>();
+        foreach (Match m in Regex.Matches(html, @"<script\b[^>]*\bsrc\s*=\s*[""']([^""']+)[""']", RegexOptions.IgnoreCase))
+            refs.Add(m.Groups[1].Value);
+        foreach (Match m in Regex.Matches(html, @"<link\b[^>]*>", RegexOptions.IgnoreCase))
+        {
+            if (!Regex.IsMatch(m.Value, @"rel\s*=\s*[""']stylesheet[""']", RegexOptions.IgnoreCase)) continue;
+            var href = Regex.Match(m.Value, @"href\s*=\s*[""']([^""']+)[""']", RegexOptions.IgnoreCase);
+            if (href.Success) refs.Add(href.Groups[1].Value);
+        }
+
+        var local = refs
+            .Where(r => !Regex.IsMatch(r, @"^([a-z][a-z0-9+.-]*:|//)", RegexOptions.IgnoreCase))
+            .Select(r => r.Split('?', '#')[0].TrimStart('/'))
+            .ToList();
+        Assert.NotEmpty(local);
+
+        var missing = local
+            .Where(r => !File.Exists(Path.Combine(wwwroot, r.Replace('/', Path.DirectorySeparatorChar))))
+            .Where(r => !PendingAssets.Contains(r))
+            .ToList();
+
+        Assert.True(missing.Count == 0,
+            $"""
+            index.html references local files that do not exist:
+            {string.Join("\n", missing.Select(m => "  " + m))}
+            """);
+    }
+
+    [Theory]
+    [InlineData("tours.json")]
+    [InlineData("discoveries.json")]
+    public void AuthoredContent_ParsesAsJson(string file)
+    {
+        var path = Path.Combine(WebRoot, "wwwroot", "data", file);
+        Assert.True(File.Exists(path), $"wwwroot/data/{file} not found");
+        using var doc = JsonDocument.Parse(File.ReadAllText(path));
+        Assert.True(doc.RootElement.ValueKind is JsonValueKind.Object or JsonValueKind.Array);
     }
 
     // ─── Schema & Config Integrity ────────────────────────────────────

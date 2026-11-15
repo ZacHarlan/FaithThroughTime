@@ -1,0 +1,135 @@
+/* search.css — the command palette (#search). A centred panel in the top third
+   on desktop; a full-screen sheet on phones. */
+
+.search { position: fixed; inset: 0; z-index: 60; }
+
+.search-scrim {
+    position: absolute; inset: 0;
+    background: var(--scrim);
+    backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
+    opacity: 0;
+    transition: opacity var(--t-med) var(--ease);
+}
+.search.is-open .search-scrim { opacity: 1; }
+
+.search-panel {
+    position: absolute; top: 13vh; left: 50%;
+    width: min(640px, calc(100% - 32px));
+    max-height: min(580px, 78vh);
+    display: flex; flex-direction: column;
+    background: var(--bg-1);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r-lg);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    opacity: 0;
+    transform: translate(-50%, -10px) scale(.985);
+    transition: opacity var(--t-med) var(--ease-out), transform var(--t-slow) var(--ease-out);
+}
+.search.is-open .search-panel { opacity: 1; transform: translate(-50%, 0); }
+
+/* ── The input row ──────────────────────────────────────────────────── */
+.search-bar {
+    display: flex; align-items: center; gap: var(--s3);
+    min-height: 64px; padding: 0 var(--s4) 0 var(--s5);
+    border-bottom: 1px solid var(--line);
+}
+.search-glass { color: var(--text-faint); transition: color var(--t-fast) var(--ease); }
+.search-bar:focus-within .search-glass { color: var(--gold); }
+.search-input {
+    flex: 1; min-width: 0; height: 64px;
+    background: none; border: 0; outline: none;
+    font-size: 1.125rem; letter-spacing: -.005em;
+}
+.search-input::placeholder { color: var(--text-faint); }
+.search-input::-webkit-search-cancel-button { display: none; }
+.search-cancel { display: none; }
+
+/* ── Results ────────────────────────────────────────────────────────── */
+.search-list {
+    flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain;
+    padding: var(--s2) var(--s2) var(--s3);
+    scroll-padding: var(--s2);
+}
+.search-group + .search-group { margin-top: var(--s2); }
+.search-head {
+    padding: var(--s3) var(--s3) var(--s2);
+    font-size: 11px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase;
+    color: var(--text-dim);
+}
+
+.search-option {
+    display: flex; align-items: center; gap: var(--s3);
+    min-height: 52px; padding: var(--s2) var(--s3);
+    border-radius: var(--r-md);
+    cursor: pointer;
+    transition: background var(--t-fast) var(--ease);
+}
+.search-option.is-active { background: var(--bg-3); }
+
+.search-icon {
+    display: grid; place-items: center; flex: none;
+    width: 34px; height: 34px; border-radius: 50%;
+    color: var(--tint, var(--text-dim));
+    background: color-mix(in srgb, var(--tint, var(--text-dim)) 15%, transparent);
+}
+.search-icon .icon { width: 17px; height: 17px; }
+/* Era colours are tuned for the dark ground; deepen them on parchment. */
+:root[data-theme='light'] .kind-period .search-icon { color: color-mix(in srgb, var(--tint) 70%, #000); }
+.search-option.is-action .search-icon { color: var(--gold); background: var(--gold-soft); }
+
+.search-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.search-name {
+    font-weight: 500; line-height: 1.3;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.search-option.is-action .search-name { font-family: var(--font-display); font-size: 1.06rem; font-variation-settings: 'opsz' 24; }
+.search-name mark {
+    background: var(--gold-soft); color: inherit;
+    border-radius: 3px; box-shadow: 0 1px 0 var(--gold);
+}
+.search-sub {
+    font-size: var(--fs-sm); color: var(--text-dim); line-height: 1.35;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    font-variant-numeric: tabular-nums;
+}
+.search-go { width: 16px; height: 16px; color: var(--text-faint); opacity: 0; transition: opacity var(--t-fast) var(--ease); }
+.search-option.is-active .search-go { opacity: 1; color: var(--gold); }
+
+.search-empty { padding: var(--s5) var(--s3) var(--s2); }
+.search-empty-title {
+    font-family: var(--font-display); font-size: 1.2rem; line-height: 1.25; margin-bottom: var(--s2);
+    overflow-wrap: anywhere;
+}
+.search-empty .dim { font-size: var(--fs-sm); max-width: 52ch; }
+
+/* ── Hints ──────────────────────────────────────────────────────────── */
+.search-foot {
+    display: flex; gap: var(--s5);
+    padding: var(--s3) var(--s5);
+    border-top: 1px solid var(--line);
+    font-size: var(--fs-xs); color: var(--text-dim);
+}
+.search-foot kbd { margin-right: 3px; }
+
+/* ── Phones: a full-screen sheet ────────────────────────────────────── */
+@media (max-width: 760px) {
+    .search-panel {
+        inset: 0; top: 0; left: 0;
+        width: 100%; max-height: none; height: 100%;
+        border: 0; border-radius: 0; box-shadow: none;
+        padding-top: env(safe-area-inset-top, 0px);
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+        transform: translateY(14px);
+    }
+    .search.is-open .search-panel { transform: none; }
+    .search-bar { padding: 0 var(--s2) 0 var(--s4); min-height: 60px; }
+    .search-input { height: 60px; font-size: 1.0625rem; }
+    .search-esc, .search-foot { display: none; }
+    .search-cancel {
+        display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s3);
+        font-size: var(--fs-sm); font-weight: 600; color: var(--gold);
+    }
+    .search-option { min-height: 56px; }
+    .search-sub { white-space: normal; }
+}

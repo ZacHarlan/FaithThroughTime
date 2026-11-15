@@ -1,131 +1,41 @@
-// api.js — Thin API client
-const Api = {
-    async getTimeline(params = {}) {
-        const qs = new URLSearchParams();
-        for (const [k, v] of Object.entries(params)) {
-            if (v !== undefined && v !== null && v !== '') qs.set(k, v);
-        }
-        const res = await fetch(`/api/timeline?${qs}`);
-        if (!res.ok) throw new Error(`Timeline fetch failed: ${res.status}`);
-        return res.json();
-    },
-
-    async getPeriods() {
-        const res = await fetch('/api/timeline/periods');
-        if (!res.ok) throw new Error(`Periods fetch failed: ${res.status}`);
-        return res.json();
-    },
-
-    async getBooks() {
-        const res = await fetch('/api/timeline/books');
-        if (!res.ok) throw new Error(`Books fetch failed: ${res.status}`);
-        return res.json();
-    },
-
-    async getFilters() {
-        const res = await fetch('/api/timeline/filters');
-        if (!res.ok) throw new Error(`Filters fetch failed: ${res.status}`);
-        return res.json();
-    },
-
-    async getPersonDetail(id) {
-        const res = await fetch(`/api/people/${encodeURIComponent(id)}`);
-        if (res.status === 404) return null;
-        if (!res.ok) throw new Error(`Person fetch failed: ${res.status}`);
-        return res.json();
-    },
-
-    async getEventDetail(id) {
-        const res = await fetch(`/api/events/${encodeURIComponent(id)}`);
-        if (res.status === 404) return null;
-        if (!res.ok) throw new Error(`Event fetch failed: ${res.status}`);
-        return res.json();
-    },
-
-    async search(query, type) {
-        const qs = new URLSearchParams({ q: query });
-        if (type) qs.set('type', type);
-        const res = await fetch(`/api/search?${qs}`);
-        if (!res.ok) throw new Error(`Search failed: ${res.status}`);
-        return res.json();
-    },
-
-    async getLineagePeople() {
-        const res = await fetch('/api/lineage/people');
-        if (!res.ok) throw new Error(`Lineage people fetch failed: ${res.status}`);
-        return res.json();
-    },
-
-    async getLineage(id) {
-        const res = await fetch(`/api/lineage/${encodeURIComponent(id)}`);
-        if (res.status === 404) return null;
-        if (!res.ok) throw new Error(`Lineage fetch failed: ${res.status}`);
-        return res.json();
-    },
-
-    async getMapEvents(startYear, endYear) {
-        const qs = new URLSearchParams();
-        if (startYear != null) qs.set('startYear', startYear);
-        if (endYear != null) qs.set('endYear', endYear);
-        const res = await fetch(`/api/map/events?${qs}`);
-        if (!res.ok) throw new Error(`Map events fetch failed: ${res.status}`);
-        return res.json();
-    },
-
-    async getMapJourney(personId, startYear, endYear) {
-        const qs = new URLSearchParams();
-        if (startYear != null) qs.set('startYear', startYear);
-        if (endYear != null) qs.set('endYear', endYear);
-        const res = await fetch(`/api/map/journey/${encodeURIComponent(personId)}?${qs}`);
-        if (!res.ok) throw new Error(`Map journey fetch failed: ${res.status}`);
-        return res.json();
-    },
-
-    async getMapPeople() {
-        const res = await fetch('/api/map/people');
-        if (!res.ok) throw new Error(`Map people fetch failed: ${res.status}`);
-        return res.json();
-    },
-
-    async getLocations() {
-        const res = await fetch('/api/map/locations');
-        if (!res.ok) throw new Error(`Locations fetch failed: ${res.status}`);
-        return res.json();
-    },
-
-    async getBookJourneys() {
-        const res = await fetch('/api/map/journeys');
-        if (!res.ok) throw new Error(`Book journeys fetch failed: ${res.status}`);
-        return res.json();
-    },
-
-    async getBookJourneyStops(journeyId) {
-        const res = await fetch(`/api/map/journeys/${encodeURIComponent(journeyId)}`);
-        if (!res.ok) throw new Error(`Book journey stops fetch failed: ${res.status}`);
-        return res.json();
-    },
-
-    async getScripturePassage(ref) {
-        try {
-            const res = await fetch(`https://bible-api.com/${encodeURIComponent(ref)}?translation=kjv`);
-            if (!res.ok) return null;
-            const data = await res.json();
-            return data && data.text ? data.text.trim() : null;
-        } catch {
-            return null;
-        }
-    },
-
-    // ── Local Bible text (per-book JSON under wwwroot/bibles/) ──
-    async getBibleManifest() {
-        const res = await fetch('bibles/manifest.json');
-        if (!res.ok) throw new Error(`Bible manifest fetch failed: ${res.status}`);
-        return res.json();
-    },
-
-    async getBibleBook(versionId, bookSlug) {
-        const res = await fetch(`bibles/${encodeURIComponent(versionId)}/${encodeURIComponent(bookSlug)}.json`);
-        if (!res.ok) throw new Error(`Bible book fetch failed: ${res.status}`);
+// api.js — the ONLY file that calls fetch().
+// Every URL is relative so the same code runs on the .NET app, the static
+// GitHub Pages export, and a sub-path deployment.
+const Api = (() => {
+    async function getJson(url, label) {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error(`${label} failed: ${res.status}`);
         return res.json();
     }
-};
+
+    // Optional static content: a missing file is an empty result, not an error.
+    async function getOptionalJson(url, fallback) {
+        try {
+            const res = await fetch(url);
+            return res.ok ? await res.json() : fallback;
+        } catch {
+            return fallback;
+        }
+    }
+
+    return {
+        // The whole dataset in one request (see Store for the shape).
+        getDataset() {
+            if (window.__FTT_DATASET__) return Promise.resolve(window.__FTT_DATASET__);
+            return getJson('data/dataset.json', 'Dataset');
+        },
+
+        // Authored content that sits beside the dataset.
+        getTours() { return getOptionalJson('data/tours.json', { tours: [] }); },
+        getDiscoveries() { return getOptionalJson('data/discoveries.json', { discoveries: [] }); },
+
+        // Local Bible text (per-book JSON under bibles/).
+        getBibleManifest() { return getJson('bibles/manifest.json', 'Bible manifest'); },
+        getBibleBook(versionId, bookSlug) {
+            return getJson(
+                `bibles/${encodeURIComponent(versionId)}/${encodeURIComponent(bookSlug)}.json`,
+                'Bible book'
+            );
+        }
+    };
+})();

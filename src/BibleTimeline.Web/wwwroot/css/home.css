@@ -1,0 +1,298 @@
+/* home.css — the opening page: hero, today's discovery, ways in, eras, footer. */
+
+.home-wrap { width: min(100%, var(--content-w)); margin: 0 auto; padding: 0 var(--gutter); }
+.home-section { padding: clamp(56px, 8vw, 112px) 0 0; }
+.home-head .display { font-size: var(--fs-h1); margin-top: var(--s3); }
+
+/* Scroll reveals: only ever applied by JS, and only when motion is welcome. */
+.home .is-pending { opacity: 0; }
+
+/* ── Hero ───────────────────────────────────────────────────────────── */
+.home-hero {
+    /* Where the band of history runs, as fractions of the hero's height.
+       Read by the canvas so each breakpoint keeps the band clear of the words. */
+    --band-y: .785;
+    --band-h: .058;
+    --band-stars: 2.2;     /* how far the events scatter, in band heights */
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    min-height: max(640px, calc(100dvh - var(--topbar-h) - var(--tabbar-h)));
+    display: grid;
+    grid-template-rows: 1fr auto;
+}
+.home-sky { position: absolute; inset: 0; z-index: -1; width: 100%; height: 100%; pointer-events: none; }
+/* A pool of quiet behind the words keeps the type crisp over the band,
+   and a faint warmth at the horizon gives the band somewhere to sit. */
+.home-hero::after {
+    content: '';
+    position: absolute; inset: 0; z-index: -1; pointer-events: none;
+    background:
+        radial-gradient(ellipse 52% 40% at 50% 34%, color-mix(in srgb, var(--bg) 78%, transparent), transparent 72%),
+        radial-gradient(ellipse 70% 30% at 50% 75%, color-mix(in srgb, var(--gold) 5%, transparent), transparent 70%),
+        linear-gradient(180deg, transparent 88%, var(--bg));
+}
+
+.home-hero-inner {
+    align-self: start;
+    display: flex; flex-direction: column; align-items: center;
+    text-align: center;
+    padding: clamp(36px, 8vh, 96px) var(--gutter) var(--s6);
+}
+.home-eyebrow {
+    display: inline-flex; align-items: center; gap: var(--s3);
+    letter-spacing: .28em;
+}
+.home-eyebrow::before, .home-eyebrow::after {
+    content: ''; width: 32px; height: 1px; background: currentColor; opacity: .55;
+}
+.home-title {
+    margin-top: var(--s5);
+    font-size: clamp(3rem, 1rem + 5.6vw, 6.25rem);
+    font-weight: 330;
+    line-height: .94;
+    letter-spacing: -.035em;
+}
+.home-title em { display: block; font-weight: 300; padding-right: .06em; }
+.home-lede {
+    margin-top: var(--s5);
+    max-width: 56ch;
+    font-size: clamp(1.02rem, .95rem + .3vw, 1.2rem);
+    line-height: 1.6;
+    color: var(--text-dim);
+}
+.home-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--s3); margin-top: var(--s6); }
+.home-btn { min-height: 50px; padding: 0 26px; font-size: .95rem; }
+.home-btn:not(.btn-primary) { background: color-mix(in srgb, var(--bg) 60%, transparent); }
+
+/* The hero arrives like a title sequence: words first, numbers last. */
+@keyframes home-in {
+    from { opacity: 0; transform: translateY(16px); filter: blur(6px); }
+    to { opacity: 1; transform: none; filter: none; }
+}
+.home-hero-inner > *, .home-stats { animation: home-in 1100ms var(--ease-out) both; }
+.home-eyebrow { animation-delay: 150ms !important; }
+.home-title { animation-delay: 300ms !important; }
+.home-lede { animation-delay: 620ms !important; }
+.home-actions { animation-delay: 820ms !important; }
+.home-stats { animation-delay: 1500ms; }
+
+.home-stats {
+    display: flex; justify-content: center; flex-wrap: wrap;
+    gap: var(--s4) clamp(28px, 6vw, 88px);
+    padding: 0 var(--gutter) var(--s6);
+}
+.home-stat { display: flex; flex-direction: column-reverse; align-items: center; gap: 2px; }
+.home-stat dd {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.3rem, 1rem + 1vw, 1.75rem);
+    font-variation-settings: 'opsz' 72;
+    line-height: 1.1;
+}
+.home-stat dt {
+    font-size: var(--fs-xs); font-weight: 600; letter-spacing: .16em; text-transform: uppercase;
+    color: var(--text-dim);
+}
+.home-cue {
+    position: absolute; right: var(--gutter); bottom: var(--s5);
+    border: 1px solid var(--line);
+    animation: home-in 1100ms var(--ease-out) 1800ms both;
+}
+
+/* ── Today's discovery ──────────────────────────────────────────────── */
+.home-discovery { padding-top: clamp(40px, 6vw, 80px); }
+.discovery-slot { min-height: 320px; }
+.discovery {
+    position: relative; overflow: hidden;
+    display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    gap: clamp(32px, 5vw, 72px); align-items: center;
+    padding: clamp(28px, 4.5vw, 60px);
+    border: 1px solid var(--line);
+    border-radius: var(--r-lg);
+    background:
+        radial-gradient(ellipse 60% 80% at 100% 0%, var(--gold-soft), transparent 70%),
+        var(--bg-1);
+}
+.discovery::before {
+    content: ''; position: absolute; inset: 0 12% auto; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent); opacity: .7;
+}
+.discovery-eyebrow { display: inline-flex; align-items: center; gap: var(--s2); }
+.discovery-headline { margin-top: var(--s4); font-size: clamp(1.75rem, 1.2rem + 2vw, 2.75rem); }
+.discovery-body { margin-top: var(--s4); max-width: 46ch; font-size: 1.05rem; color: var(--text-dim); text-wrap: pretty; }
+.discovery-actions { display: flex; flex-wrap: wrap; gap: var(--s2); margin-top: var(--s6); }
+.discovery-note { margin-top: var(--s5); font-size: var(--fs-sm); color: var(--text-dim); }
+.discovery-note a { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--line-strong); }
+.discovery-note a:hover { color: var(--text); text-decoration-color: currentColor; }
+
+/* Two lifetimes on one axis. Names sit in their own column so the shared
+   zone, drawn across both tracks, never runs through any text. */
+.lifebars { --lw: 8.5rem; --lgap: var(--s4); margin: 0; }
+.lb-plot { position: relative; display: grid; gap: var(--s5); padding: var(--s3) 0; }
+.lb-row { position: relative; display: grid; grid-template-columns: var(--lw) minmax(0, 1fr); gap: var(--lgap); align-items: center; }
+.lb-label { display: flex; flex-direction: column; min-width: 0; }
+.lb-name { font-family: var(--font-display); font-size: 1.25rem; font-variation-settings: 'opsz' 48; line-height: 1.2; overflow-wrap: anywhere; }
+.lb-dates { font-size: var(--fs-xs); color: var(--text-dim); }
+.lb-track { position: relative; height: 10px; border-radius: var(--r-pill); background: var(--line); }
+.lb-bar {
+    position: absolute; top: 0; bottom: 0;
+    left: calc(var(--x) * 100%); width: calc(var(--w) * 100%); min-width: 3px;
+    border-radius: var(--r-pill);
+    background: var(--c);
+    box-shadow: 0 0 22px color-mix(in srgb, var(--c) 45%, transparent);
+}
+.lb-zone {
+    --track: calc(100% - var(--lw) - var(--lgap));
+    position: absolute; top: 0; bottom: 0; min-width: 2px;
+    left: calc(var(--lw) + var(--lgap) + var(--track) * var(--x));
+    width: calc(var(--track) * var(--w));
+}
+.lb-zone.is-overlap { background: var(--gold-soft); border-inline: 1px solid color-mix(in srgb, var(--gold) 70%, transparent); }
+.lb-zone.is-gap { border-inline: 1px dashed var(--gold); }
+.lb-foot {
+    display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: var(--s1) var(--s3);
+    margin-top: var(--s2); margin-left: calc(var(--lw) + var(--lgap));
+    font-size: var(--fs-sm);
+}
+.lb-zone-label { color: var(--gold); font-weight: 600; white-space: nowrap; }
+.lb-axis { color: var(--text-dim); white-space: nowrap; font-size: var(--fs-xs); }
+
+/* ── Ways in ────────────────────────────────────────────────────────── */
+.ways-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--s4); margin-top: var(--s6); }
+.way { display: flex; flex-direction: column; grid-column: span 2; padding: var(--s5); }
+.way-timeline { grid-column: span 4; }
+.way-preview {
+    height: 128px; margin-bottom: var(--s5);
+    display: flex; align-items: center;
+    padding: var(--s4) var(--s5);
+    border-radius: var(--r-md);
+    background: var(--bg);
+    border: 1px solid var(--line);
+    overflow: hidden;
+}
+.way-title { font-family: var(--font-display); font-size: 1.5rem; font-weight: 400; font-variation-settings: 'opsz' 72; letter-spacing: -.01em; }
+.way-text { margin-top: var(--s2); color: var(--text-dim); flex: 1; text-wrap: pretty; }
+.way-go {
+    display: inline-flex; align-items: center; gap: var(--s2); margin-top: var(--s4);
+    font-size: var(--fs-sm); font-weight: 600; color: var(--gold);
+}
+.way-go .icon { transition: transform var(--t-med) var(--ease-out); }
+.way:hover .way-go .icon, .way:focus-visible .way-go .icon { transform: translateX(4px); }
+
+/* Era ribbon in miniature */
+.mini-ribbon { width: 100%; }
+.mini-marks { position: relative; height: 22px; }
+.mini-mark { position: absolute; left: var(--x); bottom: 5px; width: 1px; height: 12px; background: var(--gold); opacity: .65; }
+.mini-eras { display: flex; gap: 2px; height: 14px; border-radius: var(--r-pill); overflow: hidden; }
+.mini-era { background: var(--c); }
+.mini-ends { display: flex; justify-content: space-between; gap: var(--s3); margin-top: var(--s3); font-size: var(--fs-xs); color: var(--text-dim); }
+
+/* Two overlapping lifetimes, unlabelled */
+.way-bars { --lw: 0px; --lgap: 0px; width: 100%; }
+.way-bars .lb-plot { gap: var(--s4); padding: var(--s2) 0; }
+.way-bars .lb-row { grid-template-columns: minmax(0, 1fr); }
+
+/* Adam to Jesus as a string of beads */
+.mini-line { width: 100%; }
+.mini-beads { position: relative; display: flex; justify-content: space-between; align-items: center; height: 28px; }
+.mini-beads::before { content: ''; position: absolute; inset: 50% 0 auto; height: 1px; background: var(--line-strong); }
+.mini-bead { position: relative; flex: none; width: 3px; height: 3px; border-radius: 50%; background: var(--text-dim); }
+.mini-bead.is-major { width: 6px; height: 6px; border-radius: 1px; background: var(--gold); transform: rotate(45deg); }
+
+/* Journeys from their coordinates */
+.mini-map { width: 100%; height: 100%; overflow: visible; }
+.mini-route { fill: none; stroke: var(--gold); stroke-width: 1.2; stroke-linejoin: round; vector-effect: non-scaling-stroke; opacity: .6; }
+.mini-stop { fill: var(--text); opacity: .85; }
+
+/* The shelf of books */
+.mini-shelf { display: flex; align-items: flex-end; gap: 2px; width: 100%; height: 100%; }
+.mini-spine { flex: 1 1 0; min-width: 1px; height: var(--h, 64%); border-radius: 1px; background: color-mix(in srgb, var(--text-dim) 60%, transparent); transition: height var(--t-slow) var(--ease-out); }
+.mini-spine.is-nt { background: color-mix(in srgb, var(--gold) 80%, transparent); }
+.mini-spine.is-ot + .mini-spine.is-nt { margin-left: 6px; }
+
+/* ── Eras ───────────────────────────────────────────────────────────── */
+.home-eras-head { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--s4); }
+.home-eras-head .display { font-size: var(--fs-h1); margin-top: var(--s3); }
+.eras-nav { display: flex; gap: var(--s2); }
+.eras-nav .icon-btn { border: 1px solid var(--line); }
+.eras-scroller { margin-top: var(--s6); }
+.eras-track {
+    --inset: max(var(--gutter), calc((100% - var(--content-w)) / 2 + var(--gutter)));
+    display: flex; gap: var(--s4);
+    overflow-x: auto; overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory; scroll-padding-inline: var(--inset);
+    padding: 4px var(--inset) var(--s4);
+    scrollbar-width: none;
+}
+.eras-track::-webkit-scrollbar { display: none; }
+/* Keeps the last card clear of the edge: end padding is unreliable in scrolling flex rows. */
+.eras-track::after { content: ''; flex: 0 0 1px; }
+.era-item { flex: 0 0 clamp(260px, 24vw, 300px); scroll-snap-align: start; }
+.era-card {
+    position: relative; overflow: hidden;
+    display: flex; flex-direction: column; height: 100%; min-height: 260px;
+    padding: var(--s5);
+    border: 1px solid var(--line);
+    border-radius: var(--r-lg);
+    background: radial-gradient(ellipse 90% 60% at 0% 0%, color-mix(in srgb, var(--c) 16%, transparent), transparent 70%), var(--bg-1);
+    transition: border-color var(--t-med) var(--ease), transform var(--t-med) var(--ease-out);
+}
+.era-card::before { content: ''; position: absolute; inset: 0 0 auto; height: 3px; background: var(--c); }
+.era-card:hover { border-color: color-mix(in srgb, var(--c) 65%, transparent); transform: translateY(-3px); }
+.era-num { font-family: var(--font-display); font-style: italic; font-size: 1.05rem; color: var(--text-dim); }
+.era-name { margin-top: var(--s3); font-family: var(--font-display); font-size: 1.45rem; font-weight: 400; line-height: 1.15; font-variation-settings: 'opsz' 72; text-wrap: balance; }
+.era-years { margin-top: var(--s2); font-size: var(--fs-sm); font-weight: 600; color: var(--text); }
+.era-desc { margin-top: var(--s3); flex: 1; font-size: var(--fs-sm); color: var(--text-dim); text-wrap: pretty; }
+.era-counts {
+    margin-top: var(--s4); padding-top: var(--s3); border-top: 1px solid var(--line);
+    font-size: var(--fs-xs); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-dim);
+}
+
+/* ── Footer ─────────────────────────────────────────────────────────── */
+.home-foot { padding: clamp(64px, 9vw, 120px) 0 var(--s7); }
+.home-foot-body { max-width: 60ch; margin: var(--s7) auto 0; text-align: center; }
+.home-foot-title { font-size: var(--fs-h2); }
+.home-foot-text { margin-top: var(--s4); color: var(--text-dim); text-wrap: pretty; }
+.home-foot-link { margin-top: var(--s4); color: var(--gold); }
+.home-foot-link:hover { color: var(--gold-bright); }
+.home-colophon {
+    display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: var(--s2) var(--s5);
+    margin-top: var(--s8);
+    font-size: var(--fs-xs); color: var(--text-dim);
+}
+.home-colophon-brand { display: inline-flex; align-items: center; gap: var(--s2); font-family: var(--font-display); font-size: var(--fs-sm); color: var(--text); }
+.home-colophon-brand .icon { width: 18px; height: 18px; color: var(--gold); stroke: none; }
+.home-colophon a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--line-strong); }
+.home-colophon a:hover { color: var(--text); }
+
+/* ── Light theme: era colours are tuned for the dark ground ─────────── */
+:root[data-theme='light'] .mini-era,
+:root[data-theme='light'] .era-card::before { background: color-mix(in srgb, var(--c) 70%, #000); }
+:root[data-theme='light'] .home-hero::after {
+    background:
+        radial-gradient(ellipse 52% 40% at 50% 34%, color-mix(in srgb, var(--bg) 85%, transparent), transparent 72%),
+        linear-gradient(180deg, transparent 88%, var(--bg));
+}
+
+/* ── Sizes ──────────────────────────────────────────────────────────── */
+@media (max-width: 1000px) {
+    .ways-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .way { grid-column: span 1; }
+    .way-timeline { grid-column: span 2; }
+}
+@media (max-width: 760px) {
+    .home-hero { --band-y: .79; --band-h: .05; --band-stars: 1.5; min-height: max(560px, calc(100dvh - var(--topbar-h) - var(--tabbar-h))); }
+    .home-hero-inner { padding-top: clamp(32px, 7vh, 64px); }
+    .home-eyebrow { letter-spacing: .2em; }
+    .home-eyebrow::before, .home-eyebrow::after { width: 18px; }
+    .home-actions { flex-direction: column; align-items: stretch; width: min(100%, 320px); }
+    .home-stats { gap: var(--s4) var(--s5); padding-bottom: var(--s5); }
+    .home-cue { display: none; }
+    .discovery { grid-template-columns: 1fr; }
+    .lifebars { --lw: 6.5rem; --lgap: var(--s3); }
+    .ways-grid { grid-template-columns: 1fr; }
+    .way, .way-timeline { grid-column: auto; }
+    .eras-nav { display: none; }
+    .home-colophon { flex-direction: column; gap: 0; }
+}

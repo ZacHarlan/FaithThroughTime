@@ -1,0 +1,209 @@
+/* read.css — the scripture reader. Tokens come from base.css. */
+
+.read-page { max-width: 1180px; }
+
+/* ── Library ────────────────────────────────────────────────────────── */
+.read-hero { display: grid; gap: var(--s4); max-width: 46rem; margin-bottom: var(--s7); }
+.read-hero h1 { font-size: clamp(2.6rem, 1.6rem + 4vw, 4.6rem); line-height: 1; letter-spacing: -.03em; }
+.read-search { position: relative; margin-top: var(--s3); max-width: 34rem; }
+.read-search > .icon { position: absolute; left: var(--s4); top: 13px; color: var(--text-faint); pointer-events: none; }
+.read-find { padding-left: calc(var(--s4) + 30px); border-radius: var(--r-pill); }
+.read-find::-webkit-search-cancel-button { filter: grayscale(1); }
+.read-results {
+    position: absolute; z-index: 5; left: 0; right: 0; top: calc(100% + var(--s2));
+    display: grid; padding: var(--s2);
+    background: var(--bg-1); border: 1px solid var(--line-strong); border-radius: var(--r-md); box-shadow: var(--shadow);
+}
+.read-result {
+    display: flex; align-items: baseline; justify-content: space-between; gap: var(--s4);
+    min-height: 44px; padding: var(--s2) var(--s3); border-radius: var(--r-sm); font-size: 1.15rem;
+}
+.read-result:hover, .read-result:focus-visible { background: var(--bg-3); }
+.read-result-none { padding: var(--s3); color: var(--text-dim); font-size: var(--fs-sm); }
+
+.read-continue {
+    display: flex; align-items: center; justify-content: space-between; gap: var(--s4);
+    max-width: 34rem; margin-bottom: var(--s7);
+    background: linear-gradient(120deg, var(--gold-soft), transparent 70%), var(--bg-1);
+    border-color: var(--line-strong);
+}
+.read-continue > span { display: grid; gap: var(--s1); }
+.read-continue-title { font-size: var(--fs-h2); line-height: 1.1; }
+.read-continue .icon { color: var(--gold); }
+
+.read-testament + .read-testament { margin-top: var(--s8); }
+.read-testament-title {
+    display: flex; align-items: baseline; gap: var(--s4);
+    padding-bottom: var(--s4); border-bottom: 1px solid var(--line-strong);
+}
+.read-count { font-family: var(--font-ui); font-size: var(--fs-xs); font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--text-faint); }
+.read-genre { margin-top: var(--s6); }
+.read-genre-label {
+    display: flex; align-items: center; gap: var(--s2); margin-bottom: var(--s2);
+    font-size: var(--fs-xs); font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--text-dim);
+}
+.read-genre-label .chip-dot { background: var(--tone); }
+.read-books { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr)); column-gap: var(--s6); }
+.read-book {
+    display: grid; gap: 2px; min-height: 44px; padding: var(--s3) var(--s2);
+    border-bottom: 1px solid var(--line);
+    transition: background var(--t-fast) var(--ease), padding var(--t-med) var(--ease-out);
+}
+.read-book:hover, .read-book:focus-visible { background: var(--gold-soft); padding-left: var(--s4); }
+.read-book-name { font-size: 1.45rem; line-height: 1.15; }
+.read-book:hover .read-book-name { color: var(--gold-bright); }
+.read-book-meta { font-size: var(--fs-sm); color: var(--text-faint); font-variant-numeric: tabular-nums; }
+
+/* ── Chapter layout: heading, then text, with the rail beside it ────── */
+.read-chapter { display: grid; grid-template-columns: minmax(0, 1fr); }
+.read-head { display: grid; gap: var(--s3); justify-items: start; margin-bottom: var(--s6); }
+.read-crumbs { display: flex; gap: var(--s2); font-size: var(--fs-sm); color: var(--text-faint); }
+.read-crumbs a:hover { color: var(--gold-bright); }
+.read-title {
+    display: flex; align-items: baseline; gap: var(--s4);
+    font-size: clamp(2.6rem, 1.4rem + 5vw, 5rem); line-height: 1; letter-spacing: -.03em;
+}
+.read-chnum { color: var(--gold); font-style: italic; font-variant-numeric: lining-nums; }
+
+.read-tools { display: flex; align-items: center; flex-wrap: wrap; gap: var(--s2); margin-top: var(--s2); }
+.read-step.icon-btn, .icon-btn.is-off { border: 1px solid var(--line); }
+.icon-btn.is-off { opacity: .35; }
+.read-step:hover { border-color: var(--line-strong); }
+.read-picker { position: relative; }
+.read-pick { min-width: 9.5rem; }
+.read-pop {
+    position: absolute; z-index: 10; top: calc(100% + var(--s2)); left: 0;
+    width: min(21rem, calc(100vw - 2 * var(--gutter))); max-height: min(50vh, 22rem); overflow: auto;
+    padding: var(--s3); background: var(--bg-1); border: 1px solid var(--line-strong); border-radius: var(--r-md); box-shadow: var(--shadow);
+}
+.read-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(44px, 1fr)); gap: 2px; }
+.read-grid-item {
+    display: grid; place-items: center; min-height: 44px; border-radius: var(--r-sm);
+    font-variant-numeric: tabular-nums; color: var(--text-dim);
+}
+.read-grid-item:hover, .read-grid-item:focus-visible { background: var(--bg-3); color: var(--text); }
+.read-grid-item.is-current { background: var(--gold); color: var(--on-gold); font-weight: 700; }
+
+.read-versions { display: inline-flex; padding: 3px; margin-left: var(--s2); border: 1px solid var(--line); border-radius: var(--r-pill); background: var(--bg-1); }
+.read-version {
+    min-height: 38px; min-width: 48px; padding: 0 var(--s3); border-radius: var(--r-pill);
+    font-size: var(--fs-xs); font-weight: 700; letter-spacing: .08em; color: var(--text-dim);
+    transition: background var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+}
+.read-version:hover { color: var(--text); }
+.read-version[aria-pressed='true'] { background: var(--gold-soft); color: var(--gold-bright); box-shadow: inset 0 0 0 1px var(--gold); }
+
+/* ── The text ───────────────────────────────────────────────────────── */
+.read-flow { min-width: 0; }
+.read-text {
+    max-width: 62ch; font-size: clamp(1.15rem, 1.05rem + .45vw, 1.32rem); line-height: 1.72;
+    font-variation-settings: 'opsz' 18; hanging-punctuation: first; text-wrap: pretty;
+}
+.verse {
+    cursor: pointer; border-radius: 3px; -webkit-box-decoration-break: clone; box-decoration-break: clone;
+    transition: background var(--t-med) var(--ease);
+}
+.verse:hover { background: color-mix(in srgb, var(--gold) 7%, transparent); }
+.verse.is-hl { background: var(--gold-soft); box-shadow: 0 0 0 4px var(--gold-soft); animation: read-glow 2.4s var(--ease-out); }
+.verse.is-picked { background: color-mix(in srgb, var(--gold) 22%, transparent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--gold) 22%, transparent); }
+@keyframes read-glow { from { background: color-mix(in srgb, var(--gold) 38%, transparent); } }
+.is-lines .verse { display: block; padding-left: 1.96em; text-indent: -1.96em; margin-bottom: .25em; }
+.is-lines .verse sup { font-size: 1em; }
+.is-lines .verse .vn { display: inline-block; width: 2.2em; margin: 0 .6em 0 0; text-indent: 0; text-align: right; }
+
+/* Verse numbers: small, gold, raised. The button is the whole hit area. */
+.verse sup { line-height: 0; }
+.vn {
+    font-family: var(--font-ui); font-size: .62em; font-weight: 700; font-variant-numeric: tabular-nums;
+    color: var(--gold); padding: 0 .12em; margin-right: .1em; border-radius: 4px;
+}
+.vn:hover { color: var(--gold-bright); }
+.is-lines .vn { font-size: .7em; }
+.is-lines .verse sup { vertical-align: baseline; }
+.dropcap {
+    float: left; font-family: var(--font-display); font-weight: 400; font-style: normal; font-variation-settings: 'opsz' 144, 'SOFT' 50;
+    font-size: 4.1em; line-height: .74; padding: .07em .1em 0 0; margin-top: .04em; color: var(--gold);
+}
+
+.read-notice {
+    max-width: 62ch; margin-bottom: var(--s5); padding: var(--s3) var(--s4);
+    border-left: 2px solid var(--gold); background: var(--gold-soft); border-radius: 0 var(--r-sm) var(--r-sm) 0;
+    font-size: var(--fs-sm); color: var(--text-dim);
+}
+.read-attrib { max-width: 62ch; margin-top: var(--s6); padding-top: var(--s4); border-top: 1px solid var(--line); font-size: var(--fs-sm); color: var(--text-faint); }
+.read-pager { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s4); max-width: 62ch; margin-top: var(--s6); }
+.read-pager-link {
+    display: grid; gap: var(--s1); padding: var(--s4) var(--s5); border: 1px solid var(--line); border-radius: var(--r-md);
+    transition: border-color var(--t-med) var(--ease), background var(--t-med) var(--ease);
+}
+.read-pager-link:hover { border-color: var(--gold); background: var(--bg-1); }
+.read-pager-link.is-next { text-align: right; grid-column: 2; }
+.read-pager-link .display { font-size: 1.35rem; }
+
+/* Selected verses: a bar that rides the bottom edge of the viewport. */
+.read-selbar {
+    position: sticky; bottom: var(--s4); z-index: 6; width: fit-content; max-width: 100%; margin: var(--s5) 0 0;
+    display: flex; align-items: center; flex-wrap: wrap; gap: var(--s2); padding: var(--s2) var(--s2) var(--s2) var(--s4);
+    background: var(--bg-2); border: 1px solid var(--gold); border-radius: var(--r-pill); box-shadow: var(--shadow);
+    animation: rise var(--t-med) var(--ease-out) both;
+}
+.read-selref { font-family: var(--font-display); font-size: 1.05rem; margin-right: var(--s2); }
+
+/* Loading skeleton */
+.read-skel { height: 1.15em; margin-bottom: 1.05em; max-width: 62ch; border-radius: 4px; background: linear-gradient(90deg, var(--bg-2), var(--bg-3), var(--bg-2)); background-size: 200% 100%; animation: read-shimmer 1.6s linear infinite; }
+@keyframes read-shimmer { to { background-position: -200% 0; } }
+
+/* ── The rail: back into history ────────────────────────────────────── */
+.read-rail { margin-bottom: var(--s6); border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--bg-1); }
+.read-rail summary {
+    display: flex; align-items: center; justify-content: space-between; gap: var(--s3);
+    min-height: 56px; padding: var(--s3) var(--s5); cursor: pointer; list-style: none;
+}
+.read-rail summary::-webkit-details-marker { display: none; }
+.read-rail summary > span { display: flex; align-items: baseline; gap: var(--s3); }
+.read-rail summary .icon { color: var(--text-faint); transition: transform var(--t-med) var(--ease-out); }
+.read-rail[open] summary .icon { transform: rotate(180deg); }
+.read-rail-count { font-size: var(--fs-xs); color: var(--text-faint); }
+.read-rail-body { display: grid; gap: var(--s5); padding: 0 var(--s5) var(--s5); }
+.read-rail-group { display: grid; gap: var(--s2); justify-items: start; }
+.read-rail-title { font-size: var(--fs-xs); font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--text-dim); }
+.read-rail .chip { white-space: normal; padding-block: var(--s2); line-height: 1.2; }
+.read-context { color: var(--text-dim); font-size: var(--fs-sm); max-width: 40ch; }
+
+.read-when {
+    display: grid; gap: var(--s1); width: 100%; padding: var(--s3) var(--s4);
+    border: 1px solid var(--line); border-radius: var(--r-md); background: var(--bg-2);
+    transition: border-color var(--t-med) var(--ease);
+}
+.read-when:hover { border-color: var(--gold); }
+.read-when-era { display: flex; align-items: center; gap: var(--s2); font-weight: 600; font-size: var(--fs-sm); }
+.read-when-era .chip-dot { background: var(--era, var(--gold)); }
+:root[data-theme='light'] .read-when-era .chip-dot { background: color-mix(in srgb, var(--era, var(--gold)) 70%, #000); }
+.read-when-years { font-family: var(--font-display); font-size: 1.35rem; }
+.read-when-go { display: flex; align-items: center; gap: var(--s2); font-size: var(--fs-xs); color: var(--gold-bright); }
+
+/* ── Not found, offline ─────────────────────────────────────────────── */
+.read-state { display: grid; gap: var(--s4); justify-items: start; max-width: 36rem; padding-top: var(--s7); }
+.read-state-actions { display: flex; flex-wrap: wrap; gap: var(--s3); margin-top: var(--s3); }
+
+/* ── Wide: the rail sits beside the text and stays in view ──────────── */
+@media (min-width: 1020px) {
+    .read-chapter { grid-template-columns: minmax(0, 44rem) 18.5rem; justify-content: center; column-gap: 72px; }
+    .read-head { grid-column: 1; }
+    .read-flow { grid-column: 1; }
+    .read-rail { grid-column: 2; grid-row: 1 / span 2; position: sticky; top: var(--s5); align-self: start; margin-top: var(--s7); max-height: calc(100vh - var(--topbar-h) - 2 * var(--s5)); overflow: auto; }
+    .read-rail summary { pointer-events: none; }
+    .read-rail summary .icon { display: none; }
+}
+
+@media (max-width: 760px) {
+    .read-hero h1 { font-size: clamp(2.4rem, 12vw, 3.4rem); }
+    .read-versions { margin-left: 0; }
+    .read-text { line-height: 1.8; }
+    .read-pager-link { padding: var(--s3) var(--s4); }
+    .read-selbar { bottom: var(--s3); border-radius: var(--r-lg); }
+    /* The rail's chips lead back into history: 44px hit areas, rows spaced to keep them apart. */
+    .read-rail .chip { position: relative; }
+    .read-rail .chip::after { content: ''; position: absolute; inset: min(0px, calc(50% - 22px)) 0; }
+    .read-rail .chip-row { row-gap: 10px; }
+}

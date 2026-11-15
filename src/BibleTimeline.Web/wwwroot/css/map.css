@@ -1,0 +1,196 @@
+/* map.css — the atlas. Leaflet draws the map; everything on it is ours. */
+
+.map-root { position: absolute; inset: 0; --panel-w: 400px; }
+.map-canvas { position: absolute; inset: 0; z-index: 0; background: var(--bg-2); }
+.map-root.is-offline .map-canvas {
+    background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 64px 64px;
+}
+.leaflet-container { font-family: var(--font-ui); background: var(--bg-2); outline: none; }
+
+/* ── Base map, tuned per theme ─────────────────────────────────────── */
+/* Dark: relief inverted into a desaturated night map. Light: warm parchment. */
+:root[data-theme='dark'] .map-tiles {
+    filter: invert(1) grayscale(.55) sepia(.35) brightness(.8) contrast(1.1) hue-rotate(185deg) saturate(.85);
+}
+:root[data-theme='light'] .map-tiles {
+    filter: sepia(.55) saturate(.8) brightness(1.04) contrast(.92);
+}
+
+/* Attribution stays legible but quiet */
+.leaflet-control-attribution {
+    background: color-mix(in srgb, var(--bg) 70%, transparent) !important;
+    color: var(--text-faint) !important; font-size: 10px; padding: 1px 8px;
+    border-radius: var(--r-sm) 0 0 0;
+}
+.leaflet-control-attribution a { color: var(--text-dim) !important; }
+.leaflet-bottom.leaflet-right { z-index: 3; }
+
+/* ── Place pins ─────────────────────────────────────────────────────── */
+.map-pin-wrap, .map-wp-wrap { background: none; border: 0; outline: none; }
+.map-pin { position: relative; width: 44px; height: 44px; display: grid; place-items: center; cursor: pointer; transition: opacity var(--t-med) var(--ease); }
+.map-pin-dot {
+    display: block; border-radius: 50%;
+    border: 1.6px solid var(--gold-bright);
+    background: color-mix(in srgb, var(--bg) 62%, transparent);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--bg) 60%, transparent),
+                0 0 calc(14px * var(--glow, .5)) color-mix(in srgb, var(--gold) calc(70% * var(--glow, .5)), transparent),
+                inset 0 0 0 3px color-mix(in srgb, var(--gold) calc(45% * var(--glow, .5)), transparent);
+    transition: transform var(--t-med) var(--ease-out), background var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease);
+}
+:root[data-theme='light'] .map-pin-dot { border-color: var(--gold-bright); border-width: 2px; background: color-mix(in srgb, #fffaf0 78%, transparent); }
+.leaflet-marker-icon:hover .map-pin-dot, .leaflet-marker-icon:focus-visible .map-pin-dot { transform: scale(1.2); background: var(--gold-soft); }
+.leaflet-marker-icon:focus-visible { outline: none; }
+.leaflet-marker-icon:focus-visible .map-pin-dot { outline: 2px solid var(--gold); outline-offset: 3px; }
+.map-pin.is-selected .map-pin-dot { background: var(--gold); border-color: var(--gold-bright); transform: scale(1.25); box-shadow: var(--glow-sel, 0 0 0 5px var(--gold-soft)), 0 0 22px var(--gold); }
+.map-pin.is-dim { opacity: .38; }
+.map-pin.is-hidden { opacity: 0; pointer-events: none; }
+
+.map-pin-label {
+    position: absolute; top: 50%; white-space: nowrap; pointer-events: none;
+    font-family: var(--font-display); font-size: 13.5px; font-variation-settings: 'opsz' 14, 'SOFT' 50; letter-spacing: .005em;
+    color: var(--text); line-height: 1; opacity: 0;
+    transform: translateY(-50%);
+    text-shadow: 0 0 2px var(--bg), 0 0 4px var(--bg), 0 0 8px var(--bg), 0 0 12px var(--bg);
+    transition: opacity var(--t-med) var(--ease);
+}
+.map-pin[data-label='right'] .map-pin-label { left: calc(50% + var(--r, 10px) + 8px); opacity: 1; }
+.map-pin[data-label='left'] .map-pin-label { right: calc(50% + var(--r, 10px) + 8px); opacity: 1; }
+.map-pin.is-selected .map-pin-label { color: var(--gold-bright); }
+
+/* ── Journey waypoints ──────────────────────────────────────────────── */
+.map-wp { position: relative; width: 44px; height: 44px; display: grid; place-items: center; cursor: pointer; }
+.map-wp-badge {
+    display: grid; place-items: center; min-width: 26px; height: 26px; padding: 0 7px; border-radius: 13px;
+    font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1;
+    background: var(--bg-1); color: var(--text-dim); border: 1.5px solid var(--line-strong);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .35);
+    transition: transform var(--t-med) var(--ease-out), background var(--t-med) var(--ease), color var(--t-med) var(--ease), border-color var(--t-med) var(--ease);
+}
+.map-wp.is-done .map-wp-badge { background: color-mix(in srgb, var(--gold) 24%, var(--bg-1)); color: var(--gold-bright); border-color: var(--gold); }
+.map-wp.is-active .map-wp-badge { background: var(--gold); color: var(--on-gold); border-color: var(--gold-bright); transform: scale(1.3); box-shadow: 0 0 0 6px var(--gold-soft), 0 0 24px color-mix(in srgb, var(--gold) 60%, transparent); }
+.leaflet-marker-icon:hover .map-wp-badge { transform: scale(1.15); }
+.leaflet-marker-icon:focus-visible .map-wp-badge { outline: 2px solid var(--gold); outline-offset: 3px; }
+.map-wp-name {
+    position: absolute; top: calc(50% + 20px); left: 50%; transform: translateX(-50%); white-space: nowrap; pointer-events: none;
+    font-family: var(--font-display); font-size: 13.5px; color: var(--text); opacity: 0;
+    text-shadow: 0 0 2px var(--bg), 0 0 5px var(--bg), 0 0 10px var(--bg), 0 0 14px var(--bg);
+    transition: opacity var(--t-med) var(--ease);
+}
+.map-wp.is-active .map-wp-name { opacity: 1; }
+
+/* ── Route ──────────────────────────────────────────────────────────── */
+.map-route-ahead { stroke: var(--gold); stroke-opacity: .42; stroke-width: 2; stroke-dasharray: 2 7; stroke-linecap: round; fill: none; }
+.map-route-done { stroke: var(--gold-bright); stroke-opacity: .95; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; fill: none; filter: drop-shadow(0 0 5px color-mix(in srgb, var(--gold) 70%, transparent)); }
+:root[data-theme='light'] .map-route-ahead { stroke: var(--gold-bright); stroke-opacity: .7; }
+:root[data-theme='light'] .map-route-done { stroke: var(--gold); }
+
+/* ── Floating controls ──────────────────────────────────────────────── */
+.map-controls { position: absolute; z-index: 5; top: 16px; right: 16px; display: grid; gap: 1px; border-radius: var(--r-md); overflow: hidden; border: 1px solid var(--line-strong); background: var(--line); box-shadow: var(--shadow); }
+.map-ctl { display: grid; place-items: center; width: 44px; height: 44px; background: color-mix(in srgb, var(--bg-1) 94%, transparent); color: var(--text-dim); backdrop-filter: blur(10px); transition: background var(--t-fast) var(--ease), color var(--t-fast) var(--ease); }
+.map-ctl:hover { background: var(--bg-3); color: var(--text); }
+
+.map-journeys-btn { position: absolute; z-index: 5; left: 16px; top: 16px; background: var(--bg-1); box-shadow: var(--shadow); }
+.map-journeys-btn:hover { background: var(--bg-3); }
+
+.map-eras {
+    position: absolute; z-index: 4; top: 16px; left: calc(var(--panel-w) + 36px); right: 76px;
+    display: flex; gap: var(--s2); overflow-x: auto; padding: 4px; scrollbar-width: none; mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent);
+}
+.map-eras::-webkit-scrollbar { display: none; }
+.map-root[data-mode='picker'] .map-eras, .map-root[data-mode='place'] .map-eras { left: calc(var(--panel-w) + 36px); }
+.map-root[data-mode='places'] .map-eras { left: 150px; }
+.map-era { flex: none; min-height: 36px; background: color-mix(in srgb, var(--bg-1) 92%, transparent); backdrop-filter: blur(10px); box-shadow: 0 2px 10px rgba(0, 0, 0, .18); }
+.map-era-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--era); flex: none; }
+:root[data-theme='light'] .map-era-dot { background: color-mix(in srgb, var(--era) 70%, #000); }
+
+.map-notice {
+    position: absolute; z-index: 5; left: 50%; bottom: 44px; transform: translateX(-50%); max-width: calc(100% - 32px);
+    padding: var(--s2) var(--s4); border-radius: var(--r-pill); font-size: var(--fs-xs); color: var(--text-dim);
+    background: var(--bg-1); border: 1px solid var(--line-strong);
+}
+
+/* ── Panel: side card on desktop, bottom sheet on phones ────────────── */
+.map-panel {
+    position: absolute; z-index: 6; left: 16px; top: 16px; bottom: 36px; width: var(--panel-w); max-width: calc(100% - 32px);
+    display: flex; flex-direction: column; min-height: 0;
+    animation: rise var(--t-med) var(--ease-out) both;
+}
+.map-root:not([data-mode='picker']):not([data-mode='place']):not([data-mode='journey']) .map-panel { display: none; }
+.map-card {
+    max-height: 100%; overflow: auto; overscroll-behavior: contain;
+    padding: var(--s5); border-radius: var(--r-lg);
+    background: color-mix(in srgb, var(--bg-1) 97%, transparent);
+    backdrop-filter: blur(16px) saturate(130%); -webkit-backdrop-filter: blur(16px) saturate(130%);
+    border: 1px solid var(--line-strong); box-shadow: var(--shadow);
+}
+.map-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--s3); margin: 0 calc(var(--s2) * -1) var(--s3) 0; }
+.map-card-head h2 { font-size: var(--fs-h2); margin-top: var(--s1); }
+.map-close { flex: none; margin: calc(var(--s2) * -1) 0 0 0; }
+.map-lede { margin-bottom: var(--s4); text-wrap: pretty; }
+.map-modern { font-size: var(--fs-sm); margin-top: var(--s1); }
+.map-desc { margin: var(--s3) 0 var(--s4); text-wrap: pretty; }
+.map-aside { font-size: var(--fs-sm); }
+.map-card .ornament { margin: var(--s4) 0; }
+.map-sub { margin: 0 0 var(--s2); }
+.map-card section + section { margin-top: var(--s5); }
+
+.map-events { display: grid; }
+.map-event {
+    display: flex; align-items: baseline; gap: var(--s3); min-height: 44px; padding: var(--s2) var(--s2);
+    margin: 0 calc(var(--s2) * -1); border-radius: var(--r-md); border-bottom: 1px solid transparent;
+    transition: background var(--t-fast) var(--ease);
+}
+.map-event:hover { background: var(--bg-3); }
+.map-event .chip-dot { align-self: center; }
+.map-event-name { flex: 1; min-width: 0; font-weight: 500; }
+.map-event-year { flex: none; font-size: var(--fs-xs); }
+
+/* Journey cards */
+.map-journey-list { display: grid; gap: var(--s3); }
+.map-journey { padding: var(--s4); border-radius: var(--r-md); }
+.map-journey h3 { font-size: 1.15rem; line-height: 1.2; }
+.map-journey-desc { font-size: var(--fs-sm); margin-top: var(--s2); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.map-journey-meta { display: flex; gap: var(--s3); margin-top: var(--s3); font-size: var(--fs-xs); font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--gold); }
+.map-journey-meta .year { color: var(--text-dim); }
+.map-journey-who { font-size: var(--fs-xs); margin-top: var(--s2); }
+
+/* Stepper */
+.map-journey-name { font-size: 1.05rem; color: var(--text-dim); margin-top: 2px; }
+.map-step-count { margin-bottom: var(--s2); }
+.map-step-title { font-size: var(--fs-h2); }
+.map-step-meta { display: flex; flex-wrap: wrap; gap: var(--s1) var(--s3); align-items: baseline; margin: var(--s2) 0 var(--s3); }
+.map-step-year { color: var(--gold-bright); font-weight: 600; }
+.map-step-place { font-size: var(--fs-sm); }
+.map-step-desc { text-wrap: pretty; }
+.map-step-links { margin-top: var(--s3); align-items: center; }
+.map-step-controls { display: flex; align-items: center; gap: var(--s2); margin-top: var(--s4); }
+.map-nav { border: 1px solid var(--line-strong); flex: none; }
+.map-nav:disabled { opacity: .35; pointer-events: none; }
+.map-play { flex: none; min-width: 108px; padding: 0 var(--s4); }
+.map-hint { margin-top: var(--s3); font-size: var(--fs-xs); }
+
+.map-range { flex: 1; min-width: 0; height: 44px; margin: 0; background: transparent; appearance: none; -webkit-appearance: none; cursor: pointer; }
+.map-range::-webkit-slider-runnable-track { height: 3px; border-radius: 2px; background: var(--line-strong); }
+.map-range::-moz-range-track { height: 3px; border-radius: 2px; background: var(--line-strong); }
+.map-range::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; margin-top: -7.5px; border-radius: 50%; background: var(--gold); border: 2px solid var(--bg-1); box-shadow: 0 0 0 1px var(--gold); }
+.map-range::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; background: var(--gold); border: 2px solid var(--bg-1); box-shadow: 0 0 0 1px var(--gold); }
+.map-range:focus-visible { outline-offset: 0; }
+
+/* ── Phones ─────────────────────────────────────────────────────────── */
+@media (max-width: 760px) {
+    .map-panel { left: 8px; right: 8px; top: auto; bottom: 26px; width: auto; max-width: none; max-height: 48%; }
+    .map-card { padding: var(--s4) var(--s4) var(--s3); border-radius: 20px; }
+    .map-card-head h2 { font-size: 1.45rem; }
+    .map-hint { display: none; }
+    .map-step-title { font-size: 1.35rem; }
+    .map-step-desc { font-size: var(--fs-sm); line-height: 1.5; }
+    .map-controls { top: 64px; right: 8px; }
+    .map-eras { top: 8px; left: 0 !important; right: 0; padding: 4px 8px; }
+    .map-journeys-btn { left: auto; right: 8px; top: auto; bottom: 34px; }
+    .map-notice { bottom: 30px; }
+    .map-step-controls { margin-top: var(--s3); }
+}
+@media (max-width: 760px) and (max-height: 700px) {
+    .map-panel { max-height: 52%; }
+}

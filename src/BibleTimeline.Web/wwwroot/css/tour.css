@@ -1,0 +1,140 @@
+/* tour.css — the guided-tour narration card, laid over the timeline in #tour-slot.
+   Lower left on desktop; docked above the tab bar on phones. */
+
+#tour-slot { position: absolute; inset: 0; z-index: 12; pointer-events: none; }
+
+.tour-card {
+    position: absolute; left: var(--s5); bottom: var(--s5);
+    width: min(440px, calc(100% - 2 * var(--s5)));
+    max-height: calc(100% - 2 * var(--s5));
+    display: flex; flex-direction: column;
+    padding: var(--s4) var(--s5) var(--s3);
+    background: color-mix(in srgb, var(--bg-1) 94%, transparent);
+    backdrop-filter: blur(16px) saturate(140%); -webkit-backdrop-filter: blur(16px) saturate(140%);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r-lg);
+    box-shadow: var(--shadow);
+    pointer-events: auto;
+}
+
+/* ── Top row: chapter count, tour name, exit ────────────────────────── */
+.tour-top { display: flex; align-items: flex-start; gap: var(--s3); margin-right: calc(-1 * var(--s3)); }
+.tour-heading { flex: 1; min-width: 0; padding-top: var(--s2); display: flex; flex-direction: column; gap: 2px; }
+.tour-count { font-variant-numeric: tabular-nums; }
+.tour-name { font-size: var(--fs-xs); color: var(--text-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tour-exit { margin-top: calc(-1 * var(--s1)); }
+
+/* ── The text, which cross-fades between steps ──────────────────────── */
+.tour-stage {
+    position: relative;
+    flex: 0 1 auto; min-height: 0;
+    overflow-y: auto; overscroll-behavior: contain;
+    transition: height var(--t-slow) var(--ease-out);
+}
+.tour-page { padding: var(--s2) 0 var(--s3); transition: opacity var(--t-slow) var(--ease-out), transform var(--t-slow) var(--ease-out); }
+.tour-page.is-entering { opacity: 0; transform: translateY(6px); }
+.tour-page.is-leaving {
+    position: absolute; inset: 0 0 auto 0;
+    opacity: 0; transform: translateY(-4px);
+    transition-duration: var(--t-med);
+    pointer-events: none;
+}
+
+.tour-title { font-size: clamp(1.5rem, 1.1rem + 1vw, 2rem); margin-bottom: var(--s3); }
+.tour-body { color: var(--text); line-height: 1.6; text-wrap: pretty; }
+
+.tour-meta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0 var(--s4); margin-top: var(--s3); }
+.tour-ref, .tour-link, .tour-read {
+    display: inline-flex; align-items: center; gap: var(--s2);
+    min-height: 44px;
+    font-size: var(--fs-sm); font-weight: 600;
+}
+.tour-ref { color: var(--gold); font-family: var(--font-display); font-size: 1rem; font-weight: 500; font-style: italic; }
+.tour-ref:hover { color: var(--gold-bright); }
+.tour-ref-chev { transition: transform var(--t-med) var(--ease-out); }
+.tour-ref[aria-expanded='true'] .tour-ref-chev { transform: rotate(180deg); }
+.tour-link { color: var(--text-dim); }
+.tour-link:hover, .tour-read:hover { color: var(--text); }
+
+.tour-passage {
+    margin: var(--s1) 0 var(--s2);
+    padding: var(--s3) var(--s4);
+    border-left: 2px solid var(--gold);
+    background: var(--gold-soft);
+    border-radius: 0 var(--r-md) var(--r-md) 0;
+}
+.tour-verse { font-size: 1rem; line-height: 1.65; }
+.tour-verse sup { font-family: var(--font-ui); font-size: .62em; color: var(--gold); margin-right: 2px; font-variant-numeric: tabular-nums; }
+.tour-passage-foot { display: flex; align-items: center; justify-content: space-between; gap: var(--s3); margin-top: var(--s1); font-size: var(--fs-xs); letter-spacing: .08em; }
+.tour-passage-foot .faint { color: var(--text-dim); }
+.tour-read { color: var(--text-dim); letter-spacing: 0; min-height: 36px; }
+.tour-passage-wait { font-size: var(--fs-sm); }
+
+.tour-invite { margin-top: var(--s4); padding-top: var(--s4); border-top: 1px solid var(--line); }
+.tour-invite-label { font-size: var(--fs-sm); color: var(--text-dim); margin-bottom: var(--s3); }
+.tour-invite .chip { min-height: 44px; padding: 0 var(--s4); }
+.tour-invite .chip .icon { color: var(--gold); }
+
+/* ── Progress and controls ──────────────────────────────────────────── */
+.tour-nav {
+    display: grid;
+    grid-template-columns: auto auto 1fr auto;
+    grid-template-areas: 'track track track track' 'prev play . next';
+    align-items: center;
+    column-gap: var(--s1);
+    border-top: 1px solid var(--line);
+    margin: 0 calc(-1 * var(--s2));
+    padding-top: var(--s1);
+}
+/* The track is one press-and-slide control (tour.js attachScrub), gaps included. */
+.tour-track { grid-area: track; display: flex; gap: 3px; padding: 0 var(--s2); touch-action: none; cursor: pointer; }
+.tour-prev { grid-area: prev; }
+.tour-play { grid-area: play; }
+.tour-next { grid-area: next; margin-right: var(--s2); }
+.tour-prev:disabled { opacity: .35; cursor: default; background: none; }
+
+/* Each chapter is a 44px-tall target around a hairline bar. */
+.tour-seg { flex: 1; min-width: 0; height: 44px; display: grid; align-items: center; }
+.tour-seg-bar {
+    position: relative; height: 3px; border-radius: 2px; overflow: hidden;
+    background: var(--line-strong);
+    transition: background var(--t-med) var(--ease), height var(--t-fast) var(--ease);
+}
+.tour-seg:hover .tour-seg-bar, .tour-seg.is-aim .tour-seg-bar { height: 5px; }
+.tour-seg.is-aim .tour-seg-bar { background: var(--gold); }
+.tour-seg.is-done .tour-seg-bar { background: color-mix(in srgb, var(--gold) 55%, var(--line-strong)); }
+.tour-seg.is-current .tour-seg-bar { background: var(--gold); }
+.tour-seg:focus-visible { outline-offset: -2px; }
+
+/* While autoplay runs, the current chapter fills over its dwell time. */
+.tour-card.is-playing .tour-seg.is-current .tour-seg-bar { background: var(--line-strong); }
+.tour-seg-bar::after {
+    content: ''; position: absolute; inset: 0; background: var(--gold);
+    transform-origin: left; transform: scaleX(0);
+}
+.tour-card.is-playing .tour-seg.is-filling .tour-seg-bar::after { animation: tour-fill var(--tour-dwell, 12s) linear forwards; }
+@keyframes tour-fill { to { transform: scaleX(1); } }
+
+/* ── Phones: docked above the tab bar, never more than ~40% of the screen ── */
+@media (max-width: 760px) {
+    .tour-card {
+        left: var(--s3); right: var(--s3); bottom: var(--s3);
+        width: auto;
+        max-height: min(40dvh, calc(100% - 2 * var(--s3)));
+        padding: var(--s2) var(--s4) var(--s1);
+        border-radius: var(--r-md);
+    }
+    .tour-heading { flex-direction: row; align-items: baseline; gap: var(--s3); padding-top: var(--s3); }
+    .tour-title { font-size: 1.35rem; margin-bottom: var(--s2); }
+    .tour-body { font-size: .9375rem; line-height: 1.55; }
+    .tour-meta { margin-top: var(--s2); }
+    .tour-page { padding: 0 0 var(--s5); }
+    /* A soft fade at the foot says there is more to scroll. */
+    .tour-stage { -webkit-mask-image: linear-gradient(#000 calc(100% - 22px), transparent); mask-image: linear-gradient(#000 calc(100% - 22px), transparent); }
+    .tour-nav {
+        grid-template-columns: auto 1fr auto auto;
+        grid-template-areas: 'prev track play next';
+    }
+    .tour-track { gap: 2px; padding: 0 var(--s1); }
+    .tour-next { padding: 0 var(--s4); }
+}
