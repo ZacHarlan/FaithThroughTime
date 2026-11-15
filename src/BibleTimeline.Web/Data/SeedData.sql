@@ -38,7 +38,7 @@ INSERT INTO time_periods (id, name, start_year, end_year, color, sort_order, des
 (18, 'Modern Era', 1900, 2026, '#90b1bc', 18, 'Global Christianity; ecumenical movement; digital age');
 
 -- ============================================================
--- PEOPLE (531)
+-- PEOPLE (581)
 -- ============================================================
 -- Creation & Primeval History
 INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
@@ -68,7 +68,7 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (160, 'Cain', NULL, -3950, -3000, 1, 1, 'possible', 'other', 'moderate', NULL, 1, 2, 'Firstborn of Adam and Eve, a tiller of the soil whose rejected offering festered into the murder of his brother Abel. Marked yet protected by God, he became the Bible''s first city builder and an enduring warning that sin crouches at the door yet can be mastered.', 'Estimate. Scripture gives no dates for Cain: he was born after the Fall (Gen 4:1), before Seth, who was born when Adam was 130 (Gen 5:3), and his death is not recorded. The years are placeholders for display, not a figure we can attribute to Ussher.'),
 (161, 'Abel', NULL, -3948, -3880, 1, 1, 'possible', 'other', 'moderate', NULL, 1, 2, 'Second son of Adam and Eve, a keeper of flocks whose offering God accepted, provoking his brother''s lethal envy. The first innocent to die in Scripture, he is honored in Hebrews as a man of faith whose blood still speaks, and Jesus names him first among the righteous slain.', 'Estimate. Scripture gives no dates for Abel; he was killed before Seth was born, when Adam was 130 (Gen 4:8, 25; 5:3). The birth year is a placeholder and 3880 BC is a round estimate for his death, not a figure we can attribute to Ussher.'),
 (510, 'Haran, brother of Abraham', 'Haran son of Terah', -2010, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Shem', 159, NULL, 'Son of Terah and brother of Abraham and Nahor. He was the father of Lot, Milcah and Iscah, and he died in Ur before his father Terah left for Canaan.', 'Estimate. Haran was a son of Terah, born when Terah was about seventy or later (Gen 11:26), and died in Ur before Terah set out (Gen 11:28). Scripture gives no dates for him.'),
-(511, 'Nahor, brother of Abraham', 'Nahor II', -2000, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Shem', 159, NULL, 'Brother of Abraham who married his niece Milcah. His son Bethuel was the father of Rebekah and Laban, and his family stayed in Mesopotamia.', 'Estimate from his place as Terahs son and brother of Abraham (born 1996 BC). Not to be confused with Nahor, Terahs father. Scripture gives no dates for him.');
+(511, 'Nahor, brother of Abraham', 'Nahor II', -2000, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Shem', 159, NULL, 'Brother of Abraham who married his niece Milcah. His son Bethuel was the father of Rebekah and Laban, and his family stayed in Mesopotamia.', 'Estimate from his place as Terah''s son and brother of Abraham (born 1996 BC). Not to be confused with Nahor, Terah''s father. Scripture gives no dates for him.');
 
 -- Patriarchs
 INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
@@ -106,11 +106,11 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (178, 'Asenath', NULL, -1735, -1640, 1, 1, 'possible', 'matriarch', 'minor', NULL, NULL, NULL, 'Egyptian wife of Joseph; daughter of Potiphera priest of On. Mother of Manasseh and Ephraim.', 'Gen 41:45, 50-52. Daughter of Potiphera, priest of On. Jewish apocryphal tradition (Joseph and Asenath) describes her conversion. Est. death c. 1640 BC.'),
 (497, 'Kohath', NULL, -1720, -1587, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', 164, NULL, 'Second son of Levi and grandfather of Moses, Aaron and Miriam. His descendants, the Kohathites, carried the ark and the holy things of the tabernacle.', 'Estimate. Kohath went down to Egypt with Jacob in 1706 BC (Gen 46:11), so was born before then; he lived 133 years (Exod 6:18). Scripture gives no year of birth.'),
 (512, 'Milcah', NULL, -1975, NULL, 1, 1, 'possible', 'matriarch', 'minor', 'Shem', 510, NULL, 'Daughter of Haran and wife of her uncle Nahor. She bore Nahor eight sons, among them Bethuel, the father of Rebekah.', 'Estimate. Milcah was born after her father Haran and before her son Bethuel; Scripture gives no dates.'),
-(513, 'Bethuel', NULL, -1950, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Shem', 511, 512, 'Son of Nahor and Milcah, father of Rebekah and Laban. Scripture mentions him by name but records few of his own words or deeds.', 'Estimate. Born to Nahor and Milcah in the generation after Abrahams brother, and before his children Laban and Rebekah (born 1876 BC). Scripture gives no dates for him.'),
+(513, 'Bethuel', NULL, -1950, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Shem', 511, 512, 'Son of Nahor and Milcah, father of Rebekah and Laban. Scripture mentions him by name but records few of his own words or deeds.', 'Estimate. Born to Nahor and Milcah in the generation after Abraham''s brother, and before his children Laban and Rebekah (born 1876 BC). Scripture gives no dates for him.'),
 (514, 'Moab, son of Lot', 'Moab', -1896, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, 56, NULL, 'Son of Lot by his elder daughter, born after the destruction of Sodom. Scripture calls him the father of the Moabites, the people from whom Ruth came.', 'Estimate. Born within a year or so of the destruction of Sodom (1897 BC; Gen 19:30-38). Scripture gives no further dates.'),
 (515, 'Ben-ammi', NULL, -1896, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, 56, NULL, 'Son of Lot by his younger daughter. Scripture calls him the father of the Ammonites. His name means "son of my people."', 'Estimate. Born within a year or so of the destruction of Sodom (1897 BC; Gen 19:30-38). Scripture gives no further dates.'),
-(516, 'Bilhah', NULL, -1790, NULL, 1, 1, 'possible', 'matriarch', 'minor', NULL, NULL, NULL, 'Rachels maid, given to Jacob as a wife so that Rachel might have children through her. She bore Dan and Naphtali.', 'Estimate. A young woman in Labans household when Jacob married (about 1752 BC), mother of Dan (born about 1748 BC). Scripture gives no dates for her.'),
-(517, 'Zilpah', NULL, -1790, NULL, 1, 1, 'possible', 'matriarch', 'minor', NULL, NULL, NULL, 'Leahs maid, given to Jacob as a wife when Leah had stopped bearing. She bore Gad and Asher.', 'Estimate. A young woman in Labans household when Jacob married (about 1752 BC), mother of Gad and Asher (born about 1747 BC). Scripture gives no dates for her.');
+(516, 'Bilhah', NULL, -1790, NULL, 1, 1, 'possible', 'matriarch', 'minor', NULL, NULL, NULL, 'Rachel''s maid, given to Jacob as a wife so that Rachel might have children through her. She bore Dan and Naphtali.', 'Estimate. A young woman in Laban''s household when Jacob married (about 1752 BC), mother of Dan (born about 1748 BC). Scripture gives no dates for her.'),
+(517, 'Zilpah', NULL, -1790, NULL, 1, 1, 'possible', 'matriarch', 'minor', NULL, NULL, NULL, 'Leah''s maid, given to Jacob as a wife when Leah had stopped bearing. She bore Gad and Asher.', 'Estimate. A young woman in Laban''s household when Jacob married (about 1752 BC), mother of Gad and Asher (born about 1747 BC). Scripture gives no dates for her.');
 
 -- Egypt & Exodus
 INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
@@ -143,20 +143,20 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (499, 'Jochebed', NULL, -1615, NULL, 1, 1, 'possible', 'matriarch', 'minor', 'Levi', 164, NULL, 'Mother of Miriam, Aaron and Moses, who hid her infant son from Pharaoh''s decree and was then paid to nurse him for Pharaoh''s daughter.', 'Estimate. Called a daughter of Levi born in Egypt (Num 26:59) and Amram''s father''s sister (Exod 6:20), so born after 1706 BC and before Levi''s death in 1612 BC. Her death is not recorded.'),
 (500, 'Gershom', NULL, -1530, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', 10, 70, 'Elder son of Moses and Zipporah, born in Midian. His name recalls Moses''s words, "I have been a stranger in a strange land."', 'Estimate. Born in Midian after Moses married Zipporah, about 1531 BC (Exod 2:21-22). His death is not recorded.'),
 (501, 'Eliezer, son of Moses', NULL, -1525, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', 10, 70, 'Younger son of Moses and Zipporah. His name means "my God is help," for God had delivered Moses from Pharaoh''s sword.', 'Estimate. Born in Midian, after Gershom and before Moses returned to Egypt in 1491 BC (Exod 4:20; 18:3-4). His death is not recorded.'),
-(518, 'Nun', 'Non', -1570, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Ephraim', NULL, NULL, 'Father of Joshua, Moses successor. He is named only as "the father of Joshua" and in the genealogy of Ephraim.', 'Estimate. Born about thirty-four years before Joshua (born 1536 BC). Scripture gives no dates for him.'),
+(518, 'Nun', 'Non', -1570, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Ephraim', NULL, NULL, 'Father of Joshua, Moses'' successor. He is named only as "the father of Joshua" and in the genealogy of Ephraim.', 'Estimate. Born about thirty-four years before Joshua (born 1536 BC). Scripture gives no dates for him.'),
 (519, 'Jephunneh', NULL, -1565, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Judah', NULL, NULL, 'Father of Caleb, one of the two faithful spies. He is called a Kenezite, a name linking his family to the clan of Kenaz.', 'Estimate. Born about thirty-five years before Caleb (born 1530 BC). Scripture gives no dates for him.'),
-(520, 'Kenaz, father of Othniel', NULL, -1515, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Judah', NULL, NULL, 'Father of Othniel, the first judge of Israel. The texts call Othniel "the son of Kenaz, Calebs younger brother," and the Hebrew does not make clear whether the "younger brother" is Othniel or Kenaz.', 'Estimate. Born about forty-five years before Othniel (born 1470 BC). Caleb is the son of Jephunneh (Num 13:6), so the relationship of Kenaz to Caleb is uncertain: the phrase may mean that Kenaz was Calebs brother, or that Othniel was a kinsman counted as his brother. No sibling link is recorded here for that reason.'),
+(520, 'Kenaz, father of Othniel', NULL, -1515, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Judah', NULL, NULL, 'Father of Othniel, the first judge of Israel. The texts call Othniel "the son of Kenaz, Caleb''s younger brother," and the Hebrew does not make clear whether the "younger brother" is Othniel or Kenaz.', 'Estimate. Born about forty-five years before Othniel (born 1470 BC). Caleb is the son of Jephunneh (Num 13:6), so the relationship of Kenaz to Caleb is uncertain: the phrase may mean that Kenaz was Caleb''s brother, or that Othniel was a kinsman counted as his brother. No sibling link is recorded here for that reason.'),
 (521, 'Achsah', NULL, -1472, NULL, 1, 1, 'possible', 'other', 'minor', 'Judah', 67, NULL, 'Daughter of Caleb, offered in marriage to whoever would take Kirjath-sepher. Othniel took the city and married her, and she then asked her father for springs of water to go with her southern land.', 'Estimate. Married when Caleb was about eighty-five (Josh 14:10; 15:16-19), so born in the 1470s BC. Scripture gives no dates for her.'),
-(522, 'Elisheba', NULL, -1570, NULL, 1, 1, 'possible', 'matriarch', 'minor', 'Judah', 262, NULL, 'Wife of Aaron, daughter of Amminadab and sister of Nahshon, the prince of Judah. She was the mother of Nadab, Abihu, Eleazar and Ithamar, and so of Israels priestly families.', 'Estimate. Born about the same time as Aaron (born 1574 BC) as sister of Nahshon (born about 1550 BC). Scripture gives no dates for her.'),
-(523, 'Nadab, son of Aaron', 'Nadab', -1534, -1490, 1, 1, 'possible', 'priest', 'minor', 'Levi', 11, 522, 'Eldest son of Aaron. With his brother Abihu he offered "strange fire" before the LORD and both died at once, soon after the tabernacle was set up.', 'Estimate. Aarons eldest son (Exod 6:23), born about forty years before the Exodus. He died on the day the priesthood began its service, about 1490 BC (Lev 10:1-2; Num 3:4). Not the same as Nadab, king of Israel.'),
+(522, 'Elisheba', NULL, -1570, NULL, 1, 1, 'possible', 'matriarch', 'minor', 'Judah', 262, NULL, 'Wife of Aaron, daughter of Amminadab and sister of Nahshon, the prince of Judah. She was the mother of Nadab, Abihu, Eleazar and Ithamar, and so of Israel''s priestly families.', 'Estimate. Born about the same time as Aaron (born 1574 BC) as sister of Nahshon (born about 1550 BC). Scripture gives no dates for her.'),
+(523, 'Nadab, son of Aaron', 'Nadab', -1534, -1490, 1, 1, 'possible', 'priest', 'minor', 'Levi', 11, 522, 'Eldest son of Aaron. With his brother Abihu he offered "strange fire" before the LORD and both died at once, soon after the tabernacle was set up.', 'Estimate. Aaron''s eldest son (Exod 6:23), born about forty years before the Exodus. He died on the day the priesthood began its service, about 1490 BC (Lev 10:1-2; Num 3:4). Not the same as Nadab, king of Israel.'),
 (524, 'Abihu', NULL, -1532, -1490, 1, 1, 'possible', 'priest', 'minor', 'Levi', 11, 522, 'Second son of Aaron. He and his brother Nadab went up with Moses and the elders to see God on Sinai, but died for offering unauthorised fire at the altar.', 'Estimate. Born just after Nadab. He died with Nadab about 1490 BC, leaving no sons (Lev 10:1-2; Num 3:4).'),
-(525, 'Ithamar', NULL, -1526, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', 11, 522, 'Youngest son of Aaron. After the deaths of Nadab and Abihu he served as priest with Eleazar and oversaw the work of the Gershonites and Merarites. The line of Eli later traced back to him.', 'Estimate. Born after Eleazar, before the Exodus (1491 BC). His death is not recorded. Eli is usually taken to be of Ithamars line (compare 1 Kings 2:27 and 1 Chronicles 24:3), though 1 Samuel does not say so.'),
+(525, 'Ithamar', NULL, -1526, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', 11, 522, 'Youngest son of Aaron. After the deaths of Nadab and Abihu he served as priest with Eleazar and oversaw the work of the Gershonites and Merarites. The line of Eli later traced back to him.', 'Estimate. Born after Eleazar, before the Exodus (1491 BC). His death is not recorded. Eli is usually taken to be of Ithamar''s line (compare 1 Kings 2:27 and 1 Chronicles 24:3), though 1 Samuel does not say so.'),
 (526, 'Izhar', NULL, -1648, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', 497, NULL, 'Son of Kohath, brother of Amram and uncle of Moses and Aaron. He was the father of Korah, who led the rebellion in the wilderness.', 'Estimate. Born a few years after his brother Amram, as a son of Kohath (born before 1706 BC). Scripture gives no dates for him.'),
-(527, 'Uri', NULL, -1555, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Judah', 185, NULL, 'Son of Hur and father of Bezalel, the craftsman of the tabernacle. He is named only in the genealogy of Bezalel.', 'Estimate. Born between Hur (born 1590 BC) and Bezalel (born 1520 BC). Exodus 31:2 calls Hur his father without further description; identifying this Hur with the Hur who held up Moses arms (Exod 17:12) is the usual reading but is not stated in the text.'),
-(528, 'Carmi, father of Achan', NULL, -1525, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Judah', NULL, NULL, 'Judahite, father of Achan, whose theft of the devoted spoil of Jericho brought defeat at Ai. Joshuas account lists his line back through Zabdi to Zerah.', 'Estimate. Born about thirty-five years before Achan (born 1490 BC). Scripture gives no dates for him. Joshua 7:1 gives the line as Achan, Carmi, Zabdi, Zerah; the names between Carmi and Zerah are not added here.'),
+(527, 'Uri', NULL, -1555, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Judah', 185, NULL, 'Son of Hur and father of Bezalel, the craftsman of the tabernacle. He is named only in the genealogy of Bezalel.', 'Estimate. Born between Hur (born 1590 BC) and Bezalel (born 1520 BC). Exodus 31:2 calls Hur his father without further description; identifying this Hur with the Hur who held up Moses'' arms (Exod 17:12) is the usual reading but is not stated in the text.'),
+(528, 'Carmi, father of Achan', NULL, -1525, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Judah', NULL, NULL, 'Judahite, father of Achan, whose theft of the devoted spoil of Jericho brought defeat at Ai. Joshua''s account lists his line back through Zabdi to Zerah.', 'Estimate. Born about thirty-five years before Achan (born 1490 BC). Scripture gives no dates for him. Joshua 7:1 gives the line as Achan, Carmi, Zabdi, Zerah; the names between Carmi and Zerah are not added here.'),
 (529, 'Beor', 'Bosor', -1565, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, NULL, NULL, 'Father of Balaam the seer, who was summoned by the king of Moab to curse Israel. Scripture gives no details of Beor himself.', 'Estimate. Born about thirty-five years before Balaam (born 1530 BC). In 2 Peter 2:15 the name appears as Bosor.'),
-(530, 'Eliab, father of Dathan and Abiram', NULL, -1560, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Reuben', NULL, NULL, 'Reubenite, son of Pallu and father of Dathan and Abiram, who joined Korahs rebellion against Moses and Aaron.', 'Estimate. Born about thirty years before Dathan and Abiram (born about 1530 BC). Scripture gives no dates for him. Numbers 26:8-9 also names a son Nemuel, not added here.'),
-(531, 'Zippor', NULL, -1545, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, NULL, NULL, 'Father of Balak, king of Moab, who hired Balaam to curse Israel. He is named only as Balaks father.', 'Estimate. Born about thirty-five years before Balak (born 1510 BC). Scripture gives no dates for him.');
+(530, 'Eliab, father of Dathan and Abiram', NULL, -1560, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Reuben', NULL, NULL, 'Reubenite, son of Pallu and father of Dathan and Abiram, who joined Korah''s rebellion against Moses and Aaron.', 'Estimate. Born about thirty years before Dathan and Abiram (born about 1530 BC). Scripture gives no dates for him. Numbers 26:8-9 also names a son Nemuel, not added here.'),
+(531, 'Zippor', NULL, -1545, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, NULL, NULL, 'Father of Balak, king of Moab, who hired Balaam to curse Israel. He is named only as Balak''s father.', 'Estimate. Born about thirty-five years before Balak (born 1510 BC). Scripture gives no dates for him.');
 
 -- Conquest & Judges
 INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
@@ -190,33 +190,33 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (265, 'Obed', NULL, -1170, -1100, 1, 1, 'possible', 'ancestor', 'minor', 'Judah', 76, 17, 'Son of Boaz and Ruth; father of Jesse, grandfather of David. Central link in the Messianic lineage.', 'Ruth 4:13-17, 21-22; 1 Chr 2:12; Matt 1:5. Life dates estimated.'),
 (266, 'Jesse', 'Yishai', -1140, -1060, 1, 1, 'possible', 'patriarch', 'moderate', 'Judah', 265, NULL, 'A Bethlehemite of the tribe of Judah, grandson of Ruth and Boaz, and father of eight sons, the youngest of whom Samuel anointed as king. Isaiah''s promise of a shoot from the stump of Jesse made his name shorthand for the messianic hope Christians see fulfilled in Jesus.', '1 Sam 16:1-13; 17:12-14; Ruth 4:22; Isa 11:1, 10; Matt 1:5-6. Life dates estimated: "an old man in the days of Saul" (1 Sam 17:12), father of David (b. 1085 BC) in his old age.'),
 (420, 'Shamgar', 'Shamgar son of Anath', -1340, -1290, 1, 1, 'possible', 'judge', 'minor', NULL, NULL, NULL, 'Son of Anath, named after Ehud as one who "also delivered Israel", killing six hundred Philistines with an ox goad (Judg 3:31). The Song of Deborah recalls "the days of Shamgar" as a time when the highways were deserted (Judg 5:6).', 'No years are given. Ussher places him after Ehud (c. 1325 BC), and Judg 5:6 makes him an older contemporary of Deborah and Jael (c. 1285 BC). Life dates are estimates.'),
-(532, 'Abinoam', NULL, -1355, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Naphtali', NULL, NULL, 'Father of Barak, who led Israels army with Deborah against Sisera. He was from Kedesh in Naphtali.', 'Estimate. Born about thirty-five years before Barak (born 1320 BC). Scripture gives no dates for him.'),
-(533, 'Heber the Kenite', NULL, -1320, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Kenite, of the family of Hobab, Moses father-in-law. He had separated from the other Kenites and pitched his tent near Kedesh, at peace with Jabin of Hazor; his wife Jael killed Sisera.', 'Estimate. Husband of Jael (born about 1315 BC). Scripture gives no dates for him, and the Kenite clan is described as living at peace with Jabins Canaanite kingdom at the time of Siseras defeat (about 1285 BC).'),
+(532, 'Abinoam', NULL, -1355, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Naphtali', NULL, NULL, 'Father of Barak, who led Israel''s army with Deborah against Sisera. He was from Kedesh in Naphtali.', 'Estimate. Born about thirty-five years before Barak (born 1320 BC). Scripture gives no dates for him.'),
+(533, 'Heber the Kenite', NULL, -1320, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Kenite, of the family of Hobab, Moses'' father-in-law. He had separated from the other Kenites and pitched his tent near Kedesh, at peace with Jabin of Hazor; his wife Jael killed Sisera.', 'Estimate. Husband of Jael (born about 1315 BC). Scripture gives no dates for him, and the Kenite clan is described as living at peace with Jabins Canaanite kingdom at the time of Sisera''s defeat (about 1285 BC).'),
 (534, 'Joash, father of Gideon', 'Joash the Abiezrite', -1335, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Manasseh', NULL, NULL, 'Abiezrite of Ophrah, father of Gideon. He kept an altar to Baal that Gideon tore down, and defended his son when the townsmen demanded his death.', 'Estimate. Born about thirty-five years before Gideon (born 1300 BC). Not the same as Joash, king of Judah. Scripture gives no dates for him.'),
-(535, 'Gilead, father of Jephthah', NULL, -1255, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Manasseh', NULL, NULL, 'Father of Jephthah the Gileadite. The text names him as the father, while also noting that Jephthahs mother was a prostitute; his other sons drove Jephthah out.', 'Estimate. Born about thirty years before Jephthah (born 1225 BC). Scripture gives no dates for him. The name is also that of a region east of the Jordan.'),
-(536, 'Gera, father of Ehud', NULL, -1400, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', NULL, NULL, 'Benjamite, father of Ehud, the left-handed judge who killed Eglon, king of Moab.', 'Estimate. Born about thirty-five years before Ehud (born 1365 BC). Scripture gives no dates for him. Other men of the same name appear in Benjamins genealogies.'),
+(535, 'Gilead, father of Jephthah', NULL, -1255, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Manasseh', NULL, NULL, 'Father of Jephthah the Gileadite. The text names him as the father, while also noting that Jephthah''s mother was a prostitute; his other sons drove Jephthah out.', 'Estimate. Born about thirty years before Jephthah (born 1225 BC). Scripture gives no dates for him. The name is also that of a region east of the Jordan.'),
+(536, 'Gera, father of Ehud', NULL, -1400, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', NULL, NULL, 'Benjamite, father of Ehud, the left-handed judge who killed Eglon, king of Moab.', 'Estimate. Born about thirty-five years before Ehud (born 1365 BC). Scripture gives no dates for him. Other men of the same name appear in Benjamin''s genealogies.'),
 (537, 'Hophni', NULL, -1175, -1116, 1, 1, 'possible', 'priest', 'minor', 'Levi', 74, NULL, 'Elder son of Eli, priest at Shiloh with his brother Phinehas. The two abused the sacrifices and were condemned by a prophet; both died on the day the Philistines took the ark.', 'Estimate. Born while Eli (born 1214 BC) was in his thirties. His death in the battle in which the ark was captured (1116 BC) is dated by that event (1 Sam 4:11).'),
 (538, 'Phinehas, son of Eli', NULL, -1172, -1116, 1, 1, 'possible', 'priest', 'minor', 'Levi', 74, NULL, 'Younger son of Eli, priest at Shiloh with Hophni. He died in the battle in which the ark was taken, and his wife died giving birth to Ichabod on hearing the news.', 'Estimate. Born shortly after Hophni. His death in the battle in which the ark was captured (1116 BC) is dated by that event (1 Sam 4:11). Not the same as Phinehas, son of Eleazar.'),
 (539, 'Ichabod', NULL, -1116, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', 538, NULL, 'Son of Phinehas and grandson of Eli, born as his mother died after hearing that the ark was lost. She named him Ichabod, "the glory has departed." His brother Ahitub appears in 1 Samuel 14:3.', 'Born at the time the ark was captured (1116 BC; 1 Sam 4:19-21). The text does not record his death.'),
 (540, 'Elimelech', NULL, -1235, NULL, 1, 1, 'possible', 'other', 'minor', 'Judah', NULL, NULL, 'Man of Bethlehem who took his wife Naomi and sons Mahlon and Chilion to Moab in a famine and died there. Boaz later redeemed his land.', 'Estimate. Born about ten years before Naomi (born 1225 BC); he died in Moab, within the period of the judges, before his sons (Ruth 1:1-5). Scripture gives no dates for him.'),
-(541, 'Mahlon', NULL, -1200, NULL, 1, 1, 'possible', 'other', 'minor', 'Judah', 540, 77, 'Elder son of Elimelech and Naomi, who married Ruth the Moabite and died childless in Moab. Boaz married Ruth to raise up his name.', 'Estimate. Born about twenty-five years after his parents birth; he married about ten years before dying in Moab (Ruth 1:4-5). His death is not dated.'),
+(541, 'Mahlon', NULL, -1200, NULL, 1, 1, 'possible', 'other', 'minor', 'Judah', 540, 77, 'Elder son of Elimelech and Naomi, who married Ruth the Moabite and died childless in Moab. Boaz married Ruth to raise up his name.', 'Estimate. Born about twenty-five years after his parents'' birth; he married about ten years before dying in Moab (Ruth 1:4-5). His death is not dated.'),
 (542, 'Chilion', NULL, -1198, NULL, 1, 1, 'possible', 'other', 'minor', 'Judah', 540, 77, 'Younger son of Elimelech and Naomi, husband of Orpah. He died in Moab without children.', 'Estimate. Born just after Mahlon; he died in Moab about ten years after the marriages (Ruth 1:4-5). His death is not dated.'),
 (543, 'Orpah', NULL, -1197, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Moabite woman, wife of Chilion. After his death she kissed Naomi goodbye and stayed in Moab while her sister-in-law Ruth went on to Bethlehem.', 'Estimate; she married about the time Ruth did (Ruth 1:4). Scripture gives no dates for her.'),
-(544, 'Elkanah, father of Samuel', NULL, -1190, NULL, 1, 1, 'possible', 'other', 'minor', 'Ephraim', NULL, NULL, 'Man of Ramathaim in the hills of Ephraim who went up yearly to Shiloh with his wives Hannah and Peninnah. He was the father of Samuel.', 'Estimate. Born about forty years before Samuel (born 1150 BC). Scripture gives no dates for him. 1 Samuel 1:1 calls him an Ephrathite, while 1 Chronicles 6:27-28 lists a Levite Elkanah as father of Samuel; the sources differ on his tribe.'),
-(545, 'Joel, son of Samuel', NULL, -1125, NULL, 1, 1, 'possible', 'judge', 'minor', 'Levi', 18, NULL, 'Eldest son of Samuel. With his brother Abiah he judged at Beer-sheba, but they took bribes and perverted justice, and the elders used their conduct to ask for a king.', 'Estimate. Born while Samuel (born 1150 BC) was in his twenties; Samuel made his sons judges when he was old (1 Sam 8:1-2), shortly before Sauls anointing in 1095 BC. 1 Chronicles 6:28 gives the firstborns name as Vashni; the two names are commonly reconciled but the text does not say so.'),
-(546, 'Abiah, son of Samuel', 'Abijah', -1122, NULL, 1, 1, 'possible', 'judge', 'minor', 'Levi', 18, NULL, 'Second son of Samuel, judge at Beer-sheba with his brother Joel. Their corruption led Israels elders to ask Samuel for a king.', 'Estimate. Born shortly after Joel; Samuel made his sons judges when he was old (1 Sam 8:1-2). His death is not recorded.'),
-(547, 'Abiel', NULL, -1205, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', NULL, NULL, 'Benjamite, grandfather of King Saul and of Abner. His sons Kish and Ner were brothers, so Saul and Abner were cousins.', 'Estimate. Born about thirty-five years before his sons Kish and Ner. 1 Samuel 9:1 and 14:51 call both of them sons of Abiel; 1 Chronicles 8:33 and 9:36 give a different arrangement (Ner begat Kish), and the genealogies are hard to reconcile. This timeline follows 1 Samuel.'),
-(548, 'Kish', NULL, -1170, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 547, NULL, 'Benjamite, "a mighty man of power," father of King Saul. Saul was sent out to look for his fathers lost donkeys on the day Samuel met him.', 'Estimate. Born about thirty-five years before Saul (born 1135 BC). Scripture gives no dates for him.'),
-(549, 'Ner', NULL, -1168, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 547, NULL, 'Benjamite, brother of Kish and uncle of King Saul. His son Abner commanded Sauls army.', 'Estimate. Born near his brother Kish, about thirty years before Abner (born 1130 BC). The KJV of 1 Samuel 14:50 calls Abner "Sauls uncle," but verse 51 shows Ner to be the uncle and Abner the cousin. 1 Chronicles 8:33 places Ner as Kishs father; this timeline follows 1 Samuel.'),
-(550, 'Ahinoam, wife of Saul', NULL, -1130, NULL, 1, 1, 'possible', 'queen', 'minor', 'Benjamin', NULL, NULL, 'Wife of King Saul, daughter of Ahimaaz. The text names her as his wife but does not say which of his children were hers. She is a different woman from Davids wife Ahinoam of Jezreel.', 'Estimate. Roughly the age of Saul (born 1135 BC), who had grown sons by the time he became king. Scripture gives no dates for her.'),
-(551, 'Merab', NULL, -1110, NULL, 1, 1, 'possible', 'other', 'minor', 'Benjamin', 19, NULL, 'Sauls elder daughter, offered to David as a reward for fighting the Philistines but given instead to Adriel the Meholathite.', 'Estimate. Born before her younger sister Michal (born 1085 BC) and after Jonathan (born 1115 BC). Scripture gives no dates for her.'),
-(552, 'Eliab, son of Jesse', NULL, -1120, NULL, 1, 1, 'possible', 'warrior', 'minor', 'Judah', 266, NULL, 'Eldest son of Jesse. Samuel took him for the Lords anointed because of his height, but God had chosen another; later he rebuked David for coming to the battle line against Goliath.', 'Estimate. Born about twenty years before David (born 1085 BC), as the eldest of Jesses eight sons. Scripture gives no dates for him.'),
+(544, 'Elkanah, father of Samuel', NULL, -1190, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', NULL, NULL, 'Man of Ramathaim in the hills of Ephraim who went up yearly to Shiloh with his wives Hannah and Peninnah. He was the father of Samuel.', 'Estimate. Born about forty years before Samuel (born 1150 BC). Scripture gives no dates for him. 1 Samuel 1:1 calls him an Ephrathite, while 1 Chronicles 6:27-28 lists a Levite Elkanah as father of Samuel; the sources differ on his tribe.'),
+(545, 'Joel, son of Samuel', NULL, -1125, NULL, 1, 1, 'possible', 'judge', 'minor', 'Levi', 18, NULL, 'Eldest son of Samuel. With his brother Abiah he judged at Beer-sheba, but they took bribes and perverted justice, and the elders used their conduct to ask for a king.', 'Estimate. Born while Samuel (born 1150 BC) was in his twenties; Samuel made his sons judges when he was old (1 Sam 8:1-2), shortly before Saul''s anointing in 1095 BC. 1 Chronicles 6:28 gives the firstborn''s name as Vashni; the two names are commonly reconciled but the text does not say so.'),
+(546, 'Abiah, son of Samuel', 'Abijah', -1122, NULL, 1, 1, 'possible', 'judge', 'minor', 'Levi', 18, NULL, 'Second son of Samuel, judge at Beer-sheba with his brother Joel. Their corruption led Israel''s elders to ask Samuel for a king.', 'Estimate. Born shortly after Joel; Samuel made his sons judges when he was old (1 Sam 8:1-2). His death is not recorded.'),
+(547, 'Abiel', NULL, -1205, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', NULL, NULL, 'Benjamite, grandfather of King Saul and of Abner. His sons Kish and Ner were brothers, so Saul and Abner were cousins.', 'Estimate. Born about thirty-five years before his sons Kish and Ner. 1 Samuel 9:1 and 14:51 call both of them sons of Abiel; 1 Chronicles 8:33 and 9:39 give a different arrangement (Ner begat Kish; 9:36 lists them as brothers), and the genealogies are hard to reconcile. This timeline follows 1 Samuel.'),
+(548, 'Kish', NULL, -1170, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 547, NULL, 'Benjamite, "a mighty man of power," father of King Saul. Saul was sent out to look for his father''s lost donkeys on the day Samuel met him.', 'Estimate. Born about thirty-five years before Saul (born 1135 BC). Scripture gives no dates for him.'),
+(549, 'Ner', NULL, -1168, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 547, NULL, 'Benjamite, brother of Kish and uncle of King Saul. His son Abner commanded Saul''s army.', 'Estimate. Born near his brother Kish, about thirty years before Abner (born 1130 BC). The KJV of 1 Samuel 14:50 calls Abner "Saul''s uncle," but verse 51 shows Ner to be the uncle and Abner the cousin. 1 Chronicles 8:33 places Ner as Kish''s father; this timeline follows 1 Samuel.'),
+(550, 'Ahinoam, wife of Saul', NULL, -1130, NULL, 1, 1, 'possible', 'queen', 'minor', 'Benjamin', NULL, NULL, 'Wife of King Saul, daughter of Ahimaaz. The text names her as his wife but does not say which of his children were hers. She is a different woman from David''s wife Ahinoam of Jezreel.', 'Estimate. Roughly the age of Saul (born 1135 BC), who had grown sons by the time he became king. Scripture gives no dates for her.'),
+(551, 'Merab', NULL, -1110, NULL, 1, 1, 'possible', 'other', 'minor', 'Benjamin', 19, NULL, 'Saul''s elder daughter, offered to David as a reward for fighting the Philistines but given instead to Adriel the Meholathite.', 'Estimate. Born before her younger sister Michal (born 1085 BC) and after Jonathan (born 1115 BC). Scripture gives no dates for her.'),
+(552, 'Eliab, son of Jesse', NULL, -1120, NULL, 1, 1, 'possible', 'warrior', 'minor', 'Judah', 266, NULL, 'Eldest son of Jesse. Samuel took him for the Lord''s anointed because of his height, but God had chosen another; later he rebuked David for coming to the battle line against Goliath.', 'Estimate. Born about thirty-five years before David (born 1085 BC), as the eldest of Jesse''s eight sons. Scripture gives no dates for him.'),
 (553, 'Abinadab, son of Jesse', NULL, -1117, NULL, 1, 1, 'possible', 'warrior', 'minor', 'Judah', 266, NULL, 'Second son of Jesse. He was passed over by Samuel and followed Saul to the battle against the Philistines.', 'Estimate. Born between Eliab and Shammah (about 1120 to 1114 BC). Scripture gives no dates for him.'),
-(554, 'Shammah, son of Jesse', 'Shimma, Shimeah, Shammah', -1114, NULL, 1, 1, 'possible', 'warrior', 'minor', 'Judah', 266, NULL, 'Third son of Jesse, passed over by Samuel and a soldier in Sauls army. The Chronicles list him as Shimma; his son Jonadab, a wily man, advised Amnon.', 'Estimate. Born about thirty years before David (born 1085 BC). The identification of Shammah (1 Sam 16:9; 17:13) with Shimma (1 Chron 2:13) and Shimeah (2 Sam 13:3) is the usual reading; the text gives the names separately.'),
-(555, 'Zeruiah', NULL, -1108, NULL, 1, 1, 'possible', 'other', 'minor', 'Judah', NULL, NULL, 'Sister of David and mother of the three brothers Joab, Abishai and Asahel, who served in his army. The text calls her Davids sister but does not name her husband or say which parent she shared with David.', 'Estimate, born before her son Joab (born 1085 BC). 1 Chronicles 2:16 calls Zeruiah and Abigail "sisters" of Jesses sons. 2 Samuel 17:25 calls Abigail the daughter of Nahash and sister of Zeruiah, so Zeruiah and Abigail may have had a different father or mother from David; no parent is recorded for her here.'),
-(556, 'Abigail, sister of David', NULL, -1106, NULL, 1, 1, 'possible', 'other', 'minor', 'Judah', NULL, NULL, 'Sister of David and of Zeruiah, mother of Amasa, whom Absalom made commander of his army. She is a different woman from Abigail the wife of Nabal and David.', 'Estimate, born before her son Amasa. 1 Chronicles 2:16 calls her a sister of Jesses sons; 2 Samuel 17:25 calls her the daughter of Nahash. The text does not reconcile the two, and no parent is recorded for her here.'),
-(559, 'Jether, father of Amasa', 'Ithra', -1110, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Husband of Abigail, Davids sister, and father of Amasa. 1 Chronicles calls him an Ishmaelite; 2 Samuel calls him Ithra an Israelite.', 'Estimate; born slightly before his wife Abigail (born about 1106 BC). The two names and descriptions (Jether the Ishmaelite, 1 Chron 2:17; Ithra the Israelite, 2 Sam 17:25) are usually taken to be one man, with a difference in the manuscripts.'),
-(569, 'Ahitub, father of Zadok', NULL, -1135, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', NULL, NULL, 'Priest, father of Zadok, who served David and anointed Solomon. He is not the Ahitub who was the grandson of Eli.', 'Estimate. Born about forty-five years before Zadok (born 1090 BC). Scripture gives no dates for him. 1 Chronicles 6:8 places Zadok in the line of Eleazar, whereas Elis Ahitub was of the line of Ithamar.');
+(554, 'Shammah, son of Jesse', 'Shimma, Shimeah, Shammah', -1114, NULL, 1, 1, 'possible', 'warrior', 'minor', 'Judah', 266, NULL, 'Third son of Jesse, passed over by Samuel and a soldier in Saul''s army. The Chronicles list him as Shimma; his son Jonadab, a wily man, advised Amnon.', 'Estimate. Born about thirty years before David (born 1085 BC). The identification of Shammah (1 Sam 16:9; 17:13) with Shimma (1 Chron 2:13) and Shimeah (2 Sam 13:3) is the usual reading; the text gives the names separately.'),
+(555, 'Zeruiah', NULL, -1108, NULL, 1, 1, 'possible', 'other', 'minor', 'Judah', NULL, NULL, 'Sister of David and mother of the three brothers Joab, Abishai and Asahel, who served in his army. The text calls her David''s sister but does not name her husband or say which parent she shared with David.', 'Estimate, born before her son Joab (born 1085 BC). 1 Chronicles 2:16 calls Zeruiah and Abigail "sisters" of Jesse''s sons. 2 Samuel 17:25 calls Abigail the daughter of Nahash and sister of Zeruiah, so Zeruiah and Abigail may have had a different father or mother from David; no parent is recorded for her here.'),
+(556, 'Abigail, sister of David', NULL, -1106, NULL, 1, 1, 'possible', 'other', 'minor', 'Judah', NULL, NULL, 'Sister of David and of Zeruiah, mother of Amasa, whom Absalom made commander of his army. She is a different woman from Abigail the wife of Nabal and David.', 'Estimate, born before her son Amasa. 1 Chronicles 2:16 calls her a sister of Jesse''s sons; 2 Samuel 17:25 calls her the daughter of Nahash. The text does not reconcile the two, and no parent is recorded for her here.'),
+(559, 'Jether, father of Amasa', 'Ithra', -1110, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Husband of Abigail, David''s sister, and father of Amasa. 1 Chronicles calls him an Ishmaelite; 2 Samuel calls him Ithra an Israelite.', 'Estimate; born slightly before his wife Abigail (born about 1106 BC). The two names and descriptions (Jether the Ishmaelite, 1 Chron 2:17; Ithra the Israelite, 2 Sam 17:25) are usually taken to be one man, with a difference in the manuscripts.'),
+(569, 'Ahitub, father of Zadok', NULL, -1135, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', NULL, NULL, 'Priest, father of Zadok, who served David and anointed Solomon. He is not the Ahitub who was the grandson of Eli.', 'Estimate. Born about forty-five years before Zadok (born 1090 BC). Scripture gives no dates for him. 1 Chronicles 6:8 places Zadok in the line of Eleazar, whereas Eli''s Ahitub was of the line of Ithamar.');
 
 -- United Kingdom
 INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
@@ -242,17 +242,17 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (208, 'Zadok the priest', 'Zadok', -1090, -1000, 1, 1, 'possible', 'priest', 'moderate', 'Levi', 569, NULL, 'Faithful priest who supported David and anointed Solomon. His line continued as high priests.', '2 Sam 15:24-29; 1 Kgs 1:32-45; Ezek 44:15. Life dates estimated; "a young man mighty of valour" when he joined David at Hebron (1 Chr 12:28), c. 1048 BC.'),
 (270, 'Abijah', 'Abijam', -995, -955, 1, 0, 'traditional', 'king', 'minor', 'Judah', 85, 570, 'King of Judah, son of Rehoboam. Reigned 3 years. Ancestor of Jesus in Matthew 1:7.', 'Ussher: reigned 958-955 BC (3 years, 1 Kgs 15:1-2), from the 18th year of Jeroboam. Birth estimated: the text gives no age, but he had fourteen wives and 38 children (2 Chr 13:21). Thiele: 913-911 BC. Not to be confused with Abijah the priest.'),
 (281, 'Nathan son of David', 'Nathan', -1030, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Judah', 20, 80, 'Son of David and Bathsheba. Ancestor of Jesus in Luke 3:31. Not the prophet Nathan.', '2 Sam 5:14; 1 Chr 3:5; Luke 3:31. Born in Jerusalem to Bathsheba. 1 Chr 3:5 lists him before Solomon, but Solomon was evidently her first son after the death of the child of 2 Sam 12 (c. 1034 BC), so a birth c. 1030 BC is estimated. Not to be confused with Nathan the prophet (2 Sam 7).'),
-(557, 'Abishai', NULL, -1083, NULL, 1, 1, 'possible', 'warrior', 'minor', 'Judah', NULL, 555, 'Son of Zeruiah, nephew of David, and one of his best-known commanders. He went with David into Sauls camp by night and later saved Davids life in battle.', 'Estimate. Born between his brothers Joab (born 1085 BC) and Asahel. His death is not recorded in Scripture.'),
-(558, 'Asahel', NULL, -1080, -1055, 1, 1, 'possible', 'warrior', 'minor', 'Judah', NULL, 555, 'Youngest son of Zeruiah and a nephew of David, "light of foot as a wild roe." He pursued Abner after the battle at Gibeon and was killed by him, which later led Joab to kill Abner.', 'Estimate. Born after Joab (1085 BC) and Abishai. He was killed in the first years of Davids reign at Hebron, about 1055 BC (2 Sam 2:18-23).'),
-(560, 'Amasa', NULL, -1078, NULL, 1, 1, 'possible', 'warrior', 'minor', 'Judah', 559, 556, 'Nephew of David and cousin of Joab. Absalom made him commander of his army; after Absaloms death David offered him Joabs place, and Joab killed him.', 'Estimate. Born after his mother Abigail (born about 1106 BC); an adult commander by Absaloms revolt (1023 BC). His death is not dated in this table.'),
-(561, 'Ahinoam of Jezreel', NULL, -1085, NULL, 1, 1, 'possible', 'queen', 'minor', 'Judah', NULL, NULL, 'One of Davids wives, taken during his years as a fugitive from Saul. She bore his first son, Amnon.', 'Estimate, a contemporary of David (born 1085 BC). Scripture gives no dates for her.'),
-(562, 'Maacah, daughter of Talmai', NULL, -1075, NULL, 1, 1, 'possible', 'queen', 'minor', NULL, NULL, NULL, 'Princess of Geshur, a wife of David and the mother of Absalom and Tamar. Her father Talmai gave Absalom refuge after he killed Amnon.', 'Estimate. Born before Absalom (born 1053 BC). Scripture gives no dates for her. Not the same as Maacah, daughter of Absalom, Rehoboams wife.'),
+(557, 'Abishai', NULL, -1083, NULL, 1, 1, 'possible', 'warrior', 'minor', 'Judah', NULL, 555, 'Son of Zeruiah, nephew of David, and one of his best-known commanders. He went with David into Saul''s camp by night and later saved David''s life in battle.', 'Estimate. Born between his brothers Joab (born 1085 BC) and Asahel. His death is not recorded in Scripture.'),
+(558, 'Asahel', NULL, -1080, -1055, 1, 1, 'possible', 'warrior', 'minor', 'Judah', NULL, 555, 'Youngest son of Zeruiah and a nephew of David, "light of foot as a wild roe." He pursued Abner after the battle at Gibeon and was killed by him, which later led Joab to kill Abner.', 'Estimate. Born after Joab (1085 BC) and Abishai. He was killed in the first years of David''s reign at Hebron, about 1055 BC (2 Sam 2:18-23).'),
+(560, 'Amasa', NULL, -1078, NULL, 1, 1, 'possible', 'warrior', 'minor', 'Judah', 559, 556, 'Nephew of David and cousin of Joab. Absalom made him commander of his army; after Absalom''s death David offered him Joab''s place, and Joab killed him.', 'Estimate. Born after his mother Abigail (born about 1106 BC); an adult commander by Absalom''s revolt (1023 BC). His death is not dated in this table.'),
+(561, 'Ahinoam of Jezreel', NULL, -1085, NULL, 1, 1, 'possible', 'queen', 'minor', 'Judah', NULL, NULL, 'One of David''s wives, taken during his years as a fugitive from Saul. She bore his first son, Amnon.', 'Estimate, a contemporary of David (born 1085 BC). Scripture gives no dates for her.'),
+(562, 'Maacah, daughter of Talmai', NULL, -1075, NULL, 1, 1, 'possible', 'queen', 'minor', NULL, NULL, NULL, 'Princess of Geshur, a wife of David and the mother of Absalom and Tamar. Her father Talmai gave Absalom refuge after he killed Amnon.', 'Estimate. Born before Absalom (born 1053 BC). Scripture gives no dates for her. Not the same as Maacah, daughter of Absalom, Rehoboam''s wife.'),
 (563, 'Haggith', NULL, -1070, NULL, 1, 1, 'possible', 'queen', 'minor', NULL, NULL, NULL, 'Wife of David and mother of Adonijah, who tried to take the throne before Solomon was crowned.', 'Estimate. Born before Adonijah (born 1051 BC). Scripture gives no dates for her.'),
-(564, 'Amnon', NULL, -1055, NULL, 1, 1, 'possible', 'other', 'minor', 'Judah', 20, 561, 'Davids firstborn, born at Hebron. He raped his half-sister Tamar and was killed two years later on Absaloms orders.', 'Estimate. Born at Hebron in the first year of Davids reign there (David anointed there 1055 BC; 2 Sam 3:2). His death at Absaloms sheep-shearing is not dated in the text.'),
-(565, 'Chileab', 'Daniel, Kileab', -1054, NULL, 1, 1, 'possible', 'other', 'minor', 'Judah', 20, 79, 'Davids second son, born at Hebron to Abigail, widow of Nabal. He is mentioned once in Samuel; Chronicles calls him Daniel.', 'Estimate. Born at Hebron the year after Amnon (2 Sam 3:3). 1 Chronicles 3:1 gives the name Daniel; the two are usually taken to be the same son. His death is not recorded.'),
-(566, 'Tamar, daughter of David', NULL, -1048, NULL, 1, 1, 'possible', 'other', 'minor', 'Judah', 20, 562, 'Beautiful daughter of David and full sister of Absalom, assaulted by her half-brother Amnon. Absalom took her into his house and later killed Amnon.', 'Estimate. Born in the years after Absalom (born 1053 BC), before the rape described in 2 Samuel 13. Not the same as Tamar, Judahs daughter-in-law.'),
-(567, 'Naamah the Ammonitess', 'Naamah', -1036, NULL, 1, 1, 'possible', 'queen', 'minor', NULL, NULL, NULL, 'Wife of Solomon and mother of King Rehoboam. She was from Ammon, one of the foreign peoples whose women are named among Solomons wives.', 'Estimate. Born before Rehoboam (born 1016 BC). Scripture gives no dates for her.'),
-(568, 'Eliam, father of Bathsheba', 'Ammiel', -1095, NULL, 1, 1, 'possible', 'other', 'minor', 'Judah', NULL, NULL, 'Father of Bathsheba, wife of Uriah and later of David. 2 Samuel 23:34 names an Eliam son of Ahithophel among Davids mighty men; the text does not say that the two are the same man.', 'Estimate. Born about thirty years before Bathsheba (born 1065 BC). 1 Chronicles 3:5 gives her father as Ammiel, a reversal of the same name. Scripture gives no dates for him.');
+(564, 'Amnon', NULL, -1055, NULL, 1, 1, 'possible', 'other', 'minor', 'Judah', 20, 561, 'David''s firstborn, born at Hebron. He raped his half-sister Tamar and was killed two years later on Absalom''s orders.', 'Estimate. Born at Hebron in the first year of David''s reign there (David anointed there 1055 BC; 2 Sam 3:2). His death at Absalom''s sheep-shearing is not dated in the text.'),
+(565, 'Chileab', 'Daniel, Kileab', -1054, NULL, 1, 1, 'possible', 'other', 'minor', 'Judah', 20, 79, 'David''s second son, born at Hebron to Abigail, widow of Nabal. He is mentioned once in Samuel; Chronicles calls him Daniel.', 'Estimate. Born at Hebron the year after Amnon (2 Sam 3:3). 1 Chronicles 3:1 gives the name Daniel; the two are usually taken to be the same son. His death is not recorded.'),
+(566, 'Tamar, daughter of David', NULL, -1048, NULL, 1, 1, 'possible', 'other', 'minor', 'Judah', 20, 562, 'Beautiful daughter of David and full sister of Absalom, assaulted by her half-brother Amnon. Absalom took her into his house and later killed Amnon.', 'Estimate. Born in the years after Absalom (born 1053 BC), before the rape described in 2 Samuel 13. Not the same as Tamar, Judah''s daughter-in-law.'),
+(567, 'Naamah the Ammonitess', 'Naamah', -1036, NULL, 1, 1, 'possible', 'queen', 'minor', NULL, NULL, NULL, 'Wife of Solomon and mother of King Rehoboam. She was from Ammon, one of the foreign peoples whose women are named among Solomon''s wives.', 'Estimate. Born before Rehoboam (born 1016 BC). Scripture gives no dates for her.'),
+(568, 'Eliam, father of Bathsheba', 'Ammiel', -1095, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Father of Bathsheba, wife of Uriah and later of David. 2 Samuel 23:34 names an Eliam son of Ahithophel among David''s mighty men; the text does not say that the two are the same man.', 'Estimate. Born about thirty years before Bathsheba (born 1065 BC). 1 Chronicles 3:5 gives her father as Ammiel, a reversal of the same name. Scripture gives no dates for him.');
 
 -- Divided Kingdom
 INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
@@ -325,15 +325,15 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (449, 'Tiglath-Pileser III', 'Pul,Tiglath-pileser,Tilgath-pilneser', -780, -727, 1, 0, 'certain', 'ruler', 'minor', NULL, NULL, NULL, 'Assyrian king who took tribute from Menahem (2 Kgs 15:19), seized Galilee and Gilead from Pekah (2 Kgs 15:29), and answered Ahaz''s plea by capturing Damascus (2 Kgs 16:7-9). He began the Assyrian deportations of Israel (2 Kgs 15:29; 1 Chr 5:26).', 'Reigned 745-727 BC, fixed by the Assyrian eponym lists. Called Pul in 2 Kgs 15:19 and 1 Chr 5:26, the name he used as king of Babylon. Ussher''s chain puts Menahem''s tribute before 745 BC, and older chronologers treated Pul as a separate, earlier king. Birth unknown (estimate).'),
 (585, 'Shear-jashub', NULL, -750, NULL, 1, 1, 'possible', 'other', 'minor', NULL, 25, NULL, 'Son of the prophet Isaiah. His name means "a remnant shall return," and Isaiah brought him to meet King Ahaz as a sign.', 'Estimate. He was old enough to walk with his father when Isaiah met Ahaz during the attack of Syria and Israel (Isa 7:1-3), so born around 750 BC. His death is not recorded.'),
 (586, 'Maher-shalal-hash-baz', NULL, -741, NULL, 1, 1, 'possible', 'other', 'minor', NULL, 25, 587, 'Son of Isaiah and the prophetess. His name, "swift is the plunder, speedy is the spoil," was a sign that Damascus and Samaria would fall to Assyria before the child could say "my father."', 'Estimate. Born during the Syro-Israelite war in the reign of Ahaz (Isa 8:1-4), placed here about 741 BC. His death is not recorded.'),
-(594, 'Jezreel, son of Hosea', NULL, -776, NULL, 1, 1, 'possible', 'other', 'minor', NULL, 108, 592, 'First child of Hosea and Gomer. The Lord told Hosea to give him the name Jezreel, a sign that the blood shed at Jezreel would be avenged on the house of Jehu.', 'Estimate. Born in the time of Jeroboam II, shortly before the fall of Jehus dynasty in 772 BC (Hos 1:4), so about 776 BC. His death is not recorded.'),
-(595, 'Lo-ruhamah', NULL, -774, NULL, 1, 1, 'possible', 'other', 'minor', NULL, 108, 592, 'Daughter of Gomer and Hoseas second child. Her name means "not pitied." Hosea 1:6 says Gomer "bare a daughter" without the words "to him," as it says of the first child, but the children are given their names as signs to Hosea and are counted as his.', 'Estimate. Born after Jezreel, about 774 BC (Hos 1:6). Her death is not recorded.'),
-(596, 'Lo-ammi', NULL, -771, NULL, 1, 1, 'possible', 'other', 'minor', NULL, 108, 592, 'Son of Gomer and the third child. His name means "not my people." As with Lo-ruhamah, the text says Gomer "bare a son" and the children are counted as Hoseas.', 'Estimate. Born after Lo-ruhamah was weaned (Hos 1:8), about 771 BC. His death is not recorded.');
+(594, 'Jezreel, son of Hosea', NULL, -776, NULL, 1, 1, 'possible', 'other', 'minor', NULL, 108, 592, 'First child of Hosea and Gomer. The Lord told Hosea to give him the name Jezreel, a sign that the blood shed at Jezreel would be avenged on the house of Jehu.', 'Estimate. Born in the time of Jeroboam II, shortly before the fall of Jehu''s dynasty in 772 BC (Hos 1:4), so about 776 BC. His death is not recorded.'),
+(595, 'Lo-ruhamah', NULL, -774, NULL, 1, 1, 'possible', 'other', 'minor', NULL, 108, 592, 'Daughter of Gomer and Hosea''s second child. Her name means "not pitied." Hosea 1:6 says Gomer "bare a daughter" without the words "to him," as it says of the first child, but the children are given their names as signs to Hosea and are counted as his.', 'Estimate. Born after Jezreel, about 774 BC (Hos 1:6). Her death is not recorded.'),
+(596, 'Lo-ammi', NULL, -771, NULL, 1, 1, 'possible', 'other', 'minor', NULL, 108, 592, 'Son of Gomer and the third child. His name means "not my people." As with Lo-ruhamah, the text says Gomer "bare a son" and the children are counted as Hosea''s.', 'Estimate. Born after Lo-ruhamah was weaned (Hos 1:8), about 771 BC. His death is not recorded.');
 
 -- Return & Restoration
 INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
-(33, 'Ezra', NULL, -500, -440, 1, 1, 'possible', 'priest', 'major', 'Levi', 604, NULL, 'A priest and scribe skilled in the law of Moses who led a company of exiles from Babylon back to Jerusalem under Persian sanction. By publicly reading and teaching the Torah, he re-centered the restored community on Scripture, a legacy foundational to Jewish identity ever after. Ezra 7:1-5 traces his line through Seraiah and Zadok back to Aaron the chief priest, in an abridged list.', 'Came to Jerusalem in the seventh year of Artaxerxes I (Ezra 7:7-8), 458 BC (457 on autumn-to-autumn reckoning), and read the law in Nehemiah''s time (Neh 8; 444 BC). Called son of Seraiah (Ezra 7:1), the high priest killed in 588 BC, meaning descendant. Birth and death estimated.'),
+(33, 'Ezra', NULL, -500, -440, 1, 1, 'possible', 'priest', 'major', 'Levi', NULL, NULL, 'A priest and scribe skilled in the law of Moses who led a company of exiles from Babylon back to Jerusalem under Persian sanction. By publicly reading and teaching the Torah, he re-centered the restored community on Scripture, a legacy foundational to Jewish identity ever after. Ezra 7:1-5 traces his line through Seraiah and Zadok back to Aaron the chief priest, in an abridged list.', 'Came to Jerusalem in the seventh year of Artaxerxes I (Ezra 7:7-8), 458 BC (457 on autumn-to-autumn reckoning), and read the law in Nehemiah''s time (Neh 8; 444 BC). Called son of Seraiah (Ezra 7:1), the high priest killed in 588 BC, meaning descendant. Birth and death estimated.'),
 (34, 'Nehemiah', NULL, -470, -400, 1, 1, 'possible', 'ruler', 'major', NULL, 605, NULL, 'Cupbearer to the Persian king Artaxerxes who returned as governor of Judah and rebuilt Jerusalem''s shattered walls in fifty-two days despite fierce opposition. His memoirs join practical leadership to constant prayer, and with Ezra he anchored the restored community in covenant obedience. His brother Hanani brought him news of Jerusalem (Neh 1:2).', 'Came to Jerusalem in the 20th year of Artaxerxes I (Neh 2:1), 445/444 BC; returned to the king in his 32nd year, 433/432 BC, and later came back (Neh 13:6-7). Birth and death estimated.'),
-(36, 'Esther', 'Hadassah', -500, -420, 1, 1, 'possible', 'queen', 'major', 'Benjamin', 607, NULL, 'A Jewish orphan named Hadassah who became queen of Persia in the citadel of Susa and risked her life to expose Haman''s plot to annihilate her people. Her courage is celebrated yearly at Purim; the Ahasuerus of her story is commonly identified with Xerxes I of Persian history. She was Mordecais cousin, the daughter of his uncle Abihail (Esth 2:7, 15), and was raised by him after her parents died.', 'Became queen in the tenth month of the seventh year of Ahasuerus (Esth 2:16), 479/478 BC if he is Xerxes I; Haman''s plot falls in his twelfth year (3:7), 474/473 BC. Birth and death estimated.'),
+(36, 'Esther', 'Hadassah', -500, -420, 1, 1, 'possible', 'queen', 'major', 'Benjamin', 607, NULL, 'A Jewish orphan named Hadassah who became queen of Persia in the citadel of Susa and risked her life to expose Haman''s plot to annihilate her people. Her courage is celebrated yearly at Purim; the Ahasuerus of her story is commonly identified with Xerxes I of Persian history. She was Mordecai''s cousin, the daughter of his uncle Abihail (Esth 2:7, 15), and was raised by him after her parents died.', 'Became queen in the tenth month of the seventh year of Ahasuerus (Esth 2:16), 479/478 BC if he is Xerxes I; Haman''s plot falls in his twelfth year (3:7), 474/473 BC. Birth and death estimated.'),
 (119, 'Malachi', NULL, -490, -420, 1, 1, 'possible', 'prophet', 'moderate', NULL, NULL, NULL, 'Last of the twelve Minor Prophets, who called the restored community back to faithful worship and marriage and promised that Elijah would come before the day of the Lord (Mal 4:5).', 'Usually dated to the mid-5th century BC, c. 460-430, near the time of Ezra and Nehemiah (compare Mal 2:11 with Neh 13:23-29). Birth and death estimated.'),
 (120, 'Mordecai', NULL, -520, -440, 1, 1, 'possible', 'sage', 'moderate', 'Benjamin', 608, NULL, 'Esther''s cousin who raised her; uncovered a plot against the king.', 'Esther 2-10. Cousin and guardian of Esther (Esth 2:7), promoted after Haman''s fall in the twelfth year of Ahasuerus. Esth 2:6 (carried away with Jeconiah) is best read of his great-grandfather Kish, since Mordecai himself would otherwise be over 120. Birth and death estimated.'),
 (224, 'Sanballat', NULL, -500, -430, 1, 1, 'possible', 'ruler', 'moderate', NULL, NULL, NULL, 'Governor of Samaria who opposed Nehemiah''s rebuilding of Jerusalem''s walls.', 'Neh 2:10, 19; 4:1-8; 6:1-14. Confirmed by Elephantine Papyri.'),
@@ -406,8 +406,9 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (320, 'Simon, brother of Jesus', 'Simon', 2, NULL, 1, 1, 'possible', 'other', 'minor', 'Judah', NULL, NULL, 'Brother of Jesus mentioned in Mark 6:3 and Matthew 13:55. Not to be confused with Simon Peter or Simon the Zealot.', 'Mark 6:3; Matthew 13:55. Birth year is an estimate that assumes the brothers were younger sons of Mary and Joseph (the common Protestant view). The Orthodox tradition holds they were sons of Joseph by an earlier marriage (older than Jesus); the Catholic tradition, following Jerome, holds they were cousins.'),
 (321, 'Jude, brother of Jesus', 'Judas, Juda, Jude', 3, NULL, 1, 1, 'possible', 'other', 'minor', 'Judah', NULL, NULL, 'Brother of Jesus mentioned in Mark 6:3 and Matthew 13:55. Traditionally identified as the author of the Epistle of Jude.', 'Mark 6:3 (Juda); Matthew 13:55 (Judas); Jude 1:1 (''brother of James''). Birth year is an estimate that assumes the brothers were younger sons of Mary and Joseph (the common Protestant view). The Orthodox tradition holds they were sons of Joseph by an earlier marriage (older than Jesus); the Catholic tradition, following Jerome, holds they were cousins.'),
 (645, 'Eunice', NULL, -5, NULL, 1, 1, 'possible', 'disciple', 'minor', NULL, 646, NULL, 'Jewish believer of Lystra and mother of Timothy. Paul praises the "unfeigned faith" that dwelt first in Timothy''s grandmother Lois and then in Eunice (2 Tim 1:5). Timothy''s father was a Greek whom Scripture does not name (Acts 16:1).', 'Estimate only, about a generation before Timothy (born c. AD 17). Scripture gives no dates. 2 Tim 1:5 names Lois as Timothy''s grandmother and Eunice as his mother; that Lois was Eunice''s mother, not Timothy''s paternal grandmother, is the natural reading but is not stated.'),
-(647, 'Mary, mother of John Mark', 'Mary of Jerusalem', -5, NULL, 1, 1, 'possible', 'disciple', 'minor', NULL, NULL, NULL, 'Jerusalem believer in whose house many were praying when Peter came knocking after his release from prison (Acts 12:12). Her son was John, surnamed Mark. Colossians 4:10 calls Mark "sister''s son to Barnabas" (KJV; the Greek anepsios is often rendered "cousin"), which makes Barnabas her brother or relative by marriage.', 'Estimate only, about a generation before Mark (born c. AD 15). The event is dated to AD 44 (Acts 12). Her husband is not named.'),
-(651, 'Bernice', 'Berenice', 28, NULL, 1, 1, 'probable', 'queen', 'minor', NULL, 254, NULL, 'Daughter of Herod Agrippa I and sister of Agrippa II and Drusilla. She came with Agrippa II to Caesarea to greet Festus and heard Paul''s defense with him (Acts 25:13; 26:30).', 'Josephus (Ant. 19.276-277): born c. AD 28. The year of her death is not recorded; she was still living in the 70s, when she was with Titus in Rome.');
+(647, 'Mary, mother of John Mark', 'Mary of Jerusalem', -5, NULL, 1, 1, 'possible', 'disciple', 'minor', NULL, NULL, NULL, 'Jerusalem believer in whose house many were praying when Peter came knocking after his release from prison (Acts 12:12). Her son was John, surnamed Mark. Colossians 4:10 calls Mark "sister''s son to Barnabas" (KJV; the Greek anepsios is often rendered "cousin"), which makes her Barnabas''s sister (or, if the word means cousin, his relative).', 'Estimate only, about a generation before Mark (born c. AD 15). The event is dated to AD 44 (Acts 12). Her husband is not named.'),
+(651, 'Bernice', 'Berenice', 28, NULL, 1, 1, 'probable', 'queen', 'minor', NULL, 254, NULL, 'Daughter of Herod Agrippa I and sister of Agrippa II and Drusilla. She came with Agrippa II to Caesarea to greet Festus and heard Paul''s defense with him (Acts 25:13; 26:30).', 'Josephus (Ant. 19.276-277): born c. AD 28. The year of her death is not recorded; she was still living in the 70s, when she was with Titus in Rome.'),
+(741, 'Vespasian', 'Titus Flavius Vespasianus', 9, 79, 0, 0, 'certain', 'ruler', 'minor', NULL, NULL, NULL, 'Roman general sent to put down the Jewish revolt in AD 66. He was proclaimed emperor in AD 69 and left the siege of Jerusalem to his son Titus. He ruled until AD 79.', 'Standard Roman chronology: born 17 November AD 9, emperor 69-79, died 23 June AD 79.');
 
 -- Intertestamental Period
 INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
@@ -452,9 +453,9 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (640, 'Jonas, father of Peter', 'Jona, Jonah, Bar-jona', -30, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Father of Simon Peter. Jesus calls Peter "Simon Bar-jona" (Matt 16:17) and "son of Jona" (John 1:42); in John 21:15-17 the KJV reads "son of Jonas". Some manuscripts of John give the name as John. Peter''s brother Andrew is presumed to share this father.', 'Estimate only, about a generation before Peter. Scripture gives no dates for him. Andrew is called Peter''s brother (John 1:40) but only Peter is named as Jona''s son in the text; Andrew''s link rests on that.'),
 (641, 'Zebedee', NULL, -25, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Galilean fisherman, father of the apostles James and John. His sons left him mending nets in the boat with his hired servants to follow Jesus.', 'Estimate only, about a generation before his sons. Scripture gives no dates for him, and he does not appear after the calling of his sons.'),
 (642, 'Mother of James and John', 'Mother of Zebedee''s children, Salome (traditional identification)', -20, NULL, 1, 1, 'possible', 'disciple', 'minor', NULL, NULL, NULL, 'Wife of Zebedee and mother of the apostles James and John. She asked Jesus that her two sons might sit at his right and left in his kingdom (Matt 20:20-21) and stood among the women at the crucifixion (Matt 27:56). Scripture does not give her name. Mark 15:40 lists a Salome in the same group of women, and many readers identify the two; that is an inference, and some traditions identify her differently. She is not Salome the daughter of Herodias.', 'Estimate only, about a generation before her sons. The identification with Salome (Mark 15:40) is a common inference, not stated in Scripture; compare Matt 27:56 with Mark 15:40.'),
-(643, 'Alphaeus, father of James the apostle', 'Alpheus', -25, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Father of the apostle James the Less (Matt 10:3). Mark 2:14 calls Levi (Matthew) "the son of Alpheus" too. Whether this is the same Alphaeus, which would make Matthew and James brothers, is not stated in the Gospels; the two are kept as separate rows here.', 'Estimate only. Scripture gives no dates for him.'),
+(643, 'Alphaeus, father of James the apostle', 'Alpheus', -25, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Father of the apostle James son of Alphaeus (Matt 10:3), traditionally identified with James the Less (Mark 15:40). Mark 2:14 calls Levi (Matthew) "the son of Alpheus" too. Whether this is the same Alphaeus, which would make Matthew and James brothers, is not stated in the Gospels; the two are kept as separate rows here.', 'Estimate only. Scripture gives no dates for him.'),
 (644, 'Alphaeus, father of Levi', 'Alpheus', -28, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Named in Mark 2:14 as the father of Levi, the tax collector whom Jesus called, usually identified with the apostle Matthew (Matt 9:9). The Gospels do not say whether he is the Alphaeus who fathered James the Less (Matt 10:3); some later writers assume so, others do not.', 'Estimate only. Scripture gives no dates for him. Kept separate from the Alphaeus of Matt 10:3 because the text does not identify them.'),
-(646, 'Lois', NULL, -30, NULL, 1, 1, 'possible', 'disciple', 'minor', NULL, NULL, NULL, 'Timothy''s grandmother, in whom Paul says the faith first dwelt before it passed to her daughter Eunice and to Timothy (2 Tim 1:5).', 'Estimate only. Scripture gives no dates.'),
+(646, 'Lois', NULL, -30, NULL, 1, 1, 'possible', 'disciple', 'minor', NULL, NULL, NULL, 'Timothy''s grandmother, in whom Paul says the faith first dwelt before it passed to Timothy''s mother Eunice and to Timothy (2 Tim 1:5); Eunice is usually taken to be her daughter.', 'Estimate only. Scripture gives no dates.'),
 (648, 'Archelaus', 'Herod Archelaus', -23, NULL, 1, 1, 'probable', 'ruler', 'minor', NULL, 145, NULL, 'Son of Herod the Great who ruled Judea, Samaria and Idumea as ethnarch after his father''s death. When Joseph heard that Archelaus reigned in Judea in his father''s place, he was afraid to go there and turned aside to Galilee (Matt 2:22). Augustus removed him in AD 6 after complaints from his subjects.', 'Josephus (Ant. 17.188; Jewish War 2.111): born c. 23 BC, ethnarch 4 BC to AD 6, banished to Gaul. The year of his death is uncertain, so none is given.'),
 (649, 'Philip the Tetrarch', 'Herod Philip II, Philip', -22, 34, 1, 0, 'probable', 'ruler', 'minor', NULL, 145, NULL, 'Son of Herod the Great, tetrarch of Ituraea and Trachonitis (Luke 3:1). He rebuilt Caesarea Philippi and Bethsaida, and according to Josephus married Salome, the daughter of Herodias. He should not be confused with the Philip whom Mark 6:17 calls Herodias''s first husband; Josephus names that man as another son of Herod the Great.', 'Josephus (Ant. 18.106-108): tetrarch from 4 BC, died AD 33/34 in the twentieth year of Tiberius. Birth c. 22 BC is inferred from his father''s marriage to Cleopatra of Jerusalem.'),
 (650, 'Aristobulus IV', 'Aristobulus son of Herod', -35, -7, 1, 1, 'probable', 'other', 'minor', NULL, 145, NULL, 'Son of Herod the Great and the Hasmonean princess Mariamne, put to death by his father with his brother Alexander. He was the father of Herod Agrippa I and of Herodias, and so grandfather of Agrippa II, Bernice and Drusilla (Josephus). He is not named in Scripture; the link to Acts 12 is through his son.', 'Josephus (Ant. 16.394; Jewish War 1.551): executed at Sebaste, about 7 BC. Birth c. 35 BC is inferred from his mother''s marriage to Herod in 37 BC. Not in Scripture.');
@@ -496,13 +497,13 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (314, 'Jannai', 'Janna', NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 313, NULL, 'Son of Joseph, ancestor of Jesus in Luke 3:24.', 'Known only from Luke''s genealogy.'),
 (315, 'Melchi, son of Jannai', 'Melchi', NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 314, NULL, 'Son of Jannai, ancestor of Jesus in Luke 3:24. Post-exilic Melchi, distinct from the pre-exilic Melchi.', 'Known only from Luke''s genealogy. Luke 3:24.'),
 (316, 'Levi, son of Melchi', 'Levi', NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 315, NULL, 'Son of Melchi, ancestor of Jesus in Luke 3:24. Not the patriarch Levi son of Jacob.', 'Known only from Luke''s genealogy.'),
-(570, 'Maacah, wife of Rehoboam', NULL, NULL, NULL, 1, 1, 'possible', 'queen', 'minor', NULL, NULL, NULL, 'Wife of King Rehoboam and mother of King Abijah of Judah. Scripture calls her Maachah or Michaiah and gives her father as Absalom (or Abishalom) in 1 Kings 15:2 and 2 Chronicles 11:20, but as Uriel of Gibeah in 2 Chronicles 13:2. Readers commonly explain this by "daughter" meaning granddaughter: Uriel her father, Absalom her grandfather through Tamar. The same name is later given to the "mother" of King Asa, whom Asa removed from being queen for making an idol; many take this to be Asas grandmother.', 'Birth and death are not recorded. Rehoboams wife and Abijahs mother (2 Chr 11:20). Because her father is given differently in the sources, her father is not recorded in the table, and Asas mother_id is left empty for the same reason.'),
-(571, 'Azubah, mother of Jehoshaphat', NULL, NULL, NULL, 1, 1, 'possible', 'queen', 'minor', NULL, NULL, NULL, 'Daughter of Shilhi and mother of King Jehoshaphat of Judah.', 'Birth and death are not recorded. Wife of Asa (Jehoshaphats father) and mother of Jehoshaphat, who was 35 when he began to reign (1 Kgs 22:42).'),
+(570, 'Maacah, wife of Rehoboam', NULL, NULL, NULL, 1, 1, 'possible', 'queen', 'minor', NULL, NULL, NULL, 'Wife of King Rehoboam and mother of King Abijah of Judah. Scripture calls her Maachah or Michaiah and gives her father as Absalom (or Abishalom) in 1 Kings 15:2 and 2 Chronicles 11:20, but as Uriel of Gibeah in 2 Chronicles 13:2. Readers commonly explain this by "daughter" meaning granddaughter: Uriel her father, Absalom her grandfather through Tamar. The same name is later given to the "mother" of King Asa, whom Asa removed from being queen for making an idol; many take this to be Asa''s grandmother.', 'Birth and death are not recorded. Rehoboam''s wife and Abijah''s mother (2 Chr 11:20). Because her father is given differently in the sources, her father is not recorded in the table, and Asa''s mother_id is left empty for the same reason.'),
+(571, 'Azubah, mother of Jehoshaphat', NULL, NULL, NULL, 1, 1, 'possible', 'queen', 'minor', NULL, NULL, NULL, 'Daughter of Shilhi and mother of King Jehoshaphat of Judah.', 'Birth and death are not recorded. Wife of Asa (Jehoshaphat''s father) and mother of Jehoshaphat, who was 35 when he began to reign (1 Kgs 22:42).'),
 (572, 'Zibiah of Beer-sheba', NULL, NULL, NULL, 1, 1, 'possible', 'queen', 'minor', NULL, NULL, NULL, 'Queen mother of Judah, mother of King Joash (Jehoash) of Judah. She came from Beer-sheba.', 'Birth and death are not recorded. Mother of Joash, who began to reign in the seventh year of Jehu (2 Kgs 12:1); her husband was Ahaziah of Judah.'),
 (573, 'Jehoaddan of Jerusalem', NULL, NULL, NULL, 1, 1, 'possible', 'queen', 'minor', NULL, NULL, NULL, 'Queen mother of Judah, mother of King Amaziah. She came from Jerusalem.', 'Birth and death are not recorded. Mother of Amaziah, who began to reign at 25 (2 Kgs 14:2); her husband was Joash of Judah.'),
 (574, 'Jecholiah of Jerusalem', NULL, NULL, NULL, 1, 1, 'possible', 'queen', 'minor', NULL, NULL, NULL, 'Queen mother of Judah, mother of King Uzziah (Azariah). She came from Jerusalem.', 'Birth and death are not recorded. Mother of Uzziah, who began to reign at 16 (2 Kgs 15:2); her husband was Amaziah.'),
-(575, 'Jerusha, daughter of Zadok', NULL, NULL, NULL, 1, 1, 'possible', 'queen', 'minor', NULL, NULL, NULL, 'Queen mother of Judah, mother of King Jotham. Her father is named Zadok; he is not identified with the priest Zadok of Davids time.', 'Birth and death are not recorded. Mother of Jotham, who began to reign at 25 (2 Kgs 15:33); her husband was Uzziah.'),
-(576, 'Abi, mother of Hezekiah', 'Abijah', NULL, NULL, 1, 1, 'possible', 'queen', 'minor', NULL, NULL, NULL, 'Queen mother of Judah, daughter of Zachariah and mother of King Hezekiah. Second Chronicles gives her name as Abijah.', 'Birth and death are not recorded. Wife of Ahaz and mother of Hezekiah (2 Kgs 18:2). Hezekiahs birth year in the table makes Ahaz only 11 years older, a known difficulty in the figures of 2 Kings 16:2 and 18:2.'),
+(575, 'Jerusha, daughter of Zadok', NULL, NULL, NULL, 1, 1, 'possible', 'queen', 'minor', NULL, NULL, NULL, 'Queen mother of Judah, mother of King Jotham. Her father is named Zadok; he is not identified with the priest Zadok of David''s time.', 'Birth and death are not recorded. Mother of Jotham, who began to reign at 25 (2 Kgs 15:33); her husband was Uzziah.'),
+(576, 'Abi, mother of Hezekiah', 'Abijah', NULL, NULL, 1, 1, 'possible', 'queen', 'minor', NULL, NULL, NULL, 'Queen mother of Judah, daughter of Zachariah and mother of King Hezekiah. Second Chronicles gives her name as Abijah.', 'Birth and death are not recorded. Wife of Ahaz and mother of Hezekiah (2 Kgs 18:2). Hezekiah''s birth year in the table makes Ahaz only 11 years older, a known difficulty in the figures of 2 Kings 16:2 and 18:2.'),
 (577, 'Hephzibah, mother of Manasseh', NULL, NULL, NULL, 1, 1, 'possible', 'queen', 'minor', NULL, NULL, NULL, 'Queen mother of Judah and mother of King Manasseh, who began to reign at 12. Her name means "my delight is in her."', 'Birth and death are not recorded. Wife of Hezekiah and mother of Manasseh (2 Kgs 21:1).'),
 (578, 'Meshullemeth, daughter of Haruz', NULL, NULL, NULL, 1, 1, 'possible', 'queen', 'minor', NULL, NULL, NULL, 'Queen mother of Judah, daughter of Haruz of Jotbah and mother of King Amon.', 'Birth and death are not recorded. Wife of Manasseh and mother of Amon, who began to reign at 22 (2 Kgs 21:19).'),
 (579, 'Jedidah, daughter of Adaiah', NULL, NULL, NULL, 1, 1, 'possible', 'queen', 'minor', NULL, NULL, NULL, 'Queen mother of Judah, daughter of Adaiah of Boscath and mother of King Josiah.', 'Birth and death are not recorded. Wife of Amon and mother of Josiah, who began to reign at eight (2 Kgs 22:1).'),
@@ -516,55 +517,63 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (589, 'Buzi', NULL, NULL, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', NULL, NULL, 'Father of the prophet Ezekiel. Ezekiel is called a priest, so Buzi was presumably of a priestly family, though the text does not say so of Buzi himself.', 'Not recorded. The father is named in the text; no dates are recorded for him.'),
 (590, 'Amittai', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, NULL, NULL, 'Father of the prophet Jonah, who came from Gath-hepher.', 'Not recorded. The father is named in the text; no dates are recorded for him.'),
 (591, 'Beeri, father of Hosea', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, NULL, NULL, 'Father of the prophet Hosea.', 'Not recorded. The father is named in the text; no dates are recorded for him.'),
-(592, 'Gomer, wife of Hosea', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Daughter of Diblaim, whom Hosea married at the Lords command as a living picture of Israels unfaithfulness. She bore Jezreel and, according to the following verses, Lo-ruhamah and Lo-ammi.', 'Not recorded. She was the wife of Hosea (about 805-720 BC), so was alive in the time of Jeroboam II.'),
+(592, 'Gomer, wife of Hosea', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Daughter of Diblaim, whom Hosea married at the Lord''s command as a living picture of Israel''s unfaithfulness. She bore Jezreel and, according to the following verses, Lo-ruhamah and Lo-ammi.', 'Not recorded. She was the wife of Hosea (about 805-720 BC), so was alive in the time of Jeroboam II.'),
 (593, 'Diblaim', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, NULL, NULL, 'Father of Gomer, the wife of the prophet Hosea.', 'Not recorded. The father is named in the text; no dates are recorded for him.'),
 (597, 'Pethuel', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, NULL, NULL, 'Father of the prophet Joel.', 'Not recorded. The father is named in the text; no dates are recorded for him.'),
-(598, 'Hizkiah, ancestor of Zephaniah', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, NULL, NULL, 'Great-great-grandfather of the prophet Zephaniah, who traces his line in Zephaniah 1:1 four generations back to Hizkiah. Naming so many generations is unusual and has led many to think Hizkiah is King Hezekiah, but the text does not call him king, so this table keeps him as a separate person. Whether the two are the same is uncertain.', 'Not recorded. Not linked to King Hezekiah: the identification is likely to some readers but the text does not make it, and Zephaniahs four-generation line would fit either way.'),
+(598, 'Hizkiah, ancestor of Zephaniah', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, NULL, NULL, 'Great-great-grandfather of the prophet Zephaniah, who traces his line in Zephaniah 1:1 four generations back to Hizkiah. Naming so many generations is unusual and has led many to think Hizkiah is King Hezekiah, but the text does not call him king, so this table keeps him as a separate person. Whether the two are the same is uncertain.', 'Not recorded. Not linked to King Hezekiah: the identification is likely to some readers but the text does not make it, and Zephaniah''s four-generation line would fit either way.'),
 (599, 'Amariah, grandfather of Zephaniahs father', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, 598, NULL, 'Son of Hizkiah, father of Gedaliah, and an ancestor of the prophet Zephaniah.', 'Not recorded. The father is named in the text; no dates are recorded for him.'),
 (600, 'Gedaliah, grandfather of Zephaniah', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, 599, NULL, 'Son of Amariah, father of Cushi, and grandfather of the prophet Zephaniah. He is not the Gedaliah who was made governor of Judah after the fall of Jerusalem.', 'Not recorded. The father is named in the text; no dates are recorded for him.'),
 (601, 'Cushi, father of Zephaniah', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, 600, NULL, 'Son of Gedaliah and father of the prophet Zephaniah.', 'Not recorded. The father is named in the text; no dates are recorded for him.'),
 (602, 'Iddo, grandfather of Zechariah', NULL, NULL, NULL, 1, 1, 'possible', 'prophet', 'minor', NULL, NULL, NULL, 'Called "Iddo the prophet" in Zechariah 1:1, grandfather of the prophet Zechariah. Ezra 5:1 and 6:14 call Zechariah "the son of Iddo," as the line is shortened. A priestly family of Iddo came back with Zerubbabel (Neh 12:4, 16), and Zechariah is named as its head, but the text does not state that this Iddo is the same.', 'Not recorded. The father is named in the text; no dates are recorded for him.'),
-(603, 'Berechiah, father of Zechariah', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, 602, NULL, 'Son of Iddo and father of the prophet Zechariah. Ezra 5:1 names only Iddo as Zechariahs father, which is usually explained as the line being shortened.', 'Not recorded. The father is named in the text; no dates are recorded for him.'),
-(604, 'Seraiah, father of Ezra', NULL, NULL, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', NULL, NULL, 'Father of Ezra the scribe in Ezra 7:1, the first name in a line that runs back through Azariah, Hilkiah, Shallum, Zadok and Phinehas to Aaron the chief priest. The line appears abridged (compare 1 Chronicles 6:3-15). He is not the same person as Seraiah the chief priest executed at Riblah in 2 Kings 25:18, who died long before Ezras journey, and the text does not say he is.', 'Not recorded. Not identified with the Seraiah of 2 Kgs 25:18, who was killed in 588 BC, long before Ezra (about 500-440 BC); the "son of" in Ezra 7:1 may also mean descendant. The rest of the line is not added as separate rows.'),
+(603, 'Berechiah, father of Zechariah', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, 602, NULL, 'Son of Iddo and father of the prophet Zechariah. Ezra 5:1 names only Iddo as Zechariah''s father, which is usually explained as the line being shortened.', 'Not recorded. The father is named in the text; no dates are recorded for him.'),
+(604, 'Seraiah, ancestor of Ezra', NULL, NULL, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', NULL, NULL, 'First name in the line of Ezra the scribe in Ezra 7:1, which runs back through Azariah, Hilkiah, Shallum and Zadok to Phinehas and Aaron the chief priest. The list is abridged (compare 1 Chronicles 6:3-15), and "son of" in it means descendant. Most readers identify this Seraiah with Seraiah the chief priest killed at Riblah in 588 BC (2 Kings 25:18; 1 Chronicles 6:14), who is Ezra''s ancestor, not his father. Ezra''s own father is not named, so no parent link is recorded for Ezra.', 'Not recorded. If he is the Seraiah of 2 Kgs 25:18 he was killed in 588 BC, about 90 years before Ezra''s birth in this table, so "son of" in Ezra 7:1 means descendant. The rest of the line is not added as separate rows.'),
 (605, 'Hacaliah', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, NULL, NULL, 'Father of Nehemiah the governor, named in the opening of the book of Nehemiah.', 'Not recorded. The father is named in the text; no dates are recorded for him.'),
-(606, 'Hanani, brother of Nehemiah', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Nehemiahs brother who came to Susa with men from Judah and told him of the broken walls of Jerusalem. Nehemiah later put him in charge of Jerusalem with Hananiah the ruler of the palace. "Brother" may mean close kinsman.', 'Not recorded. He was a contemporary of Nehemiah (about 470-400 BC) and was alive at the time of the walls in 445 BC.'),
+(606, 'Hanani, brother of Nehemiah', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Nehemiah''s brother who came to Susa with men from Judah and told him of the broken walls of Jerusalem. Nehemiah later put him in charge of Jerusalem with Hananiah the ruler of the palace. "Brother" may mean close kinsman.', 'Not recorded. He was a contemporary of Nehemiah (about 470-400 BC) and was alive at the time of the walls in 445 BC.'),
 (607, 'Abihail', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', NULL, NULL, 'Father of Esther and uncle of Mordecai, who brought Esther up as his own daughter after both her parents died.', 'Not recorded. The father is named in the text; no dates are recorded for him.'),
 (608, 'Jair, father of Mordecai', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 609, NULL, 'Son of Shimei and father of Mordecai, a Benjamite of Susa. This is not the judge Jair.', 'Not recorded. Esther 2:5-6 is unclear whether it is Mordecai or his ancestor Kish who was carried away with Jeconiah in 599 BC, and the line may be abridged.'),
 (609, 'Shimei, grandfather of Mordecai', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 610, NULL, 'Son of Kish and grandfather of Mordecai. He is not identified with Shimei son of Gera, who cursed David; the text does not link them.', 'Not recorded. The father is named in the text; no dates are recorded for him.'),
-(610, 'Kish, ancestor of Mordecai', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', NULL, NULL, 'A Benjamite named at the head of Mordecais line in Esther 2:5. He is not identified with Kish, the father of King Saul, though both were Benjamites.', 'Not recorded. The text may be telescoping the line.'),
+(610, 'Kish, ancestor of Mordecai', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', NULL, NULL, 'A Benjamite named at the head of Mordecai''s line in Esther 2:5. He is not identified with Kish, the father of King Saul, though both were Benjamites.', 'Not recorded. The text may be telescoping the line.'),
 (611, 'Hammedatha the Agagite', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, NULL, NULL, 'Father of Haman the Agagite, who rose high under King Ahasuerus and plotted to destroy the Jews.', 'Not recorded. The father is named in the text; no dates are recorded for him.'),
-(612, 'Zeresh', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Wife of Haman, who with his friends advised him to build the high gallows for Mordecai and later told him he would fall before the Jews.', 'Not recorded. She was Hamans wife, so lived about 510-473 BC.'),
+(612, 'Zeresh', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Wife of Haman, who with his friends advised him to build the high gallows for Mordecai and later told him he would fall before the Jews.', 'Not recorded. She was Haman''s wife, so lived about 510-473 BC.'),
 (613, 'Ahijah, father of Baasha', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Issachar', NULL, NULL, 'Father of Baasha, the king of Israel who killed Nadab, of the house of Issachar. He is not the prophet Ahijah of Shiloh.', 'Not recorded. The father is named in the text; no dates are recorded for him.'),
 (614, 'Jehoshaphat, father of Jehu', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, 615, NULL, 'Son of Nimshi and father of Jehu, king of Israel. He is not King Jehoshaphat of Judah. In 1 Kings 19:16 Jehu is called "son of Nimshi," meaning grandson.', 'Not recorded. The father is named in the text; no dates are recorded for him.'),
 (615, 'Nimshi', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, NULL, NULL, 'Father of Jehoshaphat and grandfather of Jehu, who is called "the son of Nimshi" in 1 Kings 19:16 and 2 Kings 9:20.', 'Not recorded. The father is named in the text; no dates are recorded for him.'),
 (616, 'Jabesh, father of Shallum', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, NULL, NULL, 'Father of Shallum, who killed Zechariah and reigned one month as king of Israel.', 'Not recorded. The father is named in the text; no dates are recorded for him.'),
 (617, 'Gadi, father of Menahem', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, NULL, NULL, 'Father of Menahem, who killed Shallum and became king of Israel.', 'Not recorded. The father is named in the text; no dates are recorded for him.'),
-(618, 'Remaliah', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, NULL, NULL, 'Father of Pekah, the army captain who killed Pekahiah and became king of Israel. Isaiah 7:4-9 uses "Remaliahs son" to mean Pekah.', 'Not recorded. The father is named in the text; no dates are recorded for him.'),
+(618, 'Remaliah', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, NULL, NULL, 'Father of Pekah, the army captain who killed Pekahiah and became king of Israel. Isaiah 7:4-9 uses "Remaliah''s son" to mean Pekah.', 'Not recorded. The father is named in the text; no dates are recorded for him.'),
 (619, 'Elah, father of Hoshea', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, NULL, NULL, 'Father of Hoshea, the last king of Israel. He is not Elah the son of Baasha, who had been king earlier.', 'Not recorded. The father is named in the text; no dates are recorded for him.'),
 (620, 'Jehoiada the priest', NULL, NULL, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', NULL, NULL, 'High priest in Jerusalem who, with his wife Jehosheba, hid the infant Joash from Athaliah, then crowned him king at age seven and guided him while Jehoiada lived. He died at 130 and was buried among the kings.', 'Not recorded as a year. He lived 130 years (2 Chr 24:15) and anointed Joash in about 878 BC, when Joash was seven.'),
 (621, 'Jehosheba', 'Jehoshabeath', NULL, NULL, 1, 1, 'possible', 'other', 'minor', NULL, 88, NULL, 'Daughter of King Jehoram of Judah, sister of Ahaziah and wife of Jehoiada the priest. When Athaliah killed the royal family she hid the infant Joash in the temple for six years. Second Chronicles calls her Jehoshabeath.', 'Not recorded. Her mother is not named in the text and is not recorded here.'),
 (622, 'Ethbaal', 'Ithobaal', NULL, NULL, 1, 1, 'possible', 'ruler', 'minor', NULL, NULL, NULL, 'King of the Zidonians, whose daughter Jezebel married Ahab of Israel and brought the worship of Baal into the northern kingdom. Outside sources know him as Ithobaal I of Tyre and Sidon.', 'Not recorded. His reign is placed around 887-856 BC by Tyrian king lists, which do not line up exactly with the dates here for Jezebel and Ahab, so no year is given.'),
 (623, 'Ben-hadad, son of Hazael', NULL, NULL, NULL, 1, 1, 'possible', 'ruler', 'minor', NULL, 212, NULL, 'King of Syria who succeeded his father Hazael and continued to oppress Israel under Jehoahaz, until Joash of Israel won three victories over him. Outside sources call him Ben-hadad III.', 'Not recorded. He succeeded Hazael (2 Kgs 13:24).'),
 (624, 'Nabopolassar', NULL, NULL, -605, 1, 0, 'probable', 'ruler', 'minor', NULL, NULL, NULL, 'Founder of the Neo-Babylonian dynasty, who threw off Assyrian rule and, with the Medes, destroyed Nineveh. Father of Nebuchadnezzar II. He is not named in Scripture.', 'Standard historical record (not stated in Scripture). He reigned 626-605 BC and died in August 605 BC. Birth unknown.'),
-(625, 'Evil-merodach', 'Amel-Marduk', NULL, -560, 1, 0, 'probable', 'ruler', 'minor', NULL, 214, NULL, 'Son of Nebuchadnezzar and king of Babylon, who in the first year of his reign released King Jehoiachin from prison and gave him a seat above the other kings. He is the Amel-Marduk of Babylonian records.', 'Standard historical record (not stated in Scripture). Reigned 562-560 BC, killed in a coup in 560 BC. The 37th year of Jehoiachins captivity is 2 Kgs 25:27.'),
-(626, 'Nabonidus', NULL, NULL, NULL, 1, 1, 'probable', 'ruler', 'minor', NULL, NULL, NULL, 'Last king of Babylon, who spent years at Tema in Arabia and left his son Belshazzar in charge in Babylon. He is not named in Daniel, but Belshazzars offer of "the third ruler in the kingdom" (Dan 5:16, 29) is commonly explained by Nabonidus holding the first place and Belshazzar the second.', 'Standard historical record (not stated in Scripture). Reigned 556-539 BC. His fate after Cyrus took Babylon is told differently in the sources, so no death year is given. Not named in Scripture.'),
+(625, 'Evil-merodach', 'Amel-Marduk', NULL, -560, 1, 0, 'probable', 'ruler', 'minor', NULL, 214, NULL, 'Son of Nebuchadnezzar and king of Babylon, who in the first year of his reign released King Jehoiachin from prison and gave him a seat above the other kings. He is the Amel-Marduk of Babylonian records.', 'Standard historical record (not stated in Scripture). Reigned 562-560 BC, killed in a coup in 560 BC. The 37th year of Jehoiachin''s captivity is 2 Kgs 25:27.'),
+(626, 'Nabonidus', NULL, NULL, NULL, 1, 1, 'probable', 'ruler', 'minor', NULL, NULL, NULL, 'Last king of Babylon, who spent years at Tema in Arabia and left his son Belshazzar in charge in Babylon. He is not named in Daniel, but Belshazzar''s offer of "the third ruler in the kingdom" (Dan 5:16, 29) is commonly explained by Nabonidus holding the first place and Belshazzar the second.', 'Standard historical record (not stated in Scripture). Reigned 556-539 BC. His fate after Cyrus took Babylon is told differently in the sources, so no death year is given. Not named in Scripture.'),
 (627, 'Sargon II', NULL, NULL, -705, 1, 0, 'probable', 'ruler', 'minor', NULL, NULL, NULL, 'King of Assyria who completed the conquest of Samaria and sent his commander against Ashdod. Father of Sennacherib.', 'Standard historical record (not stated in Scripture). Reigned 722-705 BC and was killed in battle in 705 BC. Birth unknown. Named once, in Isaiah 20:1.'),
-(628, 'Esarhaddon', NULL, NULL, -669, 1, 0, 'probable', 'ruler', 'minor', NULL, 213, NULL, 'King of Assyria, son and successor of Sennacherib after Sennacheribs sons killed him. The settlers brought into Samaria in the northern kingdom are said to have been brought by him.', 'Standard historical record (not stated in Scripture). Reigned 681-669 BC and died in 669 BC on campaign. Birth unknown.'),
+(628, 'Esarhaddon', NULL, NULL, -669, 1, 0, 'probable', 'ruler', 'minor', NULL, 213, NULL, 'King of Assyria, son and successor of Sennacherib after Sennacherib''s sons killed him. The settlers brought into Samaria in the northern kingdom are said to have been brought by him.', 'Standard historical record (not stated in Scripture). Reigned 681-669 BC and died in 669 BC on campaign. Birth unknown.'),
 (629, 'Cambyses I', NULL, NULL, -559, 1, 1, 'possible', 'ruler', 'minor', NULL, NULL, NULL, 'King of Anshan in Persia and father of Cyrus the Great. He is not named in Scripture.', 'Standard historical record (not stated in Scripture). Reigned about 600-559 BC. Dates are uncertain; death year is approximate. Not named in Scripture.'),
 (630, 'Cambyses II', NULL, NULL, -522, 1, 0, 'probable', 'ruler', 'minor', NULL, 216, NULL, 'Son and successor of Cyrus the Great, who conquered Egypt in 525 BC. He is not named in Scripture; the Persian reign between Cyrus and Darius is passed over in Ezra 4:5.', 'Standard historical record (not stated in Scripture). Reigned 530-522 BC and died in 522 BC. Birth unknown.'),
 (631, 'Hystaspes', NULL, NULL, NULL, 1, 1, 'possible', 'ruler', 'minor', NULL, NULL, NULL, 'Persian noble, called Vishtaspa in Persian, and father of Darius I. He served as a governor and was not king himself. Not named in Scripture.', 'Standard historical record (not stated in Scripture). Dates unknown.'),
 (632, 'Atossa', NULL, NULL, NULL, 1, 1, 'possible', 'queen', 'minor', NULL, NULL, NULL, 'Persian queen, daughter of Cyrus the Great, who married Darius I and bore Xerxes. Not named in Scripture.', 'Standard historical record (not stated in Scripture). Dates unknown. Mother of Xerxes according to Herodotus.'),
-(635, 'Mattathias', NULL, NULL, -166, 1, 0, 'probable', 'priest', 'minor', 'Levi', NULL, NULL, 'Priest of Modein who started the Maccabean revolt by refusing to sacrifice to the kings idols. Father of five sons, including Judas Maccabeus, Jonathan and Simon.', 'Not in the KJV Bible; known from 1 Maccabees (accepted by Catholic and Orthodox traditions) and Josephus. He died in 166 BC soon after beginning the revolt. Birth unknown.'),
+(635, 'Mattathias', NULL, NULL, -166, 1, 0, 'probable', 'priest', 'minor', 'Levi', NULL, NULL, 'Priest of Modein who started the Maccabean revolt by refusing to sacrifice to the king''s idols. Father of five sons, including Judas Maccabeus, Jonathan and Simon.', 'Not in the KJV Bible; known from 1 Maccabees (accepted by Catholic and Orthodox traditions) and Josephus. He died in 166 BC soon after beginning the revolt. Birth unknown.'),
 (636, 'Simon Maccabeus', 'Simon Thassi', NULL, -135, 1, 0, 'probable', 'ruler', 'minor', 'Levi', 635, NULL, 'Second son of Mattathias, who succeeded Jonathan as leader and high priest and made Judea independent. He was murdered at a banquet in 135 BC.', 'Not in the KJV Bible; known from 1 Maccabees (accepted by Catholic and Orthodox traditions) and Josephus. Died 135 BC. Birth unknown.'),
 (637, 'Jonathan Maccabeus', 'Jonathan Apphus', NULL, -143, 1, 0, 'probable', 'ruler', 'minor', 'Levi', 635, NULL, 'Youngest son of Mattathias, who led after Judas died, became high priest in 152 BC and was killed by treachery in 143 BC.', 'Not in the KJV Bible; known from 1 Maccabees (accepted by Catholic and Orthodox traditions) and Josephus. Died 143 BC. Birth unknown.'),
-(638, 'John Hyrcanus', 'Hyrcanus I', NULL, -104, 1, 0, 'probable', 'ruler', 'minor', 'Levi', 636, NULL, 'Son of Simon Maccabeus, high priest and ruler of Judea from 134 to 104 BC, who expanded the Hasmonean state.', 'Not in the KJV Bible; known from 1 Maccabees (accepted by Catholic and Orthodox traditions) and Josephus. Reigned 134-104 BC. Birth unknown.');
+(638, 'John Hyrcanus', 'Hyrcanus I', NULL, -104, 1, 0, 'probable', 'ruler', 'minor', 'Levi', 636, NULL, 'Son of Simon Maccabeus, high priest and ruler of Judea from 134 to 104 BC, who expanded the Hasmonean state.', 'Not in the KJV Bible; known from 1 Maccabees (accepted by Catholic and Orthodox traditions) and Josephus. Reigned 134-104 BC. Birth unknown.'),
+(757, 'Alopen', 'Aluoben', NULL, NULL, 1, 1, 'possible', 'church-leader', 'minor', NULL, NULL, NULL, 'Syriac Christian missionary of the Church of the East who reached the Tang capital Chang''an in 635. The Xi''an stele of 781 records that he was received by the emperor and allowed to translate and teach the scriptures.', 'Birth and death dates are unknown. 635 is the arrival date given on the Xi''an stele.'),
+(761, 'Colman of Lindisfarne', 'Colmán', NULL, 676, 1, 1, 'probable', 'church-leader', 'minor', NULL, NULL, NULL, 'Irish-trained bishop of Lindisfarne who defended the Ionan (Irish) Easter reckoning at Whitby. When the synod ruled against it he left Northumbria with his followers.', 'Birth year unknown. He became bishop in 661 and died in 676.'),
+(769, 'Rastislav of Moravia', 'Rostislav', NULL, 870, 1, 1, 'probable', 'ruler', 'minor', NULL, NULL, NULL, 'Prince of Great Moravia, who around 862 asked the Byzantine emperor for teachers able to instruct his people in their own language. Cyril and Methodius were sent in response.', 'Birth unknown. He reigned from about 846 and was deposed and blinded about 870.');
+
+-- Undated (known from genealogies) (continued)
+INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
+(784, 'Muhammed edh-Dhib', 'Muhammad edh-Dhib', NULL, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Young Bedouin shepherd of the Ta''amireh tribe who found the first scrolls in a cave near Qumran. The find is dated to 1946 or 1947.', 'Birth and death dates are not known. The date of discovery is given variously as late 1946 or early 1947.');
 
 -- Apostolic Age
 INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
 (323, 'Ignatius of Antioch', NULL, 35, 108, 1, 0, 'possible', 'church-leader', 'major', NULL, NULL, NULL, 'Bishop of Antioch and early Church Father. His seven letters on church order, the Eucharist, and martyrdom are among the earliest post-apostolic writings.', 'Birth year is unknown; c. 35 is a conventional estimate. Martyred in Rome under Trajan (reigned 98-117), traditionally dated c. 108; some scholars place it as late as c. 110-117.'),
 (324, 'Polycarp of Smyrna', NULL, 69, 155, 1, 1, 'probable', 'church-leader', 'moderate', NULL, NULL, NULL, 'Bishop of Smyrna, a leading figure of the generation after the apostles who, according to Irenaeus, had known the Apostle John. At his martyrdom he declared "Eighty-six years I have served Him, and He never did me any injury."', 'Birth c. 69 is inferred from his ''86 years'' remark (which could mean his age or the years since his conversion) and is uncertain. Martyred on 22/23 February in 155 or 156, the standard modern dating; Eusebius''s Chronicle points to c. 166-167, which most scholars now reject.'),
 (473, 'Nero', 'Nero Claudius Caesar', 37, 68, 0, 0, 'certain', 'ruler', 'moderate', NULL, NULL, NULL, 'Fifth Roman emperor (AD 54-68). He was the Caesar to whom Paul appealed (Acts 25:11). Tacitus records that he blamed the Christians for the great fire of AD 64 and put many to death; church tradition places the deaths of Peter and Paul in his reign. Born Lucius Domitius Ahenobarbus, he was Claudius''s stepson and was adopted by him in AD 50, after which he succeeded him.', 'Born 15 December AD 37; died 9 June AD 68. Acts 25:11; Tacitus, Annals 15.44.'),
-(652, 'Drusilla', NULL, 38, NULL, 1, 1, 'probable', 'other', 'minor', NULL, 254, NULL, 'Youngest daughter of Herod Agrippa I and wife of the Roman governor Felix. She was a Jewess, and with Felix she heard Paul speak about the faith in Christ (Acts 24:24).', 'Josephus (Ant. 19.354; 20.141-143): born c. AD 38, married Felix about AD 53. Her date of death is not recorded.');
+(652, 'Drusilla', NULL, 38, NULL, 1, 1, 'probable', 'other', 'minor', NULL, 254, NULL, 'Youngest daughter of Herod Agrippa I and wife of the Roman governor Felix. She was a Jewess, and with Felix she heard Paul speak about the faith in Christ (Acts 24:24).', 'Josephus (Ant. 19.354; 20.141-143): born c. AD 38, married Felix about AD 53. Her date of death is not recorded.'),
+(740, 'Titus, Roman emperor', 'Titus Flavius Vespasianus', 39, 81, 0, 0, 'certain', 'ruler', 'minor', NULL, 741, NULL, 'Son of Vespasian who commanded the Roman army at the siege of Jerusalem, ending with the burning of the Temple in AD 70. He became emperor in AD 79 and died after two years. Not to be confused with Titus, the companion of Paul.', 'Standard Roman chronology: born 30 December AD 39, emperor 79-81, died 13 September AD 81.');
 
 -- Early Church & Persecution
 INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
@@ -574,7 +583,11 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (328, 'Athanasius of Alexandria', NULL, 296, 373, 1, 0, 'probable', 'church-leader', 'major', NULL, NULL, NULL, 'Bishop of Alexandria who defended Christ''s full deity against Arianism through five exiles, holding the line for the Nicene faith. His Easter festal letter contains the earliest known list of exactly the twenty-seven New Testament books, a landmark in the history of the canon.', 'Born c. 296 (estimates c. 293-298); died 2 May 373. Exiled five times by common count.'),
 (490, 'Constantine the Great', 'Flavius Valerius Constantinus, Constantine I', 272, 337, 1, 0, 'probable', 'ruler', 'major', NULL, 653, 654, 'Roman emperor who, after the Milvian Bridge (312), favored Christianity, agreed with Licinius to extend toleration (313), and convened the Council of Nicaea (325). He was baptized shortly before his death in 337. Christianity became legal and favored, not the state religion, under him. His mother was Helena and his father Constantius Chlorus.', 'Born c. 272 (Naissus); died 22 May 337 near Nicomedia.'),
 (653, 'Constantius I Chlorus', 'Constantius Chlorus, Flavius Valerius Constantius', 250, 306, 1, 0, 'probable', 'ruler', 'minor', NULL, NULL, NULL, 'Roman emperor in the West (Caesar from 293, Augustus 305-306), father of Constantine the Great. His eastern colleagues carried out the Great Persecution, but his own rule in Gaul and Britain was mild. He died at York, where his troops proclaimed Constantine.', 'Born c. 250; died 25 July 306 at Eboracum (York).'),
-(654, 'Helena, mother of Constantine', 'Helena, Saint Helena, Flavia Julia Helena', 250, 330, 1, 1, 'probable', 'queen', 'moderate', NULL, NULL, NULL, 'Mother of Constantine the Great, given the title Augusta by her son. Eusebius reports her pilgrimage to the Holy Land in her old age, and later tradition credits her with finding the True Cross. She is honored as a saint in the Catholic and Orthodox churches. Whether she was Constantius''s wife or concubine is debated.', 'Born c. 250 (from Eusebius, who says she was about 80 on her pilgrimage c. 327-328); died c. 330. Eusebius, Life of Constantine 3.42-47. The finding of the Cross is a later tradition.');
+(654, 'Helena, mother of Constantine', 'Helena, Saint Helena, Flavia Julia Helena', 250, 330, 1, 1, 'probable', 'queen', 'moderate', NULL, NULL, NULL, 'Mother of Constantine the Great, given the title Augusta by her son. Eusebius reports her pilgrimage to the Holy Land in her old age, and later tradition credits her with finding the True Cross. She is honored as a saint in the Catholic and Orthodox churches. Whether she was Constantius''s wife or concubine is debated.', 'Born c. 250 (from Eusebius, who says she was about 80 on her pilgrimage c. 327-328); died c. 330. Eusebius, Life of Constantine 3.42-47. The finding of the Cross is a later tradition.'),
+(742, 'Gregory the Illuminator', NULL, 257, 331, 1, 1, 'traditional', 'church-leader', 'minor', NULL, NULL, NULL, 'Traditional founder and first head of the Armenian Church. According to Armenian tradition he converted King Tiridates III, who made Christianity the state religion of Armenia.', 'Dates are traditional and approximate; the Armenian sources are later accounts. The conversion is traditionally put at 301, though some scholars date it a decade or so later.'),
+(743, 'Tiridates III of Armenia', 'Trdat III the Great', 250, 330, 1, 1, 'probable', 'king', 'minor', NULL, NULL, NULL, 'King of Armenia who, according to Armenian tradition, was converted by Gregory the Illuminator and made Armenia the first state to adopt Christianity as its official religion.', 'His reign is usually given as about 287-330; birth year is an estimate. The date of his conversion is traditionally 301 and debated.'),
+(744, 'Diocletian', 'Gaius Aurelius Valerius Diocletianus', 244, 311, 1, 0, 'probable', 'ruler', 'minor', NULL, NULL, NULL, 'Roman emperor from 284 to 305 who reorganised the empire under a shared rule of four. In 303 he and his colleagues began the last and most severe empire-wide persecution of Christians. He abdicated in 305.', 'Born about 244; abdicated 305; died 311. The first persecution edict was issued at Nicomedia in February 303.'),
+(745, 'Galerius', 'Gaius Galerius Valerius Maximianus', 260, 311, 1, 0, 'probable', 'ruler', 'minor', NULL, NULL, NULL, 'Roman emperor who is generally thought to have urged Diocletian toward persecuting Christians. In 311, shortly before his death, he issued an edict of toleration ending the persecution in the East.', 'Born about 260; died in 311, soon after the Edict of Serdica (also called the Edict of Toleration).');
 
 -- Imperial Christianity
 INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
@@ -584,12 +597,37 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (491, 'John Chrysostom', 'Golden-mouthed, John of Antioch', 347, 407, 1, 0, 'probable', 'church-leader', 'moderate', NULL, NULL, NULL, 'Archbishop of Constantinople, famed for his preaching and his expositions of Scripture, who criticized the wealthy and the imperial court and died in exile. Honored in the Eastern and Western churches; his name means Golden-mouthed.', 'Born c. 347 (344-354) in Antioch; died 14 September 407 at Comana in Pontus.'),
 (655, 'Monica of Hippo', 'Monnica, Saint Monica', 331, 387, 1, 0, 'probable', 'other', 'moderate', NULL, NULL, NULL, 'Christian mother of Augustine of Hippo, who prayed and wept for his conversion for many years and followed him to Milan. She died at Ostia in 387 on the journey home to Africa, shortly after the conversation with her son recorded in the Confessions (book 9). Honored as a saint in the Catholic and Orthodox churches.', 'Born 331 in Thagaste; died 387 at Ostia. Augustine, Confessions 9.8-13.'),
 (656, 'Patricius, father of Augustine', 'Patricius', 320, 371, 1, 1, 'probable', 'other', 'minor', NULL, NULL, NULL, 'Pagan town councillor of Thagaste, Augustine''s father, who was baptized shortly before his death. He is known from Augustine''s Confessions (book 2 and book 9), which describes his ambitions for his son''s education.', 'Estimate. Augustine says he died when Augustine was seventeen, c. 371 (Confessions 3.4). His birth year is inferred.'),
-(657, 'Adeodatus', 'Adeodatus, son of Augustine', 372, 390, 1, 1, 'probable', 'other', 'minor', NULL, 330, NULL, 'Son of Augustine and his unnamed concubine. He was baptized with his father at Milan in 387 and appears as a speaker in Augustine''s dialogue De Magistro. He died young, not long after returning to Africa.', 'Born 372 in Carthage; died c. 390. Confessions 4.2, 9.6. Augustine''s companion is not named in any source.');
+(657, 'Adeodatus', 'Adeodatus, son of Augustine', 372, 390, 1, 1, 'probable', 'other', 'minor', NULL, 330, NULL, 'Son of Augustine and his unnamed concubine. He was baptized with his father at Milan in 387 and appears as a speaker in Augustine''s dialogue De Magistro. He died young, not long after returning to Africa.', 'Born 372 in Carthage; died c. 390. Confessions 4.2, 9.6. Augustine''s companion is not named in any source.'),
+(746, 'Theodosius I', 'Theodosius the Great', 347, 395, 0, 0, 'certain', 'ruler', 'minor', NULL, NULL, NULL, 'Roman emperor who, in 380, made Nicene Christianity the religion of the empire. He summoned the Council of Constantinople in 381, which confirmed the Nicene faith.', 'Born 11 January 347, emperor in the East 379 and of the whole empire 392-395, died 17 January 395.'),
+(747, 'Gregory of Nazianzus', 'Gregory the Theologian', 329, 390, 1, 0, 'probable', 'church-leader', 'minor', NULL, NULL, NULL, 'Cappadocian bishop and theologian, honoured in the Eastern Church as "the Theologian." He led the Nicene congregation in Constantinople and briefly presided over the Council of 381 before resigning.', 'Born about 329-330; died 390.'),
+(748, 'Gregory of Nyssa', NULL, 335, 395, 1, 1, 'probable', 'church-leader', 'minor', NULL, NULL, NULL, 'Cappadocian bishop and theologian, younger brother of Basil the Great. He took an important part in the Council of Constantinople in 381 and in shaping the doctrine of the Trinity.', 'Birth about 335; death about 395 (last attested that year).'),
+(749, 'Cyril of Alexandria', NULL, 376, 444, 1, 0, 'probable', 'church-leader', 'minor', NULL, NULL, NULL, 'Patriarch of Alexandria from 412 to 444. He opposed Nestorius and presided over the Council of Ephesus in 431, which affirmed the title Theotokos ("God-bearer") for Mary.', 'Born about 376; died 27 June 444.'),
+(750, 'Nestorius', NULL, 386, 451, 1, 1, 'possible', 'church-leader', 'minor', NULL, NULL, NULL, 'Patriarch of Constantinople from 428 who objected to calling Mary Theotokos. The Council of Ephesus deposed him in 431 and he died in exile in Egypt. The Church of the East, often called Nestorian, did not accept his condemnation as fair, and scholars still debate what he actually taught.', 'Born about 386; died after 451, probably that year. Exact dates are not recorded.'),
+(751, 'Theodosius II', NULL, 401, 450, 0, 0, 'certain', 'ruler', 'minor', NULL, NULL, NULL, 'Eastern Roman emperor from 408 to 450. He summoned the Council of Ephesus in 431 and the second Council of Ephesus in 449.', 'Born 10 April 401; died 28 July 450 after a riding accident.'),
+(752, 'Pope Leo I', 'Leo the Great', 400, 461, 1, 0, 'probable', 'church-leader', 'minor', NULL, NULL, NULL, 'Bishop of Rome from 440 to 461. His letter to Flavian, known as the Tome of Leo, set out the teaching of two natures in one person of Christ and shaped the definition of Chalcedon in 451. He is also remembered for persuading Attila to withdraw from Italy in 452.', 'Birth year about 400; died 10 November 461.'),
+(753, 'Marcian', NULL, 392, 457, 1, 0, 'probable', 'ruler', 'minor', NULL, NULL, NULL, 'Eastern Roman emperor from 450 to 457. He summoned the Council of Chalcedon in 451, together with his wife Pulcheria, to settle the disputes over the nature of Christ.', 'Born about 392; emperor 450-457; died January 457.'),
+(754, 'Odoacer', NULL, 433, 493, 1, 0, 'probable', 'ruler', 'minor', NULL, NULL, NULL, 'Germanic military commander who deposed the last Western Roman emperor in 476 and ruled Italy as king. He was killed by Theodoric the Ostrogoth in 493.', 'Birth year is an estimate. He was killed 15 March 493.'),
+(755, 'Romulus Augustulus', 'Romulus Augustus', 465, NULL, 1, 1, 'possible', 'ruler', 'minor', NULL, NULL, NULL, 'The last emperor of the Western Roman Empire. A boy raised to the throne by his father in 475, he was deposed by Odoacer in 476. He was allowed to live, and little more is known of him.', 'Birth year is an estimate (a young teenager in 475-476). Deposed in September 476; the date of his death is unknown.');
 
 -- Early Medieval
 INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
 (331, 'Benedict of Nursia', NULL, 480, 547, 1, 1, 'probable', 'church-leader', 'major', NULL, NULL, NULL, 'Founder of Monte Cassino and author of the Rule of St. Benedict, which became the standard rule of Western monasticism. Its balance of prayer, work and study, later summed up in the motto "ora et labora", shaped monastic communities that preserved learning in the early Middle Ages.', 'Born c. 480 in Nursia; died c. 547 (some sources c. 543) at Monte Cassino. Almost all details come from Gregory the Great''s Dialogues, book II.'),
-(492, 'Gregory the Great', 'Gregory I', 540, 604, 1, 0, 'probable', 'church-leader', 'major', NULL, NULL, NULL, 'Pope from 590 to 604, who strengthened the Roman see, sent Augustine of Canterbury to England, and wrote the Pastoral Rule and the Dialogues (the main source for the life of Benedict). He is honored by Catholic and Orthodox churches.', 'Born c. 540 in Rome; died 12 March 604.');
+(492, 'Gregory the Great', 'Gregory I', 540, 604, 1, 0, 'probable', 'church-leader', 'major', NULL, NULL, NULL, 'Pope from 590 to 604, who strengthened the Roman see, sent Augustine of Canterbury to England, and wrote the Pastoral Rule and the Dialogues (the main source for the life of Benedict). He is honored by Catholic and Orthodox churches.', 'Born c. 540 in Rome; died 12 March 604.'),
+(756, 'Muhammad', 'Muhammad ibn Abdullah', 570, 632, 1, 0, 'probable', 'other', 'moderate', NULL, NULL, NULL, 'Arab religious and political leader of Mecca and Medina, regarded by Muslims as the final prophet and the one through whom the Quran was revealed. He founded the Muslim community; within a few years of his death in 632 the armies of his successors, the caliphs, began the conquests of the Byzantine and Persian territories.', 'Traditionally born in Mecca about 570; died at Medina on 8 June 632. Early Muslim sources are the main record and were written some generations later.'),
+(758, 'Emperor Taizong of Tang', 'Li Shimin', 598, 649, 0, 0, 'certain', 'ruler', 'minor', NULL, NULL, NULL, 'Second emperor of the Tang dynasty, who reigned from 626 to 649. According to the Xi''an stele, he welcomed Alopen in 635 and had the Christian teaching examined and permitted.', 'Born 598; emperor 626-649; died 10 July 649.'),
+(759, 'Oswiu of Northumbria', 'Oswy', 612, 670, 1, 0, 'probable', 'king', 'minor', NULL, NULL, NULL, 'King of Northumbria from 642 to 670. He brought together the Synod of Whitby in 664, which decided that the kingdom would follow the Roman method of calculating Easter.', 'Born about 612; died 15 February 670.'),
+(760, 'Wilfrid', 'Wilfrid of York', 634, 709, 1, 0, 'probable', 'church-leader', 'minor', NULL, NULL, NULL, 'Northumbrian churchman, later bishop of York, who spoke for the Roman Easter at the Synod of Whitby in 664. His career is told in the Life by Stephen of Ripon.', 'Born about 634; died 709.'),
+(762, 'Hilda of Whitby', 'Hild', 614, 680, 1, 0, 'probable', 'church-leader', 'minor', NULL, NULL, NULL, 'Abbess of Whitby, a noble Northumbrian woman and a counsellor to kings and bishops. Her monastery hosted the synod of 664. Bede praises her wisdom and the learning of those she trained.', 'Born about 614; died 17 November 680.'),
+(763, 'Empress Irene', 'Irene of Athens', 752, 803, 1, 0, 'probable', 'ruler', 'minor', NULL, NULL, NULL, 'Byzantine empress who ruled as regent for her son from 780 and in her own right from 797 to 802. She summoned the Second Council of Nicaea in 787, which restored the veneration of icons. The Orthodox Church honours her as a saint.', 'Born about 752; died 9 August 803 in exile.'),
+(764, 'Pope Adrian I', 'Hadrian I', 700, 795, 1, 0, 'probable', 'church-leader', 'minor', NULL, NULL, NULL, 'Bishop of Rome from 772 to 795. He did not attend the Second Council of Nicaea in 787 but was represented there by legates, and he approved its decisions on icons. He was an ally of Charlemagne.', 'Birth year is an estimate; he died 25 December 795.'),
+(765, 'Charlemagne', 'Charles the Great, Carolus Magnus', 748, 814, 1, 0, 'probable', 'ruler', 'moderate', NULL, NULL, NULL, 'King of the Franks from 768, who united much of western Europe and supported church reform and learning. He was crowned emperor by Pope Leo III in Rome on Christmas Day, 800.', 'Birth is given as 747 or 748 (sources differ; 742 has also been proposed). He died 28 January 814.'),
+(766, 'Pope Leo III', NULL, 750, 816, 1, 0, 'probable', 'church-leader', 'minor', NULL, NULL, NULL, 'Bishop of Rome from 795 to 816. After Charlemagne helped him against his enemies in Rome, he crowned Charlemagne emperor on 25 December 800.', 'Birth year about 750; died 12 June 816.'),
+(767, 'Cyril (Constantine the Philosopher)', 'Constantine the Philosopher, Saint Cyril', 826, 869, 1, 0, 'probable', 'church-leader', 'minor', NULL, NULL, NULL, 'Scholar from Thessalonica who, with his brother Methodius, went to Moravia in 863 and devised the Glagolitic alphabet to translate the scriptures and liturgy into Slavic. He took the name Cyril as a monk shortly before his death in Rome.', 'Born 826 or 827; died 14 February 869.'),
+(768, 'Methodius', 'Saint Methodius of Thessalonica', 815, 885, 1, 0, 'probable', 'church-leader', 'minor', NULL, NULL, NULL, 'Brother of Cyril and fellow missionary to the Slavs. After Cyril''s death he was made archbishop for Moravia and Pannonia and continued the Slavic translation work despite opposition.', 'Born about 815; died 6 April 885.'),
+(770, 'Michael I Cerularius', 'Michael Keroularios', 1000, 1059, 1, 0, 'probable', 'church-leader', 'minor', NULL, NULL, NULL, 'Patriarch of Constantinople from 1043 to 1058. His dispute with the papal legates in 1054 ended with mutual excommunications and is traditionally counted as the start of the East-West Schism.', 'Born about 1000; died January 1059.'),
+(771, 'Cardinal Humbert of Silva Candida', 'Humbert of Moyenmoutier', 1000, 1061, 1, 0, 'probable', 'church-leader', 'minor', NULL, NULL, NULL, 'Papal legate to Constantinople in 1054. On 16 July he laid the bull of excommunication against Patriarch Michael Cerularius on the altar of Hagia Sophia.', 'Born about 1000; died 5 May 1061.'),
+(772, 'Pope Leo IX', NULL, 1002, 1054, 0, 0, 'certain', 'church-leader', 'minor', NULL, NULL, NULL, 'Bishop of Rome from 1049 who set the papacy on a course of reform. He sent the legates to Constantinople in 1054, but he had died in April of that year, before the excommunication was delivered in July.', 'Born 21 June 1002; died 19 April 1054.'),
+(773, 'Pope Urban II', 'Odo of Châtillon', 1035, 1099, 1, 0, 'probable', 'church-leader', 'minor', NULL, NULL, NULL, 'Pope from 1088 to 1099. At the Council of Clermont in November 1095 he called on Western Christians to aid the Byzantine Empire against the Turks, a call that launched the First Crusade.', 'Born about 1035; died 29 July 1099. No contemporary record preserves his exact words at Clermont.');
 
 -- High Medieval & Crusades
 INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
@@ -607,7 +645,12 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (341, 'John Knox', NULL, 1514, 1572, 1, 0, 'probable', 'reformer', 'moderate', NULL, NULL, NULL, 'Scottish reformer and a principal leader of the Reformation in Scotland. His preaching and writing helped shape the Church of Scotland, whose Reformed, Presbyterian character emerged from the 1560 Reformation Parliament.', 'Born between c. 1505 and 1514 (c. 1514 is conventional); died 24 November 1572 in Edinburgh.'),
 (493, 'Bartolome de las Casas', 'Bartolomé de las Casas', 1484, 1566, 1, 0, 'probable', 'church-leader', 'moderate', NULL, NULL, NULL, 'Spanish Dominican friar and Bishop of Chiapas who opposed the enslavement and abuse of Indigenous peoples in the Spanish Americas and wrote A Short Account of the Destruction of the Indies.', 'Born 1484 (older sources 1474); died 17 July 1566 in Madrid.'),
 (494, 'Francis Xavier', 'Francisco de Jasso y Azpilicueta', 1506, 1552, 0, 0, 'certain', 'church-leader', 'moderate', NULL, NULL, NULL, 'Spanish Jesuit missionary, a co-founder of the Society of Jesus, who preached in India, Southeast Asia and Japan and died off the coast of China in 1552.', 'Born 7 April 1506; died 3 December 1552 on Shangchuan Island.'),
-(658, 'Katharina von Bora', 'Katharina Luther, Katie Luther', 1499, 1552, 0, 0, 'certain', 'other', 'moderate', NULL, NULL, NULL, 'Former nun who fled her convent in 1523 and married Martin Luther in 1525. She managed the household and finances of the Black Cloister at Wittenberg and bore six children. Her marriage became the model of the Protestant clergy household.', 'Born 29 January 1499; died 20 December 1552 at Torgau. Married Luther 13 June 1525.');
+(658, 'Katharina von Bora', 'Katharina Luther, Katie Luther', 1499, 1552, 0, 0, 'certain', 'other', 'moderate', NULL, NULL, NULL, 'Former nun who fled her convent in 1523 and married Martin Luther in 1525. She managed the household and finances of the Black Cloister at Wittenberg and bore six children. Her marriage became the model of the Protestant clergy household.', 'Born 29 January 1499; died 20 December 1552 at Torgau. Married Luther 13 June 1525.'),
+(774, 'Mehmed II', 'Mehmed the Conqueror', 1432, 1481, 0, 0, 'certain', 'ruler', 'minor', NULL, NULL, NULL, 'Ottoman sultan who captured Constantinople on 29 May 1453 after a siege of about seven weeks, ending the Byzantine Empire. He ruled again from 1451 to 1481.', 'Born 30 March 1432; died 3 May 1481.'),
+(775, 'Constantine XI Palaiologos', NULL, 1405, 1453, 0, 0, 'certain', 'ruler', 'minor', NULL, NULL, NULL, 'Last Byzantine emperor, crowned in 1449. He led the defence of Constantinople and is believed to have died in the final assault of 29 May 1453.', 'Born 8 February 1405; died 29 May 1453. The manner of his death is not fully certain.'),
+(776, 'Pope Paul III', 'Alessandro Farnese', 1468, 1549, 0, 0, 'certain', 'church-leader', 'minor', NULL, NULL, NULL, 'Pope from 1534 to 1549. He called the Council of Trent, which opened in December 1545, and approved the Society of Jesus in 1540.', 'Born 29 February 1468; died 10 November 1549.'),
+(777, 'James VI and I', 'King James', 1566, 1625, 0, 0, 'certain', 'king', 'minor', NULL, NULL, NULL, 'King of Scotland from 1567 and of England from 1603. At the Hampton Court Conference of 1604 he agreed to a new English translation of the Bible, which appeared in 1611 as the King James or Authorized Version.', 'Born 19 June 1566; died 27 March 1625.'),
+(778, 'Lancelot Andrewes', NULL, 1555, 1626, 0, 0, 'certain', 'church-leader', 'minor', NULL, NULL, NULL, 'Anglican bishop and scholar who led the Westminster company of translators responsible for Genesis through 2 Kings in the King James Version. He was known for his learning in ancient languages and his devotional writing.', 'Born 1555; died 25 September 1626.');
 
 -- Enlightenment & Missions
 INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
@@ -621,12 +664,22 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (496, 'Samuel Ajayi Crowther', 'Samuel Adjai Crowther', 1809, 1891, 1, 0, 'probable', 'church-leader', 'moderate', NULL, NULL, NULL, 'Yoruba-born freed slave who became the first African Anglican bishop (consecrated 1864), led the Niger Mission, and translated the Bible into Yoruba and other languages.', 'Born c. 1809 in Osogun; died 31 December 1891 in Lagos.'),
 (659, 'Samuel Wesley', 'Samuel Wesley Sr.', 1662, 1735, 0, 0, 'certain', 'church-leader', 'minor', NULL, NULL, NULL, 'Anglican priest and poet, rector of Epworth in Lincolnshire, father of John and Charles Wesley.', 'Born December 1662; died 25 April 1735 at Epworth.'),
 (660, 'Susanna Wesley', 'Susanna Annesley', 1669, 1742, 0, 0, 'certain', 'other', 'moderate', NULL, NULL, NULL, 'Wife of Samuel Wesley and mother of John and Charles Wesley. She educated her children herself at the Epworth rectory by a strict method, and is often called the mother of Methodism.', 'Born 20 January 1669; died 23 July 1742 in London. She bore nineteen children, of whom ten lived to adulthood.'),
-(661, 'Charles Wesley', NULL, 1707, 1788, 0, 0, 'certain', 'church-leader', 'moderate', NULL, 659, 660, 'Younger brother of John Wesley and co-founder of Methodism, author of about six thousand hymns including "Hark! The Herald Angels Sing" and "O for a Thousand Tongues to Sing".', 'Born 18 December 1707; died 29 March 1788 in London.');
+(661, 'Charles Wesley', NULL, 1707, 1788, 0, 0, 'certain', 'church-leader', 'moderate', NULL, 659, 660, 'Younger brother of John Wesley and co-founder of Methodism, author of about six thousand hymns including "Hark! The Herald Angels Sing" and "O for a Thousand Tongues to Sing".', 'Born 18 December 1707; died 29 March 1788 in London.'),
+(779, 'Thomas Charles', 'Thomas Charles of Bala', 1755, 1814, 0, 0, 'certain', 'church-leader', 'minor', NULL, NULL, NULL, 'Welsh clergyman and Methodist leader at Bala. His effort to supply Welsh-speaking people with Bibles in 1802 is regarded as the immediate cause for founding the British and Foreign Bible Society in 1804.', 'Born 14 October 1755; died 5 October 1814.'),
+(780, 'William Wilberforce', NULL, 1759, 1833, 0, 0, 'certain', 'reformer', 'minor', NULL, NULL, NULL, 'English politician and evangelical who led the parliamentary campaign against the slave trade. He was an early and prominent supporter of the British and Foreign Bible Society.', 'Born 24 August 1759; died 29 July 1833.'),
+(781, 'Elias Boudinot', NULL, 1740, 1821, 0, 0, 'certain', 'other', 'minor', NULL, NULL, NULL, 'American lawyer and statesman, president of the Continental Congress in 1782-83 and director of the US Mint. He was the first president of the American Bible Society when it was formed in 1816.', 'Born 2 May 1740; died 24 October 1821.'),
+(782, 'William J. Seymour', NULL, 1870, 1922, 0, 0, 'certain', 'church-leader', 'moderate', NULL, NULL, NULL, 'African American preacher who led the Azusa Street Mission in Los Angeles from 1906. The multiracial revivals there are widely seen as the beginning of the worldwide Pentecostal movement.', 'Born 2 May 1870; died 28 September 1922.'),
+(783, 'John R. Mott', NULL, 1865, 1955, 0, 0, 'certain', 'church-leader', 'minor', NULL, NULL, NULL, 'American Methodist layman and leader of the YMCA and the Student Volunteer Movement. He chaired the World Missionary Conference in Edinburgh in 1910, and received the Nobel Peace Prize in 1946.', 'Born 25 May 1865; died 31 January 1955.'),
+(785, 'Eleazar Sukenik', 'Eleazar Lipa Sukenik', 1889, 1953, 0, 0, 'certain', 'other', 'minor', NULL, NULL, NULL, 'Archaeologist of the Hebrew University in Jerusalem. In November 1947 he obtained the first Dead Sea Scrolls for the university and recognised their antiquity.', 'Born 12 August 1889; died 28 February 1953.'),
+(787, 'David Ben-Gurion', NULL, 1886, 1973, 0, 0, 'certain', 'ruler', 'minor', NULL, NULL, NULL, 'Zionist leader who read the Declaration of the Establishment of the State of Israel on 14 May 1948 and became its first prime minister.', 'Born 16 October 1886; died 1 December 1973.'),
+(788, 'Pope John XXIII', 'Angelo Roncalli', 1881, 1963, 0, 0, 'certain', 'church-leader', 'moderate', NULL, NULL, NULL, 'Pope from 1958 to 1963. He called the Second Vatican Council, which opened on 11 October 1962, and died before it ended. The Catholic Church canonised him in 2014.', 'Born 25 November 1881; died 3 June 1963.'),
+(789, 'Pope Paul VI', 'Giovanni Battista Montini', 1897, 1978, 0, 0, 'certain', 'church-leader', 'minor', NULL, NULL, NULL, 'Pope from 1963 to 1978. He continued the Second Vatican Council after John XXIII''s death and closed it in December 1965.', 'Born 26 September 1897; died 6 August 1978.');
 
 -- Modern Era
 INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
 (347, 'Dietrich Bonhoeffer', NULL, 1906, 1945, 0, 0, 'certain', 'church-leader', 'moderate', NULL, NULL, NULL, 'German Lutheran pastor and theologian who opposed Nazism and was a leader of the Confessing Church. Arrested in 1943 and hanged at Flossenburg concentration camp on 9 April 1945, weeks before its liberation. Author of The Cost of Discipleship and Life Together.', 'Born February 4, 1906; hanged April 9, 1945.'),
-(349, 'Billy Graham', 'William Franklin Graham Jr.', 1918, 2018, 0, 0, 'certain', 'church-leader', 'major', NULL, NULL, NULL, 'An American evangelist whose stadium crusades and broadcasts carried a simple gospel invitation to more people than perhaps any preacher in history. A counselor to presidents who insisted on integrated seating at his meetings, he became the face of twentieth-century evangelicalism.', 'Born November 7, 1918; died February 21, 2018.');
+(349, 'Billy Graham', 'William Franklin Graham Jr.', 1918, 2018, 0, 0, 'certain', 'church-leader', 'major', NULL, NULL, NULL, 'An American evangelist whose stadium crusades and broadcasts carried a simple gospel invitation to more people than perhaps any preacher in history. A counselor to presidents who insisted on integrated seating at his meetings, he became the face of twentieth-century evangelicalism.', 'Born November 7, 1918; died February 21, 2018.'),
+(786, 'John C. Trever', NULL, 1916, 2006, 0, 0, 'certain', 'other', 'minor', NULL, NULL, NULL, 'American biblical scholar at the American Schools of Oriental Research in Jerusalem. In 1948 he photographed the Isaiah scroll and recognised its similarity to ancient scripts, helping to establish its date.', 'Born 1916; died 2006.');
 
 -- ============================================================
 -- EVENTS (241)
@@ -1838,7 +1891,7 @@ INSERT INTO locations (id, name, modern_name, latitude, longitude, region, descr
 (147, 'Mikulcice', 'Mikulcice, Czech Republic', 48.8097, 17.0561, 'Europe', 'Major stronghold of Great Moravia, the realm to which Cyril and Methodius were sent in 863.');
 
 -- ============================================================
--- WHO TOOK PART IN WHAT (499)
+-- WHO TOOK PART IN WHAT (548)
 -- ============================================================
 INSERT INTO person_events (person_id, event_id, role_in_event) VALUES
 (1, 1, 'participant'),
@@ -1995,7 +2048,6 @@ INSERT INTO person_events (person_id, event_id, role_in_event) VALUES
 (36, 41, 'protagonist'),
 (120, 41, 'participant'),
 (226, 41, 'antagonist'),
-(227, 41, 'Queen deposed, which led to Esther becoming queen (Esth 1)'),
 (228, 41, 'participant'),
 (37, 42, 'protagonist'),
 (38, 42, 'participant'),
@@ -2042,16 +2094,18 @@ INSERT INTO person_events (person_id, event_id, role_in_event) VALUES
 (45, 51, 'protagonist'),
 (137, 51, 'participant'),
 (40, 52, 'participant'),
-(41, 52, 'participant');
+(41, 52, 'participant'),
+(45, 52, 'participant');
 
 INSERT INTO person_events (person_id, event_id, role_in_event) VALUES
-(45, 52, 'participant'),
 (139, 52, 'Went up to Jerusalem with Paul and Barnabas; not compelled to be circumcised (Gal 2:1-3)'),
 (144, 52, 'participant'),
 (41, 53, 'protagonist'),
 (46, 53, 'participant'),
 (138, 53, 'participant'),
 (41, 54, 'protagonist'),
+(740, 55, 'Roman commander at the siege'),
+(741, 55, 'Emperor who sent his son to finish the war'),
 (42, 56, 'author'),
 (42, 57, 'protagonist'),
 (37, 58, 'protagonist'),
@@ -2112,12 +2166,29 @@ INSERT INTO person_events (person_id, event_id, role_in_event) VALUES
 (324, 96, 'Martyr'),
 (325, 97, 'Author'),
 (326, 98, 'Teacher'),
+(744, 99, 'Emperor who began the persecution'),
+(745, 99, 'Co-emperor who urged persecution'),
 (490, 100, 'Co-author'),
 (490, 101, 'Convener'),
 (328, 102, 'Author'),
 (330, 103, 'Bishop present'),
 (329, 104, 'Translator'),
+(752, 105, 'Pope whose Tome shaped the definition'),
+(753, 105, 'Emperor who summoned the council'),
+(754, 106, 'Deposed the last emperor'),
+(755, 106, 'Last Western emperor, deposed'),
 (331, 107, 'Author'),
+(759, 108, 'King who convened the synod'),
+(760, 108, 'Spokesman for the Roman Easter'),
+(761, 108, 'Spokesman for the Irish Easter'),
+(762, 108, 'Abbess and host of the synod'),
+(756, 109, 'Founder of Islam; the conquests followed his death'),
+(765, 110, 'Crowned emperor'),
+(766, 110, 'Pope who crowned him'),
+(770, 111, 'Patriarch of Constantinople'),
+(771, 111, 'Papal legate who delivered the excommunication'),
+(772, 111, 'Pope who sent the legates; died before they acted'),
+(773, 112, 'Pope who called for the crusade'),
 (333, 113, 'Founder'),
 (334, 114, 'Author'),
 (335, 115, 'Translator'),
@@ -2126,14 +2197,30 @@ INSERT INTO person_events (person_id, event_id, role_in_event) VALUES
 (338, 118, 'Author'),
 (338, 119, 'Defendant'),
 (339, 120, 'Translator'),
-(340, 121, 'Author'),
+(340, 121, 'Author');
+
+INSERT INTO person_events (person_id, event_id, role_in_event) VALUES
+(776, 122, 'Pope who called the council'),
+(777, 123, 'King who authorised the translation'),
+(778, 123, 'Translator and head of a translation company'),
 (342, 126, 'Subject'),
 (343, 127, 'Preacher'),
 (495, 127, 'Preacher'),
 (344, 128, 'Missionary'),
+(779, 129, 'Welsh Methodist whose Bible appeal led to its founding'),
+(780, 129, 'Early supporter'),
+(781, 130, 'First president'),
 (345, 131, 'Preacher'),
 (346, 132, 'Evangelist'),
+(782, 133, 'Leader of the mission'),
+(783, 134, 'Chairman of the conference'),
 (347, 135, 'Co-author'),
+(784, 136, 'Shepherd who found the first scrolls'),
+(785, 136, 'Acquired scrolls for the Hebrew University'),
+(786, 136, 'Photographed and helped date the Isaiah scroll'),
+(787, 137, 'Declared the state; first prime minister'),
+(788, 138, 'Pope who called the council'),
+(789, 138, 'Pope who continued and closed the council'),
 (349, 139, 'Evangelist'),
 (349, 140, 'Convener'),
 (37, 143, 'protagonist'),
@@ -2144,9 +2231,7 @@ INSERT INTO person_events (person_id, event_id, role_in_event) VALUES
 (40, 145, 'participant'),
 (42, 145, 'participant'),
 (37, 146, 'protagonist'),
-(40, 146, 'participant');
-
-INSERT INTO person_events (person_id, event_id, role_in_event) VALUES
+(40, 146, 'participant'),
 (131, 146, 'protagonist'),
 (37, 147, 'protagonist'),
 (40, 147, 'protagonist'),
@@ -2214,7 +2299,9 @@ INSERT INTO person_events (person_id, event_id, role_in_event) VALUES
 (41, 185, 'protagonist'),
 (41, 186, 'protagonist'),
 (138, 186, 'participant'),
-(246, 186, 'recipient'),
+(246, 186, 'recipient');
+
+INSERT INTO person_events (person_id, event_id, role_in_event) VALUES
 (41, 187, 'protagonist'),
 (138, 187, 'participant'),
 (41, 188, 'protagonist'),
@@ -2246,9 +2333,7 @@ INSERT INTO person_events (person_id, event_id, role_in_event) VALUES
 (57, 302, 'protagonist'),
 (58, 302, 'participant'),
 (4, 303, 'participant'),
-(5, 303, 'participant');
-
-INSERT INTO person_events (person_id, event_id, role_in_event) VALUES
+(5, 303, 'participant'),
 (6, 303, 'protagonist'),
 (4, 304, 'participant'),
 (5, 304, 'protagonist'),
@@ -2316,7 +2401,9 @@ INSERT INTO person_events (person_id, event_id, role_in_event) VALUES
 (229, 363, 'witness'),
 (37, 364, 'protagonist'),
 (38, 364, 'participant'),
-(122, 364, 'participant'),
+(122, 364, 'participant');
+
+INSERT INTO person_events (person_id, event_id, role_in_event) VALUES
 (37, 365, 'protagonist'),
 (37, 366, 'protagonist'),
 (40, 366, 'participant'),
@@ -2347,10 +2434,27 @@ INSERT INTO person_events (person_id, event_id, role_in_event) VALUES
 (40, 371, 'protagonist'),
 (41, 371, 'protagonist'),
 (473, 371, 'antagonist'),
-(328, 391, 'Consecrated Frumentius');
+(742, 390, 'Baptised the king and led the church'),
+(743, 390, 'King who adopted Christianity'),
+(328, 391, 'Consecrated Frumentius'),
+(746, 392, 'Emperor who summoned the council'),
+(747, 392, 'Bishop who led the council at first'),
+(748, 392, 'Participating bishop and theologian'),
+(749, 393, 'Presided; opponent of Nestorius'),
+(750, 393, 'Patriarch condemned and deposed'),
+(751, 393, 'Emperor who summoned the council'),
+(757, 394, 'Missionary to China'),
+(758, 394, 'Emperor who received him'),
+(763, 395, 'Empress who summoned the council'),
+(764, 395, 'Pope, represented by legates'),
+(767, 396, 'Missionary; devised the Slavic alphabet'),
+(768, 396, 'Missionary and later archbishop'),
+(769, 396, 'Prince who requested teachers'),
+(774, 397, 'Ottoman sultan who took the city'),
+(775, 397, 'Last emperor, died defending it');
 
 -- ============================================================
--- SCRIPTURE FOR PEOPLE (654)
+-- SCRIPTURE FOR PEOPLE (653)
 -- ============================================================
 INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (1, 53, NULL),
@@ -2462,7 +2566,7 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (69, 158, NULL),
 (70, 159, NULL),
 (71, 160, NULL),
-(71, 844, 'Marries Achsah, Calebs daughter'),
+(71, 844, 'Marries Achsah, Caleb''s daughter'),
 (71, 845, 'Takes Kirjath-sepher and marries Achsah'),
 (72, 161, NULL),
 (72, 861, 'Ehud the son of Gera'),
@@ -2470,7 +2574,7 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (73, 860, 'Gilead begat Jephthah'),
 (74, 163, NULL),
 (74, 862, 'Father of Hophni and Phinehas'),
-(74, 865, 'Dies on hearing of his sons death and the arks capture'),
+(74, 865, 'Dies on hearing of his son''s death and the ark''s capture'),
 (75, 164, NULL),
 (76, 165, NULL),
 (77, 166, NULL),
@@ -2481,7 +2585,7 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (80, 169, NULL),
 (80, 897, 'Daughter of Eliam'),
 (81, 170, NULL),
-(81, 884, 'Son of Zeruiah, Davids sister'),
+(81, 884, 'Son of Zeruiah, David''s sister'),
 (81, 885, 'One of the three sons of Zeruiah'),
 (82, 171, NULL),
 (82, 889, 'Son of Maacah, daughter of Talmai'),
@@ -2824,8 +2928,8 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (513, 832, 'Son of Milcah; father of Rebekah'),
 (513, 833, 'Rebekah is born to Bethuel, son of Milcah'),
 (513, 834, 'Rebekah names her father; Laban her brother'),
-(514, 835, 'Born to Lots elder daughter; father of the Moabites'),
-(515, 835, 'Born to Lots younger daughter; father of the Ammonites'),
+(514, 835, 'Born to Lot''s elder daughter; father of the Moabites'),
+(515, 835, 'Born to Lot''s younger daughter; father of the Ammonites'),
 (516, 836, 'Mother of Dan and Naphtali'),
 (517, 837, 'Mother of Gad and Asher'),
 (518, 838, 'Father of Oshea (Joshua)'),
@@ -2854,7 +2958,7 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (532, 856, 'Barak the son of Abinoam of Kedesh-naphtali'),
 (533, 857, 'A Kenite who had pitched his tent near Kedesh'),
 (533, 858, 'Jael is his wife; his house is at peace with Jabin'),
-(534, 859, 'Gideons father, of the Abiezrites'),
+(534, 859, 'Gideon''s father, of the Abiezrites'),
 (535, 860, 'Gilead begat Jephthah'),
 (536, 861, 'Ehud the son of Gera, a Benjamite'),
 (537, 862, 'Priest at Shiloh, son of Eli'),
@@ -2867,7 +2971,7 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (539, 866, 'Born as the ark is taken; named Ichabod'),
 (539, 867, 'Brother of Ahitub'),
 (540, 868, 'Goes to Moab with Naomi and their sons and dies there'),
-(540, 869, 'Boaz buys all that was Elimelechs'),
+(540, 869, 'Boaz buys all that was Elimelech''s'),
 (541, 868, 'Dies in Moab; Ruth is his widow'),
 (541, 869, 'Ruth is bought to raise up his name'),
 (542, 868, 'Dies in Moab; Orpah is his widow'),
@@ -2875,117 +2979,116 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (543, 870, 'Wife of Chilion'),
 (543, 871, 'Parts from Naomi'),
 (544, 872, 'Husband of Hannah; goes up to Shiloh'),
-(544, 873, 'Listed as the father of Samuels line'),
-(545, 874, 'Samuels firstborn; judge at Beer-sheba'),
+(545, 874, 'Samuel''s firstborn; judge at Beer-sheba'),
 (546, 873, 'Listed among the sons of Samuel'),
-(546, 874, 'Samuels second son; judge at Beer-sheba'),
+(546, 874, 'Samuel''s second son; judge at Beer-sheba'),
 (547, 875, 'Father of Kish'),
 (547, 876, 'Father of Ner and Kish'),
 (548, 876, 'Son of Abiel; father of Saul'),
 (548, 877, 'Father of Saul'),
 (549, 876, 'Father of Abner; son of Abiel'),
-(550, 878, 'Sauls wife, daughter of Ahimaaz'),
-(551, 879, 'Firstborn of Sauls two daughters'),
+(550, 878, 'Saul''s wife, daughter of Ahimaaz'),
+(551, 879, 'Firstborn of Saul''s two daughters'),
 (551, 880, 'Promised to David, given to Adriel'),
 (552, 881, 'Passed over when Samuel looks for the king'),
-(552, 882, 'Eldest of the three sons with Sauls army'),
-(552, 883, 'Jesses firstborn'),
+(552, 882, 'Eldest of the three sons with Saul''s army'),
+(552, 883, 'Jesse''s firstborn'),
 (553, 881, 'Passed over when Samuel looks for the king'),
-(553, 882, 'Second of the three sons with Sauls army'),
-(553, 883, 'Jesses second son'),
+(553, 882, 'Second of the three sons with Saul''s army'),
+(553, 883, 'Jesse''s second son'),
 (554, 881, 'Passed over when Samuel looks for the king'),
-(554, 882, 'Third of the three sons with Sauls army'),
-(554, 883, 'Jesses third son, named Shimma'),
-(555, 884, 'Sister of Jesses sons; mother of Abishai, Joab and Asahel'),
+(554, 882, 'Third of the three sons with Saul''s army'),
+(554, 883, 'Jesse''s third son, named Shimma'),
+(555, 884, 'Sister of Jesse''s sons; mother of Abishai, Joab and Asahel'),
 (555, 885, 'Mother of the three brothers'),
-(556, 884, 'Sister of Jesses sons; mother of Amasa'),
+(556, 884, 'Sister of Jesse''s sons; mother of Amasa'),
 (556, 886, 'Daughter of Nahash, sister of Zeruiah'),
-(557, 884, 'One of Zeruiahs three sons'),
+(557, 884, 'One of Zeruiah''s three sons'),
 (557, 885, 'One of the three sons of Zeruiah'),
-(558, 884, 'One of Zeruiahs three sons'),
+(558, 884, 'One of Zeruiah''s three sons'),
 (558, 885, 'Third of the three sons of Zeruiah'),
 (559, 884, 'Father of Amasa'),
 (559, 886, 'Called Ithra an Israelite'),
 (560, 884, 'Son of Abigail and Jether'),
-(560, 886, 'Made captain of Absaloms host'),
+(560, 886, 'Made captain of Absalom''s host'),
 (561, 887, 'Taken by David as a wife'),
-(561, 888, 'Mother of Amnon, Davids firstborn'),
+(561, 888, 'Mother of Amnon, David''s firstborn'),
 (562, 889, 'Mother of Absalom, daughter of Talmai king of Geshur'),
 (563, 890, 'Mother of Adonijah'),
 (563, 891, 'Adonijah the son of Haggith'),
-(564, 888, 'Davids firstborn, of Ahinoam the Jezreelitess'),
+(564, 888, 'David''s firstborn, of Ahinoam the Jezreelitess'),
 (564, 892, 'Listed first among the sons born at Hebron'),
 (564, 893, 'Loves his half-sister Tamar'),
-(565, 889, 'Davids second son, of Abigail the wife of Nabal'),
+(565, 889, 'David''s second son, of Abigail the wife of Nabal'),
 (565, 894, 'Listed as Daniel, second son'),
-(566, 893, 'Absaloms fair sister, loved by Amnon'),
-(566, 895, 'Named as the sister of Davids sons'),
+(566, 893, 'Absalom''s fair sister, loved by Amnon'),
+(566, 895, 'Named as the sister of David''s sons'),
 (567, 896, 'Mother of Rehoboam; an Ammonitess'),
 (568, 897, 'Bathsheba the daughter of Eliam'),
 (569, 898, 'Zadok the son of Ahitub'),
 (570, 900, 'Wife of Rehoboam; bore Abijah'),
-(570, 901, 'Abijahs mother, daughter of Abishalom'),
+(570, 901, 'Abijah''s mother, daughter of Abishalom'),
 (570, 902, 'Called Michaiah, daughter of Uriel of Gibeah'),
-(570, 903, 'Removed from being queen by Asa for making an idol'),
-(571, 904, 'Named as Jehoshaphats mother, daughter of Shilhi'),
-(572, 905, 'Named as Joashs mother'),
-(573, 906, 'Named as Amaziahs mother'),
-(574, 907, 'Named as Uzziahs mother'),
-(575, 908, 'Named as Jothams mother, daughter of Zadok'),
-(576, 909, 'Named as Hezekiahs mother, daughter of Zachariah'),
+(570, 903, 'Asa removed Maachah, called his "mother," from being queen for making an idol (often read as this Maacah, his grandmother)'),
+(571, 904, 'Named as Jehoshaphat''s mother, daughter of Shilhi'),
+(572, 905, 'Named as Joash''s mother'),
+(573, 906, 'Named as Amaziah''s mother'),
+(574, 907, 'Named as Uzziah''s mother'),
+(575, 908, 'Named as Jotham''s mother, daughter of Zadok'),
+(576, 909, 'Named as Hezekiah''s mother, daughter of Zachariah'),
 (576, 910, 'Called Abijah, daughter of Zechariah'),
-(577, 911, 'Named as Manassehs mother'),
-(578, 912, 'Named as Amons mother, daughter of Haruz of Jotbah'),
-(579, 913, 'Named as Josiahs mother, daughter of Adaiah of Boscath'),
-(580, 914, 'Named as Jehoahazs mother'),
-(580, 915, 'Named as Zedekiahs mother'),
-(581, 916, 'Named as Jehoiakims mother, daughter of Pedaiah of Rumah'),
-(582, 917, 'Named as Jehoiachins mother, daughter of Elnathan'),
+(577, 911, 'Named as Manasseh''s mother'),
+(578, 912, 'Named as Amon''s mother, daughter of Haruz of Jotbah'),
+(579, 913, 'Named as Josiah''s mother, daughter of Adaiah of Boscath'),
+(580, 914, 'Named as Jehoahaz''s mother'),
+(580, 915, 'Named as Zedekiah''s mother'),
+(581, 916, 'Named as Jehoiakim''s mother, daughter of Pedaiah of Rumah'),
+(582, 917, 'Named as Jehoiachin''s mother, daughter of Elnathan'),
 (582, 918, 'Taken captive to Babylon with her son'),
-(583, 919, 'Named as Elishas father, of Abel-meholah'),
-(584, 920, 'Named as Isaiahs father'),
+(583, 919, 'Named as Elisha''s father, of Abel-meholah'),
+(584, 920, 'Named as Isaiah''s father'),
 (585, 921, 'Taken by Isaiah to meet King Ahaz'),
 (586, 922, 'Born to Isaiah and the prophetess; given his sign-name'),
 (587, 922, 'The prophetess, mother of Maher-shalal-hash-baz'),
-(588, 923, 'Named as Jeremiahs father, one of the priests of Anathoth'),
-(589, 924, 'Named as Ezekiels father'),
+(588, 923, 'Named as Jeremiah''s father, one of the priests of Anathoth'),
+(589, 924, 'Named as Ezekiel''s father'),
 (590, 546, 'Jonah the son of Amittai, of Gath-hepher'),
-(590, 925, 'Named as Jonahs father'),
-(591, 926, 'Named as Hoseas father'),
+(590, 925, 'Named as Jonah''s father'),
+(591, 926, 'Named as Hosea''s father'),
 (592, 927, 'Daughter of Diblaim; Hosea marries her and she bears a son'),
-(593, 927, 'Named as Gomers father'),
-(594, 928, 'Named Jezreel at the Lords command'),
-(595, 929, 'Named Lo-ruhamah at the Lords command'),
+(593, 927, 'Named as Gomer''s father'),
+(594, 928, 'Named Jezreel at the Lord''s command'),
+(595, 929, 'Named Lo-ruhamah at the Lord''s command'),
 (596, 930, 'Born after Lo-ruhamah was weaned'),
-(596, 931, 'Named Lo-ammi at the Lords command'),
-(597, 932, 'Named as Joels father'),
-(598, 933, 'Named at the head of Zephaniahs line'),
-(599, 933, 'In Zephaniahs line, son of Hizkiah'),
-(600, 933, 'In Zephaniahs line, father of Cushi'),
-(601, 933, 'Named as Zephaniahs father');
+(596, 931, 'Named Lo-ammi at the Lord''s command'),
+(597, 932, 'Named as Joel''s father'),
+(598, 933, 'Named at the head of Zephaniah''s line'),
+(599, 933, 'In Zephaniah''s line, son of Hizkiah'),
+(600, 933, 'In Zephaniah''s line, father of Cushi'),
+(601, 933, 'Named as Zephaniah''s father'),
+(602, 934, 'Named as the prophet Zechariah''s grandfather');
 
 INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
-(602, 934, 'Named as the prophet Zechariahs grandfather'),
 (602, 935, 'Zechariah called "the son of Iddo"'),
-(603, 934, 'Named as Zechariahs father, son of Iddo'),
-(604, 936, 'Named as Ezras father, first in the line back to Aaron'),
-(605, 937, 'Named as Nehemiahs father'),
+(603, 934, 'Named as Zechariah''s father, son of Iddo'),
+(604, 936, 'First name in Ezra''s line back to Aaron (Ezra 7:1)'),
+(605, 937, 'Named as Nehemiah''s father'),
 (606, 938, 'Brings news of Jerusalem to Nehemiah'),
 (606, 939, 'Put in charge of Jerusalem'),
-(607, 940, 'Named as Esthers father and Mordecais uncle'),
+(607, 940, 'Named as Esther''s father and Mordecai''s uncle'),
 (607, 941, 'Esther the daughter of Abihail'),
-(608, 942, 'Named as Mordecais father, son of Shimei'),
-(609, 942, 'In Mordecais line, son of Kish'),
-(610, 942, 'Named at the head of Mordecais line'),
-(611, 943, 'Named as Hamans father'),
-(612, 944, 'Hamans wife, called with his friends'),
-(613, 945, 'Named as Baashas father'),
-(614, 946, 'Named as Jehus father, son of Nimshi'),
+(608, 942, 'Named as Mordecai''s father, son of Shimei'),
+(609, 942, 'In Mordecai''s line, son of Kish'),
+(610, 942, 'Named at the head of Mordecai''s line'),
+(611, 943, 'Named as Haman''s father'),
+(612, 944, 'Haman''s wife, called with his friends'),
+(613, 945, 'Named as Baasha''s father'),
+(614, 946, 'Named as Jehu''s father, son of Nimshi'),
 (615, 919, 'Jehu called the son of Nimshi'),
-(616, 947, 'Named as Shallums father'),
-(617, 948, 'Named as Menahems father'),
-(618, 949, 'Named as Pekahs father'),
-(619, 950, 'Named as Hosheas father'),
+(616, 947, 'Named as Shallum''s father'),
+(617, 948, 'Named as Menahem''s father'),
+(618, 949, 'Named as Pekah''s father'),
+(619, 950, 'Named as Hoshea''s father'),
 (620, 951, 'Husband of Jehosheba, who hid Joash'),
 (620, 952, 'Anointed Joash king'),
 (620, 953, 'Died at 130'),
@@ -2998,7 +3101,7 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (625, 960, 'Lifts up the head of Jehoiachin'),
 (626, 961, 'Not named; Daniel made third ruler of the kingdom'),
 (627, 962, 'Sends Tartan against Ashdod'),
-(628, 963, 'Reigns in his father Sennacheribs place'),
+(628, 963, 'Reigns in his father Sennacherib''s place'),
 (628, 964, 'The settlers say they were brought up in his days'),
 (640, 980, 'Jesus calls Peter Simon Bar-jona'),
 (640, 981, 'Simon the son of Jona'),
@@ -3296,7 +3399,7 @@ INSERT INTO event_scripture (event_id, scripture_id) VALUES
 (371, 810);
 
 -- ============================================================
--- RELATIONSHIPS (parentage lives in people.father_id / mother_id) (212)
+-- RELATIONSHIPS (parentage lives in people.father_id / mother_id) (213)
 -- ============================================================
 INSERT INTO person_relationships (person_id_1, person_id_2, relationship_type) VALUES
 (5, 58, 'contemporary'),
@@ -3443,6 +3546,7 @@ INSERT INTO person_relationships (person_id_1, person_id_2, relationship_type) V
 (555, 20, 'sibling'),
 (555, 556, 'sibling'),
 (556, 20, 'sibling'),
+(767, 768, 'sibling'),
 (1, 2, 'spouse'),
 (4, 5, 'spouse'),
 (4, 58, 'spouse'),
@@ -3499,10 +3603,10 @@ INSERT INTO person_relationships (person_id_1, person_id_2, relationship_type) V
 (541, 17, 'spouse'),
 (542, 543, 'spouse'),
 (544, 75, 'spouse'),
-(559, 556, 'spouse'),
-(561, 20, 'spouse');
+(559, 556, 'spouse');
 
 INSERT INTO person_relationships (person_id_1, person_id_2, relationship_type) VALUES
+(561, 20, 'spouse'),
 (562, 20, 'spouse'),
 (563, 20, 'spouse'),
 (620, 621, 'spouse'),
