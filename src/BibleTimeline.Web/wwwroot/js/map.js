@@ -140,6 +140,8 @@ const MapView = (() => {
             if (++tileErrors >= TILE_ERRORS_BEFORE_NOTICE) { notice.hidden = false; root.classList.add('is-offline'); }
         });
         map.on('zoomend moveend', scheduleLayout);
+        // Playback moves the camera; a reader who grabs the map takes it back.
+        map.on('dragstart', () => { if (journey && journey.playing) pause(); });
         map.on('click', () => { if (selected && !journey) Router.go('#/map'); });
 
         map.fitBounds(homeBounds(), { animate: false });   // markers need a view before they render
@@ -179,11 +181,15 @@ const MapView = (() => {
         else map.fitBounds(bounds, { ...opts, animate: false });
     }
 
-    // Centre a point in the part of the map the panel leaves free.
-    function centerOn(latlng, zoom, animate = true, duration = 0.9) {
+    // The map centre that puts a point in the middle of the part of the map the panel leaves free.
+    function centreFor(latlng, zoom) {
         const { tl, br } = insets();
         const p = map.project(latlng, zoom).subtract([(tl[0] - br[0]) / 2, (tl[1] - br[1]) / 2]);
-        const target = map.unproject(p, zoom);
+        return map.unproject(p, zoom);
+    }
+
+    function centerOn(latlng, zoom, animate = true, duration = 0.9) {
+        const target = centreFor(latlng, zoom);
         if (animate && !UI.reducedMotion()) map.flyTo(target, zoom, { duration });
         else map.setView(target, zoom, { animate: false });
     }
@@ -665,6 +671,7 @@ const MapView = (() => {
         if (journey.step >= journey.nodes.length - 1) goStep(0, { pan: true });
         journey.playing = true;
         refreshPlayButton();
+        Analytics.event('journey_play', { journey: journey.j.slug });
         journey.timer = setTimeout(advance, journey.step === 0 ? 700 : STEP_DWELL_MS);
     }
 
@@ -672,6 +679,7 @@ const MapView = (() => {
         if (!journey) return;
         clearTimeout(journey.timer);
         cancelAnimationFrame(journey.raf);
+        journey.leg = (journey.leg || 0) + 1;       // a leg waiting on its zoom must not start later
         if (!journey.playing) return;
         journey.playing = false;
         paintRoute(journey.step);
@@ -680,6 +688,11 @@ const MapView = (() => {
 
     // Travel to the next stop: the line draws while the map eases along it,
     // then the stepper catches up on arrival and we dwell on the stop.
+    //
+    // The camera is moved by raw pans, one per frame, in step with the line — never by a
+    // flyTo running alongside it. During a flyTo Leaflet scales the old drawing of the
+    // route layer and only re-projects it when the move ends, so a line redrawn mid-flight
+    // lands in the wrong place and drifts back. A raw pan keeps line and map in one frame.
     function advance() {
         const next = journey.step + 1;
         if (next >= journey.nodes.length) { pause(); return; }
@@ -695,16 +708,36 @@ const MapView = (() => {
             journey.timer = setTimeout(advance, STEP_DWELL_MS);
             return;
         }
-        const duration = leg.length ? Math.min(3200, 1300 + legSpan(leg) * 55) : 600;
-        if (leg.length) centerOn(target, Math.max(map.getZoom(), journey.fitZoom), true, duration / 1000);
-        const start = performance.now();
-        const tick = now => {
-            if (!journey || !journey.playing) return;
-            const t = Math.min(1, (now - start) / duration);
-            paintRoute(journey.step, t * t * (3 - 2 * t));
-            if (t < 1) journey.raf = requestAnimationFrame(tick); else finish();
+
+        const token = journey.leg = (journey.leg || 0) + 1;
+        const travel = () => {
+            if (!journey || !journey.playing || journey.leg !== token) return;
+            const duration = leg.length ? Math.min(3200, 1300 + legSpan(leg) * 55) : 600;
+            const zoom = map.getZoom();
+            const from = map.project(map.getCenter(), zoom);
+            const to = map.project(centreFor(target, zoom), zoom);
+            const start = performance.now();
+            const tick = now => {
+                if (!journey || !journey.playing) return;
+                const t = Math.min(1, (now - start) / duration);
+                const e = t * t * (3 - 2 * t);
+                const want = from.add(to.subtract(from).multiplyBy(e));
+                const delta = want.subtract(map.project(map.getCenter(), zoom)).round();
+                if (delta.x || delta.y) map.panBy(delta, { animate: false });
+                paintRoute(journey.step, e);
+                if (t < 1) journey.raf = requestAnimationFrame(tick); else finish();
+            };
+            journey.raf = requestAnimationFrame(tick);
         };
-        journey.raf = requestAnimationFrame(tick);
+
+        // Settle the zoom first (an ordinary animated zoom with no line drawing), then travel.
+        const zoom = Math.max(map.getZoom(), journey.fitZoom);
+        if (zoom !== map.getZoom()) {
+            map.once('moveend', travel);
+            map.setView(centreFor(journey.nodes[journey.step].latlng || target, zoom), zoom, { animate: true });
+        } else {
+            travel();
+        }
     }
 
     // Rough size of a leg in degrees, so long voyages take longer than short walks.

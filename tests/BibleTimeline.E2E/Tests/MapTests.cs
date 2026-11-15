@@ -40,4 +40,41 @@ public class MapTests : E2ETest
         await Expect(Page.GetByRole(AriaRole.Heading, new() { Name = name, Exact = true })).ToBeVisibleAsync();
         await Expect(Page.GetByRole(AriaRole.Button, new() { Name = "Close the place" })).ToBeVisibleAsync();
     }
+
+    // While a journey plays, the drawn line's tip must stay on the route. It once drifted up to
+    // 70px off it, because the map ran a flyTo alongside the line and Leaflet only re-projects the
+    // route layer when a fly ends.
+    [Test]
+    public async Task Playing_a_journey_keeps_the_drawn_line_on_the_route()
+    {
+        // The suite runs with reduced motion, which skips the animation this test is about.
+        await Page.EmulateMediaAsync(new() { ReducedMotion = ReducedMotion.NoPreference });
+        await Open("#/map/book-of-acts");
+        await WaitForMap();
+        await Page.EvaluateAsync(@"() => {
+            window.__drift = [];
+            const loop = () => {
+                const d = document.querySelector('.map-route-done'), a = document.querySelector('.map-route-ahead');
+                if (d && a && d.getTotalLength() > 0) {
+                    const q = d.getPointAtLength(d.getTotalLength());
+                    const tip = new DOMPoint(q.x, q.y).matrixTransform(d.getScreenCTM());
+                    const m = a.getScreenCTM(), len = a.getTotalLength();
+                    let best = Infinity;
+                    for (let i = 0; i <= 800; i++) {
+                        const r = a.getPointAtLength(len * i / 800);
+                        const s = new DOMPoint(r.x, r.y).matrixTransform(m);
+                        best = Math.min(best, Math.hypot(s.x - tip.x, s.y - tip.y));
+                    }
+                    window.__drift.push(best);
+                }
+                window.__driftRaf = requestAnimationFrame(loop);
+            };
+            loop();
+        }");
+        await Page.GetByRole(AriaRole.Button, new() { Name = "Play the journey" }).ClickAsync();
+        await Page.WaitForTimeoutAsync(14000);
+        var drift = await Page.EvaluateAsync<double[]>("() => { cancelAnimationFrame(window.__driftRaf); return window.__drift; }");
+        Assert.That(drift.Length, Is.GreaterThan(60), "the line should have been drawing for several seconds");
+        Assert.That(drift.Max(), Is.LessThan(6), "the tip of the drawn line left the route");
+    }
 }
