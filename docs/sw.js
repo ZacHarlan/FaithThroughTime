@@ -9,18 +9,21 @@
 // build-static.py replaces both names with content hashes: CACHE_NAME from the app's own
 // files, LIBRARY_CACHE from bibles/ and vendor/, so each is invalidated only by a change
 // to what it holds.
-const CACHE_NAME = 'ftt-791932a22004';
-const LIBRARY_CACHE = 'ftt-library-92bf78582589';
+const CACHE_NAME = 'ftt-f23106dfc5cf';
+const LIBRARY_CACHE = 'ftt-library-6d830f18bd14';
 
 const SHELL = [
     './',
     'css/base.css', 'css/home.css', 'css/timeline.css', 'css/tour.css', 'css/detail.css', 'css/meet.css',
     'css/family.css', 'css/map.css', 'css/read.css', 'css/search.css', 'css/share.css', 'css/about.css',
+    'css/study.css', 'css/find.css', 'css/plan.css', 'css/kings.css', 'css/parallel.css', 'css/prophecy.css', 'css/words.css',
     'vendor/d3.v7.min.js',
     'js/api.js', 'js/store.js', 'js/ui.js', 'js/app.js', 'js/analytics.js', 'js/bible.js', 'js/share.js', 'js/search.js',
     'js/detail.js', 'js/home.js', 'js/timeline.js', 'js/tour.js', 'js/meet.js', 'js/family.js',
-    'js/map.js', 'js/read.js', 'js/about.js',
+    'js/map.js', 'js/study.js', 'js/read.js', 'js/xrefs.js', 'js/parallel.js', 'js/prophecy.js', 'js/words.js',
+    'js/find.js', 'js/plan.js', 'js/kings.js', 'js/about.js',
     'data/dataset.json', 'data/tours.json', 'data/discoveries.json',
+    'data/parallels.json', 'data/prophecy.json', 'data/reading-plan.json', 'data/kings.json',
     'bibles/manifest.json',
     'manifest.json', 'icons/favicon.svg', 'icons/icon-192.png', 'icons/icon-512.png'
 ];

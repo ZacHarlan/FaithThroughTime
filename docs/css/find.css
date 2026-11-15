@@ -1,0 +1,51 @@
+/* find.css — search the words of Scripture. Tokens come from base.css. */
+
+.find-page { max-width: 54rem; }
+.find-hero { display: grid; gap: var(--s4); margin-bottom: var(--s6); }
+.find-hero h1 { font-size: clamp(2.4rem, 1.5rem + 3.6vw, 4.2rem); line-height: 1; letter-spacing: -.03em; }
+
+.find-form { display: flex; gap: var(--s3); margin-top: var(--s2); }
+.find-bar { position: relative; flex: 1; min-width: 0; }
+.find-bar > .icon { position: absolute; left: var(--s4); top: 13px; color: var(--text-faint); pointer-events: none; }
+.find-input { padding-left: calc(var(--s4) + 30px); border-radius: var(--r-pill); }
+.find-input::-webkit-search-cancel-button { filter: grayscale(1); }
+.find-options { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s3) var(--s4); }
+.find-scope { width: auto; min-width: 11rem; max-width: 100%; border-radius: var(--r-pill); }
+.find-versions .chip { min-height: 36px; padding: 0 var(--s4); }
+.find-tip { font-size: var(--fs-sm); max-width: 60ch; }
+
+.find-summary { font-family: var(--font-display); font-size: var(--fs-h2); line-height: 1.2; min-height: 1.2em; }
+.find-summary:empty { display: none; }
+.find-progress { margin-top: var(--s1); font-size: var(--fs-sm); }
+.find-books { margin-top: var(--s4); max-height: 8.5rem; overflow: auto; padding: 2px; }
+.find-books .chip { min-height: 36px; }
+.find-books .chip .icon { margin-left: -4px; }
+
+.find-list { margin-top: var(--s5); }
+.find-book-head {
+    display: flex; align-items: baseline; justify-content: space-between; gap: var(--s4);
+    margin: var(--s6) 0 var(--s1); padding-bottom: var(--s2);
+    border-bottom: 1px solid var(--line-strong); font-size: var(--fs-h3);
+}
+.find-book-head:first-child { margin-top: 0; }
+.find-book-n { font-family: var(--font-ui); font-size: var(--fs-xs); font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text-faint); }
+.find-hit {
+    display: grid; gap: 2px; padding: var(--s3) var(--s2); min-height: 44px;
+    border-bottom: 1px solid var(--line);
+    transition: background var(--t-fast) var(--ease), padding var(--t-med) var(--ease-out);
+}
+.find-hit:hover, .find-hit:focus-visible { background: var(--gold-soft); padding-left: var(--s4); }
+.find-ref { font-size: var(--fs-xs); font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--gold); }
+.find-text { text-wrap: pretty; }
+.find mark { background: var(--gold-soft); color: var(--gold-bright); box-shadow: 0 0 0 2px var(--gold-soft); border-radius: 3px; font-weight: 600; }
+.find-more { margin: var(--s5) 0 var(--s6); }
+
+.find-state { display: grid; gap: var(--s3); justify-items: start; max-width: 36rem; padding-top: var(--s5); }
+.find-state-actions { display: flex; flex-wrap: wrap; gap: var(--s3); margin-top: var(--s2); }
+
+@media (max-width: 760px) {
+    .find-form { flex-direction: column; }
+    .find-go { width: 100%; }
+    .find-scope { width: 100%; }
+    .find-books { max-height: 7rem; }
+}

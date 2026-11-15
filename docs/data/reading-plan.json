@@ -1,0 +1,3055 @@
+{
+ "title": "Reading the Bible in story order",
+ "notes": "Every chapter of the Bible is read once, in the order its story happened on this timeline: Scripture's own sequence first, then Ussher's Annals where Scripture does not fix it, as everywhere else on the site. Days are balanced by length (about 85 verses), and a chapter is never split. Genesis runs into Job, whom Ussher places at about 1635 BC, between Joseph and Moses. Psalm 90 comes with the death of Moses. David's psalms follow his life: those with a heading about Saul or Absalom sit beside those chapters, Psalms 105 and 96 with the ark and 1 Chronicles 16, the Asaph psalms beside Asaph's appointment, and the sons of Korah where Korah's descendants praise in 2 Chronicles 20. Psalm 22 is beside the cross, Psalm 16 beside Pentecost, and the Hallel (Psalms 113 to 118) beside the Last Supper. The Songs of Ascents and Psalm 107 come with the return from exile, Psalm 119 with Ezra reading the law, and Psalms 146 to 150 close the Old Testament story. Song of Solomon, Proverbs and Ecclesiastes sit with Solomon; Proverbs 25 to 31 come with Hezekiah, whose men copied them. Chronicles runs beside Samuel and Kings, and the first nine chapters of genealogy open David's story. Each prophet stands within the reigns his book names; Jeremiah and Ezekiel are interleaved, and Daniel is read in the order of its dates. Haggai, Zechariah, Ezra, Esther, Nehemiah and Malachi follow the Persian reigns. The four Gospels are woven into one account, whole chapters at a time. Acts carries Paul's letters where they were written, and James where the site dates it (about AD 49). Hebrews, the Peter and Jude letters, the letters of John and Revelation close the year. Some prophecy and poetry has no date, and those days carry no year.",
+ "days": [
+  {
+   "day": 1,
+   "passages": [
+    "Genesis 1–2"
+   ],
+   "title": "Creation: the six days and the garden",
+   "year": -4004
+  },
+  {
+   "day": 2,
+   "passages": [
+    "Genesis 3–6"
+   ],
+   "title": "The fall; Cain and Abel; Adam to Noah; the world before the flood",
+   "year": -4004
+  },
+  {
+   "day": 3,
+   "passages": [
+    "Genesis 7–9"
+   ],
+   "title": "The flood and God's covenant with Noah",
+   "year": -2349
+  },
+  {
+   "day": 4,
+   "passages": [
+    "Genesis 10–11"
+   ],
+   "title": "The nations, Babel, and the line to Abram",
+   "year": -2247
+  },
+  {
+   "day": 5,
+   "passages": [
+    "Genesis 12–14"
+   ],
+   "title": "Abram called to Canaan; Lot; Melchizedek",
+   "year": -1921
+  },
+  {
+   "day": 6,
+   "passages": [
+    "Genesis 15–17"
+   ],
+   "title": "God's covenant with Abram; Ishmael; circumcision",
+   "year": -1912
+  },
+  {
+   "day": 7,
+   "passages": [
+    "Genesis 18–19"
+   ],
+   "title": "The visitors at Mamre; Sodom destroyed",
+   "year": -1897
+  },
+  {
+   "day": 8,
+   "passages": [
+    "Genesis 20–23"
+   ],
+   "title": "Isaac born; Hagar and Ishmael sent away; Isaac bound on Moriah; Sarah's death",
+   "year": -1896
+  },
+  {
+   "day": 9,
+   "passages": [
+    "Genesis 24"
+   ],
+   "title": "A wife for Isaac",
+   "year": -1856
+  },
+  {
+   "day": 10,
+   "passages": [
+    "Genesis 25–26"
+   ],
+   "title": "Jacob and Esau; Isaac at Gerar",
+   "year": -1836
+  },
+  {
+   "day": 11,
+   "passages": [
+    "Genesis 27–28"
+   ],
+   "title": "Jacob takes the blessing and flees; Bethel",
+   "year": -1760
+  },
+  {
+   "day": 12,
+   "passages": [
+    "Genesis 29–30"
+   ],
+   "title": "Jacob in Haran: Leah, Rachel and the sons",
+   "year": -1753
+  },
+  {
+   "day": 13,
+   "passages": [
+    "Genesis 31–32"
+   ],
+   "title": "Jacob leaves Laban; wrestles at Peniel",
+   "year": -1739
+  },
+  {
+   "day": 14,
+   "passages": [
+    "Genesis 33–34"
+   ],
+   "title": "Jacob meets Esau; Dinah at Shechem",
+   "year": -1739
+  },
+  {
+   "day": 15,
+   "passages": [
+    "Genesis 35–36"
+   ],
+   "title": "Bethel again; Rachel's death; the line of Esau",
+   "year": -1730
+  },
+  {
+   "day": 16,
+   "passages": [
+    "Genesis 37, 39–40"
+   ],
+   "title": "Joseph sold into Egypt; Joseph in Potiphar's house and in prison",
+   "year": -1728
+  },
+  {
+   "day": 17,
+   "passages": [
+    "Genesis 41, 38"
+   ],
+   "title": "Pharaoh's dreams; Joseph made ruler; Judah and Tamar",
+   "year": -1715
+  },
+  {
+   "day": 18,
+   "passages": [
+    "Genesis 42–43"
+   ],
+   "title": "Joseph's brothers come to Egypt for grain",
+   "year": -1707
+  },
+  {
+   "day": 19,
+   "passages": [
+    "Genesis 44–45"
+   ],
+   "title": "The silver cup; Joseph reveals himself",
+   "year": -1706
+  },
+  {
+   "day": 20,
+   "passages": [
+    "Genesis 46–47"
+   ],
+   "title": "Israel goes down to Egypt",
+   "year": -1706
+  },
+  {
+   "day": 21,
+   "passages": [
+    "Genesis 48–50"
+   ],
+   "title": "Jacob blesses his sons and dies; Joseph's last words",
+   "year": -1689
+  },
+  {
+   "day": 22,
+   "passages": [
+    "Job 1–3"
+   ],
+   "title": "Job loses everything; Job curses the day of his birth",
+   "year": -1635
+  },
+  {
+   "day": 23,
+   "passages": [
+    "Job 4–7"
+   ],
+   "title": "Eliphaz speaks; Job answers Eliphaz",
+   "year": -1635
+  },
+  {
+   "day": 24,
+   "passages": [
+    "Job 8–11"
+   ],
+   "title": "Bildad speaks; Job answers; Job's complaint; Zophar speaks",
+   "year": -1635
+  },
+  {
+   "day": 25,
+   "passages": [
+    "Job 12–14"
+   ],
+   "title": "Job's reply: God's power and man's brief life",
+   "year": -1635
+  },
+  {
+   "day": 26,
+   "passages": [
+    "Job 15–17"
+   ],
+   "title": "Eliphaz again; Job pleads for a witness",
+   "year": -1635
+  },
+  {
+   "day": 27,
+   "passages": [
+    "Job 18–21"
+   ],
+   "title": "Bildad again; \"I know that my Redeemer lives\"; Zophar again; Job on the prosperity of the wicked",
+   "year": -1635
+  },
+  {
+   "day": 28,
+   "passages": [
+    "Job 22–24"
+   ],
+   "title": "Eliphaz accuses Job; Job longs to find God",
+   "year": -1635
+  },
+  {
+   "day": 29,
+   "passages": [
+    "Job 25–28"
+   ],
+   "title": "Bildad's last words; Job's reply; the hymn to wisdom",
+   "year": -1635
+  },
+  {
+   "day": 30,
+   "passages": [
+    "Job 29–31"
+   ],
+   "title": "Job's final defence",
+   "year": -1635
+  },
+  {
+   "day": 31,
+   "passages": [
+    "Job 32–35"
+   ],
+   "title": "Elihu begins to speak; Elihu on God's justice",
+   "year": -1635
+  },
+  {
+   "day": 32,
+   "passages": [
+    "Job 36–37"
+   ],
+   "title": "Elihu on God's greatness",
+   "year": -1635
+  },
+  {
+   "day": 33,
+   "passages": [
+    "Job 38–39"
+   ],
+   "title": "The LORD answers from the whirlwind",
+   "year": -1635
+  },
+  {
+   "day": 34,
+   "passages": [
+    "Job 40–42"
+   ],
+   "title": "The LORD's second answer; Job restored",
+   "year": -1635
+  },
+  {
+   "day": 35,
+   "passages": [
+    "Exodus 1–4"
+   ],
+   "title": "Israel oppressed; Moses born and flees to Midian; The burning bush; Moses sent",
+   "year": -1571
+  },
+  {
+   "day": 36,
+   "passages": [
+    "Exodus 5–8"
+   ],
+   "title": "Pharaoh refuses; God renews his promise; The first plagues: blood to flies",
+   "year": -1491
+  },
+  {
+   "day": 37,
+   "passages": [
+    "Exodus 9–10"
+   ],
+   "title": "Plagues on livestock, boils, hail, locusts and darkness",
+   "year": -1491
+  },
+  {
+   "day": 38,
+   "passages": [
+    "Exodus 11–14"
+   ],
+   "title": "The last plague and the first Passover; The firstborn; crossing the Red Sea",
+   "year": -1491
+  },
+  {
+   "day": 39,
+   "passages": [
+    "Exodus 15–16"
+   ],
+   "title": "The song of Moses; manna and quail",
+   "year": -1491
+  },
+  {
+   "day": 40,
+   "passages": [
+    "Exodus 17–20"
+   ],
+   "title": "Water from the rock; Amalek; Jethro's counsel; Israel at Sinai; the Ten Commandments",
+   "year": -1491
+  },
+  {
+   "day": 41,
+   "passages": [
+    "Exodus 21–24"
+   ],
+   "title": "Laws for life together; Justice, festivals; the covenant ratified",
+   "year": -1491
+  },
+  {
+   "day": 42,
+   "passages": [
+    "Exodus 25–26"
+   ],
+   "title": "Plans for the ark, table, lampstand and tabernacle",
+   "year": -1491
+  },
+  {
+   "day": 43,
+   "passages": [
+    "Exodus 27–28"
+   ],
+   "title": "The altar, the court and the priests' garments",
+   "year": -1491
+  },
+  {
+   "day": 44,
+   "passages": [
+    "Exodus 29–30"
+   ],
+   "title": "Consecrating the priests; incense and the atonement money",
+   "year": -1491
+  },
+  {
+   "day": 45,
+   "passages": [
+    "Exodus 31–34"
+   ],
+   "title": "Bezalel and the Sabbath; the golden calf; Moses pleads; the law renewed",
+   "year": -1491
+  },
+  {
+   "day": 46,
+   "passages": [
+    "Exodus 35–36"
+   ],
+   "title": "The people give and the work begins",
+   "year": -1490
+  },
+  {
+   "day": 47,
+   "passages": [
+    "Exodus 37–38"
+   ],
+   "title": "The ark, table, lampstand, altar and court made",
+   "year": -1490
+  },
+  {
+   "day": 48,
+   "passages": [
+    "Exodus 39–40"
+   ],
+   "title": "The tabernacle completed and filled with glory",
+   "year": -1490
+  },
+  {
+   "day": 49,
+   "passages": [
+    "Leviticus 1–5"
+   ],
+   "title": "Burnt, grain and peace offerings; Sin and guilt offerings",
+   "year": -1490
+  },
+  {
+   "day": 50,
+   "passages": [
+    "Leviticus 6–7"
+   ],
+   "title": "Instructions for the priests on the offerings",
+   "year": -1490
+  },
+  {
+   "day": 51,
+   "passages": [
+    "Leviticus 8–9"
+   ],
+   "title": "Aaron and his sons consecrated",
+   "year": -1490
+  },
+  {
+   "day": 52,
+   "passages": [
+    "Leviticus 10–11"
+   ],
+   "title": "Nadab and Abihu; clean and unclean animals",
+   "year": -1490
+  },
+  {
+   "day": 53,
+   "passages": [
+    "Leviticus 12–13"
+   ],
+   "title": "Childbirth; diseases of the skin",
+   "year": -1490
+  },
+  {
+   "day": 54,
+   "passages": [
+    "Leviticus 14"
+   ],
+   "title": "Cleansing from skin disease and from mildew",
+   "year": -1490
+  },
+  {
+   "day": 55,
+   "passages": [
+    "Leviticus 15–16"
+   ],
+   "title": "Bodily discharges; the Day of Atonement",
+   "year": -1490
+  },
+  {
+   "day": 56,
+   "passages": [
+    "Leviticus 17–20"
+   ],
+   "title": "Blood; unlawful relations; \"Be holy\"; penalties for sin",
+   "year": -1490
+  },
+  {
+   "day": 57,
+   "passages": [
+    "Leviticus 21–23"
+   ],
+   "title": "Holiness of the priests and the offerings; The appointed feasts",
+   "year": -1490
+  },
+  {
+   "day": 58,
+   "passages": [
+    "Leviticus 24–25"
+   ],
+   "title": "The lamps and bread; the Sabbath year and Jubilee",
+   "year": -1490
+  },
+  {
+   "day": 59,
+   "passages": [
+    "Leviticus 26–27"
+   ],
+   "title": "Blessings and curses; vows",
+   "year": -1490
+  },
+  {
+   "day": 60,
+   "passages": [
+    "Numbers 1–2"
+   ],
+   "title": "The first census and the camp",
+   "year": -1490
+  },
+  {
+   "day": 61,
+   "passages": [
+    "Numbers 3–4"
+   ],
+   "title": "The Levites and their duties",
+   "year": -1490
+  },
+  {
+   "day": 62,
+   "passages": [
+    "Numbers 5–6"
+   ],
+   "title": "Purity; the Nazirite; the priestly blessing",
+   "year": -1490
+  },
+  {
+   "day": 63,
+   "passages": [
+    "Numbers 7"
+   ],
+   "title": "The offerings of the tribal leaders",
+   "year": -1490
+  },
+  {
+   "day": 64,
+   "passages": [
+    "Numbers 8–11"
+   ],
+   "title": "The Levites set apart; the second Passover; The march from Sinai; complaints and quail",
+   "year": -1490
+  },
+  {
+   "day": 65,
+   "passages": [
+    "Numbers 12–13"
+   ],
+   "title": "Miriam and Aaron; the twelve spies",
+   "year": -1490
+  },
+  {
+   "day": 66,
+   "passages": [
+    "Numbers 14–15"
+   ],
+   "title": "Israel refuses to enter; more laws",
+   "year": -1490
+  },
+  {
+   "day": 67,
+   "passages": [
+    "Numbers 16–19"
+   ],
+   "title": "Korah's rebellion; Aaron's rod buds; The priests' portion; the red heifer",
+   "year": -1489
+  },
+  {
+   "day": 68,
+   "passages": [
+    "Numbers 20–21"
+   ],
+   "title": "Water from the rock; Aaron dies; the bronze serpent",
+   "year": -1452
+  },
+  {
+   "day": 69,
+   "passages": [
+    "Numbers 22–25"
+   ],
+   "title": "Balak sends for Balaam; Balaam's oracles; Israel at Baal-peor",
+   "year": -1452
+  },
+  {
+   "day": 70,
+   "passages": [
+    "Numbers 26–27"
+   ],
+   "title": "The second census; Joshua chosen",
+   "year": -1452
+  },
+  {
+   "day": 71,
+   "passages": [
+    "Numbers 28–30"
+   ],
+   "title": "Offerings and vows",
+   "year": -1452
+  },
+  {
+   "day": 72,
+   "passages": [
+    "Numbers 31–32"
+   ],
+   "title": "War on Midian; Reuben and Gad settle east of the Jordan",
+   "year": -1452
+  },
+  {
+   "day": 73,
+   "passages": [
+    "Numbers 33–34"
+   ],
+   "title": "The stages of the journey; the boundaries of the land",
+   "year": -1451
+  },
+  {
+   "day": 74,
+   "passages": [
+    "Numbers 35–36"
+   ],
+   "title": "Cities of refuge; the daughters of Zelophehad",
+   "year": -1451
+  },
+  {
+   "day": 75,
+   "passages": [
+    "Deuteronomy 1–2"
+   ],
+   "title": "Moses recalls the journey from Horeb",
+   "year": -1451
+  },
+  {
+   "day": 76,
+   "passages": [
+    "Deuteronomy 3–4"
+   ],
+   "title": "The conquest east of the Jordan; \"Hear the statutes\"",
+   "year": -1451
+  },
+  {
+   "day": 77,
+   "passages": [
+    "Deuteronomy 5–6"
+   ],
+   "title": "The Ten Commandments repeated; \"Hear, O Israel\"",
+   "year": -1451
+  },
+  {
+   "day": 78,
+   "passages": [
+    "Deuteronomy 7–9"
+   ],
+   "title": "Driving out the nations; remember the wilderness",
+   "year": -1451
+  },
+  {
+   "day": 79,
+   "passages": [
+    "Deuteronomy 10–13"
+   ],
+   "title": "\"What does the LORD require?\"; blessing and curse; One place of worship; warnings against idolatry",
+   "year": -1451
+  },
+  {
+   "day": 80,
+   "passages": [
+    "Deuteronomy 14–16"
+   ],
+   "title": "Clean food, tithes, the sabbatical year and the feasts",
+   "year": -1451
+  },
+  {
+   "day": 81,
+   "passages": [
+    "Deuteronomy 17–19"
+   ],
+   "title": "Judges, king and prophet; cities of refuge",
+   "year": -1451
+  },
+  {
+   "day": 82,
+   "passages": [
+    "Deuteronomy 20–22"
+   ],
+   "title": "Laws of war and of daily life",
+   "year": -1451
+  },
+  {
+   "day": 83,
+   "passages": [
+    "Deuteronomy 23–27"
+   ],
+   "title": "Laws of the assembly, of kindness and of justice; Firstfruits; the covenant at Ebal and Gerizim",
+   "year": -1451
+  },
+  {
+   "day": 84,
+   "passages": [
+    "Deuteronomy 28–30"
+   ],
+   "title": "Blessings and curses; \"Choose life\"",
+   "year": -1451
+  },
+  {
+   "day": 85,
+   "passages": [
+    "Deuteronomy 31–32"
+   ],
+   "title": "Joshua commissioned; the song of Moses",
+   "year": -1451
+  },
+  {
+   "day": 86,
+   "passages": [
+    "Deuteronomy 33–34",
+    "Psalm 90",
+    "Joshua 1–2"
+   ],
+   "title": "Moses blesses the tribes and dies; his prayer, Psalm 90; Joshua commissioned; Rahab and the spies",
+   "year": -1451
+  },
+  {
+   "day": 87,
+   "passages": [
+    "Joshua 3–6"
+   ],
+   "title": "Crossing the Jordan; Circumcision at Gilgal; the fall of Jericho",
+   "year": -1451
+  },
+  {
+   "day": 88,
+   "passages": [
+    "Joshua 7–8"
+   ],
+   "title": "Achan's sin; Ai taken",
+   "year": -1451
+  },
+  {
+   "day": 89,
+   "passages": [
+    "Joshua 9–10"
+   ],
+   "title": "The Gibeonites; the sun stands still",
+   "year": -1451
+  },
+  {
+   "day": 90,
+   "passages": [
+    "Joshua 11–14"
+   ],
+   "title": "The northern campaign; the kings defeated; The land divided; Caleb's inheritance",
+   "year": -1451
+  },
+  {
+   "day": 91,
+   "passages": [
+    "Joshua 15–17"
+   ],
+   "title": "The territory of Judah; Ephraim and Manasseh",
+   "year": -1444
+  },
+  {
+   "day": 92,
+   "passages": [
+    "Joshua 18–19"
+   ],
+   "title": "The remaining tribes at Shiloh",
+   "year": -1444
+  },
+  {
+   "day": 93,
+   "passages": [
+    "Joshua 20–22"
+   ],
+   "title": "Cities of refuge; the Levites' towns; The altar by the Jordan",
+   "year": -1444
+  },
+  {
+   "day": 94,
+   "passages": [
+    "Joshua 23–24",
+    "Judges 1–2"
+   ],
+   "title": "Joshua's farewell; the covenant at Shechem; Incomplete conquest; the cycle of the judges begins",
+   "year": -1443
+  },
+  {
+   "day": 95,
+   "passages": [
+    "Judges 3–5"
+   ],
+   "title": "Othniel, Ehud and Shamgar; Deborah and Barak defeat Sisera",
+   "year": -1443
+  },
+  {
+   "day": 96,
+   "passages": [
+    "Judges 6–7"
+   ],
+   "title": "Gideon and the three hundred",
+   "year": -1245
+  },
+  {
+   "day": 97,
+   "passages": [
+    "Judges 8–9"
+   ],
+   "title": "Gideon's last victories and his ephod; Abimelech",
+   "year": -1245
+  },
+  {
+   "day": 98,
+   "passages": [
+    "Judges 10–13"
+   ],
+   "title": "Jephthah; Ephraim's quarrel; Samson's birth",
+   "year": -1188
+  },
+  {
+   "day": 99,
+   "passages": [
+    "Judges 14–16"
+   ],
+   "title": "Samson",
+   "year": -1155
+  },
+  {
+   "day": 100,
+   "passages": [
+    "Judges 17–19"
+   ],
+   "title": "Micah's idols and the Danites; The Levite and his concubine at Gibeah",
+   "year": null
+  },
+  {
+   "day": 101,
+   "passages": [
+    "Judges 20–21"
+   ],
+   "title": "War with Benjamin",
+   "year": null
+  },
+  {
+   "day": 102,
+   "passages": [
+    "Ruth 1–4"
+   ],
+   "title": "Naomi and Ruth; Ruth gleans in Boaz's field; Ruth and Boaz; the line of David",
+   "year": -1172
+  },
+  {
+   "day": 103,
+   "passages": [
+    "1 Samuel 1–4"
+   ],
+   "title": "Hannah's prayer; Samuel born; Eli's sons; The call of Samuel; the ark captured",
+   "year": -1150
+  },
+  {
+   "day": 104,
+   "passages": [
+    "1 Samuel 5–9"
+   ],
+   "title": "The ark among the Philistines; Samuel judges at Mizpah; Israel asks for a king; Saul meets Samuel",
+   "year": -1116
+  },
+  {
+   "day": 105,
+   "passages": [
+    "1 Samuel 10–13"
+   ],
+   "title": "Saul anointed and chosen; Jabesh-gilead rescued; Samuel's farewell; Saul offers the sacrifice",
+   "year": -1095
+  },
+  {
+   "day": 106,
+   "passages": [
+    "1 Samuel 14–15"
+   ],
+   "title": "Jonathan's raid and Saul's rash oath; Saul rejected as king",
+   "year": -1079
+  },
+  {
+   "day": 107,
+   "passages": [
+    "1 Samuel 16–17",
+    "Psalms 8, 19, 23"
+   ],
+   "title": "David anointed; Goliath; psalms of creation, law and the Shepherd",
+   "year": -1063
+  },
+  {
+   "day": 108,
+   "passages": [
+    "1 Samuel 18–19",
+    "Psalms 58–59"
+   ],
+   "title": "Saul's jealousy; David escapes; Psalms 58–59",
+   "year": -1062
+  },
+  {
+   "day": 109,
+   "passages": [
+    "1 Samuel 20–21",
+    "Psalms 34, 56"
+   ],
+   "title": "Jonathan's covenant with David; David at Nob and Gath; Psalms 34 and 56",
+   "year": -1062
+  },
+  {
+   "day": 110,
+   "passages": [
+    "1 Samuel 22",
+    "Psalms 52, 57, 142",
+    "1 Samuel 23–24",
+    "Psalms 54, 63"
+   ],
+   "title": "Adullam; Doeg and the priests; Psalms 52, 57, 142; David at Keilah and En-gedi; Psalms 54 and 63",
+   "year": -1061
+  },
+  {
+   "day": 111,
+   "passages": [
+    "1 Samuel 25–27",
+    "Psalm 7"
+   ],
+   "title": "Nabal and Abigail; David spares Saul; David among the Philistines; Psalm 7",
+   "year": -1058
+  },
+  {
+   "day": 112,
+   "passages": [
+    "Psalms 4–6, 9–10"
+   ],
+   "title": "Psalms of David: prayers at night and morning, cries for justice",
+   "year": -1057
+  },
+  {
+   "day": 113,
+   "passages": [
+    "1 Samuel 28–30"
+   ],
+   "title": "Saul and the medium at Endor; Ziklag",
+   "year": -1055
+  },
+  {
+   "day": 114,
+   "passages": [
+    "Psalms 11–14, 17, 53",
+    "1 Samuel 31"
+   ],
+   "title": "Psalms of David: refuge, lament, and the fool who says there is no God; Saul's death at Gilboa",
+   "year": -1055
+  },
+  {
+   "day": 115,
+   "passages": [
+    "1 Chronicles 1–2"
+   ],
+   "title": "The family records, Adam to Israel's sons",
+   "year": null
+  },
+  {
+   "day": 116,
+   "passages": [
+    "1 Chronicles 3–4"
+   ],
+   "title": "The house of David; Judah, Simeon and others",
+   "year": null
+  },
+  {
+   "day": 117,
+   "passages": [
+    "1 Chronicles 5–6"
+   ],
+   "title": "Reuben, Gad, Manasseh and Levi",
+   "year": null
+  },
+  {
+   "day": 118,
+   "passages": [
+    "1 Chronicles 7–9"
+   ],
+   "title": "The other tribes; those who settled in Jerusalem",
+   "year": null
+  },
+  {
+   "day": 119,
+   "passages": [
+    "1 Chronicles 10",
+    "2 Samuel 1–2"
+   ],
+   "title": "Saul's death retold; David mourns and is anointed at Hebron",
+   "year": -1055
+  },
+  {
+   "day": 120,
+   "passages": [
+    "2 Samuel 3–4"
+   ],
+   "title": "Abner and Ish-bosheth die",
+   "year": -1048
+  },
+  {
+   "day": 121,
+   "passages": [
+    "2 Samuel 5",
+    "1 Chronicles 11"
+   ],
+   "title": "David king over all Israel; Jerusalem taken",
+   "year": -1048
+  },
+  {
+   "day": 122,
+   "passages": [
+    "1 Chronicles 12–13",
+    "2 Samuel 6",
+    "1 Chronicles 14",
+    "Psalms 15, 24"
+   ],
+   "title": "Warriors rally to David; the first attempt to move the ark; The ark enters Jerusalem; Psalms 15 and 24",
+   "year": -1048
+  },
+  {
+   "day": 123,
+   "passages": [
+    "1 Chronicles 15",
+    "Psalms 66–68"
+   ],
+   "title": "The Levites carry the ark; Psalms 66–68",
+   "year": -1045
+  },
+  {
+   "day": 124,
+   "passages": [
+    "1 Chronicles 16",
+    "Psalm 105"
+   ],
+   "title": "David's song of thanks at the ark",
+   "year": -1045
+  },
+  {
+   "day": 125,
+   "passages": [
+    "Psalms 50, 96, 106"
+   ],
+   "title": "Psalms 50, 96 and 106: God the judge; a new song; his mercy endures",
+   "year": -1045
+  },
+  {
+   "day": 126,
+   "passages": [
+    "Psalms 73–77"
+   ],
+   "title": "Psalms of Asaph, David's chief singer: God the judge",
+   "year": -1045
+  },
+  {
+   "day": 127,
+   "passages": [
+    "Psalm 78"
+   ],
+   "title": "Asaph's psalm: the history of Israel",
+   "year": -1045
+  },
+  {
+   "day": 128,
+   "passages": [
+    "Psalms 79–83"
+   ],
+   "title": "Psalms of Asaph: prayers for a broken nation",
+   "year": -1045
+  },
+  {
+   "day": 129,
+   "passages": [
+    "2 Samuel 7",
+    "1 Chronicles 17",
+    "Psalm 110"
+   ],
+   "title": "God's covenant with David",
+   "year": -1044
+  },
+  {
+   "day": 130,
+   "passages": [
+    "Psalms 1–2, 89"
+   ],
+   "title": "The blessed man, the anointed king, the covenant with David",
+   "year": -1044
+  },
+  {
+   "day": 131,
+   "passages": [
+    "2 Samuel 8–10",
+    "1 Chronicles 18–19"
+   ],
+   "title": "David's victories",
+   "year": -1040
+  },
+  {
+   "day": 132,
+   "passages": [
+    "Psalms 20–21, 60",
+    "2 Samuel 11–12",
+    "1 Chronicles 20"
+   ],
+   "title": "Psalms of David: the king and his battles; David and Bathsheba; Nathan's rebuke",
+   "year": -1040
+  },
+  {
+   "day": 133,
+   "passages": [
+    "Psalms 32, 51",
+    "2 Samuel 13–14"
+   ],
+   "title": "David repents: Psalms 32 and 51; Amnon and Absalom",
+   "year": -1035
+  },
+  {
+   "day": 134,
+   "passages": [
+    "Psalms 25–29"
+   ],
+   "title": "Psalms of David: guidance, integrity, and God's voice",
+   "year": -1030
+  },
+  {
+   "day": 135,
+   "passages": [
+    "2 Samuel 15–16",
+    "Psalm 3"
+   ],
+   "title": "Absalom's revolt; David flees; Psalm 3",
+   "year": -1023
+  },
+  {
+   "day": 136,
+   "passages": [
+    "2 Samuel 17–18"
+   ],
+   "title": "Ahithophel's counsel; Absalom's death",
+   "year": -1023
+  },
+  {
+   "day": 137,
+   "passages": [
+    "2 Samuel 19–20"
+   ],
+   "title": "David returns; Sheba's revolt",
+   "year": -1023
+  },
+  {
+   "day": 138,
+   "passages": [
+    "Psalms 31, 55, 61–62, 64"
+   ],
+   "title": "Psalms of David: trust and betrayal",
+   "year": -1023
+  },
+  {
+   "day": 139,
+   "passages": [
+    "2 Samuel 21",
+    "Psalms 33, 35–37"
+   ],
+   "title": "The Gibeonites avenged; Psalms 33 and 35–37",
+   "year": -1018
+  },
+  {
+   "day": 140,
+   "passages": [
+    "2 Samuel 22",
+    "Psalm 18"
+   ],
+   "title": "David's song of deliverance",
+   "year": -1017
+  },
+  {
+   "day": 141,
+   "passages": [
+    "2 Samuel 23–24",
+    "1 Chronicles 21"
+   ],
+   "title": "David's last words and his mighty men; David's census and the plague",
+   "year": -1017
+  },
+  {
+   "day": 142,
+   "passages": [
+    "Psalms 30, 38–41"
+   ],
+   "title": "Psalms 30 and 38–41: dedication, repentance and healing",
+   "year": -1017
+  },
+  {
+   "day": 143,
+   "passages": [
+    "1 Chronicles 22–23",
+    "Psalms 65, 86"
+   ],
+   "title": "David prepares for the temple; Psalms 65 and 86",
+   "year": -1015
+  },
+  {
+   "day": 144,
+   "passages": [
+    "1 Chronicles 24–25",
+    "Psalms 84–85"
+   ],
+   "title": "Priests and singers divided; Psalms of Korah",
+   "year": -1015
+  },
+  {
+   "day": 145,
+   "passages": [
+    "1 Chronicles 26–27",
+    "Psalms 87–88"
+   ],
+   "title": "Gatekeepers, officers and treasurers; Psalms 87–88",
+   "year": -1015
+  },
+  {
+   "day": 146,
+   "passages": [
+    "Psalms 101, 103, 108–109"
+   ],
+   "title": "Psalms of David: a king's resolve and God's mercy",
+   "year": -1015
+  },
+  {
+   "day": 147,
+   "passages": [
+    "1 Chronicles 28–29",
+    "Psalms 138–139"
+   ],
+   "title": "David charges Solomon; his prayer of thanks",
+   "year": -1015
+  },
+  {
+   "day": 148,
+   "passages": [
+    "Psalms 140–141, 143–145"
+   ],
+   "title": "Psalms of David: prayers and praise",
+   "year": -1015
+  },
+  {
+   "day": 149,
+   "passages": [
+    "1 Kings 1–2"
+   ],
+   "title": "David's last days; Solomon crowned",
+   "year": -1015
+  },
+  {
+   "day": 150,
+   "passages": [
+    "Psalms 69–71"
+   ],
+   "title": "Psalms 69–71: the cry of the weary and the aged",
+   "year": -1015
+  },
+  {
+   "day": 151,
+   "passages": [
+    "1 Kings 3–4",
+    "2 Chronicles 1"
+   ],
+   "title": "Solomon asks for wisdom",
+   "year": -1013
+  },
+  {
+   "day": 152,
+   "passages": [
+    "Psalm 72",
+    "Song of Solomon 1–4"
+   ],
+   "title": "A psalm for Solomon; the Song of Solomon begins",
+   "year": -1013
+  },
+  {
+   "day": 153,
+   "passages": [
+    "Song of Solomon 5–8"
+   ],
+   "title": "The Song of Solomon concludes",
+   "year": null
+  },
+  {
+   "day": 154,
+   "passages": [
+    "Proverbs 1–3"
+   ],
+   "title": "Proverbs: the call of wisdom",
+   "year": null
+  },
+  {
+   "day": 155,
+   "passages": [
+    "Proverbs 4–6"
+   ],
+   "title": "Proverbs: a father's teaching",
+   "year": null
+  },
+  {
+   "day": 156,
+   "passages": [
+    "Proverbs 7–9"
+   ],
+   "title": "Proverbs: Folly and Wisdom call",
+   "year": null
+  },
+  {
+   "day": 157,
+   "passages": [
+    "1 Kings 5–6",
+    "2 Chronicles 2"
+   ],
+   "title": "Solomon builds the temple",
+   "year": -1012
+  },
+  {
+   "day": 158,
+   "passages": [
+    "1 Kings 7",
+    "2 Chronicles 3–4"
+   ],
+   "title": "The temple furnishings",
+   "year": -1012
+  },
+  {
+   "day": 159,
+   "passages": [
+    "1 Kings 8",
+    "2 Chronicles 5"
+   ],
+   "title": "The ark brought into the temple",
+   "year": -1004
+  },
+  {
+   "day": 160,
+   "passages": [
+    "2 Chronicles 6–7"
+   ],
+   "title": "Solomon's prayer of dedication; fire from heaven",
+   "year": -1004
+  },
+  {
+   "day": 161,
+   "passages": [
+    "Psalms 91–95, 97–100"
+   ],
+   "title": "Psalms 91–95: refuge, Sabbath praise and a call to worship; Psalms 97–100: the LORD reigns; shout for joy",
+   "year": -1004
+  },
+  {
+   "day": 162,
+   "passages": [
+    "1 Kings 9–10",
+    "2 Chronicles 8"
+   ],
+   "title": "God appears to Solomon again; the queen of Sheba",
+   "year": -1000
+  },
+  {
+   "day": 163,
+   "passages": [
+    "2 Chronicles 9",
+    "Psalms 102, 104"
+   ],
+   "title": "Solomon's wealth and the end of his reign; Psalm 102, the prayer of the afflicted; Psalm 104, the Creator's works",
+   "year": -1000
+  },
+  {
+   "day": 164,
+   "passages": [
+    "Proverbs 10–12"
+   ],
+   "title": "Proverbs of Solomon: the righteous and the wicked",
+   "year": null
+  },
+  {
+   "day": 165,
+   "passages": [
+    "Proverbs 13–15"
+   ],
+   "title": "Proverbs of Solomon: wisdom and speech",
+   "year": null
+  },
+  {
+   "day": 166,
+   "passages": [
+    "Proverbs 16–18"
+   ],
+   "title": "Proverbs of Solomon: plans and the tongue",
+   "year": null
+  },
+  {
+   "day": 167,
+   "passages": [
+    "Proverbs 19–21"
+   ],
+   "title": "Proverbs of Solomon: the poor, the king, the heart",
+   "year": null
+  },
+  {
+   "day": 168,
+   "passages": [
+    "Proverbs 22–24"
+   ],
+   "title": "Proverbs: thirty sayings of the wise",
+   "year": null
+  },
+  {
+   "day": 169,
+   "passages": [
+    "1 Kings 11",
+    "Ecclesiastes 1–3"
+   ],
+   "title": "Solomon's wives and the LORD's judgment; The Preacher: vanity; a time for everything",
+   "year": -985
+  },
+  {
+   "day": 170,
+   "passages": [
+    "Ecclesiastes 4–9"
+   ],
+   "title": "The Preacher: toil, wealth and the fear of God; wisdom and death",
+   "year": -975
+  },
+  {
+   "day": 171,
+   "passages": [
+    "Ecclesiastes 10–12",
+    "1 Kings 12",
+    "2 Chronicles 10–11"
+   ],
+   "title": "The Preacher: \"Remember your Creator\"; The kingdom divides",
+   "year": -975
+  },
+  {
+   "day": 172,
+   "passages": [
+    "1 Kings 13–14",
+    "2 Chronicles 12–13"
+   ],
+   "title": "Jeroboam's calves; the man of God from Judah; Ahijah's word; Shishak invades; Abijah defeats Jeroboam",
+   "year": -975
+  },
+  {
+   "day": 173,
+   "passages": [
+    "1 Kings 15",
+    "2 Chronicles 14–15",
+    "1 Kings 16",
+    "2 Chronicles 16"
+   ],
+   "title": "Asa's reforms; Baasha; Baasha, Elah, Zimri, Omri and Ahab",
+   "year": -941
+  },
+  {
+   "day": 174,
+   "passages": [
+    "1 Kings 17–18"
+   ],
+   "title": "Elijah and the widow; Carmel",
+   "year": -910
+  },
+  {
+   "day": 175,
+   "passages": [
+    "1 Kings 19–21",
+    "2 Chronicles 17"
+   ],
+   "title": "Elijah at Horeb; Ahab and Ben-hadad; Naboth's vineyard; Jehoshaphat's early reign",
+   "year": -904
+  },
+  {
+   "day": 176,
+   "passages": [
+    "1 Kings 22",
+    "2 Chronicles 18"
+   ],
+   "title": "Micaiah; the death of Ahab",
+   "year": -897
+  },
+  {
+   "day": 177,
+   "passages": [
+    "2 Chronicles 19–20",
+    "Psalms 42–45"
+   ],
+   "title": "Jehoshaphat's reforms; the LORD fights for Judah; Psalms of the sons of Korah: thirst for God",
+   "year": -897
+  },
+  {
+   "day": 178,
+   "passages": [
+    "Psalms 46–49",
+    "2 Kings 1–2"
+   ],
+   "title": "Psalms of the sons of Korah: God our refuge; Elijah taken up; Elisha succeeds him",
+   "year": -897
+  },
+  {
+   "day": 179,
+   "passages": [
+    "2 Kings 3–4"
+   ],
+   "title": "War against Moab; Elisha's miracles",
+   "year": -895
+  },
+  {
+   "day": 180,
+   "passages": [
+    "2 Kings 5–6"
+   ],
+   "title": "Naaman healed; Elisha and the Arameans",
+   "year": -890
+  },
+  {
+   "day": 181,
+   "passages": [
+    "2 Kings 7–8",
+    "2 Chronicles 21"
+   ],
+   "title": "The siege of Samaria lifted; Jehoram of Judah",
+   "year": -885
+  },
+  {
+   "day": 182,
+   "passages": [
+    "2 Kings 9–10"
+   ],
+   "title": "Jehu's revolt",
+   "year": -884
+  },
+  {
+   "day": 183,
+   "passages": [
+    "2 Kings 11",
+    "2 Chronicles 22–23",
+    "2 Kings 12",
+    "2 Chronicles 24"
+   ],
+   "title": "Athaliah; Joash crowned by Jehoiada; Joash repairs the temple",
+   "year": -884
+  },
+  {
+   "day": 184,
+   "passages": [
+    "2 Kings 13–14",
+    "2 Chronicles 25"
+   ],
+   "title": "Jehoash, Amaziah and Jeroboam II",
+   "year": -800
+  },
+  {
+   "day": 185,
+   "passages": [
+    "Joel 1–3"
+   ],
+   "title": "Joel: the locusts and the day of the LORD",
+   "year": -808
+  },
+  {
+   "day": 186,
+   "passages": [
+    "Amos 1–6"
+   ],
+   "title": "Amos: judgment on the nations and on Israel; \"Prepare to meet your God\"",
+   "year": -787
+  },
+  {
+   "day": 187,
+   "passages": [
+    "Amos 7–9",
+    "Hosea 1–3"
+   ],
+   "title": "Amos: visions and restoration; Hosea's marriage and Israel's unfaithfulness",
+   "year": -787
+  },
+  {
+   "day": 188,
+   "passages": [
+    "Hosea 4–11"
+   ],
+   "title": "Hosea: the LORD's case against Israel; \"Out of Egypt I called my son\"",
+   "year": -785
+  },
+  {
+   "day": 189,
+   "passages": [
+    "Hosea 12–14",
+    "Jonah 1–4"
+   ],
+   "title": "Hosea: \"Return to the LORD\"; Jonah and Nineveh",
+   "year": -785
+  },
+  {
+   "day": 190,
+   "passages": [
+    "2 Kings 15",
+    "2 Chronicles 26–27"
+   ],
+   "title": "Uzziah and Jotham",
+   "year": -771
+  },
+  {
+   "day": 191,
+   "passages": [
+    "Isaiah 1–5"
+   ],
+   "title": "Isaiah: the LORD's case against Judah; judgment on the vineyard",
+   "year": -759
+  },
+  {
+   "day": 192,
+   "passages": [
+    "Isaiah 6",
+    "Micah 1–3"
+   ],
+   "title": "Isaiah's vision; Micah's warnings",
+   "year": -759
+  },
+  {
+   "day": 193,
+   "passages": [
+    "Micah 4–7",
+    "2 Kings 16",
+    "2 Chronicles 28"
+   ],
+   "title": "Micah: the mountain of the LORD; Bethlehem; \"What does the LORD require?\"; Ahaz and the Syro-Ephraimite war",
+   "year": -759
+  },
+  {
+   "day": 194,
+   "passages": [
+    "Isaiah 7–10"
+   ],
+   "title": "Isaiah: the sign of Immanuel; \"Unto us a child is born\"; Assyria the rod",
+   "year": -742
+  },
+  {
+   "day": 195,
+   "passages": [
+    "Isaiah 11–14"
+   ],
+   "title": "Isaiah: the shoot of Jesse; Babylon and Assyria fall",
+   "year": -742
+  },
+  {
+   "day": 196,
+   "passages": [
+    "Isaiah 15–19"
+   ],
+   "title": "Isaiah: oracles on Moab, Damascus, Cush and Egypt",
+   "year": -726
+  },
+  {
+   "day": 197,
+   "passages": [
+    "2 Chronicles 29–31"
+   ],
+   "title": "Hezekiah restores the temple and the Passover",
+   "year": -726
+  },
+  {
+   "day": 198,
+   "passages": [
+    "2 Kings 17",
+    "Isaiah 20–23"
+   ],
+   "title": "The fall of Samaria; Isaiah: Egypt, Babylon, Edom, Jerusalem and Tyre",
+   "year": -721
+  },
+  {
+   "day": 199,
+   "passages": [
+    "Isaiah 24–27"
+   ],
+   "title": "Isaiah: the LORD's judgment and the feast for all peoples",
+   "year": -713
+  },
+  {
+   "day": 200,
+   "passages": [
+    "Isaiah 28–30"
+   ],
+   "title": "Isaiah: woe to the scoffers and to those who trust Egypt",
+   "year": -713
+  },
+  {
+   "day": 201,
+   "passages": [
+    "Isaiah 31–35"
+   ],
+   "title": "Isaiah: the king in his beauty; the highway of holiness",
+   "year": -713
+  },
+  {
+   "day": 202,
+   "passages": [
+    "2 Kings 18",
+    "Isaiah 36"
+   ],
+   "title": "Sennacherib's envoy at Jerusalem",
+   "year": -713
+  },
+  {
+   "day": 203,
+   "passages": [
+    "2 Kings 19",
+    "Isaiah 37"
+   ],
+   "title": "The LORD saves Jerusalem",
+   "year": -713
+  },
+  {
+   "day": 204,
+   "passages": [
+    "2 Kings 20",
+    "Isaiah 38–39",
+    "2 Chronicles 32"
+   ],
+   "title": "Hezekiah's illness and the Babylonian envoys; The Chronicles account of Sennacherib and Hezekiah",
+   "year": -713
+  },
+  {
+   "day": 205,
+   "passages": [
+    "Isaiah 40–41"
+   ],
+   "title": "Isaiah: \"Comfort my people\"",
+   "year": null
+  },
+  {
+   "day": 206,
+   "passages": [
+    "Isaiah 42–45"
+   ],
+   "title": "Isaiah: the Servant; \"I have redeemed you\"; no God besides me; Cyrus named",
+   "year": null
+  },
+  {
+   "day": 207,
+   "passages": [
+    "Isaiah 46–51"
+   ],
+   "title": "Isaiah: the idols of Babylon; Babylon falls; the Servant of the nations; Zion comforted",
+   "year": null
+  },
+  {
+   "day": 208,
+   "passages": [
+    "Isaiah 52–57"
+   ],
+   "title": "Isaiah: the suffering Servant; \"Come, all who thirst\"",
+   "year": null
+  },
+  {
+   "day": 209,
+   "passages": [
+    "Isaiah 58–62"
+   ],
+   "title": "Isaiah: true fasting; sin separates; the glory of Zion; good news to the poor",
+   "year": null
+  },
+  {
+   "day": 210,
+   "passages": [
+    "Isaiah 63–66"
+   ],
+   "title": "Isaiah: the day of vengeance; a prayer for mercy; new heavens and a new earth",
+   "year": null
+  },
+  {
+   "day": 211,
+   "passages": [
+    "Proverbs 25–27"
+   ],
+   "title": "Proverbs copied by Hezekiah's men",
+   "year": -726
+  },
+  {
+   "day": 212,
+   "passages": [
+    "Proverbs 28–31"
+   ],
+   "title": "Proverbs: rulers and the righteous; Agur; Lemuel",
+   "year": -726
+  },
+  {
+   "day": 213,
+   "passages": [
+    "Nahum 1–3",
+    "2 Kings 21",
+    "2 Chronicles 33"
+   ],
+   "title": "Nahum: the fall of Nineveh foretold; Manasseh",
+   "year": -712
+  },
+  {
+   "day": 214,
+   "passages": [
+    "Zephaniah 1–3",
+    "Jeremiah 1–2"
+   ],
+   "title": "Zephaniah: the day of the LORD; Jeremiah called; Israel forsakes the fountain",
+   "year": -629
+  },
+  {
+   "day": 215,
+   "passages": [
+    "Jeremiah 3–6"
+   ],
+   "title": "Jeremiah: \"Return, faithless Israel\"; no one honest in Jerusalem",
+   "year": -629
+  },
+  {
+   "day": 216,
+   "passages": [
+    "2 Kings 22",
+    "2 Chronicles 34",
+    "2 Kings 23",
+    "2 Chronicles 35"
+   ],
+   "title": "Josiah finds the book of the law; Josiah's reforms and Passover; his death",
+   "year": -624
+  },
+  {
+   "day": 217,
+   "passages": [
+    "Habakkuk 1–3",
+    "Jeremiah 7, 26"
+   ],
+   "title": "Habakkuk: \"The righteous shall live by faith\"; The temple sermon and its aftermath",
+   "year": -609
+  },
+  {
+   "day": 218,
+   "passages": [
+    "Jeremiah 8–11"
+   ],
+   "title": "Jeremiah: the weeping prophet; idols and the broken covenant",
+   "year": -610
+  },
+  {
+   "day": 219,
+   "passages": [
+    "Jeremiah 12–14"
+   ],
+   "title": "Jeremiah: the linen belt, drought",
+   "year": -610
+  },
+  {
+   "day": 220,
+   "passages": [
+    "Jeremiah 15–17"
+   ],
+   "title": "Jeremiah: the prophet's lament; the Sabbath",
+   "year": -610
+  },
+  {
+   "day": 221,
+   "passages": [
+    "Jeremiah 18–20"
+   ],
+   "title": "Jeremiah: the potter; the broken flask; the stocks",
+   "year": -610
+  },
+  {
+   "day": 222,
+   "passages": [
+    "Jeremiah 25, 35–36"
+   ],
+   "title": "Seventy years; the Rechabites; the scroll burned",
+   "year": -606
+  },
+  {
+   "day": 223,
+   "passages": [
+    "Jeremiah 45–48"
+   ],
+   "title": "Baruch; Egypt defeated at Carchemish; Oracles on Philistia and Moab",
+   "year": -606
+  },
+  {
+   "day": 224,
+   "passages": [
+    "Jeremiah 49",
+    "Daniel 1–2"
+   ],
+   "title": "Oracles on Ammon, Edom, Damascus, Kedar and Elam; Daniel in Babylon; Nebuchadnezzar's dream",
+   "year": -606
+  },
+  {
+   "day": 225,
+   "passages": [
+    "2 Kings 24",
+    "Jeremiah 22–23"
+   ],
+   "title": "Jehoiachin exiled; the righteous Branch",
+   "year": -599
+  },
+  {
+   "day": 226,
+   "passages": [
+    "Jeremiah 24",
+    "Ezekiel 1–3"
+   ],
+   "title": "Two baskets of figs; Ezekiel's vision and call",
+   "year": -599
+  },
+  {
+   "day": 227,
+   "passages": [
+    "Ezekiel 4–7"
+   ],
+   "title": "Ezekiel acts out the siege",
+   "year": -595
+  },
+  {
+   "day": 228,
+   "passages": [
+    "Ezekiel 8–11"
+   ],
+   "title": "Ezekiel's vision of the temple; the glory departs",
+   "year": -595
+  },
+  {
+   "day": 229,
+   "passages": [
+    "Ezekiel 12–14"
+   ],
+   "title": "Ezekiel: signs of exile; false prophets",
+   "year": -595
+  },
+  {
+   "day": 230,
+   "passages": [
+    "Ezekiel 15–16"
+   ],
+   "title": "Ezekiel: the vine; Jerusalem the unfaithful bride",
+   "year": -595
+  },
+  {
+   "day": 231,
+   "passages": [
+    "Ezekiel 17–19"
+   ],
+   "title": "Ezekiel: the eagles; \"the soul who sins shall die\"",
+   "year": -595
+  },
+  {
+   "day": 232,
+   "passages": [
+    "Jeremiah 27–30"
+   ],
+   "title": "The yoke; Hananiah; Letter to the exiles; the promise of restoration",
+   "year": -595
+  },
+  {
+   "day": 233,
+   "passages": [
+    "Jeremiah 50–51"
+   ],
+   "title": "Jeremiah: Babylon will fall; the judgment on Babylon",
+   "year": -595
+  },
+  {
+   "day": 234,
+   "passages": [
+    "Ezekiel 20–22"
+   ],
+   "title": "Ezekiel: Israel's history of rebellion; the sword; Jerusalem's sins",
+   "year": -590
+  },
+  {
+   "day": 235,
+   "passages": [
+    "Ezekiel 23–24"
+   ],
+   "title": "Ezekiel: two sisters; the boiling pot",
+   "year": -590
+  },
+  {
+   "day": 236,
+   "passages": [
+    "Jeremiah 31–32"
+   ],
+   "title": "The new covenant; Jeremiah buys a field",
+   "year": -589
+  },
+  {
+   "day": 237,
+   "passages": [
+    "Jeremiah 33–34, 21, 37–38"
+   ],
+   "title": "Jeremiah: hope; the freed slaves taken back; Zedekiah and Jeremiah; Jeremiah in the cistern",
+   "year": -589
+  },
+  {
+   "day": 238,
+   "passages": [
+    "Ezekiel 25–27"
+   ],
+   "title": "Ezekiel: oracles on Ammon, Moab, Edom, Philistia and Tyre",
+   "year": -588
+  },
+  {
+   "day": 239,
+   "passages": [
+    "Ezekiel 28–32"
+   ],
+   "title": "Ezekiel: Tyre's king; Egypt; Egypt the felled cedar and the descent to the pit",
+   "year": -588
+  },
+  {
+   "day": 240,
+   "passages": [
+    "2 Kings 25",
+    "2 Chronicles 36",
+    "Jeremiah 52"
+   ],
+   "title": "The fall of Jerusalem",
+   "year": -588
+  },
+  {
+   "day": 241,
+   "passages": [
+    "Jeremiah 39–44"
+   ],
+   "title": "Jerusalem taken; Gedaliah assassinated; The remnant flees to Egypt",
+   "year": -588
+  },
+  {
+   "day": 242,
+   "passages": [
+    "Lamentations 1–3"
+   ],
+   "title": "Lament over Jerusalem; \"Great is your faithfulness\"",
+   "year": -588
+  },
+  {
+   "day": 243,
+   "passages": [
+    "Lamentations 4–5",
+    "Psalm 137",
+    "Obadiah 1"
+   ],
+   "title": "Lament over Jerusalem; \"By the waters of Babylon\"; Obadiah: judgment on Edom",
+   "year": -588
+  },
+  {
+   "day": 244,
+   "passages": [
+    "Ezekiel 33–34"
+   ],
+   "title": "Ezekiel: the watchman; shepherds of Israel",
+   "year": -588
+  },
+  {
+   "day": 245,
+   "passages": [
+    "Ezekiel 35–37"
+   ],
+   "title": "Ezekiel: the valley of dry bones",
+   "year": -588
+  },
+  {
+   "day": 246,
+   "passages": [
+    "Ezekiel 38–39"
+   ],
+   "title": "Ezekiel: Gog and Magog",
+   "year": -588
+  },
+  {
+   "day": 247,
+   "passages": [
+    "Daniel 3–4"
+   ],
+   "title": "The fiery furnace; Nebuchadnezzar's tree and humbling",
+   "year": -580
+  },
+  {
+   "day": 248,
+   "passages": [
+    "Ezekiel 40–42"
+   ],
+   "title": "Ezekiel's vision of the new temple",
+   "year": -574
+  },
+  {
+   "day": 249,
+   "passages": [
+    "Ezekiel 43–46"
+   ],
+   "title": "The glory returns; Ezekiel: the prince and the offerings",
+   "year": -574
+  },
+  {
+   "day": 250,
+   "passages": [
+    "Ezekiel 47–48",
+    "Daniel 7"
+   ],
+   "title": "The river from the temple; the new land; Daniel: four beasts and the Son of Man",
+   "year": -574
+  },
+  {
+   "day": 251,
+   "passages": [
+    "Daniel 8, 5–6"
+   ],
+   "title": "Daniel: the ram and the goat; The writing on the wall; the lions' den",
+   "year": -553
+  },
+  {
+   "day": 252,
+   "passages": [
+    "Daniel 9–12"
+   ],
+   "title": "Daniel's prayer and the seventy weeks; Daniel's last vision",
+   "year": -538
+  },
+  {
+   "day": 253,
+   "passages": [
+    "Ezra 1–2",
+    "Psalm 107"
+   ],
+   "title": "Cyrus's decree; the exiles return; Psalm 107",
+   "year": -537
+  },
+  {
+   "day": 254,
+   "passages": [
+    "Ezra 3",
+    "Psalms 120–126"
+   ],
+   "title": "The altar and the temple foundation; Songs of Ascents 120–126",
+   "year": -536
+  },
+  {
+   "day": 255,
+   "passages": [
+    "Ezra 4",
+    "Psalms 127–134"
+   ],
+   "title": "Opposition to the rebuilding; Songs of Ascents 127–134",
+   "year": -536
+  },
+  {
+   "day": 256,
+   "passages": [
+    "Haggai 1–2",
+    "Ezra 5",
+    "Zechariah 1–4"
+   ],
+   "title": "Haggai urges the work on; the work resumes; Zechariah: visions of the horses, the measuring line and the lampstand",
+   "year": -520
+  },
+  {
+   "day": 257,
+   "passages": [
+    "Zechariah 5–8",
+    "Ezra 6",
+    "Psalms 111–112"
+   ],
+   "title": "Zechariah: the flying scroll; the four chariots; fasting and feasting; The temple completed and dedicated; Psalms 111–112",
+   "year": -518
+  },
+  {
+   "day": 258,
+   "passages": [
+    "Zechariah 9–14"
+   ],
+   "title": "Zechariah: the king on a donkey; the pierced one",
+   "year": -515
+  },
+  {
+   "day": 259,
+   "passages": [
+    "Psalms 135–136",
+    "Esther 1–3"
+   ],
+   "title": "Psalms 135–136: praise the LORD, whose mercy endures forever; Esther becomes queen; Haman's plot",
+   "year": -515
+  },
+  {
+   "day": 260,
+   "passages": [
+    "Esther 4–10"
+   ],
+   "title": "Esther's courage; Haman undone; The Jews saved; Purim",
+   "year": -473
+  },
+  {
+   "day": 261,
+   "passages": [
+    "Ezra 7–8"
+   ],
+   "title": "Ezra comes to Jerusalem",
+   "year": -458
+  },
+  {
+   "day": 262,
+   "passages": [
+    "Ezra 9–10"
+   ],
+   "title": "Ezra's prayer and the mixed marriages",
+   "year": -458
+  },
+  {
+   "day": 263,
+   "passages": [
+    "Nehemiah 1–3"
+   ],
+   "title": "Nehemiah's prayer; the wall's builders",
+   "year": -445
+  },
+  {
+   "day": 264,
+   "passages": [
+    "Nehemiah 4–6"
+   ],
+   "title": "Opposition; the wall finished",
+   "year": -445
+  },
+  {
+   "day": 265,
+   "passages": [
+    "Nehemiah 7–8"
+   ],
+   "title": "The list of returnees; Ezra reads the law",
+   "year": -445
+  },
+  {
+   "day": 266,
+   "passages": [
+    "Nehemiah 9–10"
+   ],
+   "title": "The confession and the covenant",
+   "year": -445
+  },
+  {
+   "day": 267,
+   "passages": [
+    "Psalm 119"
+   ],
+   "title": "Psalm 119: the law of the LORD",
+   "year": -445
+  },
+  {
+   "day": 268,
+   "passages": [
+    "Nehemiah 11–12"
+   ],
+   "title": "The city repopulated; the wall dedicated",
+   "year": -445
+  },
+  {
+   "day": 269,
+   "passages": [
+    "Psalms 146–150"
+   ],
+   "title": "Psalms 146–150: \"Praise the LORD!\"",
+   "year": -445
+  },
+  {
+   "day": 270,
+   "passages": [
+    "Nehemiah 13",
+    "Malachi 1–4"
+   ],
+   "title": "Nehemiah's reforms; Malachi: the messenger and the day of the LORD",
+   "year": -432
+  },
+  {
+   "day": 271,
+   "passages": [
+    "Luke 1"
+   ],
+   "title": "Gabriel's announcements; John the Baptist is born",
+   "year": -5
+  },
+  {
+   "day": 272,
+   "passages": [
+    "Matthew 1",
+    "Luke 2",
+    "Matthew 2"
+   ],
+   "title": "The genealogy and birth of Jesus; the shepherds; the boy in the temple; The Magi; the flight to Egypt",
+   "year": -5
+  },
+  {
+   "day": 273,
+   "passages": [
+    "Matthew 3",
+    "Luke 3",
+    "John 1"
+   ],
+   "title": "John the Baptist; Jesus is baptized; The Word became flesh; the first disciples",
+   "year": 27
+  },
+  {
+   "day": 274,
+   "passages": [
+    "Matthew 4",
+    "Luke 4"
+   ],
+   "title": "The temptation; Jesus begins in Galilee; rejected at Nazareth",
+   "year": 27
+  },
+  {
+   "day": 275,
+   "passages": [
+    "John 2–3"
+   ],
+   "title": "Water into wine; the temple cleansed; Nicodemus",
+   "year": 30
+  },
+  {
+   "day": 276,
+   "passages": [
+    "John 4",
+    "Mark 1"
+   ],
+   "title": "The woman at the well; the official's son; Teaching and healing at Capernaum",
+   "year": 30
+  },
+  {
+   "day": 277,
+   "passages": [
+    "Luke 5",
+    "Mark 2–3"
+   ],
+   "title": "The great catch; the paralytic; Levi's feast; Lord of the Sabbath; the twelve chosen",
+   "year": 31
+  },
+  {
+   "day": 278,
+   "passages": [
+    "John 5",
+    "Matthew 5"
+   ],
+   "title": "Healing at Bethesda; the Son's authority; The Sermon on the Mount: Beatitudes and the law",
+   "year": 31
+  },
+  {
+   "day": 279,
+   "passages": [
+    "Matthew 6–7"
+   ],
+   "title": "The Sermon on the Mount: prayer, anxiety, the two builders",
+   "year": 31
+  },
+  {
+   "day": 280,
+   "passages": [
+    "Luke 6",
+    "Matthew 8"
+   ],
+   "title": "The Sermon on the Plain; Healings; the storm calmed",
+   "year": 31
+  },
+  {
+   "day": 281,
+   "passages": [
+    "Luke 7",
+    "Matthew 9"
+   ],
+   "title": "The centurion's servant; the widow's son at Nain; the sinful woman; The paralytic; Matthew called; Jairus' daughter",
+   "year": 31
+  },
+  {
+   "day": 282,
+   "passages": [
+    "Mark 4–5"
+   ],
+   "title": "Parables of the sower and seeds; the storm; The Gerasene demoniac; Jairus' daughter; the woman who touched his cloak",
+   "year": 31
+  },
+  {
+   "day": 283,
+   "passages": [
+    "Luke 8",
+    "Matthew 10"
+   ],
+   "title": "Women who followed Jesus; parables; healings; The Twelve sent out",
+   "year": 31
+  },
+  {
+   "day": 284,
+   "passages": [
+    "Matthew 11–12"
+   ],
+   "title": "John's question; woes; Sabbath controversies",
+   "year": 31
+  },
+  {
+   "day": 285,
+   "passages": [
+    "Matthew 13"
+   ],
+   "title": "The parables of the kingdom",
+   "year": 32
+  },
+  {
+   "day": 286,
+   "passages": [
+    "Mark 6",
+    "Matthew 14"
+   ],
+   "title": "Nazareth rejects Jesus; the five thousand fed; John the Baptist beheaded; Jesus walks on the water",
+   "year": 32
+  },
+  {
+   "day": 287,
+   "passages": [
+    "John 6"
+   ],
+   "title": "The bread of life",
+   "year": 32
+  },
+  {
+   "day": 288,
+   "passages": [
+    "Matthew 15",
+    "Mark 7"
+   ],
+   "title": "Clean and unclean; the Canaanite woman; the four thousand; Tradition and the heart; the deaf man healed",
+   "year": 32
+  },
+  {
+   "day": 289,
+   "passages": [
+    "Mark 8",
+    "Matthew 16–17"
+   ],
+   "title": "The four thousand; Peter's confession; \"You are the Christ\"; the transfiguration",
+   "year": 32
+  },
+  {
+   "day": 290,
+   "passages": [
+    "Luke 9"
+   ],
+   "title": "The Twelve sent; the cost of following",
+   "year": 32
+  },
+  {
+   "day": 291,
+   "passages": [
+    "Mark 9",
+    "Matthew 18"
+   ],
+   "title": "The transfiguration and the boy with a spirit; Greatness, forgiveness and the lost sheep",
+   "year": 32
+  },
+  {
+   "day": 292,
+   "passages": [
+    "John 7–8"
+   ],
+   "title": "Jesus at the Feast of Tabernacles; The woman caught in adultery; \"Before Abraham was, I am\"",
+   "year": 32
+  },
+  {
+   "day": 293,
+   "passages": [
+    "John 9–10"
+   ],
+   "title": "The man born blind; The Good Shepherd",
+   "year": 32
+  },
+  {
+   "day": 294,
+   "passages": [
+    "Luke 10–11"
+   ],
+   "title": "The seventy-two; the good Samaritan; Mary and Martha; The Lord's Prayer; woes on the Pharisees",
+   "year": 32
+  },
+  {
+   "day": 295,
+   "passages": [
+    "Luke 12–13"
+   ],
+   "title": "Warnings and watchfulness; Repent; the narrow door; lament over Jerusalem",
+   "year": 33
+  },
+  {
+   "day": 296,
+   "passages": [
+    "Luke 14–15"
+   ],
+   "title": "The great banquet; the lost sheep, coin and son",
+   "year": 33
+  },
+  {
+   "day": 297,
+   "passages": [
+    "Luke 16–17"
+   ],
+   "title": "The rich man and Lazarus; ten lepers",
+   "year": 33
+  },
+  {
+   "day": 298,
+   "passages": [
+    "John 11",
+    "Luke 18"
+   ],
+   "title": "The raising of Lazarus; The persistent widow; the rich young ruler",
+   "year": 33
+  },
+  {
+   "day": 299,
+   "passages": [
+    "Matthew 19–20",
+    "Mark 10"
+   ],
+   "title": "Marriage; the rich young man; the workers in the vineyard; Divorce; children; James and John's request",
+   "year": 33
+  },
+  {
+   "day": 300,
+   "passages": [
+    "Luke 19",
+    "John 12"
+   ],
+   "title": "Zacchaeus; the parable of the minas; The anointing at Bethany; the entry into Jerusalem",
+   "year": 33
+  },
+  {
+   "day": 301,
+   "passages": [
+    "Matthew 21",
+    "Mark 11"
+   ],
+   "title": "The entry into Jerusalem; the temple cleansed; The fig tree; Jesus' authority challenged",
+   "year": 33
+  },
+  {
+   "day": 302,
+   "passages": [
+    "Matthew 22–23"
+   ],
+   "title": "The wedding feast; the greatest commandment; Woes on the scribes and Pharisees",
+   "year": 33
+  },
+  {
+   "day": 303,
+   "passages": [
+    "Mark 12",
+    "Luke 20"
+   ],
+   "title": "The tenants; Caesar's coin; the widow's mite; Questions in the temple",
+   "year": 33
+  },
+  {
+   "day": 304,
+   "passages": [
+    "Luke 21",
+    "Matthew 24"
+   ],
+   "title": "The widow's offering; signs of the end; The Olivet discourse",
+   "year": 33
+  },
+  {
+   "day": 305,
+   "passages": [
+    "Matthew 25",
+    "Mark 13"
+   ],
+   "title": "The virgins, the talents and the sheep and goats; The Olivet discourse",
+   "year": 33
+  },
+  {
+   "day": 306,
+   "passages": [
+    "Matthew 26"
+   ],
+   "title": "The Last Supper; Gethsemane; the arrest",
+   "year": 33
+  },
+  {
+   "day": 307,
+   "passages": [
+    "Psalms 113–118"
+   ],
+   "title": "The Hallel psalms, sung at the Passover meal",
+   "year": 33
+  },
+  {
+   "day": 308,
+   "passages": [
+    "Mark 14"
+   ],
+   "title": "The anointing; the Last Supper; Peter's denial foretold",
+   "year": 33
+  },
+  {
+   "day": 309,
+   "passages": [
+    "Luke 22"
+   ],
+   "title": "The Last Supper; Gethsemane; Peter denies Jesus",
+   "year": 33
+  },
+  {
+   "day": 310,
+   "passages": [
+    "John 13–15"
+   ],
+   "title": "The washing of the disciples' feet; \"I am the way\"; the vine",
+   "year": 33
+  },
+  {
+   "day": 311,
+   "passages": [
+    "John 16–18"
+   ],
+   "title": "The Spirit's coming; Jesus' prayer; The arrest and trial before Pilate",
+   "year": 33
+  },
+  {
+   "day": 312,
+   "passages": [
+    "Matthew 27",
+    "Psalm 22"
+   ],
+   "title": "The crucifixion and burial; Psalm 22",
+   "year": 33
+  },
+  {
+   "day": 313,
+   "passages": [
+    "Mark 15",
+    "Luke 23"
+   ],
+   "title": "Pilate; the crucifixion; Jesus before Herod and Pilate; the cross",
+   "year": 33
+  },
+  {
+   "day": 314,
+   "passages": [
+    "John 19",
+    "Matthew 28",
+    "Mark 16"
+   ],
+   "title": "The crucifixion and burial; The resurrection and the Great Commission",
+   "year": 33
+  },
+  {
+   "day": 315,
+   "passages": [
+    "Luke 24",
+    "John 20–21"
+   ],
+   "title": "The empty tomb; the road to Emmaus; Thomas; breakfast by the sea; \"Feed my sheep\"",
+   "year": 33
+  },
+  {
+   "day": 316,
+   "passages": [
+    "Acts 1–2",
+    "Psalm 16"
+   ],
+   "title": "The Ascension; Pentecost",
+   "year": 33
+  },
+  {
+   "day": 317,
+   "passages": [
+    "Acts 3–4"
+   ],
+   "title": "The lame man healed; Peter and John before the council",
+   "year": 33
+  },
+  {
+   "day": 318,
+   "passages": [
+    "Acts 5–7"
+   ],
+   "title": "Ananias and Sapphira; the Seven chosen; Stephen's speech and martyrdom",
+   "year": 33
+  },
+  {
+   "day": 319,
+   "passages": [
+    "Acts 8–9"
+   ],
+   "title": "Philip in Samaria; the Ethiopian official; Saul meets Jesus on the Damascus road",
+   "year": 34
+  },
+  {
+   "day": 320,
+   "passages": [
+    "Acts 10–12"
+   ],
+   "title": "Peter and Cornelius; The church at Antioch; Herod persecutes the church",
+   "year": 40
+  },
+  {
+   "day": 321,
+   "passages": [
+    "Acts 13–14"
+   ],
+   "title": "Paul's first missionary journey",
+   "year": 45
+  },
+  {
+   "day": 322,
+   "passages": [
+    "James 1–2"
+   ],
+   "title": "James: faith and works",
+   "year": 49
+  },
+  {
+   "day": 323,
+   "passages": [
+    "James 3–5",
+    "Acts 15"
+   ],
+   "title": "James: the tongue, wealth, patience; The council at Jerusalem",
+   "year": 49
+  },
+  {
+   "day": 324,
+   "passages": [
+    "Acts 16–17"
+   ],
+   "title": "Paul's second journey: Philippi; Thessalonica, Berea and Athens",
+   "year": 53
+  },
+  {
+   "day": 325,
+   "passages": [
+    "1 Thessalonians 1–5"
+   ],
+   "title": "Paul writes to the Thessalonians; The Lord's coming; living in hope",
+   "year": 54
+  },
+  {
+   "day": 326,
+   "passages": [
+    "Acts 18",
+    "2 Thessalonians 1–3"
+   ],
+   "title": "Paul in Corinth; A second letter to the Thessalonians",
+   "year": 54
+  },
+  {
+   "day": 327,
+   "passages": [
+    "Acts 19",
+    "Galatians 1–2"
+   ],
+   "title": "Paul in Ephesus; Galatians: the gospel Paul received",
+   "year": 57
+  },
+  {
+   "day": 328,
+   "passages": [
+    "Galatians 3–6"
+   ],
+   "title": "Galatians: justified by faith; freedom and the Spirit",
+   "year": 58
+  },
+  {
+   "day": 329,
+   "passages": [
+    "1 Corinthians 1–4"
+   ],
+   "title": "1 Corinthians: divisions in the church",
+   "year": 59
+  },
+  {
+   "day": 330,
+   "passages": [
+    "1 Corinthians 5–7"
+   ],
+   "title": "1 Corinthians: immorality, lawsuits and marriage",
+   "year": 59
+  },
+  {
+   "day": 331,
+   "passages": [
+    "1 Corinthians 8–11"
+   ],
+   "title": "1 Corinthians: food offered to idols; Paul's example; head coverings and the Lord's Supper",
+   "year": 59
+  },
+  {
+   "day": 332,
+   "passages": [
+    "1 Corinthians 12–14"
+   ],
+   "title": "1 Corinthians: spiritual gifts and love",
+   "year": 59
+  },
+  {
+   "day": 333,
+   "passages": [
+    "1 Corinthians 15–16"
+   ],
+   "title": "1 Corinthians: the resurrection; the collection",
+   "year": 59
+  },
+  {
+   "day": 334,
+   "passages": [
+    "Acts 20",
+    "2 Corinthians 1–4"
+   ],
+   "title": "Paul in Macedonia and Greece; farewell at Miletus; 2 Corinthians: comfort; treasure in jars of clay",
+   "year": 60
+  },
+  {
+   "day": 335,
+   "passages": [
+    "2 Corinthians 5–9"
+   ],
+   "title": "2 Corinthians: the ministry of reconciliation; the collection for the saints",
+   "year": 60
+  },
+  {
+   "day": 336,
+   "passages": [
+    "2 Corinthians 10–13"
+   ],
+   "title": "2 Corinthians: Paul defends his ministry; the thorn in the flesh",
+   "year": 60
+  },
+  {
+   "day": 337,
+   "passages": [
+    "Romans 1–3"
+   ],
+   "title": "Romans: all have sinned",
+   "year": 60
+  },
+  {
+   "day": 338,
+   "passages": [
+    "Romans 4–5"
+   ],
+   "title": "Romans: justified by faith",
+   "year": 60
+  },
+  {
+   "day": 339,
+   "passages": [
+    "Romans 6–8"
+   ],
+   "title": "Romans: new life in the Spirit",
+   "year": 60
+  },
+  {
+   "day": 340,
+   "passages": [
+    "Romans 9–11"
+   ],
+   "title": "Romans: God's plan for Israel",
+   "year": 60
+  },
+  {
+   "day": 341,
+   "passages": [
+    "Romans 12–16"
+   ],
+   "title": "Romans: a living sacrifice; the state; the weak and the strong; greetings",
+   "year": 60
+  },
+  {
+   "day": 342,
+   "passages": [
+    "Acts 21–23"
+   ],
+   "title": "Paul arrested in Jerusalem",
+   "year": 60
+  },
+  {
+   "day": 343,
+   "passages": [
+    "Acts 24–26"
+   ],
+   "title": "Paul before Felix, Festus and Agrippa",
+   "year": 60
+  },
+  {
+   "day": 344,
+   "passages": [
+    "Acts 27–28"
+   ],
+   "title": "Shipwreck and arrival at Rome",
+   "year": 62
+  },
+  {
+   "day": 345,
+   "passages": [
+    "Ephesians 1–3"
+   ],
+   "title": "Ephesians: blessed in Christ; one body",
+   "year": 64
+  },
+  {
+   "day": 346,
+   "passages": [
+    "Ephesians 4–6"
+   ],
+   "title": "Ephesians: walk worthy; the armor of God",
+   "year": 64
+  },
+  {
+   "day": 347,
+   "passages": [
+    "Philippians 1–2"
+   ],
+   "title": "Philippians: to live is Christ; the mind of Christ",
+   "year": 64
+  },
+  {
+   "day": 348,
+   "passages": [
+    "Philippians 3–4",
+    "Colossians 1–2"
+   ],
+   "title": "Philippians: pressing on; rejoice; Colossians: the supremacy of Christ",
+   "year": 64
+  },
+  {
+   "day": 349,
+   "passages": [
+    "Colossians 3–4",
+    "Philemon 1"
+   ],
+   "title": "Colossians: the new life; Philemon and Onesimus",
+   "year": 64
+  },
+  {
+   "day": 350,
+   "passages": [
+    "1 Timothy 1–6"
+   ],
+   "title": "1 Timothy: sound doctrine and church leaders; godliness; money",
+   "year": 65
+  },
+  {
+   "day": 351,
+   "passages": [
+    "Titus 1–3",
+    "2 Timothy 1–2"
+   ],
+   "title": "Titus: sound teaching on Crete; 2 Timothy: guard the deposit",
+   "year": 65
+  },
+  {
+   "day": 352,
+   "passages": [
+    "2 Timothy 3–4",
+    "Hebrews 1–2"
+   ],
+   "title": "2 Timothy: Scripture; Paul's last words; Hebrews: the Son greater than angels",
+   "year": 66
+  },
+  {
+   "day": 353,
+   "passages": [
+    "Hebrews 3–7"
+   ],
+   "title": "Hebrews: Jesus greater than Moses; the rest; the priest like Melchizedek",
+   "year": 64
+  },
+  {
+   "day": 354,
+   "passages": [
+    "Hebrews 8–10"
+   ],
+   "title": "Hebrews: a better covenant and sacrifice",
+   "year": 64
+  },
+  {
+   "day": 355,
+   "passages": [
+    "Hebrews 11–13"
+   ],
+   "title": "Hebrews: by faith; run the race; final exhortations",
+   "year": 64
+  },
+  {
+   "day": 356,
+   "passages": [
+    "1 Peter 1–5"
+   ],
+   "title": "1 Peter: a living hope; a holy people; suffering for doing good",
+   "year": 64
+  },
+  {
+   "day": 357,
+   "passages": [
+    "Jude 1",
+    "2 Peter 1–3"
+   ],
+   "title": "Jude: contend for the faith; 2 Peter: growth in grace; the day of the Lord",
+   "year": 65
+  },
+  {
+   "day": 358,
+   "passages": [
+    "1 John 1–3"
+   ],
+   "title": "1 John: walking in the light; children of God",
+   "year": 90
+  },
+  {
+   "day": 359,
+   "passages": [
+    "1 John 4–5",
+    "2 John 1",
+    "3 John 1"
+   ],
+   "title": "1 John: God is love; eternal life; 2 John and 3 John",
+   "year": 90
+  },
+  {
+   "day": 360,
+   "passages": [
+    "Revelation 1–3"
+   ],
+   "title": "Revelation: John's vision of Christ; the seven letters",
+   "year": 95
+  },
+  {
+   "day": 361,
+   "passages": [
+    "Revelation 4–7"
+   ],
+   "title": "Revelation: the throne and the Lamb; the seals; the multitude",
+   "year": 95
+  },
+  {
+   "day": 362,
+   "passages": [
+    "Revelation 8–11"
+   ],
+   "title": "Revelation: the trumpets; the little scroll; the two witnesses",
+   "year": 95
+  },
+  {
+   "day": 363,
+   "passages": [
+    "Revelation 12–15"
+   ],
+   "title": "Revelation: the woman and the dragon; the beast; the harvest; the seven bowls prepared",
+   "year": 95
+  },
+  {
+   "day": 364,
+   "passages": [
+    "Revelation 16–19"
+   ],
+   "title": "Revelation: the bowls; the great prostitute; Babylon falls; the wedding of the Lamb",
+   "year": 95
+  },
+  {
+   "day": 365,
+   "passages": [
+    "Revelation 20–22"
+   ],
+   "title": "Revelation: the new heaven and new earth",
+   "year": 95
+  }
+ ]
+}

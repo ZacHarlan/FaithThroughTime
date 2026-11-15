@@ -10,6 +10,13 @@
 //   #/map/<journeySlug>        map and journeys   (?place=<locationSlug>)
 //   #/read/<bookSlug>/<chapter>  scripture reader  (?v=3-7 highlights verses)
 //   #/about                    about the dates and sources
+//   #/study                    study tools (hub)
+//   #/find?q=                  search the words of Scripture
+//   #/plan/<day>               chronological reading plan (day 1-365)
+//   #/kings                    kings of Israel and Judah, and the prophets who spoke to them
+//   #/parallel/<id>            parallel passages side by side (index without an id)
+//   #/prophecy/<id>            Old Testament quotations and prophecy fulfilled (index without an id)
+//   #/word/<strongs>           word study: one Hebrew or Greek word (e.g. H7225, G26)
 //   #/person/<slug>, #/event/<slug>   detail sheet, shown over the current view
 
 const Router = (() => {
@@ -59,6 +66,8 @@ const App = (() => {
     const views = new Map();       // name → { init(el), show(route), hide(), title(route) }
     const overlays = new Map();    // route view → { open(route), close() }
     const ALIAS = { story: 'timeline' };   // routes rendered by another view
+    // Views whose nav link is another view's (the study tools all light up "Study").
+    const NAV_GROUP = { find: 'study', plan: 'study', kings: 'study', parallel: 'study', prophecy: 'study', word: 'study' };
     const listeners = new Map();
 
     let activeView = null;         // name of the base view on screen
@@ -157,7 +166,7 @@ const App = (() => {
             }
             document.body.dataset.view = name;
             for (const link of document.querySelectorAll('[data-nav]')) {
-                const current = link.dataset.nav === name;
+                const current = link.dataset.nav === (NAV_GROUP[name] || name);
                 link.classList.toggle('is-active', current);
                 if (current) link.setAttribute('aria-current', 'page'); else link.removeAttribute('aria-current');
             }
