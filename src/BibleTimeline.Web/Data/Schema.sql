@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS people (
     death_approx    INTEGER NOT NULL DEFAULT 1,
     date_confidence TEXT    NOT NULL DEFAULT 'traditional'
                     CHECK (date_confidence IN ('certain','probable','possible','traditional')),
-    role            TEXT,                     -- patriarch, king, prophet, apostle, judge, priest, other
+    role            TEXT,                     -- patriarch, matriarch, ancestor, prophet, king, queen, ruler, judge, priest, apostle, disciple, warrior, sage, church-leader, reformer, messiah, other
     significance    TEXT    NOT NULL DEFAULT 'minor'
                     CHECK (significance IN ('major','moderate','minor')),
     tribe           TEXT,
@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS events (
     end_approx      INTEGER NOT NULL DEFAULT 1,
     date_confidence TEXT    NOT NULL DEFAULT 'traditional'
                     CHECK (date_confidence IN ('certain','probable','possible','traditional')),
-    category        TEXT,                     -- creation, covenant, war, miracle, prophecy, exile, birth, death, law, conquest, judgment, salvation
+    category        TEXT,                     -- creation, covenant, law, judgment, miracle, salvation, war, conquest, kingdom, worship, prophecy, exile, birth, death, teaching, mission, council, scripture, persecution, reform, other
     significance    TEXT    NOT NULL DEFAULT 'minor'
                     CHECK (significance IN ('major','moderate','minor')),
     description     TEXT,

@@ -1,3059 +1,3128 @@
--- Faith Through Time Seed Data
--- Dates follow Ussher chronology (Annales Veteris Testamenti, 1650) for OT
--- NT dates follow Roman historical records
--- All BCE dates are negative integers
+-- Faith Through Time seed data
+--
+-- Chronology: Old Testament dates follow James Ussher (Annals of the World, 1650),
+-- built on the Masoretic text; foreign rulers and post-biblical history follow standard
+-- historical dating. Where mainstream scholarship differs, the row's date_notes says so.
+-- Years are integers: negative = BC, positive = AD; there is no year 0.
+--
+-- Ids are explicit and stable: add new rows with new ids, never renumber.
+-- Rows are grouped by era for reading; within a table they are ordered by id.
+--
+-- The whole seed is one transaction with foreign-key checks deferred to the commit,
+-- because rows refer forward (a father may have a higher id than his son).
+
+BEGIN;
+PRAGMA defer_foreign_keys = ON;
 
 -- ============================================================
--- TIME PERIODS
+-- TIME PERIODS (18)
 -- ============================================================
-INSERT INTO time_periods (name, start_year, end_year, color, sort_order, description) VALUES
--- Colors: luminance-normalized OKLCH ramp (L 0.56-0.80, validated for
--- adjacent-era separation on the dark ground). Each era keeps its
--- traditional hue association; lightness alternates between neighbors.
-('Creation & Primeval History',   -4004, -1996, '#a16844', 1, 'Adam through the Tower of Babel'),
-('Patriarchs',                    -1996, -1706, '#c3a03a', 2, 'Abraham, Isaac, Jacob, Joseph'),
-('Egypt & Exodus',                -1706, -1451, '#bc634d', 3, 'Israel in Egypt and the Exodus'),
-('Conquest & Judges',             -1451, -1095, '#7fae64', 4, 'Joshua''s conquest through the period of the Judges'),
-('United Kingdom',                -1095,  -975, '#567cd3', 5, 'Saul, David, Solomon'),
-('Divided Kingdom',                -975,  -586, '#e1707c', 6, 'Israel and Judah as separate kingdoms'),
-('Exile',                          -586,  -538, '#5c7794', 7, 'Babylonian captivity'),
-('Return & Restoration',          -538,  -400, '#55b486', 8, 'Zerubbabel, Ezra, Nehemiah'),
-('Intertestamental Period',       -400,    -5, '#917bab', 9, 'Between the Testaments'),
-('Life of Christ',                  -5,    33, '#d8bd51', 10, 'Birth through Ascension of Jesus'),
-('Apostolic Age',                   33,   100, '#7f79d1', 11, 'Early church through death of John'),
-('Early Church & Persecution',     100,   313, '#e38879', 12, 'Persecution under Rome; Church Fathers; canon formation'),
-('Imperial Christianity',          313,   476, '#a264b0', 13, 'Edict of Milan through fall of the Western Roman Empire'),
-('Early Medieval',                 476,  1054, '#63aea9', 14, 'Rise of monasticism; spread of Christianity; East-West tensions'),
-('High Medieval & Crusades',      1054,  1400, '#667ab9', 15, 'Great Schism; Crusades; Scholasticism; early reform movements'),
-('Reformation',                   1400,  1648, '#67b36a', 16, 'Gutenberg Bible; Protestant Reformation; Catholic Counter-Reformation'),
-('Enlightenment & Missions',      1648,  1900, '#4188b6', 17, 'Great Awakenings; modern missions movement; Bible societies'),
-('Modern Era',                    1900,  2026, '#90b1bc', 18, 'Global Christianity; ecumenical movement; digital age');
+INSERT INTO time_periods (id, name, start_year, end_year, color, sort_order, description) VALUES
+(1, 'Creation & Primeval History', -4004, -1996, '#a16844', 1, 'Adam through the Tower of Babel'),
+(2, 'Patriarchs', -1996, -1706, '#c3a03a', 2, 'Abraham, Isaac, Jacob, Joseph'),
+(3, 'Egypt & Exodus', -1706, -1451, '#bc634d', 3, 'Israel in Egypt, the Exodus and the wilderness years'),
+(4, 'Conquest & Judges', -1451, -1095, '#7fae64', 4, 'Joshua''s conquest through the period of the Judges'),
+(5, 'United Kingdom', -1095, -975, '#567cd3', 5, 'Saul, David, Solomon'),
+(6, 'Divided Kingdom', -975, -588, '#e1707c', 6, 'Israel and Judah as separate kingdoms: Israel until the fall of Samaria in 721, Judah until the fall of Jerusalem in 588 (Ussher)'),
+(7, 'Exile', -588, -536, '#5c7794', 7, 'Babylonian captivity'),
+(8, 'Return & Restoration', -536, -400, '#55b486', 8, 'Zerubbabel, Ezra, Nehemiah'),
+(9, 'Intertestamental Period', -400, -5, '#917bab', 9, 'Between the Testaments'),
+(10, 'Life of Christ', -5, 33, '#d8bd51', 10, 'Birth through Ascension of Jesus'),
+(11, 'Apostolic Age', 33, 100, '#7f79d1', 11, 'Early church through death of John'),
+(12, 'Early Church & Persecution', 100, 313, '#e38879', 12, 'Persecution under Rome; Church Fathers; canon formation'),
+(13, 'Imperial Christianity', 313, 476, '#a264b0', 13, 'Edict of Milan through fall of the Western Roman Empire'),
+(14, 'Early Medieval', 476, 1054, '#63aea9', 14, 'Rise of monasticism; spread of Christianity; East-West tensions'),
+(15, 'High Medieval & Crusades', 1054, 1400, '#667ab9', 15, 'Great Schism; Crusades; Scholasticism; early reform movements'),
+(16, 'Reformation', 1400, 1648, '#67b36a', 16, 'Gutenberg Bible; Protestant Reformation; Catholic Counter-Reformation'),
+(17, 'Enlightenment & Missions', 1648, 1900, '#4188b6', 17, 'Great Awakenings; modern missions movement; Bible societies'),
+(18, 'Modern Era', 1900, 2026, '#90b1bc', 18, 'Global Christianity; ecumenical movement; digital age');
 
 -- ============================================================
--- PEOPLE (Major figures first, then minor)
+-- PEOPLE (380)
 -- ============================================================
-INSERT INTO people (name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
--- Primeval
-('Adam',    NULL,    -4004, -3074, 1, 1, 'traditional', 'patriarch', 'major', NULL, NULL, NULL, 'First man, formed from the dust and given life by the breath of God. Placed in Eden to tend and keep the garden, his disobedience brought sin and death into the human story, and Paul later presents him as the counterpart to Christ, the last Adam who brings life.', 'Ussher chronology (Annales, 1650): created 4004 BC, died 3074 BC (930 years, Gen 5:5).'),
-('Eve',     'Havah', -4004, -3074, 1, 1, 'traditional', 'other',     'major', NULL, NULL, NULL, 'First woman, fashioned from Adam''s side as his companion and counterpart, her name meaning mother of all living. Deceived by the serpent, she shared the forbidden fruit, yet received the first promise of an offspring who would one day crush the deceiver.', 'Ussher: created 4004 BC. Death year not recorded in Scripture; estimated as contemporary with Adam (d. 3074 BC).'),
-('Noah',    NULL,    -2948, -1998, 1, 1, 'traditional', 'patriarch', 'major', NULL, NULL, NULL, 'Righteous man who walked with God in a corrupt generation, building the ark that carried his family and the animals through the flood. Recipient of the first covenant, sealed by the rainbow; flood traditions across ancient Mesopotamia, including the Gilgamesh epic, echo the memory of a great deluge.', 'Ussher: born 2948 BC (AM 1056), died 1998 BC (950 years, Gen 9:29).'),
+-- Creation & Primeval History
+INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
+(1, 'Adam', NULL, -4004, -3074, 0, 0, 'traditional', 'patriarch', 'major', NULL, NULL, NULL, 'First man, formed from the dust and given life by the breath of God. Placed in Eden to tend and keep the garden, his disobedience brought sin and death into the human story, and Paul later presents him as the counterpart to Christ, the last Adam who brings life.', 'Ussher chronology (Annales, 1650): created 4004 BC, died 3074 BC (930 years, Gen 5:5). Mainstream scholarship does not date the first humans from the Genesis genealogies.'),
+(2, 'Eve', 'Havah', -4004, -3074, 0, 1, 'possible', 'matriarch', 'major', NULL, NULL, NULL, 'First woman, fashioned from Adam''s side as his companion and counterpart, her name meaning mother of all living. Deceived by the serpent, she shared the forbidden fruit, yet received the first promise of an offspring who would one day crush the deceiver.', 'Ussher: created 4004 BC with Adam (Gen 1:27; 2:22). Scripture does not record her death; 3074 BC is an estimate that simply takes Adam''s death year.'),
+(3, 'Noah', NULL, -2948, -1998, 0, 0, 'traditional', 'patriarch', 'major', NULL, 52, NULL, 'Righteous man who walked with God in a corrupt generation, building the ark that carried his family and the animals through the flood. Recipient of the first covenant, sealed by the rainbow; flood traditions across ancient Mesopotamia, including the Gilgamesh epic, echo the memory of a great deluge.', 'Ussher: born 2948 BC (AM 1056), died 1998 BC (950 years, Gen 9:29).'),
+(49, 'Seth', NULL, -3874, -2962, 0, 0, 'traditional', 'patriarch', 'moderate', NULL, 1, 2, 'Third son of Adam and Eve; ancestor of Noah.', 'Ussher: born 3874 BC (AM 130), died 2962 BC (912 years, Gen 5:8).'),
+(50, 'Enoch', NULL, -3382, -3017, 0, 0, 'traditional', 'patriarch', 'moderate', NULL, 151, NULL, 'Walked with God and was taken up; did not see death.', 'Ussher: born 3382 BC (AM 622), translated 3017 BC (365 years, Gen 5:24; Heb 11:5).'),
+(51, 'Methuselah', NULL, -3317, -2348, 0, 0, 'traditional', 'patriarch', 'moderate', NULL, 50, NULL, 'Longest-lived person in the Bible at 969 years.', 'Born 3317 BC (Ussher, AM 687) and lived 969 years (Gen 5:27), dying in the year of the Flood. Ussher dates his death and the start of the Flood to late 2349 BC; his years begin in autumn, so counting 969 whole years from 3317 BC gives 2348 BC, the year the Flood ended.'),
+(52, 'Lamech', NULL, -3130, -2353, 0, 0, 'traditional', 'patriarch', 'minor', NULL, 51, NULL, 'Father of Noah; expressed hope for relief from the curse.', 'Ussher: born 3130 BC (AM 874), died 2353 BC (777 years, Gen 5:31).'),
+(53, 'Shem', NULL, -2446, -1846, 0, 0, 'traditional', 'patriarch', 'moderate', NULL, 3, NULL, 'Son of Noah; ancestor of the Semitic peoples and of Abraham.', 'Ussher: born 2446 BC (AM 1558, Noah aged 502), the year Shem was 100 two years after the Flood (Gen 11:10); died 1846 BC (600 years, Gen 11:10-11). Japheth, listed as the elder (Gen 10:21), is placed at 2448 BC when Noah was 500 (Gen 5:32).'),
+(54, 'Ham', NULL, -2445, -1945, 1, 1, 'possible', 'patriarch', 'minor', NULL, 3, NULL, 'Son of Noah; ancestor of the Canaanites, Egyptians, and others.', 'Estimate. Noah fathered Shem, Ham and Japheth after he was 500 (Gen 5:32), and Ham is the younger son (Gen 9:24), so he is placed just after Shem (born 2446 BC). No lifespan is given; about 500 years is an estimate on the post-Flood pattern.'),
+(55, 'Japheth', NULL, -2448, -1948, 1, 1, 'possible', 'patriarch', 'minor', NULL, 3, NULL, 'Son of Noah; ancestor of many European and Asian peoples.', 'Estimate. Gen 5:32 (Noah aged 500); Gen 10:21 can be read as calling Japheth the elder brother of Shem, so he takes the earliest year, 2448 BC. No lifespan is given; about 500 years is an estimate on the post-Flood pattern.'),
+(121, 'Job', NULL, -2000, -1800, 1, 1, 'possible', 'sage', 'moderate', NULL, NULL, NULL, 'A blameless man of Uz whose catastrophic losses became Scripture''s deepest exploration of innocent suffering. Refusing his friends'' easy explanations, he carried his anguish directly to God, who answered from the whirlwind, and his endurance became proverbial in both testaments.', 'Estimate. Scripture gives no date for Job; the book names no king or event that fixes it. Job 42:16 says he lived 140 years after his trials. A patriarchal-era setting (wealth in livestock, long life, a household priest) is a common inference, and the years shown (c. 2000 to 1800 BC, about 200 years) are only a placeholder consistent with it, not a figure we can attribute to Ussher.'),
+(148, 'Enosh', 'Enos', -3769, -2864, 0, 0, 'traditional', 'patriarch', 'minor', NULL, 49, NULL, 'Son of Seth; in his time people began to call on the name of the LORD.', 'Ussher: born 3769 BC (AM 235), died 2864 BC (905 years, Gen 5:6-11).'),
+(149, 'Kenan', 'Cainan', -3679, -2769, 0, 0, 'traditional', 'patriarch', 'minor', NULL, 148, NULL, 'Son of Enosh; fourth generation from Adam.', 'Ussher: born 3679 BC (AM 325), died 2769 BC (910 years, Gen 5:9-14).'),
+(150, 'Mahalalel', NULL, -3609, -2714, 0, 0, 'traditional', 'patriarch', 'minor', NULL, 149, NULL, 'Son of Kenan; fifth generation from Adam.', 'Ussher: born 3609 BC (AM 395), died 2714 BC (895 years, Gen 5:12-17).'),
+(151, 'Jared', NULL, -3544, -2582, 0, 0, 'traditional', 'patriarch', 'minor', NULL, 150, NULL, 'Son of Mahalalel; father of Enoch. Lived 962 years, second-longest lifespan.', 'Ussher: born 3544 BC (AM 460), died 2582 BC (962 years, Gen 5:15-20).'),
+(152, 'Arphaxad', 'Arpachshad', -2346, -1908, 0, 0, 'traditional', 'patriarch', 'minor', NULL, 53, NULL, 'Son of Shem; born two years after the Flood. Ancestor of Abraham.', 'Ussher: born 2346 BC (AM 1658), died 1908 BC (438 years, Gen 11:10-13). Luke 3:36 and the Septuagint of Gen 11:12-13 place a Cainan between Arphaxad and Salah; the Hebrew text followed here does not.'),
+(153, 'Salah', 'Shelah', -2311, -1878, 0, 0, 'traditional', 'patriarch', 'minor', NULL, 152, NULL, 'Son of Arphaxad; grandfather of Eber.', 'Ussher: born 2311 BC (AM 1693), died 1878 BC (433 years, Gen 11:12-15).'),
+(154, 'Eber', 'Heber', -2281, -1817, 0, 0, 'traditional', 'patriarch', 'minor', NULL, 153, NULL, 'Son of Salah; ancestor of the Hebrews (the name "Hebrew" derives from Eber).', 'Ussher: born 2281 BC (AM 1723), died 1817 BC (464 years, Gen 11:14-17).'),
+(155, 'Peleg', NULL, -2247, -2008, 0, 0, 'traditional', 'patriarch', 'minor', NULL, 154, NULL, 'Son of Eber; in his days the earth was divided (Tower of Babel).', 'Ussher: born 2247 BC (AM 1757), died 2008 BC (239 years, Gen 11:16-19). Gen 10:25.'),
+(156, 'Reu', 'Ragau', -2217, -1978, 0, 0, 'traditional', 'patriarch', 'minor', NULL, 155, NULL, 'Son of Peleg; continued the post-Flood patriarchal line.', 'Ussher: born 2217 BC (AM 1787), died 1978 BC (239 years, Gen 11:18-21).'),
+(157, 'Serug', 'Saruch', -2185, -1955, 0, 0, 'traditional', 'patriarch', 'minor', NULL, 156, NULL, 'Son of Reu; grandfather of Terah.', 'Ussher: born 2185 BC (AM 1819), died 1955 BC (230 years, Gen 11:20-23).'),
+(158, 'Nahor', 'Nahor son of Serug', -2155, -2007, 0, 0, 'traditional', 'patriarch', 'minor', NULL, 157, NULL, 'Son of Serug; grandfather of Abraham. Not to be confused with Abraham''s brother Nahor.', 'Ussher: born 2155 BC (AM 1849), died 2007 BC (148 years, Gen 11:22-25).'),
+(159, 'Terah', NULL, -2126, -1921, 0, 0, 'traditional', 'patriarch', 'moderate', NULL, 158, NULL, 'Son of Nahor; father of Abraham, Nahor, and Haran. Died in Haran.', 'Ussher: born 2126 BC (AM 1878), died 1921 BC (205 years, Gen 11:24-32). Abraham departed after Terah''s death (Acts 7:4).'),
+(160, 'Cain', NULL, -3950, -3000, 1, 1, 'possible', 'other', 'moderate', NULL, 1, 2, 'Firstborn of Adam and Eve, a tiller of the soil whose rejected offering festered into the murder of his brother Abel. Marked yet protected by God, he became the Bible''s first city builder and an enduring warning that sin crouches at the door yet can be mastered.', 'Estimate. Scripture gives no dates for Cain: he was born after the Fall (Gen 4:1), before Seth, who was born when Adam was 130 (Gen 5:3), and his death is not recorded. The years are placeholders for display, not a figure we can attribute to Ussher.'),
+(161, 'Abel', NULL, -3948, -3880, 1, 1, 'possible', 'other', 'moderate', NULL, 1, 2, 'Second son of Adam and Eve, a keeper of flocks whose offering God accepted, provoking his brother''s lethal envy. The first innocent to die in Scripture, he is honored in Hebrews as a man of faith whose blood still speaks, and Jesus names him first among the righteous slain.', 'Estimate. Scripture gives no dates for Abel; he was killed before Seth was born, when Adam was 130 (Gen 4:8, 25; 5:3). The birth year is a placeholder and 3880 BC is a round estimate for his death, not a figure we can attribute to Ussher.');
 
 -- Patriarchs
-('Abraham', 'Abram', -1996, -1821, 1, 1, 'traditional', 'patriarch', 'major', NULL, NULL, NULL, 'Patriarch called from Ur of the Chaldees to a land God would show him, receiving the covenant promise that all nations would be blessed through his offspring. His faith, tested in the offering of Isaac, made him the father of the faithful for Jews, Christians, and Muslims alike.', 'Ussher: born 1996 BC (AM 2008), died 1821 BC (175 years, Gen 25:7). Terah was 130 at Abraham''s birth (Acts 7:4; Gen 11:32).'),
-('Sarah',   'Sarai', -1986, -1859, 1, 1, 'traditional', 'other',     'minor', NULL, NULL, NULL, 'Wife of Abraham, mother of Isaac.', 'Ussher: born 1986 BC (10 years younger, Gen 17:17), died 1859 BC (127 years, Gen 23:1).'),
-('Isaac',   NULL,    -1896, -1716, 1, 1, 'traditional', 'patriarch', 'major', NULL, NULL, NULL, 'Son of promise, born to Abraham and Sarah in their old age and spared on Mount Moriah when God provided a ram in his place. He reopened his father''s wells in the Negev and passed the covenant blessing to Jacob, the quiet link between Abraham and the tribes of Israel.', 'Ussher: born 1896 BC (Abraham aged 100, Gen 21:5), died 1716 BC (180 years, Gen 35:28).'),
-('Rebekah', NULL,    -1890, NULL,  1, 1, 'traditional', 'other',     'minor', NULL, NULL, NULL, 'Wife of Isaac, mother of Jacob and Esau.', 'Approximate; married Isaac c. 1856 BC (Gen 24).'),
-('Jacob',   'Israel',-1836, -1689, 1, 1, 'traditional', 'patriarch', 'major', NULL, NULL, NULL, 'Younger twin who obtained birthright and blessing, wrestled with God at Peniel, and received the new name Israel. Father of twelve sons who became Israel''s tribes, his long journey from schemer to patriarch traces the transforming grip of covenant grace.', 'Ussher: born 1836 BC (Isaac aged 60, Gen 25:26), died 1689 BC (147 years, Gen 47:28).'),
-('Joseph',  NULL,    -1745, -1635, 1, 1, 'traditional', 'patriarch', 'major', 'Ephraim/Manasseh', NULL, NULL, 'Favored son of Jacob, sold into Egypt by jealous brothers, who rose from prison to become Pharaoh''s vizier through the interpretation of dreams. His grain policy saved Egypt and his own family from famine, and his forgiveness of his brothers remains Scripture''s great portrait of providence over evil intent.', 'Ussher: born c. 1745 BC, died 1635 BC (110 years, Gen 50:26).'),
-
--- Exodus & Conquest
-('Moses',   NULL,    -1571, -1451, 1, 1, 'traditional', 'prophet',   'major', 'Levi', NULL, NULL, 'Deliverer drawn from the Nile who confronted Pharaoh, led Israel out of Egypt through the sea, and received the law at Sinai. Prophet, lawgiver, and mediator of the covenant, he shepherded Israel through forty wilderness years and viewed the promised land from Nebo; the Torah bears his name.', 'Ussher: born 1571 BC, died 1451 BC (120 years, Deut 34:7). Exodus 1491 BC.'),
-('Aaron',   NULL,    -1574, -1451, 1, 1, 'traditional', 'priest',    'major', 'Levi', NULL, NULL, 'Elder brother of Moses, his spokesman before Pharaoh, and Israel''s first high priest, ancestor of the priestly line. Though he faltered at the golden calf, his benediction endures; the priestly blessing of Numbers 6 appears on the Ketef Hinnom silver amulets, the oldest known copies of biblical text.', 'Ussher: born 1574 BC (3 years older, Exod 7:7), died 1451 BC (123 years, Num 33:39).'),
-('Miriam',  NULL,    -1577, -1452, 1, 1, 'traditional', 'prophet',   'minor', 'Levi', NULL, NULL, 'Sister of Moses and Aaron; prophetess.', 'Ussher: born c. 1577 BC, died c. 1452 BC.'),
-('Joshua',  'Yehoshua',-1530,-1420,1, 1, 'traditional', 'judge',     'major', 'Ephraim', NULL, NULL, 'Successor of Moses and one of the two faithful spies, he led Israel across the Jordan, took Jericho, and apportioned the land among the tribes. His farewell charge to choose whom you will serve sealed the covenant at Shechem, and a fierce burn layer at Hazor recalls the conquest narrative.', 'Ussher: born c. 1530 BC, died c. 1420 BC (110 years, Josh 24:29).'),
-
--- Judges
-('Deborah', NULL,    -1245, NULL,  1, 1, 'possible',    'judge',     'major', NULL, NULL, NULL, 'Prophet and judge who held court beneath a palm in the hill country of Ephraim, she summoned Barak and led Israel to victory over Sisera''s Canaanite forces. The Song of Deborah in Judges 5 is widely regarded as one of the oldest poems preserved in the Hebrew Bible.', 'Ussher: c. 1245 BC; Judges chronology is debated.'),
-('Gideon',  'Jerubbaal',-1235,NULL,1, 1, 'possible',    'judge',     'major', 'Manasseh', NULL, NULL, 'Judge called from threshing wheat in a winepress to deliver Israel from Midian, he routed a vast host with only three hundred men so the glory would be God''s alone. Also named Jerubbaal; a jar inscription bearing that rare name was unearthed at Khirbet al-Rai in the Judean foothills.', 'Ussher: c. 1235 BC.'),
-('Samson',  NULL,    -1163, -1123, 1, 1, 'possible',    'judge',     'major', 'Dan', NULL, NULL, 'Nazirite judge endowed with extraordinary strength, he battled the Philistines single-handedly until Delilah''s betrayal cost him his hair, his eyes, and his freedom. In death he toppled Dagon''s temple, and his story mirrors Israel''s own struggle with compromised devotion.', 'Ussher: born c. 1163 BC, died c. 1123 BC.'),
-('Ruth',    NULL,    -1195, NULL,  1, 1, 'possible',    'other',     'minor', NULL, NULL, NULL, 'Moabite great-grandmother of David.', 'Ussher: c. 1195 BC.'),
-('Samuel',  NULL,    -1150, -1060, 1, 1, 'traditional', 'prophet',   'major', 'Levi', NULL, NULL, 'Last of the judges and first of the great prophets, dedicated at the Shiloh sanctuary in answer to Hannah''s prayer. He anointed both Saul and David, guiding Israel''s passage from tribal confederation to monarchy while insisting that obedience outweighs sacrifice.', 'Ussher: born c. 1150 BC, died c. 1060 BC.'),
-
--- United Kingdom
-('Saul',    NULL,    -1100, -1056, 1, 1, 'traditional', 'king',      'major', 'Benjamin', NULL, NULL, 'Israel''s first king, a tall Benjaminite anointed by Samuel, who won early victories over Ammon and the Philistines. His impatience and disobedience cost his house the throne, and his tragic decline beside David''s rise ended on Mount Gilboa, where he fell in battle.', 'Ussher: began reign 1095 BC, died at Gilboa 1056 BC.'),
-('David',   NULL,    -1085,  -1015, 1, 1, 'traditional', 'king',      'major', 'Judah', NULL, NULL, 'Shepherd of Bethlehem who felled Goliath and rose to the throne after Saul, uniting the tribes and taking Jerusalem as his capital. Psalmist and covenant king promised an everlasting dynasty, his house is named on the Tel Dan stele, the earliest extrabiblical witness to his royal line.', 'Ussher: born c. 1085 BC, reigned 1055-1015 BC (40 years, 2 Sam 5:4).'),
-('Solomon', NULL,    -1033,  -975, 1, 1, 'traditional', 'king',      'major', 'Judah', NULL, NULL, 'Son of David famed for God-given wisdom, he built the first temple in Jerusalem and presided over a golden age of trade, building, and proverbs. Monumental gates at Hazor, Megiddo, and Gezer have long been associated with his projects, yet his foreign marriages sowed the kingdom''s division.', 'Ussher: born c. 1033 BC, reigned 1015-975 BC (40 years, 1 Kgs 11:42).'),
-('Nathan',  NULL,    -1085,  -1005, 1, 1, 'possible',    'prophet',   'minor', NULL, NULL, NULL, 'Prophet during David and Solomon''s reigns.', 'Ussher: contemporary of David, c. 1085-1005 BC.'),
-
--- Divided Kingdom - Selected kings and prophets
-('Elijah',  NULL,    -930,  NULL, 1, 1, 'traditional', 'prophet',   'major', NULL, NULL, NULL, 'Prophet of Gilead who confronted Ahab and the prophets of Baal on Mount Carmel, where fire from heaven vindicated the Lord. Fed by ravens and met by a still small voice at Horeb, he was taken up in a whirlwind, and Malachi promises his return before the great day of the Lord.', 'Ussher: active during Ahab''s reign (918-897 BC). Translated c. 896 BC (2 Kgs 2:11). Born c. 930 BC (estimated).'),
-('Elisha',  NULL,    -920,  -825, 1, 1, 'traditional', 'prophet',   'major', NULL, NULL, NULL, 'Farmer called from the plow to succeed Elijah, receiving a double portion of his spirit. Serving Israel through the reigns of four kings, he healed Naaman''s leprosy, multiplied bread and oil, and raised the dead, extending God''s mercy to Israelite and foreigner alike.', 'Ussher: called by Elijah c. 896 BC. Died during reign of Jehoash of Israel c. 825 BC (2 Kgs 13:14-20). Born c. 920 BC (estimated).'),
-('Isaiah',  'Yeshayahu',-783,-695,1, 1, 'traditional', 'prophet',   'major', NULL, NULL, NULL, 'Jerusalem prophet who saw the Lord enthroned in the temple and counseled kings Ahaz and Hezekiah through the Assyrian crisis. His visions of Immanuel and the suffering servant shaped messianic hope, and the great Isaiah scroll from Qumran is the best preserved of the Dead Sea Scrolls.', 'Ussher: called in the year Uzziah died, 758 BC (Isa 6:1). Tradition: martyred by Manasseh c. 695 BC (cf. Heb 11:37). Born c. 783 BC (estimated).'),
-('Jeremiah','Yirmeyahu',-650,-570,1, 1, 'probable',    'prophet',   'major', 'Levi', NULL, NULL, 'The weeping prophet who warned Judah for decades of coming Babylonian judgment, endured imprisonment and a muddy cistern, and promised a new covenant written on the heart. Clay bullae from the City of David bear names of royal officials, such as Jehucal son of Shelemiah, who appear in his book.', NULL),
-('Ezekiel', 'Yechezkel',-622,-570,1, 1, 'probable',    'prophet',   'major', 'Levi', NULL, NULL, 'Priest deported to Babylon who received his prophetic call amid visions of the divine chariot beside the Chebar canal. Through stark symbolic acts he interpreted Jerusalem''s fall and foresaw dry bones living and a new temple; cuneiform records of Judean exile settlements corroborate his community''s setting.', NULL),
-('Daniel',  NULL,    -620,  -536, 1, 1, 'probable',    'prophet',   'major', 'Judah', NULL, NULL, 'A Judean noble exiled to Babylon who rose to high office under Babylonian and Persian rulers while refusing to compromise his devotion to God. His deliverance from the lions'' den and his sweeping visions of successive empires shaped Jewish and Christian hope in God''s coming kingdom.', NULL),
-('Hezekiah',NULL,    -751,  -697, 1, 1, 'traditional', 'king',      'major', 'Judah', NULL, NULL, 'A reforming king of Judah who purged idolatry and trusted God when Sennacherib''s Assyrian army besieged Jerusalem. His water tunnel from the Gihon spring survives, and the Siloam inscription found in it in 1880 records his workmen''s feat, corroborating the biblical account.', 'Ussher: reigned 726-697 BC (29 years, 2 Kgs 18:2). Age 25 at accession: born 751 BC.'),
-('Josiah',  NULL,    -648,  -609, 1, 1, 'traditional', 'king',      'major', 'Judah', NULL, NULL, 'Judah''s young king whose temple repairs uncovered the book of the law, igniting the kingdom''s most sweeping religious reform. He centralized worship in Jerusalem, renewed the covenant, and kept a Passover unmatched since the judges; scholars link his lawbook to Deuteronomy.', 'Ussher: reigned 640-609 BC (31 years, 2 Kgs 22:1). Age 8 at accession: born 648 BC. Killed at Megiddo by Pharaoh Necho.'),
-('Jeroboam','Jeroboam I',-1010,-953,1,1, 'traditional',    'king',      'minor', 'Ephraim', NULL, NULL, 'First king of the northern kingdom of Israel.', 'Ussher: reigned 975-953 BC (22 years, 1 Kgs 14:20).'),
-('Ahab',    NULL,    -940,  -897, 1, 1, 'traditional', 'king',      'minor', NULL, NULL, NULL, 'Wicked king of Israel; husband of Jezebel.', 'Ussher: reigned 918-897 BC (22 years, 1 Kgs 16:29). Killed at Ramoth-gilead (1 Kgs 22:34-37). Birth estimated.'),
-
--- Return & Restoration
-('Ezra',    NULL,    -480,  -440, 1, 1, 'possible',    'priest',    'major', 'Levi', NULL, NULL, 'A priest and scribe skilled in the law of Moses who led a company of exiles from Babylon back to Jerusalem under Persian sanction. By publicly reading and teaching the Torah, he re-centered the restored community on Scripture, a legacy foundational to Jewish identity ever after.', NULL),
-('Nehemiah',NULL,    -470,  -400, 1, 1, 'possible',    'other',     'major', 'Judah', NULL, NULL, 'Cupbearer to the Persian king Artaxerxes who returned as governor of Judah and rebuilt Jerusalem''s shattered walls in fifty-two days despite fierce opposition. His memoirs join practical leadership to constant prayer, and with Ezra he anchored the restored community in covenant obedience.', NULL),
-('Zerubbabel',NULL,  -560,  -500, 1, 1, 'possible',    'other',     'minor', 'Judah', NULL, NULL, 'Led the first return from exile; rebuilt the Temple.', NULL),
-('Esther',  'Hadassah',-480,-420, 1, 1, 'possible',    'other',     'major', 'Benjamin', NULL, NULL, 'A Jewish orphan named Hadassah who became queen of Persia in the citadel of Susa and risked her life to expose Haman''s plot to annihilate her people. Her courage is celebrated yearly at Purim; the Ahasuerus of her story is commonly identified with Xerxes I of Persian history.', NULL),
-
--- New Testament
-('Jesus',   'Yeshua, Jesus Christ', -5, 33, 1, 0, 'probable', 'other', 'major', 'Judah', NULL, NULL, 'The central figure of the Christian faith, proclaimed as Messiah and Son of God, whose teaching, crucifixion under Pontius Pilate, and resurrection stand at the heart of the gospel. The Pilate stone from Caesarea and the Caiaphas ossuary attest the very officials named at his trial.', 'Birth ~6-4 BC based on Herod''s death; crucifixion ~AD 30-33.'),
-('Mary',    'Miriam', -20, 48, 1, 1, 'possible', 'other', 'major', 'Judah', NULL, NULL, 'The young woman of Nazareth chosen to bear Jesus, whose obedient response to the angel''s announcement made her the most honored woman in Scripture. Her Magnificat echoes Hannah''s song, and she appears from Bethlehem to the cross and among the praying disciples before Pentecost.', NULL),
-('John the Baptist', 'Yochanan', -5, 29, 1, 1, 'probable', 'prophet', 'major', 'Levi', NULL, NULL, 'A wilderness prophet who called Israel to repentance and baptism in the Jordan and pointed to Jesus as the coming one. Executed by Herod Antipas, he is also attested by Josephus, who reports that many Jews saw Antipas''s later military defeat as divine judgment for the killing.', NULL),
-('Peter',   'Simon, Cephas', -2, 67, 1, 1, 'probable', 'apostle', 'major', NULL, NULL, NULL, 'A Galilean fisherman whom Jesus called to lead the apostles, remembered for his bold confession, his denial, and his restoration. He preached at Pentecost, opened the door to Gentile believers at Cornelius''s house, and by early tradition was martyred in Rome under Nero.', 'Tradition places death ~AD 64-67 in Rome.'),
-('Paul',    'Saul of Tarsus', 5, 67, 1, 1, 'probable', 'apostle', 'major', 'Benjamin', NULL, NULL, 'A Pharisee who persecuted the church until an encounter with the risen Jesus made him the apostle to the Gentiles. His missionary journeys and letters shaped Christian theology more than any other early figure, and the Gallio inscription at Delphi helps anchor his career in history.', 'Dates based on correlation with Roman history.'),
-('John',    'John the Apostle', 6, 100, 1, 1, 'possible', 'apostle', 'major', NULL, NULL, NULL, 'A son of Zebedee and member of Jesus'' inner circle, traditionally identified as the beloved disciple behind the fourth Gospel. Linked with Ephesus and exile on Patmos, his legacy endures in the earliest known New Testament fragment, a papyrus scrap of his Gospel known as P52.', NULL),
-('James',   'James son of Zebedee', 3, 44, 1, 0, 'probable', 'apostle', 'minor', NULL, NULL, NULL, 'Apostle; first apostle martyred (Acts 12).', NULL),
-('Stephen', NULL, NULL, 35, 1, 1, 'probable', 'other', 'minor', NULL, NULL, NULL, 'First Christian martyr.', NULL),
-('Barnabas',NULL, NULL, 61, 1, 1, 'possible', 'other', 'minor', 'Levi', NULL, NULL, 'Companion of Paul on first missionary journey.', NULL),
-('Timothy', NULL, 17, 80, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Paul''s protégé; recipient of two epistles.', NULL),
-('Luke',    NULL, NULL, 84, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Physician; author of Luke and Acts.', NULL),
-('Naaman', NULL, -870, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Syrian army commander healed of leprosy by Elisha.', 'Ussher: healed during Elisha''s ministry c. 870-825 BC (2 Kings 5).');
-
--- ============================================================
--- NEW PEOPLE (IDs 49-148) — 100 additional biblical figures
--- ============================================================
-INSERT INTO people (name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
--- Primeval / Patriarchal (49-65)
-('Seth',       NULL,       -3874, -2962, 1, 1, 'traditional', 'patriarch', 'minor', NULL, NULL, NULL, 'Third son of Adam and Eve; ancestor of Noah.', 'Ussher: born 3874 BC (AM 130), died 2962 BC (912 years, Gen 5:8).'),
-('Enoch',      NULL,       -3382, -3017,  1, 1, 'traditional', 'patriarch', 'minor', NULL, NULL, NULL, 'Walked with God and was taken up; did not see death.', 'Ussher: born 3382 BC (AM 622), translated 3017 BC (365 years, Gen 5:24; Heb 11:5).'),
-('Methuselah', NULL,       -3317, -2348, 1, 1, 'traditional', 'patriarch', 'minor', NULL, NULL, NULL, 'Longest-lived person in the Bible at 969 years.', 'Ussher: born 3317 BC (AM 687), died 2348 BC year of the Flood (Gen 5:27).'),
-('Lamech',     NULL,       -3130, -2353, 1, 1, 'traditional', 'patriarch', 'minor', NULL, NULL, NULL, 'Father of Noah; expressed hope for relief from the curse.', 'Ussher: born 3130 BC (AM 874), died 2353 BC (777 years, Gen 5:31).'),
-('Shem',       NULL,       -2448, -1848, 1, 1, 'traditional', 'patriarch', 'minor', NULL, NULL, NULL, 'Son of Noah; ancestor of the Semitic peoples and of Abraham.', 'Ussher: born 2448 BC (AM 1556), died 1848 BC (600 years, Gen 11:10-11).'),
-('Ham',        NULL,       -2448, NULL,  1, 1, 'traditional', 'patriarch', 'minor', NULL, NULL, NULL, 'Son of Noah; ancestor of the Canaanites, Egyptians, and others.', 'Ussher: born c. 2448 BC (Gen 5:32).'),
-('Japheth',    NULL,       -2448, NULL,  1, 1, 'traditional', 'patriarch', 'minor', NULL, NULL, NULL, 'Son of Noah; ancestor of many European and Asian peoples.', 'Ussher: born c. 2448 BC (Gen 5:32; 10:21 implies eldest of Noah''s sons).'),
-('Lot',        NULL,       -1960, NULL,  1, 1, 'traditional', 'other',     'minor', NULL, NULL, NULL, 'Abraham''s nephew; escaped the destruction of Sodom.', 'Ussher: contemporary of Abraham, c. 1960 BC.'),
-('Ishmael',    NULL,       -1910, -1773, 1, 1, 'traditional', 'patriarch', 'minor', NULL, NULL, NULL, 'Son of Abraham by Hagar; father of twelve princes.', 'Ussher: born 1910 BC (Abraham aged 86, Gen 16:16), died 1773 BC (137 years, Gen 25:17).'),
-('Hagar',      NULL,       -1930, NULL,  1, 1, 'traditional', 'other',     'minor', NULL, NULL, NULL, 'Sarah''s Egyptian servant; mother of Ishmael.', NULL),
-('Esau',       'Edom',     -1836, NULL,  1, 1, 'traditional', 'patriarch', 'minor', NULL, NULL, NULL, 'Jacob''s twin brother; sold his birthright; ancestor of the Edomites.', 'Ussher: born 1836 BC (twin of Jacob, Gen 25:26).'),
-('Laban',      NULL,       -1920, NULL,  1, 1, 'traditional', 'other',     'minor', NULL, NULL, NULL, 'Rebekah''s brother; father of Leah and Rachel. Tricked Jacob.', NULL),
-('Leah',       NULL,       -1850, NULL,  1, 1, 'traditional', 'other',     'minor', NULL, NULL, NULL, 'Jacob''s first wife; mother of six sons and Dinah.', NULL),
-('Rachel',     NULL,       -1850, -1730, 1, 1, 'traditional', 'other',     'minor', NULL, NULL, NULL, 'Jacob''s beloved wife; mother of Joseph and Benjamin.', 'Ussher: died c. 1730 BC giving birth to Benjamin (Gen 35:16-20).'),
-('Judah',      NULL,       -1750, NULL,  1, 1, 'traditional', 'patriarch', 'major', 'Judah', NULL, NULL, 'Fourth son of Jacob and Leah whose offer of himself in place of Benjamin marked one of Genesis''s great moments of transformation. Jacob''s blessing promised the scepter to his line, and through him came the royal tribe of David and, in Christian reading, the Messiah himself.', 'Ussher: born c. 1750 BC.'),
-('Benjamin',   NULL,       -1730, NULL,  1, 1, 'traditional', 'patriarch', 'minor', 'Benjamin', NULL, NULL, 'Youngest son of Jacob and Rachel; born near Bethlehem.', 'Ussher: born c. 1730 BC (Gen 35:16-20).'),
-('Reuben',     NULL,       -1755, NULL,  1, 1, 'traditional', 'patriarch', 'minor', 'Reuben', NULL, NULL, 'Jacob''s firstborn; lost his birthright. Tried to save Joseph.', 'Ussher: born c. 1755 BC.'),
-
--- Egypt / Exodus (66-70)
-('Pharaoh of the Exodus', NULL, -1545, NULL, 1, 1, 'possible', 'king', 'major', NULL, NULL, NULL, 'The unnamed Egyptian king who enslaved Israel and defied Moses'' demand for release through ten devastating plagues. His army''s destruction in the sea sealed Israel''s deliverance; Scripture withholds his name, and scholars still debate which historical pharaoh he was.', 'Ussher: Exodus 1491 BC. Often identified as Thutmose III or Amenhotep II.'),
-('Caleb',      'Caleb son of Jephunneh', -1530, -1420, 1, 1, 'traditional', 'other', 'minor', NULL, NULL, NULL, 'One of two faithful spies (with Joshua) who urged Israel to enter Canaan.', 'Ussher: born c. 1530 BC, died c. 1420 BC (Josh 14:10).'),
-('Phinehas',   'Phinehas son of Eleazar', -1465, NULL, 1, 1, 'traditional', 'priest', 'minor', 'Levi', NULL, NULL, 'Zealous priest who stopped a plague by his decisive action.', 'Ussher: c. 1465 BC (Num 25:6-13).'),
-('Jethro',     'Reuel', -1605, NULL, 1, 1, 'traditional', 'priest', 'minor', NULL, NULL, NULL, 'Moses'' father-in-law; priest of Midian who advised Moses on delegation.', 'Ussher: c. 1605 BC.'),
-('Zipporah',   NULL, -1555, NULL, 1, 1, 'traditional', 'other', 'minor', NULL, NULL, NULL, 'Wife of Moses; daughter of Jethro.', 'Ussher: c. 1555 BC.'),
-
--- Judges (71-78)
-('Othniel',    NULL,       -1405, -1325, 1, 1, 'possible', 'judge', 'minor', 'Judah', NULL, NULL, 'First judge of Israel; nephew of Caleb.', 'Ussher: c. 1405-1325 BC (Judg 3:7-11).'),
-('Ehud',       NULL,       -1355, NULL,  1, 1, 'possible', 'judge', 'minor', 'Benjamin', NULL, NULL, 'Left-handed judge who assassinated King Eglon of Moab.', 'Ussher: c. 1355 BC (Judg 3:12-30).'),
-('Jephthah',   NULL,       -1195, -1189, 1, 1, 'possible', 'judge', 'minor', NULL, NULL, NULL, 'Judge of Israel who made a tragic vow.', 'Ussher: c. 1195-1189 BC (Judg 11:1–12:7).'),
-('Eli',        NULL,       -1205, -1125, 1, 1, 'traditional', 'priest', 'minor', 'Levi', NULL, NULL, 'Priest and judge at Shiloh; raised Samuel.', 'Ussher: c. 1205-1125 BC (1 Sam 1-4).'),
-('Hannah',     NULL,       -1175, NULL,  1, 1, 'traditional', 'other', 'minor', NULL, NULL, NULL, 'Mother of Samuel; prayed fervently for a child and dedicated him to God.', 'Ussher: c. 1175 BC (1 Sam 1-2).'),
-('Boaz',       NULL,       -1205, NULL,  1, 1, 'possible', 'other', 'minor', 'Judah', NULL, NULL, 'Kinsman-redeemer who married Ruth; ancestor of David.', 'Ussher: c. 1205 BC (Ruth 2-4).'),
-('Naomi',      NULL,       -1225, NULL,  1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Ruth''s mother-in-law who returned from Moab to Bethlehem.', 'Ussher: c. 1225 BC (Ruth 1-4).'),
-('Abimelech',  NULL,       -1215, -1185, 1, 1, 'possible', 'king', 'minor', 'Manasseh', NULL, NULL, 'Son of Gideon who made himself king; killed at Thebez.', 'Ussher: c. 1215-1185 BC (Judg 9).'),
-
--- United Kingdom (79-84)
-('Abigail',    NULL,       -1075, NULL,  1, 1, 'traditional', 'other', 'minor', NULL, NULL, NULL, 'Wise woman who became David''s wife after the death of Nabal.', 'Ussher: c. 1075 BC (1 Sam 25).'),
-('Bathsheba',  NULL,       -1065, NULL,  1, 1, 'traditional', 'other', 'minor', NULL, NULL, NULL, 'Wife of David; mother of Solomon.', 'Ussher: c. 1065 BC.'),
-('Joab',       NULL,       -1085, -1013,  1, 1, 'traditional', 'other', 'minor', NULL, NULL, NULL, 'Commander of David''s army; politically shrewd and ruthless.', 'Ussher: c. 1085-1013 BC (1 Kgs 2:28-34).'),
-('Absalom',    NULL,       -1065, -1023,  1, 1, 'traditional', 'other', 'minor', 'Judah', NULL, NULL, 'David''s rebellious son who temporarily seized the throne.', 'Ussher: c. 1065-1023 BC (2 Sam 13-18).'),
-('Jonathan',   NULL,       -1105, -1056, 1, 1, 'traditional', 'other', 'minor', 'Benjamin', NULL, NULL, 'Saul''s son and David''s closest friend; died at Gilboa.', 'Ussher: died at Gilboa 1056 BC (1 Sam 31).'),
-('Michal',     NULL,       -1095, NULL,  1, 1, 'traditional', 'other', 'minor', 'Benjamin', NULL, NULL, 'Saul''s daughter; David''s first wife who helped him escape.', 'Ussher: c. 1095 BC.'),
-
--- Kings of Judah (85-97)
-('Rehoboam',   NULL,       -1016, -958, 1, 1, 'traditional', 'king', 'minor', 'Judah', NULL, NULL, 'Solomon''s son; his harshness caused the kingdom to divide.', 'Ussher: Rehoboam was 41 when he began to reign (1 Kgs 14:21), born c. 1016 BC. Kingdom divided 975 BC.'),
-('Asa',        NULL,       -955,  -914, 1, 1, 'traditional', 'king', 'minor', 'Judah', NULL, NULL, 'Good king of Judah who removed idols and sought the Lord.', 'Ussher: reigned 955-914 BC (41 years, 1 Kgs 15:10). 1 Kings 15:9-24; 2 Chronicles 14-16.'),
-('Jehoshaphat',NULL,       -949,  -889, 1, 1, 'traditional', 'king', 'minor', 'Judah', NULL, NULL, 'Good king of Judah who strengthened the nation and sent teachers through the land.', 'Ussher: reigned 914-889 BC (25 years, 1 Kgs 22:42). Age 35 at accession: born 949 BC.'),
-('Jehoram of Judah', 'Joram', -921, -885, 1, 1, 'traditional', 'king', 'minor', 'Judah', NULL, NULL, 'Wicked king of Judah who married Ahab''s daughter and led Judah astray.', 'Ussher: reigned 893-885 BC (8 years, 2 Kgs 8:17). Age 32 at accession; coregency with Jehoshaphat. Born c. 921 BC.'),
-('Uzziah',     'Azariah',  -826,  -758, 1, 1, 'traditional', 'king', 'minor', 'Judah', NULL, NULL, 'Good king of Judah who became proud and was struck with leprosy.', 'Ussher: reigned 810-758 BC (52 years, 2 Kgs 15:2). Age 16 at accession: born 826 BC.'),
-('Ahaz',       NULL,       -762,  -726, 1, 1, 'traditional', 'king', 'minor', 'Judah', NULL, NULL, 'Wicked king of Judah who practiced child sacrifice and shut the Temple doors.', 'Ussher: reigned 742-726 BC (16 years, 2 Kgs 16:2). Age 20 at accession: born 762 BC. Isaiah 7.'),
-('Manasseh',   NULL,       -709,  -642, 1, 1, 'traditional', 'king', 'minor', 'Judah', NULL, NULL, 'Most wicked king of Judah who later repented in exile.', 'Ussher: reigned 697-642 BC (55 years, 2 Kgs 21:1). Age 12 at accession: born 709 BC.'),
-('Jehoiakim',  'Eliakim',  -634,  -598, 1, 1, 'traditional', 'king', 'minor', 'Judah', NULL, NULL, 'King of Judah who burned Jeremiah''s scroll and rebelled against Babylon.', 'Ussher: reigned 609-598 BC (11 years, 2 Kgs 23:36). Age 25 at accession: born 634 BC.'),
-('Zedekiah',   'Mattaniah',-618,  -586, 1, 1, 'traditional', 'king', 'minor', 'Judah', NULL, NULL, 'Last king of Judah; blinded and taken captive to Babylon.', 'Ussher: reigned 597-586 BC (11 years, 2 Kgs 24:18). Age 21 at accession: born 618 BC.'),
-('Athaliah',   NULL,       -930,  -878, 1, 1, 'traditional', 'king', 'minor', NULL, NULL, NULL, 'Wicked queen of Judah who usurped the throne and killed royal heirs.', 'Ussher: usurped 885-878 BC (6-7 years, 2 Kgs 11:3). Killed in 7th year when Joash crowned. Birth estimated.'),
-('Joash of Judah', 'Jehoash', -885, -838, 1, 1, 'traditional', 'king', 'minor', 'Judah', NULL, NULL, 'Boy king hidden in the Temple; restored proper worship under Jehoiada''s guidance.', 'Ussher: reigned 878-838 BC (40 years, 2 Kgs 12:1). Age 7 at accession: born 885 BC.'),
-('Amaziah',    NULL,       -863,  -810, 1, 1, 'traditional', 'king', 'minor', 'Judah', NULL, NULL, 'King of Judah who followed the Lord at first but later turned to idols.', 'Ussher: reigned 838-810 BC (29 years, 2 Kgs 14:2). Age 25 at accession: born 863 BC.'),
-('Jotham',     NULL,       -783,  -742, 1, 1, 'traditional', 'king', 'minor', 'Judah', NULL, NULL, 'Good king of Judah who built the upper gate of the Temple.', 'Ussher: reigned 758-742 BC (16 years, 2 Kgs 15:33). Age 25 at accession: born 783 BC.'),
-
--- Kings of Israel (98-107) — Ussher chronology from 975 BC division
-('Nadab',      NULL,       -995,  -953, 1, 1, 'traditional', 'king', 'minor', 'Ephraim', NULL, NULL, 'Son and successor of Jeroboam I; killed by Baasha after two years.', 'Ussher: reigned 954-953 BC (2 years, 1 Kgs 15:25-32).'),
-('Baasha',     NULL,       -980,  -930, 1, 1, 'traditional', 'king', 'minor', NULL, NULL, NULL, 'King of Israel who destroyed the house of Jeroboam.', 'Ussher: reigned 953-930 BC (24 years, 1 Kgs 15:33). Birth estimated.'),
-('Omri',       NULL,       -960,  -918, 1, 1, 'traditional', 'king', 'minor', NULL, NULL, NULL, 'King of Israel who founded Samaria; politically powerful but godless.', 'Ussher: reigned 929-918 BC (12 years, 1 Kgs 16:23). Mentioned in the Moabite Stone. Birth estimated.'),
-('Ahaziah of Israel', NULL, -920, -896, 1, 1, 'traditional', 'king', 'minor', NULL, NULL, NULL, 'Son of Ahab; wicked king who sought Baal-zebub instead of God.', 'Ussher: reigned 897-896 BC (2 years, 1 Kgs 22:51). Birth estimated.'),
-('Jehoram of Israel', 'Joram of Israel', -920, -884, 1, 1, 'traditional', 'king', 'minor', NULL, NULL, NULL, 'Son of Ahab; last king of the Omride dynasty; killed by Jehu.', 'Ussher: reigned 896-884 BC (12 years, 2 Kgs 3:1). Birth estimated.'),
-('Jehu',       NULL,       -920,  -856, 1, 1, 'traditional', 'king', 'minor', NULL, NULL, NULL, 'Anointed by Elisha''s servant; destroyed the house of Ahab and Baal worship.', 'Ussher: reigned 884-856 BC (28 years, 2 Kgs 10:36). Birth estimated.'),
-('Jeroboam II',NULL,       -856,  -784, 1, 1, 'traditional', 'king', 'minor', 'Ephraim', NULL, NULL, 'Powerful king of Israel who expanded borders but tolerated idolatry.', 'Ussher: reigned 825-784 BC (41 years, 2 Kgs 14:23-29). Prophets Amos and Hosea active during his reign. Birth estimated.'),
-('Hoshea',     'Hosea (king)', -765, -721, 1, 1, 'traditional', 'king', 'minor', NULL, NULL, NULL, 'Last king of Israel; kingdom fell to Assyria during his reign.', 'Ussher: reigned 730-721 BC (9 years, 2 Kgs 17:1-6). Fall of Samaria AM 3283.'),
-('Zimri',      NULL,       -960,  -929, 1, 1, 'traditional', 'king', 'minor', NULL, NULL, NULL, 'King of Israel for only seven days; died by suicide during Omri''s siege.', 'Ussher: reigned 7 days in 929 BC (1 Kgs 16:9-20). Birth estimated.'),
-('Jezebel',    NULL,       -940,  -884, 1, 1, 'traditional', 'other', 'minor', NULL, NULL, NULL, 'Phoenician wife of Ahab; promoted Baal worship and persecuted prophets.', 'Ussher: killed by Jehu 884 BC (2 Kgs 9:30-37). Married Ahab c. 918 BC. Birth estimated.'),
-
--- Prophets (108-119)
-('Hosea',      'Hosea (prophet)', -805, -720, 1, 1, 'traditional', 'prophet', 'minor', NULL, NULL, NULL, 'Prophet who married Gomer to illustrate God''s love for unfaithful Israel.', 'Ussher: prophesied during reigns of Uzziah through Hezekiah (Hos 1:1) and Jeroboam II (825-784 BC). Active c. 790-720 BC. Birth estimated.'),
-('Joel',       NULL,       -835,  NULL,  1, 1, 'possible', 'prophet', 'minor', NULL, NULL, NULL, 'Prophet who described a locust plague and the Day of the Lord.', 'Joel 1-3. Date is debated.'),
-('Amos',       NULL,       -790,  NULL,  1, 1, 'traditional', 'prophet', 'minor', NULL, NULL, NULL, 'Shepherd-prophet from Tekoa who denounced social injustice in Israel.', 'Ussher: prophesied during Uzziah (810-758 BC) and Jeroboam II (825-784 BC). Amos 1:1; 7:14-15. Birth estimated.'),
-('Obadiah',    NULL,       -586,  NULL,  1, 1, 'possible', 'prophet', 'minor', NULL, NULL, NULL, 'Prophet who pronounced judgment on Edom for betraying Judah.', 'Obadiah 1. Shortest OT book.'),
-('Jonah',      NULL,       -800,  NULL,  1, 1, 'traditional', 'prophet', 'minor', NULL, NULL, NULL, 'Prophet sent to Nineveh; swallowed by a great fish after fleeing.', 'Ussher: prophesied during Jeroboam II (825-784 BC, 2 Kgs 14:25). Jonah 1-4. Birth estimated.'),
-('Micah',      NULL,       -755,  -700, 1, 1, 'traditional', 'prophet', 'minor', NULL, NULL, NULL, 'Prophet who foretold Bethlehem as the Messiah''s birthplace.', 'Ussher: prophesied during Jotham (758-742), Ahaz (742-726), and Hezekiah (726-697). Micah 1:1; 5:2. Birth estimated.'),
-('Nahum',      NULL,       -660,  NULL,  1, 1, 'possible', 'prophet', 'minor', NULL, NULL, NULL, 'Prophet who foretold the fall of Nineveh.', 'Nahum 1-3.'),
-('Habakkuk',   NULL,       -620,  NULL,  1, 1, 'possible', 'prophet', 'minor', NULL, NULL, NULL, 'Prophet who questioned God about evil and received answers about faith.', 'Habakkuk 1-3.'),
-('Zephaniah',  NULL,       -640,  NULL,  1, 1, 'possible', 'prophet', 'minor', 'Judah', NULL, NULL, 'Prophet during Josiah''s reign who warned of the Day of the Lord.', 'Zephaniah 1-3.'),
-('Haggai',     NULL,       -540,  NULL,  1, 1, 'possible', 'prophet', 'minor', NULL, NULL, NULL, 'Post-exilic prophet who urged rebuilding of the Temple.', 'Haggai 1-2.'),
-('Zechariah',  'Zechariah (prophet)', -540, NULL, 1, 1, 'possible', 'prophet', 'minor', NULL, NULL, NULL, 'Post-exilic prophet with messianic visions; contemporary of Haggai.', 'Zechariah 1-14.'),
-('Malachi',    NULL,       -460,  NULL,  1, 1, 'possible', 'prophet', 'minor', NULL, NULL, NULL, 'Last OT prophet who called Israel to faithfulness before 400 years of silence.', 'Malachi 1-4.'),
-
--- Post-Exile / Intertestamental (120-121)
-('Mordecai',   NULL,       -500,  -440, 1, 1, 'possible', 'other', 'minor', 'Benjamin', NULL, NULL, 'Esther''s cousin who raised her; uncovered a plot against the king.', 'Esther 2-10.'),
-('Job',        NULL,       -2000, NULL,  1, 1, 'possible', 'other', 'major', NULL, NULL, NULL, 'A blameless man of Uz whose catastrophic losses became Scripture''s deepest exploration of innocent suffering. Refusing his friends'' easy explanations, he carried his anguish directly to God, who answered from the whirlwind, and his endurance became proverbial in both testaments.', 'Job 1-42. Date is highly debated; possibly patriarchal era.'),
-
--- New Testament (122-148)
-('Joseph of Nazareth', NULL, -25, 20, 1, 1, 'possible', 'other', 'minor', 'Judah', NULL, NULL, 'Husband of Mary; earthly father of Jesus. A righteous carpenter.', 'Matthew 1-2; Luke 2. Disappears from narrative after Jesus'' youth.'),
-('Lazarus',    'Lazarus of Bethany', -5, 60, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Brother of Mary and Martha; raised from the dead by Jesus after four days.', 'John 11:1-44; 12:1-11.'),
-('Martha',     NULL,       -10, NULL,   1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Sister of Lazarus and Mary; known for her hospitality and service.', 'Luke 10:38-42; John 11-12.'),
-('Mary Magdalene', NULL,   -5, NULL,    1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Follower of Jesus; first witness of the resurrection.', 'Luke 8:2; John 20:1-18.'),
-('Nicodemus',  NULL,       -20, NULL,   1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Pharisee who came to Jesus at night; helped bury Jesus.', 'John 3:1-21; 7:50-52; 19:38-42.'),
-('Matthew',    'Levi',     2, 70,       1, 1, 'possible', 'apostle', 'minor', NULL, NULL, NULL, 'Tax collector called by Jesus; author of the Gospel of Matthew.', 'Matthew 9:9-13; 10:3.'),
-('Andrew',     NULL,       5, 65,       1, 1, 'possible', 'apostle', 'minor', NULL, NULL, NULL, 'Brother of Peter; one of the first disciples called.', 'John 1:35-42; Matthew 4:18-20.'),
-('Philip',     'Philip the Apostle', 5, 80, 1, 1, 'possible', 'apostle', 'minor', NULL, NULL, NULL, 'Apostle from Bethsaida who brought Nathanael to Jesus.', 'John 1:43-48; 6:5-7; 14:8-9.'),
-('Bartholomew','Nathanael', 5, 70,      1, 1, 'possible', 'apostle', 'minor', NULL, NULL, NULL, 'Apostle whom Jesus described as an Israelite without guile.', 'John 1:45-51; Matthew 10:3.'),
-('Thomas',     'Didymus',  5, 72,       1, 1, 'possible', 'apostle', 'minor', NULL, NULL, NULL, 'Apostle known for his doubt and powerful confession of faith.', 'John 11:16; 14:5; 20:24-29.'),
-('James son of Alphaeus', NULL, 5, 62,  1, 1, 'possible', 'apostle', 'minor', NULL, NULL, NULL, 'One of the twelve apostles; sometimes called James the Less.', 'Matthew 10:3; Mark 3:18.'),
-('Thaddaeus',  'Judas son of James', 5, 65, 1, 1, 'possible', 'apostle', 'minor', NULL, NULL, NULL, 'Apostle also known as Judas son of James; asked Jesus a question at the Last Supper.', 'John 14:22; Matthew 10:3.'),
-('Simon the Zealot', NULL, 5, 65,       1, 1, 'possible', 'apostle', 'minor', NULL, NULL, NULL, 'Apostle who may have been a member of the Zealot movement.', 'Matthew 10:4; Luke 6:15; Acts 1:13.'),
-('Judas Iscariot', NULL,   3, 33,       1, 0, 'probable', 'apostle', 'minor', NULL, NULL, NULL, 'Apostle who betrayed Jesus for thirty pieces of silver.', 'Matthew 26:14-16, 47-50; 27:3-10; Acts 1:16-20.'),
-('Matthias',   NULL,       5, 80,       1, 1, 'possible', 'apostle', 'minor', NULL, NULL, NULL, 'Chosen by lot to replace Judas Iscariot among the twelve.', 'Acts 1:21-26.'),
-('Mark',       'John Mark', 15, 68,     1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Author of the Gospel of Mark; companion of Paul and Barnabas, later of Peter.', 'Acts 12:12, 25; 15:37-39; 2 Timothy 4:11; 1 Peter 5:13.'),
-('Silas',      'Silvanus',  5, 65,      1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Prominent member of the Jerusalem church; companion of Paul on the second missionary journey.', 'Acts 15:22-40; 16-17; 1 Thessalonians 1:1.'),
-('Titus',      NULL,        10, 70,     1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Gentile convert and co-worker of Paul; led the church in Crete.', 'Galatians 2:1-3; 2 Corinthians 7-8; Titus 1:4-5.'),
-('Priscilla',  'Prisca',    10, 68,     1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Wife of Aquila; together they mentored Apollos and hosted house churches.', 'Acts 18:2-3, 18-26; Romans 16:3-5.'),
-('Aquila',     NULL,        10, 68,     1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Husband of Priscilla; tentmaker who worked with Paul in Corinth.', 'Acts 18:2-3, 18-26; Romans 16:3-5.'),
-('Apollos',    NULL,        10, 70,     1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Eloquent Alexandrian Jew who preached powerfully but was further taught by Priscilla and Aquila.', 'Acts 18:24-28; 1 Corinthians 1:12; 3:4-6.'),
-('Philemon',   NULL,        10, 70,     1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Wealthy Christian in Colossae to whom Paul wrote about the slave Onesimus.', 'Philemon 1-25.'),
-('James brother of Jesus', 'James the Just', -2, 62, 1, 1, 'probable', 'other', 'major', 'Judah', NULL, NULL, 'The Lord''s brother who came to faith after the resurrection and became the acknowledged leader of the Jerusalem church, remembered as James the Just. Paul names him a pillar, the historian Josephus records his execution, and the practical wisdom of his letter still guides believers.', 'Acts 15:13-21; Galatians 1:19; 2:9; James 1:1. Josephus records his martyrdom ~AD 62.'),
-('Herod the Great', NULL,  -73, -4, 0, 0, 'certain', 'king', 'minor', NULL, NULL, NULL, 'King of Judea who rebuilt the Temple but ordered the massacre of infants in Bethlehem.', 'Matthew 2:1-19; confirmed by Josephus. Death in 4 BC is well-established.'),
-('Pontius Pilate', NULL,   -10, 39, 1, 1, 'probable', 'other', 'minor', NULL, NULL, NULL, 'Roman governor of Judea who authorized the crucifixion of Jesus.', 'Matthew 27; Luke 23; John 18-19. Pilate Stone confirms his historicity.'),
-('Anna',       'Anna the Prophetess', -95, NULL, 1, 1, 'possible', 'prophet', 'minor', 'Asher', NULL, NULL, 'Elderly prophetess who recognized the infant Jesus at the Temple.', 'Luke 2:36-38.');
-
--- ============================================================
--- GEN 5 & GEN 11 ANCESTORS (IDs 148-159) — Ussher Chronology
--- Complete genealogical chain from Adam to Abraham
--- ============================================================
-INSERT INTO people (name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
--- Genesis 5 chain (between Seth and Enoch)
-('Enosh',      'Enos',     -3769, -2864, 0, 0, 'traditional', 'patriarch', 'minor', NULL, NULL, NULL, 'Son of Seth; in his time people began to call on the name of the LORD.', 'Ussher: born 3769 BC (AM 235), died 2864 BC (905 years, Gen 5:6-11).'),
-('Kenan',      'Cainan',   -3679, -2769, 0, 0, 'traditional', 'patriarch', 'minor', NULL, NULL, NULL, 'Son of Enosh; fourth generation from Adam.', 'Ussher: born 3679 BC (AM 325), died 2769 BC (910 years, Gen 5:9-14).'),
-('Mahalalel',  NULL,       -3609, -2714, 0, 0, 'traditional', 'patriarch', 'minor', NULL, NULL, NULL, 'Son of Kenan; fifth generation from Adam.', 'Ussher: born 3609 BC (AM 395), died 2714 BC (895 years, Gen 5:12-17).'),
-('Jared',      NULL,       -3544, -2582, 0, 0, 'traditional', 'patriarch', 'minor', NULL, NULL, NULL, 'Son of Mahalalel; father of Enoch. Lived 962 years, second-longest lifespan.', 'Ussher: born 3544 BC (AM 460), died 2582 BC (962 years, Gen 5:15-20).'),
--- Genesis 11 chain (between Shem and Abraham)
-('Arphaxad',   'Arpachshad', -2346, -1908, 0, 0, 'traditional', 'patriarch', 'minor', NULL, NULL, NULL, 'Son of Shem; born two years after the Flood. Ancestor of Abraham.', 'Ussher: born 2346 BC (AM 1658), died 1908 BC (438 years, Gen 11:10-13).'),
-('Salah',      'Shelah',   -2311, -1878, 0, 0, 'traditional', 'patriarch', 'minor', NULL, NULL, NULL, 'Son of Arphaxad; grandfather of Eber.', 'Ussher: born 2311 BC (AM 1693), died 1878 BC (433 years, Gen 11:12-15).'),
-('Eber',       'Heber',    -2281, -1817, 0, 0, 'traditional', 'patriarch', 'minor', NULL, NULL, NULL, 'Son of Salah; ancestor of the Hebrews (the name "Hebrew" derives from Eber).', 'Ussher: born 2281 BC (AM 1723), died 1817 BC (464 years, Gen 11:14-17).'),
-('Peleg',      NULL,       -2247, -2008, 0, 0, 'traditional', 'patriarch', 'minor', NULL, NULL, NULL, 'Son of Eber; in his days the earth was divided (Tower of Babel).', 'Ussher: born 2247 BC (AM 1757), died 2008 BC (239 years, Gen 11:16-19). Gen 10:25.'),
-('Reu',        'Ragau',    -2217, -1978, 0, 0, 'traditional', 'patriarch', 'minor', NULL, NULL, NULL, 'Son of Peleg; continued the post-Flood patriarchal line.', 'Ussher: born 2217 BC (AM 1787), died 1978 BC (239 years, Gen 11:18-21).'),
-('Serug',      'Saruch',   -2185, -1955, 0, 0, 'traditional', 'patriarch', 'minor', NULL, NULL, NULL, 'Son of Reu; grandfather of Terah.', 'Ussher: born 2185 BC (AM 1819), died 1955 BC (230 years, Gen 11:20-23).'),
-('Nahor',      'Nahor son of Serug', -2155, -2007, 0, 0, 'traditional', 'patriarch', 'minor', NULL, NULL, NULL, 'Son of Serug; grandfather of Abraham. Not to be confused with Abraham''s brother Nahor.', 'Ussher: born 2155 BC (AM 1849), died 2007 BC (148 years, Gen 11:22-25).'),
-('Terah',      NULL,       -2126, -1921, 0, 0, 'traditional', 'patriarch', 'minor', NULL, NULL, NULL, 'Son of Nahor; father of Abraham, Nahor, and Haran. Died in Haran.', 'Ussher: born 2126 BC (AM 1878), died 1921 BC (205 years, Gen 11:24-32). Abraham departed after Terah''s death (Acts 7:4).');
-
--- ============================================================
--- 100 ADDITIONAL PEOPLE (IDs 160-259)
--- ============================================================
-INSERT INTO people (name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
--- Primeval (160-161)
-('Cain',       NULL,       -3950, -3000, 1, 1, 'traditional', 'other', 'major', NULL, NULL, NULL, 'Firstborn of Adam and Eve, a tiller of the soil whose rejected offering festered into the murder of his brother Abel. Marked yet protected by God, he became the Bible''s first city builder and an enduring warning that sin crouches at the door yet can be mastered.', 'Ussher: born c. 3950 BC. Death unrecorded; Gen 4:1-16.'),
-('Abel',       NULL,       -3948, -3880, 1, 1, 'traditional', 'other', 'major', NULL, NULL, NULL, 'Second son of Adam and Eve, a keeper of flocks whose offering God accepted, provoking his brother''s lethal envy. The first innocent to die in Scripture, he is honored in Hebrews as a man of faith whose blood still speaks, and Jesus names him first among the righteous slain.', 'Ussher: born c. 3948 BC, killed by Cain c. 3880 BC (Gen 4:8). First death in Scripture.'),
-
--- Patriarchal era (162-179)
-('Dinah',      NULL,       -1748, NULL, 1, 1, 'traditional', 'other', 'minor', NULL, NULL, NULL, 'Daughter of Jacob and Leah; incident at Shechem.', 'Gen 34; born c. 1748 BC.'),
-('Simeon',     NULL,       -1753, -1620, 1, 1, 'traditional', 'patriarch', 'minor', 'Simeon', NULL, NULL, 'Second son of Jacob and Leah; ancestor of the tribe of Simeon.', 'Gen 29:33; 34:25; 42:24. Ussher: born c. 1753 BC.'),
-('Levi',       NULL,       -1751, -1614, 1, 1, 'traditional', 'patriarch', 'minor', 'Levi', NULL, NULL, 'Third son of Jacob and Leah; ancestor of the priestly tribe. Lived 137 years.', 'Ussher: born c. 1751 BC, died c. 1614 BC (137 years, Exod 6:16).'),
-('Dan',        NULL,       -1745, NULL, 1, 1, 'traditional', 'patriarch', 'minor', 'Dan', NULL, NULL, 'Fifth son of Jacob; ancestor of the tribe of Dan.', 'Gen 30:6; 49:16-17.'),
-('Naphtali',   NULL,       -1743, NULL, 1, 1, 'traditional', 'patriarch', 'minor', 'Naphtali', NULL, NULL, 'Sixth son of Jacob; ancestor of the tribe of Naphtali.', 'Gen 30:8; 49:21.'),
-('Gad',        NULL,       -1741, NULL, 1, 1, 'traditional', 'patriarch', 'minor', 'Gad', NULL, NULL, 'Seventh son of Jacob; ancestor of the tribe of Gad.', 'Gen 30:11; 49:19.'),
-('Asher',      NULL,       -1739, NULL, 1, 1, 'traditional', 'patriarch', 'minor', 'Asher', NULL, NULL, 'Eighth son of Jacob; ancestor of the tribe of Asher.', 'Gen 30:13; 49:20.'),
-('Issachar',   NULL,       -1737, NULL, 1, 1, 'traditional', 'patriarch', 'minor', 'Issachar', NULL, NULL, 'Ninth son of Jacob; ancestor of the tribe of Issachar.', 'Gen 30:18; 49:14-15.'),
-('Zebulun',    NULL,       -1735, NULL, 1, 1, 'traditional', 'patriarch', 'minor', 'Zebulun', NULL, NULL, 'Tenth son of Jacob; ancestor of the tribe of Zebulun.', 'Gen 30:20; 49:13.'),
-('Manasseh',   'Manasseh son of Joseph', -1715, NULL, 1, 1, 'traditional', 'patriarch', 'minor', 'Manasseh', NULL, NULL, 'Firstborn son of Joseph; adopted by Jacob. Half-tribe of Israel.', 'Gen 41:51; 48:1-20.'),
-('Ephraim',    NULL,       -1713, NULL, 1, 1, 'traditional', 'patriarch', 'minor', 'Ephraim', NULL, NULL, 'Second son of Joseph; adopted by Jacob and given the firstborn blessing.', 'Gen 41:52; 48:1-20.'),
-('Tamar',      'Tamar daughter-in-law of Judah', -1730, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', NULL, NULL, 'Daughter-in-law of Judah; mother of Perez and Zerah. In the lineage of David and Jesus.', 'Gen 38; Matt 1:3.'),
-('Perez',      'Pharez',   -1725, NULL, 1, 1, 'traditional', 'patriarch', 'minor', 'Judah', NULL, NULL, 'Son of Judah and Tamar; ancestor of David and Jesus.', 'Gen 38:29; Ruth 4:18-22; Matt 1:3.'),
-('Keturah',    NULL,       -1950, -1800, 1, 1, 'traditional', 'other', 'minor', NULL, NULL, NULL, 'Abraham''s wife after Sarah''s death; mother of six sons including Midian.', 'Gen 25:1-4. Ussher: married Abraham c. 1859 BC.'),
-('Melchizedek',NULL,       -2000, NULL, 1, 1, 'traditional', 'priest', 'major', NULL, NULL, NULL, 'The enigmatic king of Salem and priest of God Most High who blessed Abram and received his tithe. Psalm 110 made his order a royal-priestly ideal, the Dead Sea Scrolls cast him as a heavenly deliverer, and Hebrews sees in him the pattern of Christ''s eternal priesthood.', 'Gen 14:18-20; Ps 110:4; Heb 7. Ussher: c. 1913 BC.'),
-('Potiphar',   NULL,       -1770, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Egyptian officer who bought Joseph as a slave; captain of Pharaoh''s guard.', 'Gen 39:1-20.'),
-('Asenath',    NULL,       -1725, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Egyptian wife of Joseph; daughter of Potiphera priest of On. Mother of Manasseh and Ephraim.', 'Gen 41:45, 50-52.'),
-
--- Exodus/Wilderness (180-189)
-('Korah',      NULL,       -1540, -1490, 1, 1, 'traditional', 'other', 'minor', 'Levi', NULL, NULL, 'Levite who led a rebellion against Moses and Aaron; swallowed by the earth.', 'Num 16:1-35. Ussher: c. 1490 BC.'),
-('Balaam',     NULL,       -1530, -1451, 1, 1, 'traditional', 'prophet', 'minor', NULL, NULL, NULL, 'Pagan prophet hired by Balak to curse Israel; his donkey spoke. Killed by Israel.', 'Num 22-24; 31:8. Ussher: c. 1452 BC.'),
-('Balak',      NULL,       -1510, NULL, 1, 1, 'traditional', 'king', 'minor', NULL, NULL, NULL, 'King of Moab who hired Balaam to curse Israel.', 'Num 22-24.'),
-('Rahab',      NULL,       -1475, -1400, 1, 1, 'traditional', 'other', 'major', NULL, NULL, NULL, 'A woman of Jericho who hid Israel''s spies and confessed their God as Lord of heaven and earth, securing her family''s rescue by a scarlet cord. Grafted into Israel, she appears in Matthew''s genealogy of Jesus and is praised for her faith in both Hebrews and James.', 'Josh 2; 6:22-25; Matt 1:5; Heb 11:31. Ussher: c. 1451 BC.'),
-('Achan',      NULL,       -1490, -1451, 1, 1, 'traditional', 'other', 'minor', 'Judah', NULL, NULL, 'Israelite who took forbidden plunder from Jericho; caused defeat at Ai.', 'Josh 7:1-26. Ussher: c. 1451 BC.'),
-('Eleazar',    'Eleazar son of Aaron', -1530, -1415, 1, 1, 'traditional', 'priest', 'minor', 'Levi', NULL, NULL, 'Son of Aaron; succeeded him as high priest. Served during the conquest.', 'Exod 6:23; Num 20:28; Josh 24:33.'),
-('Hur',        NULL,       -1550, -1460, 1, 1, 'traditional', 'other', 'minor', 'Judah', NULL, NULL, 'Held up Moses'' arms during the battle with Amalek alongside Aaron.', 'Exod 17:10-12; 24:14.'),
-('Bezalel',    NULL,       -1520, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', NULL, NULL, 'Master craftsman filled with the Spirit of God; built the Tabernacle.', 'Exod 31:1-11; 35:30-35.'),
-('Dathan',     NULL,       -1530, -1490, 1, 1, 'traditional', 'other', 'minor', 'Reuben', NULL, NULL, 'Reubenite who joined Korah''s rebellion against Moses; swallowed by the earth.', 'Num 16:1-35.'),
-('Abiram',     NULL,       -1530, -1490, 1, 1, 'traditional', 'other', 'minor', 'Reuben', NULL, NULL, 'Reubenite who joined Korah''s rebellion against Moses; swallowed by the earth.', 'Num 16:1-35.'),
-
--- Judges/Pre-monarchy (190-199)
-('Barak',      NULL,       -1250, -1200, 1, 1, 'possible', 'judge', 'minor', 'Naphtali', NULL, NULL, 'Military commander who fought alongside Deborah against Sisera.', 'Judg 4-5; Heb 11:32.'),
-('Jael',       NULL,       -1250, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Kenite woman who killed Sisera by driving a tent peg through his temple.', 'Judg 4:17-22; 5:24-27.'),
-('Sisera',     NULL,       -1270, -1245, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Canaanite general defeated by Deborah and Barak; killed by Jael.', 'Judg 4-5. Ussher: c. 1245 BC.'),
-('Manoah',     NULL,       -1200, -1140, 1, 1, 'possible', 'other', 'minor', 'Dan', NULL, NULL, 'Father of Samson; visited by the Angel of the LORD.', 'Judg 13:1-25.'),
-('Delilah',    NULL,       -1165, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Philistine woman who betrayed Samson by discovering the secret of his strength.', 'Judg 16:4-21.'),
-('Tola',       NULL,       -1199, -1176, 1, 1, 'possible', 'judge', 'minor', 'Issachar', NULL, NULL, 'Judge of Israel for 23 years after Abimelech.', 'Judg 10:1-2. Ussher: c. 1199-1176 BC.'),
-('Jair',       'Jair the Gileadite', -1176, -1154, 1, 1, 'possible', 'judge', 'minor', 'Manasseh', NULL, NULL, 'Judge of Israel for 22 years; had 30 sons who rode 30 donkeys.', 'Judg 10:3-5. Ussher: c. 1176-1154 BC.'),
-('Ibzan',      NULL,       -1188, -1181, 1, 1, 'possible', 'judge', 'minor', NULL, NULL, NULL, 'Judge of Israel from Bethlehem for 7 years; had 30 sons and 30 daughters.', 'Judg 12:8-10. Ussher: c. 1188-1181 BC.'),
-('Elon',       NULL,       -1181, -1171, 1, 1, 'possible', 'judge', 'minor', 'Zebulun', NULL, NULL, 'Judge of Israel for 10 years.', 'Judg 12:11-12. Ussher: c. 1181-1171 BC.'),
-('Abdon',      NULL,       -1171, -1163, 1, 1, 'possible', 'judge', 'minor', 'Ephraim', NULL, NULL, 'Judge of Israel for 8 years; had 40 sons and 30 grandsons.', 'Judg 12:13-15. Ussher: c. 1171-1163 BC.'),
-
--- United Kingdom (200-209)
-('Ish-bosheth','Esh-Baal', -1085, -1048, 1, 1, 'traditional', 'king', 'minor', 'Benjamin', NULL, NULL, 'Saul''s surviving son; made king over Israel by Abner while David reigned in Judah.', '2 Sam 2:8-10; 4:1-12.'),
-('Abner',      NULL,       -1100, -1048, 1, 1, 'traditional', 'other', 'minor', 'Benjamin', NULL, NULL, 'Commander of Saul''s army; supported Ish-bosheth then defected to David. Killed by Joab.', '1 Sam 14:50; 2 Sam 2-3.'),
-('Mephibosheth','Merib-Baal', -1054, -1000, 1, 1, 'traditional', 'other', 'minor', 'Benjamin', NULL, NULL, 'Son of Jonathan; lame in both feet. David showed him kindness for Jonathan''s sake.', '2 Sam 4:4; 9:1-13; 16:1-4; 19:24-30.'),
-('Uriah',      'Uriah the Hittite', -1060, -1035, 1, 1, 'traditional', 'other', 'minor', NULL, NULL, NULL, 'Loyal soldier; husband of Bathsheba. Killed by David''s order to cover his sin.', '2 Sam 11:1-27; Matt 1:6.'),
-('Hiram',      'Hiram of Tyre', -1050, -980, 1, 1, 'probable', 'king', 'minor', NULL, NULL, NULL, 'King of Tyre; ally of David and Solomon. Supplied materials for the Temple.', '2 Sam 5:11; 1 Kgs 5:1-18; 9:11-14.'),
-('Adonijah',   NULL,       -1055, -1013, 1, 1, 'traditional', 'other', 'minor', 'Judah', NULL, NULL, 'David''s fourth son who tried to seize the throne; executed by Solomon.', '1 Kgs 1-2.'),
-('Shimei',     'Shimei son of Gera', -1070, -1013, 1, 1, 'traditional', 'other', 'minor', 'Benjamin', NULL, NULL, 'Cursed David during Absalom''s rebellion; later executed by Solomon.', '2 Sam 16:5-13; 19:16-23; 1 Kgs 2:36-46.'),
-('Hushai',     'Hushai the Archite', -1070, -1010, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'David''s friend who pretended to join Absalom and thwarted Ahithophel''s counsel.', '2 Sam 15:32-37; 16:16-17:16.'),
-('Ahithophel', NULL,       -1080, -1023, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'David''s counselor who defected to Absalom; hanged himself when his advice was rejected.', '2 Sam 15:12, 31; 16:20-17:23.'),
-('Zadok',      NULL,       -1090, -1000, 1, 1, 'traditional', 'priest', 'minor', 'Levi', NULL, NULL, 'Faithful priest who supported David and anointed Solomon. His line continued as high priests.', '2 Sam 15:24-29; 1 Kgs 1:32-45; Ezek 44:15.'),
-
--- Divided Kingdom (210-224)
-('Widow of Zarephath', NULL, -935, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Poor widow who fed Elijah during the famine; her son was raised from death.', '1 Kgs 17:8-24; Luke 4:25-26.'),
-('Gehazi',     NULL,       -870, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Servant of Elisha who was struck with leprosy for greed after Naaman''s healing.', '2 Kgs 4:12-37; 5:20-27; 8:4-5.'),
-('Shunammite Woman', NULL, -870, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Wealthy woman who provided for Elisha; her son was raised from death by Elisha.', '2 Kgs 4:8-37; 8:1-6.'),
-('Hazael',     NULL,       -895, -840, 1, 1, 'traditional', 'king', 'minor', NULL, NULL, NULL, 'King of Aram (Syria) anointed by Elisha; oppressed Israel during Jehu''s dynasty.', 'Ussher: became king c. 885 BC. Oppressed Israel during Jehoahaz (856-839 BC, 2 Kgs 13:3, 22). Died c. 840 BC.'),
-('Sennacherib',NULL,       -745, -681, 0, 0, 'certain', 'king', 'minor', NULL, NULL, NULL, 'Assyrian king who besieged Jerusalem under Hezekiah; his army destroyed by the angel of the LORD.', '2 Kgs 18:13-19:37; Isa 36-37. Sennacherib''s Prism confirms campaign.'),
-('Nebuchadnezzar', 'Nebuchadrezzar', -634, -562, 0, 0, 'certain', 'king', 'major', NULL, NULL, NULL, 'The Babylonian king who besieged Jerusalem, destroyed Solomon''s temple, and carried Judah into exile, yet appears in Daniel as a ruler humbled to confess the Most High. The Babylonian Chronicle preserves his own court''s terse record of the first capture of the city.', '2 Kgs 24-25; Dan 1-4. Ussher: reigned 605-562 BC.'),
-('Belshazzar', NULL,       -575, -539, 0, 0, 'certain', 'king', 'minor', NULL, NULL, NULL, 'Last king of Babylon; saw the handwriting on the wall at his feast. Killed when Persia conquered Babylon.', 'Dan 5. Ussher: killed 539 BC.'),
-('Cyrus',      'Cyrus the Great', -600, -530, 0, 0, 'certain', 'king', 'major', NULL, NULL, NULL, 'Founder of the Persian Empire who took Babylon and permitted Judah''s exiles to return and rebuild the temple. Isaiah strikingly names this Gentile king the Lord''s anointed, and the Cyrus Cylinder documents his wider policy of restoring displaced peoples and their sanctuaries.', 'Isa 44:28; 45:1; 2 Chr 36:22-23; Ezra 1:1-4.'),
-('Darius',     'Darius the Mede', -600, -486, 1, 1, 'probable', 'king', 'minor', NULL, NULL, NULL, 'Median/Persian ruler who reluctantly put Daniel in the lions'' den.', 'Dan 5:31; 6:1-28; 9:1.'),
-('Shadrach',   'Hananiah',  -620, -550, 1, 1, 'probable', 'other', 'minor', 'Judah', NULL, NULL, 'One of Daniel''s three companions who survived the fiery furnace.', 'Dan 1:6-7; 3:1-30.'),
-('Meshach',    'Mishael',   -620, -550, 1, 1, 'probable', 'other', 'minor', 'Judah', NULL, NULL, 'One of Daniel''s three companions who survived the fiery furnace.', 'Dan 1:6-7; 3:1-30.'),
-('Abednego',   'Azariah',   -620, -550, 1, 1, 'probable', 'other', 'minor', 'Judah', NULL, NULL, 'One of Daniel''s three companions who survived the fiery furnace.', 'Dan 1:6-7; 3:1-30.'),
-('Nabal',      NULL,       -1060, -1020, 1, 1, 'possible', 'other', 'minor', 'Judah', NULL, NULL, 'Wealthy but foolish man married to Abigail; refused to help David. Died after the LORD struck him.', '1 Sam 25:2-42.'),
-('Huldah',     NULL,       -660, -600, 1, 1, 'probable', 'prophet', 'minor', NULL, NULL, NULL, 'Prophetess in Jerusalem consulted by King Josiah about the Book of the Law found in the Temple.', '2 Kgs 22:14-20; 2 Chr 34:22-28. Ussher: c. 624 BC.'),
-('Hilkiah',    NULL,       -670, -610, 1, 1, 'probable', 'priest', 'minor', 'Levi', NULL, NULL, 'High priest who found the Book of the Law in the Temple during Josiah''s reforms.', '2 Kgs 22:8-14; 2 Chr 34:14-21.'),
-
--- Post-Exile (225-229)
-('Sanballat',  NULL,       -500, -430, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Governor of Samaria who opposed Nehemiah''s rebuilding of Jerusalem''s walls.', 'Neh 2:10, 19; 4:1-8; 6:1-14. Confirmed by Elephantine Papyri.'),
-('Tobiah',     NULL,       -500, -430, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Ammonite official who opposed Nehemiah''s rebuilding and conspired against him.', 'Neh 2:10, 19; 4:3, 7; 6:1-14; 13:4-9.'),
-('Haman',      NULL,       -510, -473, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Persian official who plotted the genocide of the Jewish people; hanged on his own gallows.', 'Esth 3-7. Ussher: c. 473 BC.'),
-('Vashti',     NULL,       -520, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Queen of Persia before Esther; deposed for refusing to appear before the king.', 'Esth 1:1-22.'),
-('Xerxes',     'Ahasuerus', -519, -465, 0, 0, 'certain', 'king', 'minor', NULL, NULL, NULL, 'Persian king who married Esther; issued decree saving the Jews from Haman''s plot.', 'Esth 1-10. Identified with Xerxes I. Ussher: reigned 486-465 BC.'),
-
--- New Testament — Life of Christ era (230-244)
-('Simeon',     'Simeon at the Temple', -100, -2, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Devout man in Jerusalem who held the infant Jesus and prophesied. Promised he would see the Messiah.', 'Luke 2:25-35.'),
-('Zechariah',  'Zechariah father of John', -60, -5, 1, 1, 'possible', 'priest', 'minor', 'Levi', NULL, NULL, 'Priest who was struck mute for doubting Gabriel''s announcement of John the Baptist''s birth.', 'Luke 1:5-25, 57-80.'),
-('Elizabeth',  NULL,       -55, -3, 1, 1, 'possible', 'other', 'minor', 'Levi', NULL, NULL, 'Wife of Zechariah; mother of John the Baptist. Relative of Mary.', 'Luke 1:5-7, 39-45, 57-60.'),
-('Herod Antipas','Herod the Tetrarch', -20, 39, 0, 0, 'certain', 'king', 'minor', NULL, NULL, NULL, 'Son of Herod the Great; executed John the Baptist and mocked Jesus during his trial.', 'Matt 14:1-12; Luke 23:6-12; Mark 6:14-29.'),
-('Herodias',   NULL,       -15, 39, 1, 1, 'probable', 'other', 'minor', NULL, NULL, NULL, 'Wife of Herod Antipas; orchestrated John the Baptist''s execution through her daughter.', 'Matt 14:3-11; Mark 6:17-28.'),
-('Salome daughter of Herodias', NULL, -5, 50, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Daughter of Herodias who danced before Herod and requested John the Baptist''s head.', 'Matt 14:6-11; Mark 6:22-28. Named by Josephus.'),
-('Caiaphas',   'Joseph Caiaphas', -30, 36, 1, 1, 'probable', 'priest', 'minor', NULL, NULL, NULL, 'High priest who presided over Jesus'' trial; declared it expedient for one man to die for the people.', 'Matt 26:3, 57-68; John 11:49-53; 18:13-28. Ossuary discovered 1990.'),
-('Annas',      NULL,       -25, 40, 1, 1, 'probable', 'priest', 'minor', NULL, NULL, NULL, 'Former high priest and father-in-law of Caiaphas; influential in Jesus'' trial.', 'Luke 3:2; John 18:13-24; Acts 4:6.'),
-('Barabbas',   NULL,       -5, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Criminal released by Pilate instead of Jesus at the crowd''s demand.', 'Matt 27:15-26; Mark 15:6-15; Luke 23:18-25; John 18:39-40.'),
-('Joseph of Arimathea', NULL, -30, 50, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Rich member of the Sanhedrin who provided his tomb for Jesus'' burial.', 'Matt 27:57-60; Mark 15:42-46; Luke 23:50-53; John 19:38-42.'),
-('Simon of Cyrene', NULL, -10, 50, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Man from Cyrene compelled to carry Jesus'' cross.', 'Matt 27:32; Mark 15:21; Luke 23:26.'),
-('Zacchaeus',  NULL,       -20, 50, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Chief tax collector in Jericho who climbed a sycamore tree to see Jesus; converted.', 'Luke 19:1-10.'),
-('Jairus',     NULL,       -20, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Synagogue ruler whose 12-year-old daughter Jesus raised from the dead.', 'Mark 5:22-43; Luke 8:41-56.'),
-('Cleopas',    NULL,       -5, 70, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Disciple who encountered the risen Jesus on the road to Emmaus.', 'Luke 24:13-35.'),
-('Mary of Bethany', NULL,  -10, 60, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Sister of Martha and Lazarus; sat at Jesus'' feet; anointed him with expensive perfume.', 'Luke 10:38-42; John 11:1-2; 12:1-8.'),
-
--- Apostolic Age (245-259)
-('Ananias of Damascus', NULL, 5, 60, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Disciple in Damascus who baptized Paul after his conversion on the road to Damascus.', 'Acts 9:10-19; 22:12-16.'),
-('Cornelius',  NULL,       -5, 60, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Roman centurion in Caesarea; first Gentile convert. His household received the Holy Spirit.', 'Acts 10:1-48; 11:1-18.'),
-('Lydia',      NULL,       10, 65, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Seller of purple cloth in Philippi; first European convert. Hosted Paul and Silas.', 'Acts 16:14-15, 40.'),
-('Gamaliel',   NULL,       -10, 52, 1, 1, 'probable', 'other', 'minor', NULL, NULL, NULL, 'Respected Pharisee and teacher of Paul; counseled moderation toward the apostles.', 'Acts 5:34-39; 22:3.'),
-('Agabus',     NULL,       5, 65, 1, 1, 'possible', 'prophet', 'minor', NULL, NULL, NULL, 'Christian prophet who predicted a famine and later warned Paul of his arrest in Jerusalem.', 'Acts 11:27-28; 21:10-11.'),
-('Dorcas',     'Tabitha',  5, 41, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Disciple in Joppa known for charitable works; raised from the dead by Peter.', 'Acts 9:36-43.'),
-('Philip the Evangelist', NULL, 5, 70, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'One of the Seven; evangelized Samaria and baptized the Ethiopian eunuch on the Gaza road.', 'Acts 6:5; 8:4-40; 21:8-9.'),
-('Ethiopian Eunuch', NULL, -5, 60, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Official of the Ethiopian queen Candace; baptized by Philip after reading Isaiah.', 'Acts 8:26-39.'),
-('Onesimus',   NULL,       30, 80, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Runaway slave of Philemon whom Paul sent back with a letter urging his freedom.', 'Philem 1:10-21; Col 4:9.'),
-('Rhoda',      NULL,       15, 70, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Servant girl who answered the door when Peter was freed from prison; was so overjoyed she forgot to open it.', 'Acts 12:13-16.'),
-('Herod Agrippa I', NULL,  -10, 44, 0, 0, 'certain', 'king', 'minor', NULL, NULL, NULL, 'Grandson of Herod the Great; executed James son of Zebedee and imprisoned Peter. Struck dead by God.', 'Acts 12:1-23. Confirmed by Josephus.'),
-('Herod Agrippa II', NULL, 27, 100, 0, 0, 'certain', 'king', 'minor', NULL, NULL, NULL, 'Last of the Herodian line; heard Paul''s defense at Caesarea. Said Paul almost persuaded him to be a Christian.', 'Acts 25:13-26:32.'),
-('Felix',      'Antonius Felix', 5, 59, 1, 1, 'probable', 'other', 'minor', NULL, NULL, NULL, 'Roman governor of Judea who heard Paul''s case and left him imprisoned for two years.', 'Acts 23:24-24:27.'),
-('Festus',     'Porcius Festus', 10, 62, 1, 1, 'probable', 'other', 'minor', NULL, NULL, NULL, 'Roman governor who succeeded Felix; before whom Paul appealed to Caesar.', 'Acts 25:1-12; 26:24-32.'),
-('Ananias and Sapphira', NULL, -5, 34, 1, 0, 'probable', 'other', 'minor', NULL, NULL, NULL, 'Husband and wife who lied to the Holy Spirit about the price of their property; both struck dead.', 'Acts 5:1-11.'),
-('Phoebe',     NULL,       20, 70, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Deaconess of the church at Cenchreae; commended by Paul as a patron and letter-carrier of Romans.', 'Rom 16:1-2.');
-
--- ============================================================
--- DAVID'S LINEAGE CHAIN (IDs 260-266)
--- Ruth 4:18-22; Matt 1:3-6; 1 Chr 2:5-16
--- ============================================================
-INSERT INTO people (name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
-('Hezron',     NULL,       -1700, -1570, 1, 1, 'traditional', 'patriarch', 'minor', 'Judah', NULL, NULL, 'Son of Perez; grandson of Judah. Went down to Egypt with Jacob. Ancestor of David and Jesus.', 'Gen 46:12; Ruth 4:18; 1 Chr 2:5. Ussher: born c. 1700 BC.'),
-('Ram',        NULL,       -1670, -1540, 1, 1, 'traditional', 'patriarch', 'minor', 'Judah', NULL, NULL, 'Son of Hezron; ancestor of David. Mentioned in Ruth''s genealogy and Matthew''s genealogy of Jesus.', 'Ruth 4:19; 1 Chr 2:9-10; Matt 1:3-4.'),
-('Amminadab',  NULL,       -1640, -1510, 1, 1, 'traditional', 'patriarch', 'minor', 'Judah', NULL, NULL, 'Son of Ram; father of Nahshon. His daughter Elisheba married Aaron. Ancestor of David and Jesus.', 'Ruth 4:19-20; Exod 6:23; 1 Chr 2:10; Matt 1:4.'),
-('Nahshon',    NULL,       -1610, -1451, 1, 1, 'traditional', 'leader', 'minor', 'Judah', NULL, NULL, 'Son of Amminadab; leader of the tribe of Judah during the Exodus. Brother-in-law of Aaron. Ancestor of David.', 'Num 1:7; 2:3; 7:12-17; Ruth 4:20; Matt 1:4.'),
-('Salmon',     'Sala',     -1470, -1370, 1, 1, 'traditional', 'patriarch', 'minor', 'Judah', NULL, NULL, 'Son of Nahshon; husband of Rahab according to Matthew. Father of Boaz. Ancestor of David and Jesus.', 'Ruth 4:20-21; Matt 1:4-5; 1 Chr 2:11.'),
-('Obed',       NULL,       -1190, -1100, 1, 1, 'possible', 'patriarch', 'minor', 'Judah', NULL, NULL, 'Son of Boaz and Ruth; father of Jesse, grandfather of David. Central link in the Messianic lineage.', 'Ruth 4:13-17, 21-22; 1 Chr 2:12; Matt 1:5.'),
-('Jesse',      'Yishai',   -1140, -1060, 1, 1, 'traditional', 'other', 'major', 'Judah', NULL, NULL, 'A Bethlehemite of the tribe of Judah, grandson of Ruth and Boaz, and father of eight sons, the youngest of whom Samuel anointed as king. Isaiah''s promise of a shoot from the stump of Jesse made his name shorthand for the messianic hope Christians see fulfilled in Jesus.', '1 Sam 16:1-13; 17:12-14; Ruth 4:22; Isa 11:1, 10; Matt 1:5-6.'),
--- Kings of Judah gap-fillers
-('Ahaziah of Judah', 'Jehoahaz', -907, -884, 0, 0, 'traditional', 'king', 'minor', 'Judah', NULL, NULL, 'Son of Jehoram and Athaliah; king of Judah for one year. Killed by Jehu.', 'Ussher: reigned 885-884 BC (1 year, 2 Kgs 8:25-26). Age 22 at accession: born 907 BC. Killed by Jehu (2 Kgs 9:27-28).'),
-('Amon',       NULL,       -664, -640, 0, 0, 'traditional', 'king', 'minor', 'Judah', NULL, NULL, 'Son of Manasseh; evil king of Judah for 2 years. Assassinated by his servants.', 'Ussher: reigned 642-640 BC (2 years, 2 Kgs 21:19). Age 22 at accession: born 664 BC.'),
-('Jehoiachin', 'Jeconiah,Coniah', -616, -560, 1, 1, 'certain', 'king', 'minor', 'Judah', NULL, NULL, 'Son of Jehoiakim; king of Judah for 3 months. Deported to Babylon; later released by Evil-Merodach. In the lineage of Jesus.', '2 Kgs 24:8-16; 25:27-30; Jer 22:24-30; Matt 1:11-12. Ussher: reigned 598-597 BC.');
-
--- ============================================================
--- GENEALOGY LINKS (father_id, mother_id) for existing people
--- ============================================================
-UPDATE people SET father_id = 1, mother_id = 2 WHERE id = 49;  -- Seth → Adam & Eve
--- Gen 5 chain: Seth → Enosh → Kenan → Mahalalel → Jared → Enoch → Methuselah → Lamech → Noah
-UPDATE people SET father_id = 49  WHERE id = 148;               -- Enosh → Seth
-UPDATE people SET father_id = 148 WHERE id = 149;               -- Kenan → Enosh
-UPDATE people SET father_id = 149 WHERE id = 150;               -- Mahalalel → Kenan
-UPDATE people SET father_id = 150 WHERE id = 151;               -- Jared → Mahalalel
-UPDATE people SET father_id = 151 WHERE id = 50;                -- Enoch → Jared
-UPDATE people SET father_id = 50  WHERE id = 51;                -- Methuselah → Enoch
-UPDATE people SET father_id = 51  WHERE id = 52;                -- Lamech → Methuselah
-UPDATE people SET father_id = 52  WHERE id = 3;                 -- Noah → Lamech
-UPDATE people SET father_id = 3   WHERE id = 53;                -- Shem → Noah
-UPDATE people SET father_id = 3   WHERE id = 54;                -- Ham → Noah
-UPDATE people SET father_id = 3   WHERE id = 55;                -- Japheth → Noah
--- Gen 11 chain: Shem → Arphaxad → Salah → Eber → Peleg → Reu → Serug → Nahor → Terah → Abraham
-UPDATE people SET father_id = 53  WHERE id = 152;               -- Arphaxad → Shem
-UPDATE people SET father_id = 152 WHERE id = 153;               -- Salah → Arphaxad
-UPDATE people SET father_id = 153 WHERE id = 154;               -- Eber → Salah
-UPDATE people SET father_id = 154 WHERE id = 155;               -- Peleg → Eber
-UPDATE people SET father_id = 155 WHERE id = 156;               -- Reu → Peleg
-UPDATE people SET father_id = 156 WHERE id = 157;               -- Serug → Reu
-UPDATE people SET father_id = 157 WHERE id = 158;               -- Nahor → Serug
-UPDATE people SET father_id = 158 WHERE id = 159;               -- Terah → Nahor
-UPDATE people SET father_id = 159 WHERE id = 4;                 -- Abraham → Terah
-UPDATE people SET father_id = 4, mother_id = 5 WHERE id = 6;   -- Isaac → Abraham & Sarah
-UPDATE people SET father_id = 4, mother_id = 58 WHERE id = 57; -- Ishmael → Abraham & Hagar
-UPDATE people SET father_id = 60 WHERE id = 7;                  -- Rebekah → Laban's father (set Laban as brother, not father)
-UPDATE people SET father_id = 6, mother_id = 7 WHERE id = 8;   -- Jacob → Isaac & Rebekah
-UPDATE people SET father_id = 6, mother_id = 7 WHERE id = 59;  -- Esau → Isaac & Rebekah
-UPDATE people SET father_id = 60 WHERE id = 61;                 -- Leah → Laban
-UPDATE people SET father_id = 60 WHERE id = 62;                 -- Rachel → Laban
-UPDATE people SET father_id = 8, mother_id = 62 WHERE id = 9;  -- Joseph → Jacob & Rachel
-UPDATE people SET father_id = 8, mother_id = 61 WHERE id = 63; -- Judah → Jacob & Leah
-UPDATE people SET father_id = 8, mother_id = 62 WHERE id = 64; -- Benjamin → Jacob & Rachel
-UPDATE people SET father_id = 8, mother_id = 61 WHERE id = 65; -- Reuben → Jacob & Leah
-UPDATE people SET father_id = 69 WHERE id = 70;                 -- Zipporah → Jethro
-UPDATE people SET father_id = 15 WHERE id = 78;                 -- Abimelech → Gideon
-UPDATE people SET father_id = 19 WHERE id = 83;                 -- Jonathan → Saul
-UPDATE people SET father_id = 19 WHERE id = 84;                 -- Michal → Saul
-UPDATE people SET father_id = 20 WHERE id = 82;                 -- Absalom → David
-UPDATE people SET father_id = 20, mother_id = 80 WHERE id = 21; -- Solomon → David & Bathsheba
-UPDATE people SET father_id = 21 WHERE id = 85;                 -- Rehoboam → Solomon
-UPDATE people SET father_id = 85 WHERE id = 86;                 -- Asa → Rehoboam (via Abijah)
-UPDATE people SET father_id = 86 WHERE id = 87;                 -- Jehoshaphat → Asa
-UPDATE people SET father_id = 87 WHERE id = 88;                 -- Jehoram of Judah → Jehoshaphat
-UPDATE people SET father_id = 90 WHERE id = 29;                 -- Hezekiah → Ahaz
-UPDATE people SET father_id = 29 WHERE id = 91;                 -- Manasseh → Hezekiah
-UPDATE people SET father_id = 30 WHERE id = 92;                 -- Jehoiakim → Josiah
-UPDATE people SET father_id = 30 WHERE id = 93;                 -- Zedekiah → Josiah
-UPDATE people SET father_id = 95 WHERE id = 96;                 -- Amaziah → Joash of Judah
-UPDATE people SET father_id = 96 WHERE id = 89;                 -- Uzziah → Amaziah
-UPDATE people SET father_id = 89 WHERE id = 97;                 -- Jotham → Uzziah
-UPDATE people SET father_id = 97 WHERE id = 90;                 -- Ahaz → Jotham
-UPDATE people SET father_id = 31 WHERE id = 98;                 -- Nadab → Jeroboam I
-UPDATE people SET father_id = 100 WHERE id = 32;                -- Ahab → Omri
-UPDATE people SET father_id = 32, mother_id = 107 WHERE id = 101; -- Ahaziah of Israel → Ahab & Jezebel
-UPDATE people SET father_id = 32, mother_id = 107 WHERE id = 102; -- Jehoram of Israel → Ahab & Jezebel
-UPDATE people SET mother_id = 75 WHERE id = 18;                 -- Samuel → Hannah (mother)
-UPDATE people SET father_id = 122, mother_id = 38 WHERE id = 37; -- Jesus → Joseph of Nazareth & Mary
-UPDATE people SET father_id = 122, mother_id = 38 WHERE id = 144; -- James brother of Jesus → Joseph & Mary
-
--- 100 ADDITIONAL PEOPLE — genealogy links
-UPDATE people SET father_id = 1, mother_id = 2 WHERE id = 160;  -- Cain → Adam & Eve
-UPDATE people SET father_id = 1, mother_id = 2 WHERE id = 161;  -- Abel → Adam & Eve
-UPDATE people SET father_id = 8, mother_id = 61 WHERE id = 162; -- Dinah → Jacob & Leah
-UPDATE people SET father_id = 8, mother_id = 61 WHERE id = 163; -- Simeon → Jacob & Leah
-UPDATE people SET father_id = 8, mother_id = 61 WHERE id = 164; -- Levi → Jacob & Leah
-UPDATE people SET father_id = 8 WHERE id = 165;                 -- Dan → Jacob
-UPDATE people SET father_id = 8 WHERE id = 166;                 -- Naphtali → Jacob
-UPDATE people SET father_id = 8 WHERE id = 167;                 -- Gad → Jacob
-UPDATE people SET father_id = 8 WHERE id = 168;                 -- Asher → Jacob
-UPDATE people SET father_id = 8, mother_id = 61 WHERE id = 169; -- Issachar → Jacob & Leah
-UPDATE people SET father_id = 8, mother_id = 61 WHERE id = 170; -- Zebulun → Jacob & Leah
-UPDATE people SET father_id = 9, mother_id = 178 WHERE id = 171; -- Manasseh → Joseph & Asenath
-UPDATE people SET father_id = 9, mother_id = 178 WHERE id = 172; -- Ephraim → Joseph & Asenath
-UPDATE people SET father_id = 63, mother_id = 173 WHERE id = 174; -- Perez → Judah & Tamar
--- David's lineage chain: Perez → Hezron → Ram → Amminadab → Nahshon → Salmon → Boaz → Obed → Jesse → David
-UPDATE people SET father_id = 174 WHERE id = 260;               -- Hezron → Perez
-UPDATE people SET father_id = 260 WHERE id = 261;               -- Ram → Hezron
-UPDATE people SET father_id = 261 WHERE id = 262;               -- Amminadab → Ram
-UPDATE people SET father_id = 262 WHERE id = 263;               -- Nahshon → Amminadab
-UPDATE people SET father_id = 263 WHERE id = 264;               -- Salmon → Nahshon
-UPDATE people SET father_id = 264, mother_id = 182 WHERE id = 76;  -- Boaz → Salmon & Rahab (Matt 1:5)
-UPDATE people SET father_id = 76, mother_id = 17 WHERE id = 265;   -- Obed → Boaz & Ruth
-UPDATE people SET father_id = 265 WHERE id = 266;               -- Jesse → Obed
-UPDATE people SET father_id = 266 WHERE id = 20;                -- David → Jesse
--- Kings of Judah full chain (completion)
-UPDATE people SET father_id = 88, mother_id = 94 WHERE id = 267; -- Ahaziah of Judah → Jehoram & Athaliah
-UPDATE people SET father_id = 267 WHERE id = 95;                -- Joash of Judah → Ahaziah of Judah
-UPDATE people SET father_id = 91 WHERE id = 268;                -- Amon → Manasseh
-UPDATE people SET father_id = 268 WHERE id = 30;                -- Josiah → Amon
-UPDATE people SET father_id = 92 WHERE id = 269;                -- Jehoiachin → Jehoiakim
-UPDATE people SET father_id = 11 WHERE id = 184;                -- Eleazar → Aaron
-UPDATE people SET father_id = 184 WHERE id = 68;                -- Phinehas → Eleazar
-UPDATE people SET father_id = 192 WHERE id = 16;                -- Samson → Manoah
-UPDATE people SET father_id = 19 WHERE id = 199;                -- Ish-bosheth → Saul
-UPDATE people SET father_id = 83 WHERE id = 201;                -- Mephibosheth → Jonathan
-UPDATE people SET father_id = 20 WHERE id = 204;                -- Adonijah → David
-UPDATE people SET father_id = 145 WHERE id = 232;               -- Herod Antipas → Herod the Great
-UPDATE people SET father_id = 230, mother_id = 231 WHERE id = 39; -- John the Baptist → Zechariah & Elizabeth
-
--- ============================================================
--- LIFESPAN CORRECTIONS — Ussher & Biblical/Traditional Sources
--- Filling in NULL birth/death dates where data exists
--- ============================================================
-
--- Rebekah: buried at Machpelah (Gen 49:31); died before Jacob returned from Haran c. 1739 BC
-UPDATE people SET death_year = -1739, date_notes = 'Ussher: born c. 1890 BC. Died before Jacob returned; buried at Machpelah (Gen 49:31).' WHERE id = 7;
-
--- Ham: Scripture does not record lifespan; post-Flood patriarchs lived ~400-600 yrs
-UPDATE people SET death_year = -1948, date_notes = 'Ussher: born c. 2448 BC (Gen 5:32). Death unrecorded; estimated ~500 year lifespan per post-Flood pattern.' WHERE id = 54;
-
--- Japheth: same situation as Ham
-UPDATE people SET death_year = -1948, date_notes = 'Ussher: born c. 2448 BC (Gen 10:21 implies eldest). Death unrecorded; estimated ~500 year lifespan per post-Flood pattern.' WHERE id = 55;
-
--- Lot: fled Sodom c. 1897 BC (Ussher); lived in cave after; likely died c. 1870 BC
-UPDATE people SET death_year = -1870, date_notes = 'Ussher: born c. 1960 BC. Sodom destroyed c. 1897 BC (Gen 19). Death unrecorded; estimated c. 1870 BC.' WHERE id = 56;
-
--- Esau: Genesis 35:29 records Isaac''s burial by Esau and Jacob (1716 BC); Jubilees 38 places death at age 147-148; conservative estimate ~1689 BC (same as Jacob)
-UPDATE people SET death_year = -1689, date_notes = 'Ussher: born 1836 BC (twin of Jacob, Gen 25:26). Death unrecorded in canon; estimated as contemporary with Jacob (d. 1689 BC).' WHERE id = 59;
-
--- Laban: contemporary of Jacob; roughly generation older
-UPDATE people SET death_year = -1750, date_notes = 'Ussher: born c. 1920 BC. Death unrecorded; estimated c. 1750 BC based on patriarchal era lifespans.' WHERE id = 60;
-
--- Leah: buried at Machpelah (Gen 49:31); died before Jacob went to Egypt (1706 BC)
-UPDATE people SET death_year = -1710, date_notes = 'Ussher: born c. 1850 BC. Buried at Machpelah (Gen 49:31); died before Jacob went to Egypt c. 1706 BC.' WHERE id = 61;
-
--- Judah: entered Egypt with Jacob c. 1706 BC; died in Egypt
-UPDATE people SET death_year = -1620, date_notes = 'Ussher: born c. 1750 BC. Entered Egypt c. 1706 BC (Gen 46:12). Death unrecorded; estimated ~130 years per patriarchal pattern.' WHERE id = 63;
-
--- Benjamin: youngest son; entered Egypt with Jacob
-UPDATE people SET death_year = -1600, date_notes = 'Ussher: born c. 1730 BC (Gen 35:16-20). Entered Egypt c. 1706 BC. Death unrecorded; estimated ~130 years.' WHERE id = 64;
-
--- Reuben: firstborn of Jacob
-UPDATE people SET death_year = -1625, date_notes = 'Ussher: born c. 1755 BC. Entered Egypt c. 1706 BC (Gen 46:8-9). Death unrecorded; estimated ~130 years.' WHERE id = 65;
-
--- Pharaoh of Exodus: drowned in Red Sea (Exod 14:28; Ps 136:15)
-UPDATE people SET death_year = -1491, date_notes = 'Ussher: Exodus 1491 BC. Perished at the Red Sea (Exod 14:28; Ps 136:15). Identity debated.' WHERE id = 66;
-
--- Phinehas: served through conquest; Ussher places him active through early Judges
-UPDATE people SET death_year = -1380, date_notes = 'Ussher: born c. 1465 BC. Served through Conquest period; active in Josh 22:13. Death unrecorded; est. c. 1380 BC.' WHERE id = 68;
-
--- Jethro: elderly when Moses fled to Midian; likely died before Exodus
-UPDATE people SET death_year = -1500, date_notes = 'Ussher: born c. 1605 BC. Death unrecorded; likely died before or during Exodus era.' WHERE id = 69;
-
--- Zipporah: wife of Moses; alive during Exodus (Exod 18:2)
-UPDATE people SET death_year = -1460, date_notes = 'Ussher: born c. 1555 BC. Rejoined Moses at Sinai (Exod 18:2-5). Death unrecorded; est. c. 1460 BC.' WHERE id = 70;
-
--- Deborah: judged Israel 40 years (Judg 5:31); Ussher c. 1245-1205 BC
-UPDATE people SET death_year = -1195, date_notes = 'Ussher: c. 1245 BC. Land had rest 40 years (Judg 5:31); est. death c. 1195 BC.' WHERE id = 14;
-
--- Gideon: judged 40 years; died in good old age (Judg 8:28, 32)
-UPDATE people SET death_year = -1195, date_notes = 'Ussher: c. 1235 BC. Judged 40 years (Judg 8:28); died in good old age (Judg 8:32); est. death c. 1195 BC.' WHERE id = 15;
-
--- Ruth: married Boaz c. 1195 BC; bore Obed, grandfather of David (b. 1085 BC)
-UPDATE people SET death_year = -1100, date_notes = 'Ussher: born c. 1195 BC. Married Boaz (Ruth 4); great-grandmother of David. Death unrecorded; est. c. 1100 BC.' WHERE id = 17;
-
--- Ehud: judged 80 years rest (Judg 3:30)
-UPDATE people SET death_year = -1275, date_notes = 'Ussher: born c. 1355 BC. Land had rest 80 years (Judg 3:30); est. death c. 1275 BC.' WHERE id = 72;
-
--- Hannah: mother of Samuel; dedicated him at Shiloh
-UPDATE people SET death_year = -1100, date_notes = 'Ussher: born c. 1175 BC (1 Sam 1-2). Death unrecorded; est. c. 1100 BC.' WHERE id = 75;
-
--- Boaz: kinsman-redeemer; grandfather of Jesse
-UPDATE people SET death_year = -1120, date_notes = 'Ussher: born c. 1205 BC (Ruth 2-4). Death unrecorded; est. c. 1120 BC based on David''s genealogy.' WHERE id = 76;
-
--- Naomi: returned from Moab c. 1195 BC
-UPDATE people SET death_year = -1140, date_notes = 'Ussher: born c. 1225 BC (Ruth 1-4). Death unrecorded; est. c. 1140 BC.' WHERE id = 77;
-
--- Abigail: married David c. 1058 BC (1 Sam 25)
-UPDATE people SET death_year = -1010, date_notes = 'Ussher: born c. 1075 BC (1 Sam 25). Death unrecorded; est. c. 1010 BC.' WHERE id = 79;
-
--- Bathsheba: alive into Solomon''s reign (1 Kgs 2:19)
-UPDATE people SET death_year = -1000, date_notes = 'Ussher: born c. 1065 BC. Alive early in Solomon''s reign (1 Kgs 2:19). Death unrecorded; est. c. 1000 BC.' WHERE id = 80;
-
--- Michal: childless (2 Sam 6:23); disappears from narrative
-UPDATE people SET death_year = -1030, date_notes = 'Ussher: born c. 1095 BC. Childless (2 Sam 6:23). Death unrecorded; est. c. 1030 BC.' WHERE id = 84;
-
--- Naaman: healed during Elisha's ministry c. 870-825 BC per Ussher (2 Kgs 5)
-UPDATE people SET death_year = -800, date_notes = 'Ussher: healed during Elisha''s ministry c. 870-825 BC (2 Kgs 5). Death unrecorded; est. c. 800 BC.' WHERE id = 48;
-
--- Job: lived 140 years after trials (Job 42:16); Ussher places in patriarchal era
-UPDATE people SET death_year = -1800, date_notes = 'Ussher: patriarchal era, c. 2000 BC. Lived 140 years after trials (Job 42:16). Total lifespan est. ~200 years; death c. 1800 BC.' WHERE id = 121;
-
--- Joel: prophesied c. 835 BC; date heavily debated
-UPDATE people SET death_year = -796, date_notes = 'Ussher: c. 835 BC. Date heavily debated (Joel 1-3). Est. death c. 796 BC.' WHERE id = 109;
-
--- Amos: prophesied during Uzziah (810-758 BC) and Jeroboam II (825-784 BC) per Ussher
-UPDATE people SET death_year = -740, date_notes = 'Ussher: prophesied during Uzziah (810-758 BC) and Jeroboam II (825-784 BC). Amos 1:1. Death unrecorded; est. c. 740 BC.' WHERE id = 110;
-
--- Obadiah: prophesied after fall of Jerusalem 586 BC
-UPDATE people SET death_year = -550, date_notes = 'Ussher: c. 586 BC (Obad 1). Death unrecorded; est. c. 550 BC.' WHERE id = 111;
-
--- Jonah: prophesied during Jeroboam II (825-784 BC per Ussher); 2 Kgs 14:25
-UPDATE people SET death_year = -750, date_notes = 'Ussher: prophesied during Jeroboam II (825-784 BC per Ussher, 2 Kgs 14:25; Jonah 1-4). Death unrecorded; est. c. 750 BC.' WHERE id = 112;
-
--- Nahum: prophesied before Nineveh''s fall (612 BC)
-UPDATE people SET death_year = -615, date_notes = 'Ussher: c. 660 BC. Prophesied before fall of Nineveh 612 BC (Nah 1-3). Est. death c. 615 BC.' WHERE id = 114;
-
--- Habakkuk: contemporary of Jeremiah; c. 608-605 BC
-UPDATE people SET death_year = -580, date_notes = 'Ussher: c. 620 BC. Contemporary of Jeremiah (Hab 1-3). Est. death c. 580 BC.' WHERE id = 115;
-
--- Zephaniah: prophesied during Josiah (Zeph 1:1); c. 630-620 BC
-UPDATE people SET death_year = -600, date_notes = 'Ussher: c. 640 BC. Prophesied during Josiah''s reign (Zeph 1:1). Est. death c. 600 BC.' WHERE id = 116;
-
--- Haggai: prophesied 520 BC (Hag 1:1); likely elderly
-UPDATE people SET death_year = -500, date_notes = 'Ussher: prophesied 520 BC (Hag 1:1). Likely elderly; est. death c. 500 BC.' WHERE id = 117;
-
--- Zechariah (prophet): prophesied 520-518 BC (Zech 1:1; 7:1)
-UPDATE people SET death_year = -480, date_notes = 'Ussher: prophesied 520-518 BC (Zech 1:1; 7:1). Est. death c. 480 BC.' WHERE id = 118;
-
--- Malachi: last OT prophet c. 430 BC
-UPDATE people SET death_year = -400, date_notes = 'Ussher: c. 460 BC. Last OT prophet (Mal 1-4). Est. death c. 400 BC.' WHERE id = 119;
-
--- Anna: 84 years old at Jesus'' presentation (Luke 2:36-37); c. 5 BC
-UPDATE people SET death_year = -3, date_notes = 'Ussher: born c. 95 BC. Aged 84 at Jesus'' Temple presentation c. 5 BC (Luke 2:36-37). Est. death c. 3 BC.' WHERE id = 147;
-
--- Stephen: born c. AD 5 (est.); martyred c. AD 35
-UPDATE people SET birth_year = 5, date_notes = 'Born c. AD 5 (estimated). First Christian martyr c. AD 35 (Acts 7:54-60).' WHERE id = 45;
-
--- Barnabas: born c. 10 BC (est.); from Cyprus (Acts 4:36)
-UPDATE people SET birth_year = -10, date_notes = 'Born c. 10 BC (estimated). Levite from Cyprus (Acts 4:36). Martyrdom c. AD 61 per tradition.' WHERE id = 46;
-
--- Luke: born c. AD 5 (est.); physician (Col 4:14)
-UPDATE people SET birth_year = 5, date_notes = 'Born c. AD 5 (estimated). Physician (Col 4:14); author of Luke-Acts. Died c. AD 84 per tradition.' WHERE id = 47;
-
--- Martha: died c. AD 60 (est. contemporary with Lazarus)
-UPDATE people SET death_year = 60, date_notes = 'Born c. 10 BC (estimated). Sister of Lazarus (John 11). Death unrecorded; est. c. AD 60.' WHERE id = 125;
-
--- Mary Magdalene: tradition places death c. AD 60-70
-UPDATE people SET death_year = 63, date_notes = 'Born c. 5 BC (estimated). First resurrection witness (John 20:18). Death unrecorded; tradition est. c. AD 63.' WHERE id = 126;
-
--- Nicodemus: Pharisee; helped bury Jesus (John 19:39); tradition places death c. AD 50-60
-UPDATE people SET death_year = 55, date_notes = 'Born c. 20 BC (estimated). Helped bury Jesus (John 19:39). Death unrecorded; est. c. AD 55.' WHERE id = 127;
-
--- ============================================================
--- LIFESPAN CORRECTIONS — Batch 2 (remaining NULL dates)
--- Sources: Ussher, Jewish tradition (Midrash, Talmud, Seder Olam),
--- Islamic tradition (Qur'an, Ibn Kathir), Josephus, scholarly consensus
--- ============================================================
-
--- Hagar: Sarah's Egyptian servant. Jewish tradition (Pirke de-Rabbi Eliezer 30) identifies her
--- as a daughter of Pharaoh. Islamic tradition (Ibn Kathir) records she lived in Beer-lahai-roi
--- after Abraham's death. Died c. 1850 BC, est. ~80 years.
-UPDATE people SET death_year = -1850, date_notes = 'Ussher: born c. 1930 BC. Jewish tradition (Pirke de-Rabbi Eliezer 30) identifies as Pharaoh''s daughter. Islamic tradition (Ibn Kathir) says she lived near Beer-lahai-roi. Death unrecorded; est. c. 1850 BC (~80 years).' WHERE id = 58;
-
--- Stephen: born c. AD 1 based on being a mature leader by AD 35
-UPDATE people SET birth_year = 1, date_notes = 'Born c. AD 1 (estimated). A Hellenistic Jewish believer, mature enough to be chosen as one of the Seven (Acts 6:5). First Christian martyr c. AD 35 (Acts 7:54-60).' WHERE id = 44;
-
--- Luke: physician; tradition places birth c. AD 5-15. Antioch tradition (Eusebius, HE 3.4).
-UPDATE people SET birth_year = 10, date_notes = 'Born c. AD 10 in Antioch (Eusebius, HE 3.4). Physician (Col 4:14); author of Luke-Acts. Tradition: died c. AD 84 in Boeotia.' WHERE id = 47;
-
--- Martha: sister of Lazarus; tradition (Eastern Orthodox) places death c. AD 60-80
-UPDATE people SET death_year = 60, date_notes = 'Born c. 10 BC (estimated). Sister of Lazarus and Mary (John 11; Luke 10:38-42). Death unrecorded; Eastern tradition est. c. AD 60.' WHERE id = 124;
-
--- Dinah: daughter of Jacob and Leah; incident at Shechem c. 1732 BC. Midrash (Gen. Rabbah 80:11)
--- says she married Job. Entered Egypt with Jacob (Gen 46:15). Est. death c. 1680 BC.
-UPDATE people SET death_year = -1680, date_notes = 'Ussher: born c. 1748 BC. Midrash (Gen. Rabbah 80:11) identifies her as Job''s wife. Entered Egypt with Jacob (Gen 46:15). Est. death c. 1680 BC.' WHERE id = 162;
-
--- Dan: son of Jacob and Bilhah; entered Egypt (Gen 46:23). Talmud (Sotah 10a) links Dan to Samson.
-UPDATE people SET death_year = -1615, date_notes = 'Ussher: born c. 1745 BC. Son of Bilhah (Gen 30:6). Entered Egypt (Gen 46:23). Death unrecorded; est. c. 1615 BC (~130 years, patriarchal pattern).' WHERE id = 165;
-
--- Naphtali: son of Jacob and Bilhah; entered Egypt (Gen 46:24). Died in Egypt; 133 years per Testament of Naphtali.
-UPDATE people SET death_year = -1610, date_notes = 'Ussher: born c. 1743 BC. Son of Bilhah (Gen 30:8). Entered Egypt (Gen 46:24). Testament of Naphtali records 133 years; est. death c. 1610 BC.' WHERE id = 166;
-
--- Gad: son of Jacob and Zilpah; entered Egypt (Gen 46:16). Testament of Gad records 127 years.
-UPDATE people SET death_year = -1614, date_notes = 'Ussher: born c. 1741 BC. Son of Zilpah (Gen 30:11). Entered Egypt (Gen 46:16). Testament of Gad records 127 years; est. death c. 1614 BC.' WHERE id = 167;
-
--- Asher: son of Jacob and Zilpah; entered Egypt (Gen 46:17). Testament of Asher records 127 years (like Gad).
-UPDATE people SET death_year = -1612, date_notes = 'Ussher: born c. 1739 BC. Son of Zilpah (Gen 30:13). Entered Egypt (Gen 46:17). Testament of Asher records 127 years; est. death c. 1612 BC.' WHERE id = 168;
-
--- Issachar: son of Jacob and Leah; entered Egypt (Gen 46:13). Testament of Issachar records 122 years.
-UPDATE people SET death_year = -1615, date_notes = 'Ussher: born c. 1737 BC. Son of Leah (Gen 30:18). Entered Egypt (Gen 46:13). Testament of Issachar records 122 years; est. death c. 1615 BC.' WHERE id = 169;
-
--- Zebulun: son of Jacob and Leah; entered Egypt (Gen 46:14). Testament of Zebulun records 114 years.
-UPDATE people SET death_year = -1621, date_notes = 'Ussher: born c. 1735 BC. Son of Leah (Gen 30:20). Entered Egypt (Gen 46:14). Testament of Zebulun records 114 years; est. death c. 1621 BC.' WHERE id = 170;
-
--- Manasseh son of Joseph: adopted by Jacob (Gen 48). Half-tribe settled east of Jordan.
-UPDATE people SET death_year = -1600, date_notes = 'Ussher: born c. 1715 BC in Egypt (Gen 41:51). Adopted by Jacob (Gen 48). Death unrecorded; est. c. 1600 BC based on Egyptian sojourn chronology.' WHERE id = 171;
-
--- Ephraim: second son of Joseph; adopted by Jacob with firstborn blessing (Gen 48:14-20).
-UPDATE people SET death_year = -1600, date_notes = 'Ussher: born c. 1713 BC in Egypt (Gen 41:52). Given firstborn blessing by Jacob (Gen 48:14-20). Death unrecorded; est. c. 1600 BC.' WHERE id = 172;
-
--- Tamar: daughter-in-law of Judah; mother of Perez and Zerah (Gen 38). In Jesus' genealogy (Matt 1:3).
-UPDATE people SET death_year = -1660, date_notes = 'Ussher: born c. 1730 BC. Mother of Perez (Gen 38:29). In messianic line (Matt 1:3). Death unrecorded; est. c. 1660 BC.' WHERE id = 173;
-
--- Perez: son of Judah and Tamar; entered Egypt (Gen 46:12). Ancestor of David (Ruth 4:18-22).
-UPDATE people SET death_year = -1620, date_notes = 'Ussher: born c. 1725 BC. Entered Egypt with Jacob (Gen 46:12). Ancestor of David (Ruth 4:18-22). Death unrecorded; est. c. 1620 BC.' WHERE id = 174;
-
--- Melchizedek: king of Salem, priest of God Most High. Jewish tradition (Talmud Nedarim 32b)
--- identifies him with Shem (d. 1848 BC). Hebrews 7:3 says "without beginning of days or end of life"
--- as a priestly type. Using Shem identification per Talmud.
-UPDATE people SET death_year = -1848, date_notes = 'Gen 14:18-20; Ps 110:4; Heb 7. Talmud (Nedarim 32b) identifies Melchizedek with Shem, d. 1848 BC. Heb 7:3 describes him without genealogy as a priestly type of Christ. Using Shem identification per Jewish tradition.' WHERE id = 176;
-
--- Potiphar: Egyptian officer; disappears from narrative after Gen 39.
-UPDATE people SET death_year = -1710, date_notes = 'Gen 39:1-20. Captain of Pharaoh''s guard. Disappears from narrative after Joseph''s imprisonment. Est. death c. 1710 BC.' WHERE id = 177;
-
--- Asenath: wife of Joseph; mother of Manasseh and Ephraim. Jewish tradition (Joseph and Asenath) elaborates her conversion.
-UPDATE people SET death_year = -1640, date_notes = 'Gen 41:45, 50-52. Daughter of Potiphera, priest of On. Jewish apocryphal tradition (Joseph and Asenath) describes her conversion. Est. death c. 1640 BC.' WHERE id = 178;
-
--- Balak: king of Moab; disappears after Numbers 24. Contemporary of Moses.
-UPDATE people SET death_year = -1450, date_notes = 'Num 22-24. King of Moab who hired Balaam. Disappears after Balaam''s oracles. Est. death c. 1450 BC, before Conquest.' WHERE id = 181;
-
--- Bezalel: master craftsman of the Tabernacle; filled with God's Spirit (Exod 31:1-11).
-UPDATE people SET death_year = -1440, date_notes = 'Exod 31:1-11; 35:30-35. Filled with the Spirit for Tabernacle construction. Death unrecorded; est. c. 1440 BC (active during wilderness period).' WHERE id = 186;
-
--- Jael: Kenite woman who killed Sisera (Judg 4:17-22). Blessed by Deborah (Judg 5:24).
-UPDATE people SET death_year = -1200, date_notes = 'Judg 4:17-22; 5:24-27. Killed Sisera with a tent peg. Death unrecorded; est. c. 1200 BC.' WHERE id = 190;
-
--- Delilah: Philistine woman; betrayed Samson c. 1123 BC (Judg 16:4-21). Disappears after Samson's capture.
-UPDATE people SET death_year = -1100, date_notes = 'Judg 16:4-21. Betrayed Samson to the Philistines c. 1123 BC. Disappears from narrative; est. death c. 1100 BC.' WHERE id = 193;
-
--- Widow of Zarephath: fed Elijah during famine in Ahab's reign (918-897 per Ussher). Jesus cites her (Luke 4:26).
-UPDATE people SET death_year = -870, date_notes = '1 Kgs 17:8-24; Luke 4:25-26. Cared for Elijah during Ahab''s reign c. 910 BC per Ussher. Son raised from death. Est. death c. 870 BC.' WHERE id = 209;
-
--- Gehazi: servant of Elisha; struck with leprosy (2 Kgs 5:27). Elisha's ministry c. 896-825 per Ussher.
-UPDATE people SET death_year = -810, date_notes = '2 Kgs 4:12-37; 5:20-27; 8:4-5. Struck with leprosy for greed during Elisha''s ministry (c. 896-825 BC per Ussher). Still alive when telling the king of Elisha (2 Kgs 8:4-5). Est. death c. 810 BC.' WHERE id = 210;
-
--- Shunammite Woman: wealthy woman; son raised by Elisha (2 Kgs 4:8-37). Elisha's ministry c. 896-825 per Ussher.
-UPDATE people SET death_year = -820, date_notes = '2 Kgs 4:8-37; 8:1-6. Son raised by Elisha during his ministry (c. 896-825 BC per Ussher). Returned from Philistia after 7-year absence. Est. death c. 820 BC.' WHERE id = 211;
-
--- Vashti: deposed c. 483 BC (Esth 1). Talmud (Megillah 12b) identifies her as granddaughter of Nebuchadnezzar.
-UPDATE people SET death_year = -470, date_notes = 'Esth 1:1-22. Deposed c. 483 BC. Talmud (Megillah 12b) identifies her as Nebuchadnezzar''s granddaughter. Death unrecorded; est. c. 470 BC.' WHERE id = 227;
-
--- Barabbas: released c. AD 33 (Matt 27:15-26). Nothing further known.
-UPDATE people SET death_year = 55, date_notes = 'Matt 27:15-26. Criminal released instead of Jesus c. AD 30-33. No further record; est. death c. AD 55.' WHERE id = 237;
-
--- Jairus: synagogue ruler whose daughter was raised (Mark 5:22-43). No further record.
-UPDATE people SET death_year = 50, date_notes = 'Mark 5:22-43; Luke 8:41-56. Synagogue ruler in Galilee. Daughter raised by Jesus c. AD 29. Death unrecorded; est. c. AD 50.' WHERE id = 241;
-
--- ============================================================
--- EVENTS
--- ============================================================
-INSERT INTO events (name, start_year, end_year, start_approx, end_approx, date_confidence, category, significance, description, date_notes, sort_order) VALUES
--- Primeval
-('Creation',              -4004, NULL, 1, 1, 'traditional', 'creation',  'major', 'In the Bible''s opening scene, God speaks an ordered cosmos into being, crowning it with humanity made in the divine image and a day of rest. Unlike Babylon''s Enuma Elish, where creation follows divine combat, Genesis presents one sovereign God whose word alone brings light, life, and order.', 'Ussher: 4004 BC (AM 1). October 23, 4004 BC per Annales.', 10),
-('The Fall',              -4004, NULL, 1, 1, 'traditional', 'judgment',  'major', 'In Eden, Adam and Eve eat from the forbidden tree at the serpent''s urging, breaking trust with their Creator. Their exile from the garden brings sin, death, and alienation into the human story, setting the stage for the long biblical drama of redemption that Scripture traces to Christ.', 'Ussher: 4004 BC.', 20),
-('The Flood',             -2349, -2348, 1, 1, 'traditional', 'judgment', 'major', 'Grieved by human violence, God cleanses the earth with a flood while preserving Noah, his family, and the animals in the ark, then seals a covenant with the rainbow sign. Mesopotamian epics like Gilgamesh and Atrahasis preserve parallel flood tales, yet Genesis uniquely grounds the deluge in divine justice.', 'Ussher: began 2349 BC (AM 1656), ended 2348 BC.', 30),
-('Tower of Babel',        -2247, NULL, 1, 1, 'traditional', 'judgment',  'major', 'United humanity builds a tower on the plain of Shinar to make a name for itself, and God scatters the builders by confusing their language. The story evokes Mesopotamian ziggurats such as Babylon''s Etemenanki and explains the dispersion of nations just before God''s call of Abraham.', 'Ussher: 2247 BC (AM 1757), when Peleg was born and the earth was divided (Gen 10:25).', 40),
-
--- Patriarchs
-('Call of Abraham',       -1921, NULL, 1, 1, 'traditional', 'covenant',  'major', 'God summons Abram to leave his homeland by way of Ur and Haran for an unknown country, promising to make him a great nation and a blessing to all peoples of the earth. His obedient departure launches the covenant story that the rest of Scripture traces through Israel to the Messiah.', 'Ussher: 1921 BC (AM 2083). Abraham aged 75 (Gen 12:4), after Terah died at 205 (Acts 7:4).', 50),
-('Abrahamic Covenant',    -1913, NULL, 1, 1, 'traditional', 'covenant',  'major', 'In a solemn night ceremony, God passes between divided animal carcasses as a smoking firepot and blazing torch, swearing to give Abram countless descendants and the land of Canaan. The rite mirrors ancient Near Eastern treaty customs, yet here God alone walks the path, bearing the covenant obligation himself.', 'Ussher: c. 1913 BC (AM 2091).', 60),
-('Binding of Isaac',      -1872, NULL, 1, 1, 'traditional', 'miracle',   'major', 'God tests Abraham by commanding the sacrifice of Isaac, the son of promise, on Mount Moriah; at the final moment an angel stays the knife and a ram is offered instead. Known in Jewish tradition as the Akedah, the event affirms that God himself provides the sacrifice, a theme Christians hear echoed at Calvary.', 'Ussher: c. 1872 BC. Isaac approximately 24 years old.', 70),
-('Destruction of Sodom and Gomorrah', -1897, NULL, 1, 1, 'traditional', 'judgment', 'major', 'Fire and sulfur destroy Sodom and Gomorrah after the outcry against their wickedness reaches heaven, though angels lead Lot''s family out; his wife looks back and becomes a pillar of salt. The doomed cities of the Dead Sea plain become Scripture''s enduring emblem of judgment, invoked by prophets and by Jesus.', 'Ussher: c. 1897 BC (Gen 19). Abraham was 99 years old.', 80),
-('Covenant of Circumcision', -1897, NULL, 1, 1, 'traditional', 'covenant', 'major', 'God gives Abraham circumcision as the enduring sign of the covenant, marking every male of his household and renaming Abram and Sarai as heirs of the promise of nations and kings. Though circumcision was practiced in Egypt and elsewhere, Israel uniquely made it a covenant emblem binding each generation to God.', 'Ussher: c. 1897 BC. Abraham aged 99 (Gen 17:1, 24).', 90),
-('Jacob Wrestles God',    -1739, NULL, 1, 1, 'traditional', 'miracle',   'minor', 'Jacob wrestles with God and is renamed Israel.', 'Ussher: c. 1739 BC (Gen 32:22-32).', 100),
-('Joseph Sold into Slavery',-1728,NULL,1, 1, 'traditional', 'other',     'minor', 'Joseph''s brothers sell him to traders going to Egypt.', 'Ussher: c. 1728 BC (Joseph aged 17, Gen 37:2).', 110),
-('Joseph Made Ruler of Egypt', -1715, NULL, 1, 1, 'traditional', 'other', 'major', 'Sold by his brothers yet raised from prison to Pharaoh''s right hand, Joseph interprets dreams of coming famine and administers Egypt''s grain stores. His rise turns betrayal into rescue, positioning him to preserve Jacob''s family, the fledgling covenant line, through seven years of scarcity.', 'Ussher: c. 1715 BC. Joseph aged 30 (Gen 41:46).', 120),
+INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
+(4, 'Abraham', 'Abram', -1996, -1821, 0, 0, 'traditional', 'patriarch', 'major', NULL, 159, NULL, 'Patriarch called from Ur of the Chaldees to a land God would show him, receiving the covenant promise that all nations would be blessed through his offspring. His faith, tested in the offering of Isaac, made him the father of the faithful for Jews, Christians, and Muslims alike.', 'Ussher: born 1996 BC (AM 2008), died 1821 BC (175 years, Gen 25:7). Ussher reads Terah as 130 at Abraham''s birth (Gen 11:32 with 12:4 and Acts 7:4); a plain reading of Gen 11:26 (Terah 70 when he fathered Abram) would give about 2056 BC, and Abram is probably listed first for rank rather than birth order. Mainstream scholarship, where it dates the patriarchs at all, places them roughly 2000 to 1700 BC.'),
+(5, 'Sarah', 'Sarai', -1986, -1859, 0, 0, 'traditional', 'matriarch', 'moderate', NULL, 159, NULL, 'Wife of Abraham, mother of Isaac.', 'Ussher: born 1986 BC (10 years younger than Abraham, Gen 17:17), died 1859 BC (127 years, Gen 23:1).'),
+(6, 'Isaac', NULL, -1896, -1716, 0, 0, 'traditional', 'patriarch', 'major', NULL, 4, 5, 'Son of promise, born to Abraham and Sarah in their old age and spared on Mount Moriah when God provided a ram in his place. He reopened his father''s wells in the Negev and passed the covenant blessing to Jacob, the quiet link between Abraham and the tribes of Israel.', 'Ussher: born 1896 BC (Abraham aged 100, Gen 21:5), died 1716 BC (180 years, Gen 35:28).'),
+(7, 'Rebekah', NULL, -1876, -1739, 1, 1, 'possible', 'matriarch', 'moderate', NULL, NULL, NULL, 'Wife of Isaac, mother of Jacob and Esau.', 'Estimate. She was a ''damsel'' when she married Isaac, aged 40, in 1856 BC (Gen 24:16; 25:20), so she is placed about 20 years old then. Her death is not recorded; she was buried at Machpelah (Gen 49:31). The year of death is an estimate.'),
+(8, 'Jacob', 'Israel', -1836, -1689, 0, 0, 'traditional', 'patriarch', 'major', NULL, 6, 7, 'Younger twin who obtained birthright and blessing, wrestled with God at Peniel, and received the new name Israel. Father of twelve sons who became Israel''s tribes, his long journey from schemer to patriarch traces the transforming grip of covenant grace.', 'Ussher: born 1836 BC (Isaac aged 60, Gen 25:26), died 1689 BC (147 years, Gen 47:28). Fled to Haran 1759 BC (aged 77), married 1752 BC (aged 84), Joseph born 1745 BC (aged 91, Gen 41:46; 45:6; 47:9), returned to Canaan 1739 BC after 20 years with Laban (Gen 31:38, 41).'),
+(9, 'Joseph', NULL, -1745, -1635, 0, 0, 'traditional', 'patriarch', 'major', NULL, 8, 62, 'Favored son of Jacob, sold into Egypt by jealous brothers, who rose from prison to become Pharaoh''s vizier through the interpretation of dreams. His grain policy saved Egypt and his own family from famine, and his forgiveness of his brothers remains Scripture''s great portrait of providence over evil intent.', 'Ussher: born 1745 BC (Jacob aged 91, Gen 41:46; 45:6; 47:9), at the end of Jacob''s 14 years of service (Gen 30:25; 31:41); died 1635 BC (110 years, Gen 50:26).'),
+(56, 'Lot', NULL, -1960, -1870, 1, 1, 'possible', 'other', 'moderate', NULL, NULL, NULL, 'Abraham''s nephew; escaped the destruction of Sodom.', 'Estimate. Scripture gives no age for Lot; he is Abraham''s nephew and travelled with him (Gen 11:27-31; 12:4), and his death is not recorded. Sodom fell c. 1897 BC (Gen 19). The years are estimates, not a figure we can attribute to Ussher.'),
+(57, 'Ishmael', NULL, -1910, -1773, 0, 0, 'traditional', 'patriarch', 'moderate', NULL, 4, 58, 'Son of Abraham by Hagar; father of twelve princes.', 'Ussher: born 1910 BC (Abraham aged 86, Gen 16:16), died 1773 BC (137 years, Gen 25:17).'),
+(58, 'Hagar', NULL, -1930, -1850, 1, 1, 'possible', 'matriarch', 'moderate', NULL, NULL, NULL, 'Sarah''s Egyptian servant; mother of Ishmael.', 'Estimate. Scripture gives no age for Hagar, and her death is not recorded. Jewish tradition (Pirke de-Rabbi Eliezer 30) identifies her as Pharaoh''s daughter; Islamic tradition (Ibn Kathir) places her near Beer-lahai-roi. The years are estimates.'),
+(59, 'Esau', 'Edom', -1836, -1689, 0, 1, 'possible', 'patriarch', 'moderate', NULL, 6, 7, 'Jacob''s twin brother; sold his birthright; ancestor of the Edomites.', 'Ussher: born 1836 BC (twin of Jacob, Gen 25:26). Death is not recorded in Scripture; 1689 BC is an estimate taking the year of Jacob''s death.'),
+(60, 'Laban', NULL, -1880, -1735, 1, 1, 'possible', 'other', 'moderate', NULL, NULL, NULL, 'Rebekah''s brother; father of Leah and Rachel. Tricked Jacob.', 'Estimate. Brother of Rebekah (Gen 24:29) and father of Leah and Rachel, and still active when Jacob left Paddan-aram in 1739 BC (Gen 31), so he lived past that year. Birth and death years are estimates.'),
+(61, 'Leah', NULL, -1776, -1710, 1, 1, 'possible', 'matriarch', 'moderate', NULL, 60, NULL, 'Jacob''s first wife; mother of six sons and Dinah.', 'Estimate. Elder daughter of Laban (Gen 29:16), a young woman when Jacob arrived in 1759 BC, and married to him in 1752 BC. Placed about 24 at marriage. Her death is not recorded; she was buried at Machpelah (Gen 49:31). Both years are estimates, not figures we can attribute to Ussher.'),
+(62, 'Rachel', NULL, -1773, -1730, 1, 1, 'possible', 'matriarch', 'moderate', NULL, 60, NULL, 'Jacob''s beloved wife; mother of Joseph and Benjamin.', 'Estimate. Laban''s younger daughter (Gen 29:16-18), a young shepherdess when Jacob arrived in 1759 BC; placed about 21 at marriage in 1752 BC. She died giving birth to Benjamin near Ephrath (Gen 35:16-20), placed c. 1730 BC. The birth year is an estimate.'),
+(63, 'Judah', NULL, -1748, -1618, 1, 1, 'possible', 'patriarch', 'moderate', 'Judah', 8, 61, 'Fourth son of Jacob and Leah whose offer of himself in place of Benjamin marked one of Genesis''s great moments of transformation. Jacob''s blessing promised the scepter to his line, and through him came the royal tribe of David and, in Christian reading, the Messiah himself.', 'Estimate. Fourth son of Jacob and Leah (Gen 29:35); entered Egypt c. 1706 BC (Gen 46:12). Gen 38 (Er, Onan, Tamar and Perez) cannot be fitted into the years before 1706 BC without strain; see Perez. The sons and Dinah are laid out in the order of Gen 29:31-30:24 and 35:16-18 within Ussher''s frame (Jacob to Haran 1759 BC, marriages 1752 BC, Joseph born 1745 BC, return 1739 BC); the years are approximate. Death is not recorded; about 130 years is assumed.'),
+(64, 'Benjamin', NULL, -1730, -1600, 1, 1, 'possible', 'patriarch', 'moderate', 'Benjamin', 8, 62, 'Youngest son of Jacob and Rachel; born near Bethlehem.', 'Estimate. Born near Ephrath after Jacob''s return in 1739 BC, when Rachel died (Gen 35:16-20), placed c. 1730 BC. At that date he would be about 24 when Jacob entered Egypt in 1706 BC, yet Gen 46:21 lists ten sons for him, a known difficulty (the list may include later descendants). Death is not recorded; about 130 years is an estimate.'),
+(65, 'Reuben', NULL, -1751, -1621, 1, 1, 'possible', 'patriarch', 'moderate', 'Reuben', 8, 61, 'Jacob''s firstborn; lost his birthright. Tried to save Joseph.', 'Estimate. Firstborn son of Jacob and Leah (Gen 29:32); entered Egypt c. 1706 BC (Gen 46:8-9). The sons and Dinah are laid out in the order of Gen 29:31-30:24 and 35:16-18 within Ussher''s frame (Jacob to Haran 1759 BC, marriages 1752 BC, Joseph born 1745 BC, return 1739 BC); the years are approximate. Death is not recorded; about 130 years is assumed.'),
+(162, 'Dinah', NULL, -1745, -1677, 1, 1, 'possible', 'other', 'minor', NULL, 8, 61, 'Daughter of Jacob and Leah; incident at Shechem.', 'Estimate. Daughter of Jacob and Leah, born after Zebulun (Gen 30:21); entered Egypt with Jacob (Gen 46:15). Midrash (Genesis Rabbah 80:11) identifies her as Job''s wife. The sons and Dinah are laid out in the order of Gen 29:31-30:24 and 35:16-18 within Ussher''s frame (Jacob to Haran 1759 BC, marriages 1752 BC, Joseph born 1745 BC, return 1739 BC); the years are approximate. Death is not recorded; about 68 years is an estimate.'),
+(163, 'Simeon', NULL, -1750, -1620, 1, 1, 'possible', 'patriarch', 'minor', 'Simeon', 8, 61, 'Second son of Jacob and Leah; ancestor of the tribe of Simeon.', 'Estimate. Second son of Jacob and Leah (Gen 29:33; 34:25; 42:24). The sons and Dinah are laid out in the order of Gen 29:31-30:24 and 35:16-18 within Ussher''s frame (Jacob to Haran 1759 BC, marriages 1752 BC, Joseph born 1745 BC, return 1739 BC); the years are approximate. Death is not recorded; about 130 years is assumed.'),
+(164, 'Levi', NULL, -1749, -1612, 1, 1, 'possible', 'patriarch', 'moderate', 'Levi', 8, 61, 'Third son of Jacob and Leah; ancestor of the priestly tribe. Lived 137 years.', 'Estimate. Third son of Jacob and Leah (Gen 29:34). The sons and Dinah are laid out in the order of Gen 29:31-30:24 and 35:16-18 within Ussher''s frame (Jacob to Haran 1759 BC, marriages 1752 BC, Joseph born 1745 BC, return 1739 BC); the years are approximate. Death at 137 years (Exod 6:16) gives 1612 BC.'),
+(165, 'Dan', NULL, -1748, -1618, 1, 1, 'possible', 'patriarch', 'minor', 'Dan', 8, NULL, 'Fifth son of Jacob; ancestor of the tribe of Dan.', 'Estimate. Fifth son of Jacob, born to Rachel''s servant Bilhah (Gen 30:6); entered Egypt (Gen 46:23). The sons and Dinah are laid out in the order of Gen 29:31-30:24 and 35:16-18 within Ussher''s frame (Jacob to Haran 1759 BC, marriages 1752 BC, Joseph born 1745 BC, return 1739 BC); the years are approximate. Death is not recorded; about 130 years is assumed.'),
+(166, 'Naphtali', NULL, -1747, -1614, 1, 1, 'possible', 'patriarch', 'minor', 'Naphtali', 8, NULL, 'Sixth son of Jacob; ancestor of the tribe of Naphtali.', 'Estimate. Sixth son of Jacob, born to Bilhah (Gen 30:8); entered Egypt (Gen 46:24). The sons and Dinah are laid out in the order of Gen 29:31-30:24 and 35:16-18 within Ussher''s frame (Jacob to Haran 1759 BC, marriages 1752 BC, Joseph born 1745 BC, return 1739 BC); the years are approximate. The non-canonical Testament of Naphtali records 133 years, which gives 1614 BC.'),
+(167, 'Gad', NULL, -1747, -1620, 1, 1, 'possible', 'patriarch', 'minor', 'Gad', 8, NULL, 'Seventh son of Jacob; ancestor of the tribe of Gad.', 'Estimate. Seventh son of Jacob, born to Leah''s servant Zilpah (Gen 30:11); entered Egypt (Gen 46:16). The sons and Dinah are laid out in the order of Gen 29:31-30:24 and 35:16-18 within Ussher''s frame (Jacob to Haran 1759 BC, marriages 1752 BC, Joseph born 1745 BC, return 1739 BC); the years are approximate. The non-canonical Testament of Gad records 127 years, which gives 1620 BC.'),
+(168, 'Asher', NULL, -1746, -1619, 1, 1, 'possible', 'patriarch', 'minor', 'Asher', 8, NULL, 'Eighth son of Jacob; ancestor of the tribe of Asher.', 'Estimate. Eighth son of Jacob, born to Zilpah (Gen 30:13); entered Egypt (Gen 46:17). The sons and Dinah are laid out in the order of Gen 29:31-30:24 and 35:16-18 within Ussher''s frame (Jacob to Haran 1759 BC, marriages 1752 BC, Joseph born 1745 BC, return 1739 BC); the years are approximate. The non-canonical Testament of Asher records 127 years, which gives 1619 BC.'),
+(169, 'Issachar', NULL, -1746, -1624, 1, 1, 'possible', 'patriarch', 'minor', 'Issachar', 8, 61, 'Ninth son of Jacob; ancestor of the tribe of Issachar.', 'Estimate. Ninth son of Jacob and Leah (Gen 30:18); entered Egypt (Gen 46:13). The sons and Dinah are laid out in the order of Gen 29:31-30:24 and 35:16-18 within Ussher''s frame (Jacob to Haran 1759 BC, marriages 1752 BC, Joseph born 1745 BC, return 1739 BC); the years are approximate. The non-canonical Testament of Issachar records 122 years, which gives 1624 BC.'),
+(170, 'Zebulun', NULL, -1745, -1631, 1, 1, 'possible', 'patriarch', 'minor', 'Zebulun', 8, 61, 'Tenth son of Jacob; ancestor of the tribe of Zebulun.', 'Estimate. Tenth son of Jacob and Leah (Gen 30:20); entered Egypt (Gen 46:14). The sons and Dinah are laid out in the order of Gen 29:31-30:24 and 35:16-18 within Ussher''s frame (Jacob to Haran 1759 BC, marriages 1752 BC, Joseph born 1745 BC, return 1739 BC); the years are approximate. The non-canonical Testament of Zebulun records 114 years, which gives 1631 BC.'),
+(171, 'Manasseh, son of Joseph', 'Manasseh son of Joseph, Manasseh', -1714, -1600, 1, 1, 'possible', 'patriarch', 'moderate', 'Manasseh', 9, 178, 'Firstborn son of Joseph; adopted by Jacob. Half-tribe of Israel.', 'Estimate. Born in Egypt before the famine, after Joseph became ruler in 1715 BC (Gen 41:50-51); adopted by Jacob (Gen 48). Death is not recorded; the year is an estimate.'),
+(172, 'Ephraim', NULL, -1712, -1600, 1, 1, 'possible', 'patriarch', 'moderate', 'Ephraim', 9, 178, 'Second son of Joseph; adopted by Jacob and given the firstborn blessing.', 'Estimate. Born in Egypt before the famine, after Manasseh (Gen 41:52); given the firstborn blessing by Jacob (Gen 48:14-20). Death is not recorded; the year is an estimate.'),
+(173, 'Tamar', 'Tamar daughter-in-law of Judah', -1742, -1670, 1, 1, 'possible', 'matriarch', 'moderate', NULL, NULL, NULL, 'Daughter-in-law of Judah; mother of Perez and Zerah. In the lineage of David and Jesus.', 'Estimate. Scripture gives no dates for Tamar. She became Judah''s daughter-in-law and the mother of Perez and Zerah (Gen 38). The years are estimates, and Gen 38 does not fit neatly into the chronology of Judah''s sons (see Perez).'),
+(174, 'Perez', 'Pharez', -1708, -1610, 1, 1, 'possible', 'patriarch', 'minor', 'Judah', 63, 173, 'Son of Judah and Tamar; ancestor of David and Jesus.', 'Estimate. Judah was born about 1748 BC and Genesis 38 (Er, Onan and Shelah growing up before Tamar bears Perez) cannot fall much earlier than this. Genesis 46:12 lists Perez and his sons among those who went down to Egypt in 1706 BC, perhaps counted by anticipation.'),
+(175, 'Keturah', NULL, -1900, -1800, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Abraham''s wife after Sarah''s death; mother of six sons including Midian.', 'Estimate. Gen 25:1-4 tells of Abraham''s marriage to Keturah and her six sons, after the account of Sarah''s death (1859 BC) though the text does not state the order in time; some Jewish tradition identifies her with Hagar. Born about 40 years before that marriage so that she could bear six sons; death not recorded.'),
+(177, 'Potiphar', NULL, -1770, -1710, 1, 1, 'possible', 'ruler', 'moderate', NULL, NULL, NULL, 'Egyptian officer who bought Joseph as a slave; captain of Pharaoh''s guard.', 'Gen 39:1-20. Captain of Pharaoh''s guard. Disappears from narrative after Joseph''s imprisonment. Est. death c. 1710 BC.'),
+(178, 'Asenath', NULL, -1735, -1640, 1, 1, 'possible', 'matriarch', 'minor', NULL, NULL, NULL, 'Egyptian wife of Joseph; daughter of Potiphera priest of On. Mother of Manasseh and Ephraim.', 'Gen 41:45, 50-52. Daughter of Potiphera, priest of On. Jewish apocryphal tradition (Joseph and Asenath) describes her conversion. Est. death c. 1640 BC.'),
+(497, 'Kohath', NULL, -1720, -1587, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', 164, NULL, 'Second son of Levi and grandfather of Moses, Aaron and Miriam. His descendants, the Kohathites, carried the ark and the holy things of the tabernacle.', 'Estimate. Kohath went down to Egypt with Jacob in 1706 BC (Gen 46:11), so was born before then; he lived 133 years (Exod 6:18). Scripture gives no year of birth.');
 
 -- Egypt & Exodus
-('Israel Enters Egypt',   -1706, NULL, 1, 1, 'traditional', 'other',     'major', 'Jacob and his whole household migrate to Egypt at Joseph''s invitation, settling in the fertile land of Goshen and growing there into a numerous people. Egyptian art such as the Beni Hasan tomb painting depicts Semitic families entering Egypt, illustrating this well-traveled path in times of famine.', 'Ussher: 1706 BC (AM 2298). Jacob aged 130 (Gen 47:9).', 130),
-('The Exodus',            -1491, NULL, 1, 1, 'traditional', 'salvation', 'major', 'After ten plagues break Pharaoh''s resistance, Israel departs Egypt under Moses on Passover night, freed from slavery to become a covenant nation. The Merneptah Stele, an Egyptian victory monument, preserves the earliest known extrabiblical mention of Israel as a people.', 'Ussher: 1491 BC (AM 2513). 430 years from Call of Abraham (Gal 3:17; Exod 12:40-41).', 140),
-('Crossing the Red Sea',  -1491, NULL, 1, 1, 'traditional', 'miracle',   'major', 'Trapped between Pharaoh''s chariots and the sea, Israel watches God part the waters at Moses'' outstretched hand, crossing on dry ground while the pursuing army is drowned. The Song of the Sea celebrating this rescue is reckoned among the oldest poetry preserved in the Hebrew Bible.', 'Ussher: 1491 BC.', 150),
-('Giving of the Law',     -1491, NULL, 1, 1, 'traditional', 'law',       'major', 'Amid thunder and fire on Mount Sinai, God speaks the Ten Commandments and gives Moses the Torah, constituting rescued slaves as a kingdom of priests and a holy nation. Scholars note that the covenant''s structure parallels ancient suzerainty treaties, casting God as Israel''s sovereign King.', 'Ussher: 1491 BC (AM 2513), third month after Exodus.', 160),
-('Wilderness Wandering',  -1491, -1451, 1, 1, 'traditional', 'judgment', 'major', 'After refusing to enter Canaan at the spies'' fearful report, Israel wanders the wilderness for forty years until the unbelieving generation passes away. Sustained by manna, water from the rock, and the guiding cloud, the nation is disciplined and shaped for covenant life in the promised land.', 'Ussher: 1491-1451 BC.', 170),
-('Tabernacle Completed',  -1490, NULL, 1, 1, 'traditional', 'other',     'major', 'Following the pattern revealed on Sinai, Israel completes the tabernacle, a portable tent sanctuary where God''s glory descends to dwell at the center of the camp. Its gilded frames recall Egyptian portable shrines of the era, while its design anticipates the temple and, for Christians, the incarnation.', 'Ussher: 1490 BC (Exod 40:17). One year after the Exodus.', 180),
+INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
+(10, 'Moses', NULL, -1571, -1451, 0, 0, 'traditional', 'prophet', 'major', 'Levi', 498, 499, 'Deliverer drawn from the Nile who confronted Pharaoh, led Israel out of Egypt through the sea, and received the law at Sinai. Prophet, lawgiver, and mediator of the covenant, he shepherded Israel through forty wilderness years and viewed the promised land from Nebo; the Torah bears his name.', 'Ussher: born 1571 BC, died 1451 BC (120 years, Deut 34:7). Exodus 1491 BC.'),
+(11, 'Aaron', NULL, -1574, -1452, 0, 0, 'traditional', 'priest', 'major', 'Levi', 498, 499, 'Elder brother of Moses, his spokesman before Pharaoh, and Israel''s first high priest, ancestor of the priestly line. Though he faltered at the golden calf, his benediction endures; the priestly blessing of Numbers 6 appears on the Ketef Hinnom silver amulets, the oldest known copies of biblical text.', 'Ussher: born 1574 BC (83 at the Exodus, Exod 7:7); died on Mount Hor on the first day of the fifth month of the 40th year, aged 123 (Num 33:38-39), 1452 BC, a few months before Moses.'),
+(12, 'Miriam', NULL, -1582, -1452, 1, 0, 'traditional', 'prophet', 'moderate', 'Levi', 498, 499, 'Sister of Moses and Aaron; prophetess.', 'Ussher: born c. 1582 BC, reckoning that she lived 130 years (Scripture gives no age); died at Kadesh in the first month of the 40th year (Num 20:1), 1452 BC, four months before Aaron. Daughter of Amram and Jochebed (Num 26:59).'),
+(13, 'Joshua son of Nun', 'Joshua, Yehoshua, Hoshea, Oshea', -1536, -1426, 1, 1, 'traditional', 'warrior', 'major', 'Ephraim', NULL, NULL, 'Successor of Moses and one of the two faithful spies, he led Israel across the Jordan, took Jericho, and apportioned the land among the tribes. His farewell charge to choose whom you will serve sealed the covenant at Shechem, and a fierce burn layer at Hazor recalls the conquest narrative.', 'Died aged 110 (Josh 24:29); the year is not given. Ussher has him living at Timnath-serah for many years after the land had rest (c. 1443 BC) and dead before the oppression of c. 1413 BC; c. 1426 BC follows Josephus (Antiquities 5.117), who says he led Israel 25 years after Moses. Birth follows from the age at death.'),
+(66, 'Pharaoh of the Exodus', NULL, -1545, -1491, 1, 1, 'possible', 'ruler', 'moderate', NULL, NULL, NULL, 'The unnamed Egyptian king who enslaved Israel and defied Moses'' demand for release through ten devastating plagues. His army''s destruction in the sea sealed Israel''s deliverance; Scripture withholds his name, and scholars still debate which historical pharaoh he was.', 'Ussher: Exodus 1491 BC. Perished at the Red Sea (Exod 14:28; Ps 136:15). Identity debated.'),
+(67, 'Caleb', 'Caleb son of Jephunneh', -1530, -1420, 0, 1, 'traditional', 'warrior', 'moderate', 'Judah', NULL, NULL, 'One of two faithful spies (with Joshua) who urged Israel to enter Canaan.', 'Born 1530 BC: aged 40 when sent as a spy from Kadesh-barnea (1490 BC) and 85 when he claimed Hebron 45 years later, c. 1445 BC (Josh 14:7-10). Death unrecorded; c. 1420 BC is an estimate.'),
+(68, 'Phinehas', 'Phinehas son of Eleazar', -1480, -1400, 1, 1, 'possible', 'priest', 'moderate', 'Levi', 184, NULL, 'Zealous priest who stopped a plague by his decisive action.', 'Life dates estimated. A grown man when he killed Zimri at Baal-peor in 1452 BC (Num 25:7-13); still ministering before the ark in the Benjamite war (Judg 20:28), which Ussher places after the death of Joshua''s elders, before c. 1413 BC.'),
+(69, 'Jethro', 'Reuel', -1590, -1480, 1, 1, 'possible', 'priest', 'moderate', NULL, NULL, NULL, 'Moses'' father-in-law; priest of Midian who advised Moses on delegation.', 'Life dates estimated (no age or year is given). Moses married his daughter c. 1531 BC (Exod 2:21), and he visited Moses at Sinai c. 1491-1490 BC (Exod 18; Num 10:29).'),
+(70, 'Zipporah', NULL, -1555, -1460, 1, 1, 'possible', 'other', 'minor', NULL, 69, NULL, 'Wife of Moses; daughter of Jethro.', 'Life dates estimated. Married Moses in Midian c. 1531 BC (Exod 2:21); rejoined him at Sinai (Exod 18:2-5). Death unrecorded.'),
+(71, 'Othniel', NULL, -1470, -1390, 1, 1, 'traditional', 'judge', 'minor', 'Judah', NULL, NULL, 'First judge of Israel: Othniel son of Kenaz, "Caleb''s younger brother" (Judg 3:9), of Judah, who took Kirjath-sepher and married Caleb''s daughter Achsah. The Spirit of the LORD came upon him and he delivered Israel from Cushan-rishathaim king of Mesopotamia (Judg 3:8-11).', 'Took Kirjath-sepher (Debir) in Joshua''s lifetime, which Ussher dates c. 1445 BC (Josh 15:16-17; Judg 1:11-13), so born by about 1470 BC. Delivered Israel c. 1405 BC (Ussher) after eight years of oppression by Cushan-rishathaim (Judg 3:8-10). Ussher measures each period of rest (Judg 3:11, 3:30, 5:31, 8:28) from the previous deliverance, so the figure includes the oppression that he ended. Birth and death are estimates; Judg 3:11 records his death without a year.'),
+(179, 'Korah', NULL, -1540, -1490, 1, 1, 'traditional', 'other', 'moderate', 'Levi', NULL, NULL, 'Levite who led a rebellion against Moses and Aaron; swallowed by the earth.', 'Num 16:1-35. Ussher: c. 1490 BC.'),
+(180, 'Balaam', NULL, -1530, -1452, 1, 1, 'traditional', 'prophet', 'moderate', NULL, NULL, NULL, 'Pagan prophet hired by Balak to curse Israel; his donkey spoke. Killed by Israel.', 'Num 22-24; 31:8. Killed in the war against Midian in the 40th year, 1452 BC (Ussher). Birth estimated.'),
+(181, 'Balak', NULL, -1510, -1450, 1, 1, 'possible', 'king', 'moderate', NULL, NULL, NULL, 'King of Moab who hired Balaam to curse Israel.', 'Num 22-24. King of Moab who hired Balaam to curse Israel, shortly before the death of Moses (1451 BC). His death is not recorded; c. 1450 BC is an estimate.'),
+(182, 'Rahab', NULL, -1475, -1400, 1, 1, 'possible', 'matriarch', 'moderate', NULL, NULL, NULL, 'A woman of Jericho who hid Israel''s spies and confessed their God as Lord of heaven and earth, securing her family''s rescue by a scarlet cord. Grafted into Israel, she appears in Matthew''s genealogy of Jesus and is praised for her faith in both Hebrews and James.', 'Josh 2; 6:22-25; Matt 1:5; Heb 11:31. Life dates estimated; an adult at the fall of Jericho in 1451 BC.'),
+(183, 'Achan', NULL, -1490, -1451, 1, 1, 'traditional', 'other', 'moderate', 'Judah', NULL, NULL, 'Israelite who took forbidden plunder from Jericho; caused defeat at Ai.', 'Josh 7:1-26. Ussher: c. 1451 BC.'),
+(184, 'Eleazar son of Aaron', 'Eleazar', -1530, -1415, 1, 1, 'possible', 'priest', 'moderate', 'Levi', 11, NULL, 'Son of Aaron; succeeded him as high priest. Served during the conquest.', 'Exod 6:23; Num 20:28; Josh 24:33. Life dates estimated; he succeeded Aaron in 1452 BC and outlived Joshua (Josh 24:33).'),
+(185, 'Hur', NULL, -1590, -1480, 1, 1, 'possible', 'other', 'minor', 'Judah', NULL, NULL, 'Held up Moses'' arms during the battle with Amalek alongside Aaron.', 'Exod 17:10-12; 24:14. Life dates estimated: grandfather of Bezalel (Exod 31:2; 1 Chr 2:19-20) and a leader at Sinai in 1491 BC; last mentioned at Exod 24:14.'),
+(186, 'Bezalel', NULL, -1520, -1440, 1, 1, 'possible', 'sage', 'moderate', 'Judah', NULL, NULL, 'Master craftsman filled with the Spirit of God; built the Tabernacle.', 'Exod 31:1-11; 35:30-35. Filled with the Spirit for Tabernacle construction. Death unrecorded; est. c. 1440 BC (active during wilderness period).'),
+(187, 'Dathan', NULL, -1530, -1490, 1, 1, 'traditional', 'other', 'minor', 'Reuben', NULL, NULL, 'Reubenite who joined Korah''s rebellion against Moses; swallowed by the earth.', 'Num 16:1-35.'),
+(188, 'Abiram', NULL, -1530, -1490, 1, 1, 'traditional', 'other', 'minor', 'Reuben', NULL, NULL, 'Reubenite who joined Korah''s rebellion against Moses; swallowed by the earth.', 'Num 16:1-35.'),
+(260, 'Hezron', NULL, -1682, -1590, 1, 1, 'possible', 'ancestor', 'minor', 'Judah', 174, NULL, 'Son of Perez; grandson of Judah. Went down to Egypt with Jacob. Ancestor of David and Jesus.', 'Gen 46:12; Ruth 4:18; 1 Chr 2:5. Life dates estimated. Gen 46:12 counts him among those who came into Egypt with Jacob (1706 BC), which leaves very little time after the birth of his father Perez; some interpreters take Hezron and Hamul as born in Egypt but reckoned with Jacob''s household.'),
+(261, 'Ram', NULL, -1652, -1550, 1, 1, 'possible', 'ancestor', 'minor', 'Judah', 260, NULL, 'Son of Hezron; ancestor of David. Mentioned in Ruth''s genealogy and Matthew''s genealogy of Jesus.', 'Ruth 4:19; 1 Chr 2:9-10; Matt 1:3-4. Life dates estimated.'),
+(262, 'Amminadab', NULL, -1615, -1500, 1, 1, 'possible', 'ancestor', 'minor', 'Judah', 261, NULL, 'Son of Ram; father of Nahshon. His daughter Elisheba married Aaron. Ancestor of David and Jesus.', 'Ruth 4:19-20; Exod 6:23; 1 Chr 2:10; Matt 1:4. Life dates estimated.'),
+(263, 'Nahshon', NULL, -1550, -1452, 1, 1, 'possible', 'ruler', 'minor', 'Judah', 262, NULL, 'Son of Amminadab; leader of the tribe of Judah during the Exodus. Brother-in-law of Aaron. Ancestor of David.', 'Num 1:7; 2:3; 7:12-17; Ruth 4:20; Matt 1:4. Life dates estimated: prince of Judah at the census of 1490 BC and brother of Aaron''s wife Elisheba (Exod 6:23); he died in the wilderness before the second census (Num 26:64-65). The stored span of 159 years was not credible.'),
+(264, 'Salmon', 'Sala', -1490, -1400, 1, 1, 'possible', 'ancestor', 'minor', 'Judah', 263, NULL, 'Son of Nahshon; husband of Rahab according to Matthew. Father of Boaz. Ancestor of David and Jesus.', 'Ruth 4:20-21; Matt 1:4-5; 1 Chr 2:11. Life dates estimated; Matthew makes him the husband of Rahab of Jericho (1451 BC). The line Salmon, Boaz, Obed, Jesse, David spans roughly 1450 to 1085 BC, too long for four generations, so the genealogy is generally taken to be abbreviated, as Hebrew genealogies often are.'),
+(498, 'Amram', NULL, -1650, -1513, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', 497, NULL, 'Levite, son of Kohath, husband of Jochebed and father of Miriam, Aaron and Moses.', 'Estimate. He lived 137 years (Exod 6:20) and was father of Miriam, Aaron (born 1574 BC) and Moses (born 1571 BC). Exodus 6 may compress the generations between Levi and Moses, as biblical genealogies sometimes do; this timeline follows the text as written.'),
+(499, 'Jochebed', NULL, -1615, NULL, 1, 1, 'possible', 'matriarch', 'minor', 'Levi', 164, NULL, 'Mother of Miriam, Aaron and Moses, who hid her infant son from Pharaoh''s decree and was then paid to nurse him for Pharaoh''s daughter.', 'Estimate. Called a daughter of Levi born in Egypt (Num 26:59) and Amram''s father''s sister (Exod 6:20), so born after 1706 BC and before Levi''s death in 1612 BC. Her death is not recorded.'),
+(500, 'Gershom', NULL, -1530, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', 10, 70, 'Elder son of Moses and Zipporah, born in Midian. His name recalls Moses''s words, "I have been a stranger in a strange land."', 'Estimate. Born in Midian after Moses married Zipporah, about 1531 BC (Exod 2:21-22). His death is not recorded.'),
+(501, 'Eliezer, son of Moses', NULL, -1525, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', 10, 70, 'Younger son of Moses and Zipporah. His name means "my God is help," for God had delivered Moses from Pharaoh''s sword.', 'Estimate. Born in Midian, after Gershom and before Moses returned to Egypt in 1491 BC (Exod 4:20; 18:3-4). His death is not recorded.');
 
 -- Conquest & Judges
-('Conquest of Canaan',    -1451, -1420, 1, 1, 'traditional', 'conquest',  'major', 'Under Joshua, Israel crosses the Jordan and campaigns through Canaan, defeating coalitions of kings and allotting the land among the twelve tribes. Destruction layers at sites like Hazor, the greatest Canaanite city of the region, fuel lively scholarly debate over the conquest''s scope and character.', 'Ussher: began 1451 BC (AM 2553).', 190),
-('Fall of Jericho',       -1451, NULL, 1, 1, 'traditional', 'miracle',   'major', 'Israel circles Jericho for seven days behind the ark until the walls collapse at the trumpet blast and shout, giving Joshua his first victory in Canaan; only faithful Rahab''s family is spared. Famous excavations by John Garstang and Kathleen Kenyon made Jericho a landmark case in biblical archaeology.', 'Ussher: 1451 BC.', 200),
-('Period of the Judges',  -1420, -1095, 1, 1, 'possible',   'other',     'major', 'Between Joshua and the monarchy, Israel cycles through apostasy, oppression, and rescue as God raises deliverers such as Deborah, Gideon, and Samson. Archaeology reveals a surge of small highland villages in this era, the material footprint of early Israel taking root in Canaan''s hill country.', 'Ussher: c. 1420-1095 BC. Exact chronology is debated; periods may overlap.', 210),
-('Deborah Defeats Sisera',-1245, NULL, 1, 1, 'possible',    'war',       'minor', 'Deborah and Barak defeat Canaanite general Sisera.', 'Ussher: c. 1245 BC.', 220),
-('Gideon Defeats Midian', -1205, NULL, 1, 1, 'possible',    'war',       'minor', 'Gideon defeats the Midianites with 300 men.', 'Ussher: c. 1205 BC.', 230),
-('Ark Captured by Philistines', -1125, NULL, 1, 1, 'traditional', 'judgment', 'minor', 'The Philistines capture the Ark of the Covenant at the battle of Aphek. Eli dies upon hearing the news.', 'Ussher: c. 1125 BC (1 Sam 4:1-22). End of Eli''s 40-year judgeship.', 240),
+INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
+(14, 'Deborah', NULL, -1330, -1255, 1, 1, 'traditional', 'judge', 'major', NULL, NULL, NULL, 'Prophet and judge who held court beneath a palm in the hill country of Ephraim, she summoned Barak and led Israel to victory over Sisera''s Canaanite forces. The Song of Deborah in Judges 5 is widely regarded as one of the oldest poems preserved in the Hebrew Bible.', 'Jabin of Hazor oppressed Israel twenty years (Judg 4:3), c. 1305-1285 BC; Deborah and Barak defeated Sisera c. 1285 BC (Ussher), who counts the forty years of rest (Judg 5:31) from Ehud''s deliverance. "A mother in Israel" (Judg 5:7) at the victory; birth and death are estimates.'),
+(15, 'Gideon', 'Jerubbaal', -1300, -1236, 1, 1, 'traditional', 'judge', 'moderate', 'Manasseh', NULL, NULL, 'Judge called from threshing wheat in a winepress to deliver Israel from Midian, he routed a vast host with only three hundred men so the glory would be God''s alone. Also named Jerubbaal; a jar inscription bearing that rare name was unearthed at Khirbet al-Rai in the Judean foothills.', 'Midian oppressed Israel seven years (Judg 6:1), c. 1252-1245 BC; Gideon''s victory c. 1245 BC (Ussher). Ussher counts the forty years of quiet "in the days of Gideon" (Judg 8:28) from Deborah''s victory, so Gideon died c. 1236 BC, when Abimelech seized power. His age is not given: his firstborn Jether was still a youth at the victory (Judg 8:20), and he died "in a good old age" (Judg 8:32). Birth is an estimate.'),
+(16, 'Samson', NULL, -1155, -1117, 1, 1, 'traditional', 'judge', 'major', 'Dan', 192, NULL, 'Nazirite judge endowed with extraordinary strength, he battled the Philistines single-handedly until Delilah''s betrayal cost him his hair, his eyes, and his freedom. In death he toppled Dagon''s temple, and his story mirrors Israel''s own struggle with compromised devotion.', 'Ussher: born c. 1155 BC, soon after the Philistines'' forty years of domination began (Judg 13:1); judged Israel twenty years "in the days of the Philistines" (Judg 15:20; 16:31), c. 1137-1117 BC, and died at Gaza in 1117 BC, the year before Eli.'),
+(17, 'Ruth', NULL, -1195, -1130, 1, 1, 'possible', 'matriarch', 'moderate', NULL, NULL, NULL, 'Moabite great-grandmother of David.', 'Life dates estimated. The story is set "in the days when the judges ruled" (Ruth 1:1); placing Obed''s birth c. 1170 BC leaves a natural three generations to David (b. 1085 BC). Boaz praised her for not following young men (Ruth 3:10).'),
+(18, 'Samuel', NULL, -1150, -1060, 1, 1, 'possible', 'prophet', 'major', 'Levi', NULL, 75, 'Last of the judges and first of the great prophets, dedicated at the Shiloh sanctuary in answer to Hannah''s prayer. He anointed both Saul and David, guiding Israel''s passage from tribal confederation to monarchy while insisting that obedience outweighs sacrifice.', 'Life dates estimated (Ussher gives no year). Serving Eli at Shiloh as a child (1 Sam 1-3), he judged Israel after Eli''s death in 1116 BC, routed the Philistines at Mizpah c. 1096 BC (1 Sam 7), anointed Saul in 1095 BC and David c. 1063 BC, and died c. 1060 BC, before David''s second flight to Gath (1 Sam 25:1; 27:1-2).'),
+(19, 'Saul', NULL, -1135, -1055, 1, 0, 'traditional', 'king', 'major', 'Benjamin', NULL, NULL, 'Israel''s first king, a tall Benjaminite anointed by Samuel, who won early victories over Ammon and the Philistines. His impatience and disobedience cost his house the throne, and his tragic decline beside David''s rise ended on Mount Gilboa, where he fell in battle.', 'Ussher: reigned forty years (Acts 13:21), 1095-1055 BC, and fell at Gilboa. His age at accession is not given (the Hebrew of 1 Sam 13:1 is defective); the birth year is an estimate allowing for a son, Jonathan, who commanded a thousand men in Saul''s second year (1 Sam 13:2). Mainstream scholarship dates his reign c. 1050-1010 BC.'),
+(72, 'Ehud', NULL, -1365, -1306, 1, 1, 'traditional', 'judge', 'minor', 'Benjamin', NULL, NULL, 'Left-handed Benjamite judge, son of Gera, who killed Eglon king of Moab with a hidden dagger and then led Israel to subdue Moab (Judg 3:15-30).', 'Moab oppressed Israel eighteen years (Judg 3:14), c. 1343-1325 BC; Ehud killed Eglon c. 1325 BC (Ussher), who counts the eighty years of rest (Judg 3:30) from Othniel''s deliverance. Israel sinned again "when Ehud was dead" (Judg 4:1), before Jabin''s oppression began c. 1305 BC. Birth and death are estimates.'),
+(73, 'Jephthah', NULL, -1225, -1182, 1, 1, 'traditional', 'judge', 'minor', NULL, NULL, NULL, 'Gileadite warrior, driven out by his half-brothers, who was recalled to lead Gilead against the Ammonites and defeated them. His rash vow cost him his only daughter, and he afterwards fought the men of Ephraim (Judg 11:1-12:7).', 'Judged Israel six years (Judg 12:7), c. 1188-1182 BC (Ussher), after defeating the Ammonites. His "three hundred years" since Israel took Heshbon (Judg 11:26; Heshbon taken 1452 BC) are about 264 on this reckoning, so a round figure; reconstructions that run the Ammonite and Philistine oppressions together (Judg 10:7) date him several decades later. Birth estimated; he had a grown daughter at the victory.'),
+(74, 'Eli', NULL, -1214, -1116, 0, 0, 'traditional', 'priest', 'moderate', 'Levi', NULL, NULL, 'High priest at Shiloh who judged Israel forty years and brought up the boy Samuel. His failure to restrain his sons Hophni and Phinehas brought judgment on his house, and he died at 98 when news came that the ark had been taken (1 Sam 1-4).', 'Ussher: born 1214 BC; judged Israel forty years (1 Sam 4:18), c. 1157-1116 BC, following Abdon, and died aged 98 on hearing that the ark was taken (1 Sam 4:15-18), 1116 BC.'),
+(75, 'Hannah', NULL, -1175, -1100, 1, 1, 'possible', 'matriarch', 'moderate', NULL, NULL, NULL, 'Mother of Samuel; prayed fervently for a child and dedicated him to God.', 'Life dates estimated (1 Sam 1-2); mother of Samuel, born c. 1150 BC.'),
+(76, 'Boaz', NULL, -1235, -1160, 1, 1, 'possible', 'patriarch', 'moderate', 'Judah', 264, 182, 'Kinsman-redeemer who married Ruth; ancestor of David.', 'Life dates estimated: a kinsman of Elimelech, much older than Ruth (Ruth 2:1; 3:10), father of Obed c. 1170 BC. Matthew names Rahab of Jericho (1451 BC) as his mother (Matt 1:5); as that is nearly three centuries before Ruth''s story, the link Salmon-Boaz is generally taken to be abbreviated, "begat" meaning "was ancestor of".'),
+(77, 'Naomi', NULL, -1225, -1165, 1, 1, 'possible', 'other', 'moderate', NULL, NULL, NULL, 'Ruth''s mother-in-law who returned from Moab to Bethlehem.', 'Life dates estimated. Of Bethlehem; returned from Moab a widow, too old to remarry (Ruth 1:12), and nursed her grandson Obed (Ruth 4:16), c. 1170 BC on these estimates. The book is set "when the judges ruled" (Ruth 1:1) without saying which judge.'),
+(78, 'Abimelech', NULL, -1265, -1233, 1, 1, 'traditional', 'king', 'minor', 'Manasseh', 15, NULL, 'Son of Gideon who made himself king; killed at Thebez.', 'Son of Gideon''s concubine in Shechem (Judg 8:31). Made king at Shechem after Gideon''s death, c. 1236 BC; reigned three years (Judg 9:22) and was killed at Thebez c. 1233 BC (Ussher). Birth estimated.'),
+(83, 'Jonathan', NULL, -1115, -1055, 1, 0, 'traditional', 'warrior', 'moderate', 'Benjamin', 19, NULL, 'Saul''s son and David''s closest friend; died at Gilboa.', 'Birth estimated: he commanded a thousand men in Saul''s second year (1 Sam 13:2-3), c. 1093 BC, and had a five-year-old son when he died (2 Sam 4:4). Died with Saul at Gilboa, 1055 BC (Ussher; 1 Sam 31:2).'),
+(189, 'Barak', NULL, -1320, -1255, 1, 1, 'possible', 'warrior', 'moderate', 'Naphtali', NULL, NULL, 'Military commander who fought alongside Deborah against Sisera.', 'Judg 4-5; Heb 11:32. Life dates estimated around the victory over Sisera, c. 1285 BC (Ussher).'),
+(190, 'Jael', NULL, -1315, -1250, 1, 1, 'possible', 'warrior', 'moderate', NULL, NULL, NULL, 'Kenite woman who killed Sisera by driving a tent peg through his temple.', 'Judg 4:17-22; 5:24-27. Killed Sisera with a tent peg, c. 1285 BC (Ussher). Life dates estimated.'),
+(191, 'Sisera', NULL, -1320, -1285, 1, 1, 'traditional', 'warrior', 'minor', NULL, NULL, NULL, 'Canaanite general defeated by Deborah and Barak; killed by Jael.', 'Judg 4-5. Killed by Jael on the day of his defeat, c. 1285 BC (Ussher). Birth estimated.'),
+(192, 'Manoah', NULL, -1200, -1130, 1, 1, 'possible', 'other', 'minor', 'Dan', NULL, NULL, 'Father of Samson; visited by the Angel of the LORD.', 'Judg 13-14; 16:31. Life dates estimated: Samson was born c. 1155 BC, Manoah went with him to Timnah (Judg 14:5), and Samson was buried in Manoah''s tomb (Judg 16:31).'),
+(193, 'Delilah', NULL, -1145, -1100, 1, 1, 'possible', 'other', 'moderate', NULL, NULL, NULL, 'A woman of the valley of Sorek whom Samson loved. Bribed by the Philistine lords, she drew out the secret of his strength and betrayed him (Judg 16:4-21); Scripture does not say whether she was a Philistine or an Israelite.', 'Judg 16:4-21. Betrayed Samson c. 1117 BC (Ussher). Life dates are estimates.'),
+(194, 'Tola', NULL, -1280, -1210, 1, 1, 'traditional', 'judge', 'minor', 'Issachar', NULL, NULL, 'A man of Issachar, son of Puah, who lived at Shamir in Mount Ephraim and judged Israel twenty-three years after Abimelech (Judg 10:1-2).', 'Judged Israel 23 years (Judg 10:1-2), c. 1233-1210 BC (Ussher), and died. Birth estimated.'),
+(195, 'Jair', 'Jair the Gileadite', -1255, -1188, 1, 1, 'traditional', 'judge', 'minor', 'Manasseh', NULL, NULL, 'Judge of Israel for 22 years; had 30 sons who rode 30 donkeys.', 'Judged Israel 22 years (Judg 10:3-5), c. 1210-1188 BC (Ussher). Ussher begins the eighteen-year oppression by the Ammonites and Philistines (Judg 10:7-8) c. 1206 BC, in Jair''s time, although the narrative tells it after his burial, and ends it with Jephthah''s victory in 1188 BC, the year Jair died. Birth estimated.'),
+(196, 'Ibzan', NULL, -1235, -1175, 1, 1, 'traditional', 'judge', 'minor', NULL, NULL, NULL, 'Judge of Israel from Bethlehem for 7 years; had 30 sons and 30 daughters.', 'Judged Israel seven years after Jephthah (Judg 12:8-10), c. 1182-1175 BC (Ussher). Birth estimated; he had married off thirty sons and thirty daughters.'),
+(197, 'Elon', NULL, -1225, -1165, 1, 1, 'traditional', 'judge', 'minor', 'Zebulun', NULL, NULL, 'A Zebulonite who judged Israel ten years and was buried at Aijalon in Zebulun (Judg 12:11-12).', 'Judged Israel ten years (Judg 12:11-12), c. 1175-1165 BC (Ussher). Birth estimated.'),
+(198, 'Abdon', NULL, -1235, -1157, 1, 1, 'traditional', 'judge', 'minor', 'Ephraim', NULL, NULL, 'Son of Hillel the Pirathonite, of Ephraim, who judged Israel eight years; he had forty sons and thirty grandsons who rode on seventy ass colts (Judg 12:13-15).', 'Judged Israel eight years (Judg 12:13-15), c. 1165-1157 BC (Ussher). Birth estimated; he had grandsons of riding age.'),
+(200, 'Abner', NULL, -1130, -1048, 1, 1, 'traditional', 'warrior', 'moderate', 'Benjamin', NULL, NULL, 'Commander of Saul''s army; supported Ish-bosheth then defected to David. Killed by Joab.', 'Birth estimated: son of Ner, Saul''s uncle (1 Sam 14:50-51), and already captain of Saul''s army early in the reign. Killed by Joab at Hebron in 1048 BC (Ussher; 2 Sam 3:27).'),
+(207, 'Ahithophel', NULL, -1110, -1023, 1, 1, 'possible', 'sage', 'minor', NULL, NULL, NULL, 'David''s counselor who defected to Absalom; hanged himself when his advice was rejected.', '2 Sam 15:12, 31; 16:20-17:23. Hanged himself during Absalom''s revolt, 1023 BC. If Bathsheba''s father Eliam (2 Sam 11:3) is the Eliam son of Ahithophel among David''s mighty men (2 Sam 23:34), he was her grandfather; the birth year is an estimate allowing for that.'),
+(221, 'Nabal', NULL, -1100, -1060, 1, 1, 'possible', 'other', 'minor', 'Judah', NULL, NULL, 'Wealthy but foolish man married to Abigail; refused to help David. Died after the LORD struck him.', '1 Sam 25:2-42. Died about ten days after his feast (1 Sam 25:38), soon after Samuel''s death and before David fled to Gath, c. 1060 BC. Birth estimated.'),
+(265, 'Obed', NULL, -1170, -1100, 1, 1, 'possible', 'ancestor', 'minor', 'Judah', 76, 17, 'Son of Boaz and Ruth; father of Jesse, grandfather of David. Central link in the Messianic lineage.', 'Ruth 4:13-17, 21-22; 1 Chr 2:12; Matt 1:5. Life dates estimated.'),
+(266, 'Jesse', 'Yishai', -1140, -1060, 1, 1, 'possible', 'patriarch', 'moderate', 'Judah', 265, NULL, 'A Bethlehemite of the tribe of Judah, grandson of Ruth and Boaz, and father of eight sons, the youngest of whom Samuel anointed as king. Isaiah''s promise of a shoot from the stump of Jesse made his name shorthand for the messianic hope Christians see fulfilled in Jesus.', '1 Sam 16:1-13; 17:12-14; Ruth 4:22; Isa 11:1, 10; Matt 1:5-6. Life dates estimated: "an old man in the days of Saul" (1 Sam 17:12), father of David (b. 1085 BC) in his old age.'),
+(420, 'Shamgar', 'Shamgar son of Anath', -1340, -1290, 1, 1, 'possible', 'judge', 'minor', NULL, NULL, NULL, 'Son of Anath, named after Ehud as one who "also delivered Israel", killing six hundred Philistines with an ox goad (Judg 3:31). The Song of Deborah recalls "the days of Shamgar" as a time when the highways were deserted (Judg 5:6).', 'No years are given. Ussher places him after Ehud (c. 1325 BC), and Judg 5:6 makes him an older contemporary of Deborah and Jael (c. 1285 BC). Life dates are estimates.');
 
 -- United Kingdom
-('Saul Anointed King',    -1095, NULL, 1, 1, 'traditional', 'other',     'major', 'When the people demand a king like the nations, God directs Samuel to anoint Saul of Benjamin as Israel''s first monarch. Tall, striking, and initially victorious over Ammon and the Philistines, Saul forfeits his dynasty through disobedience, opening the way for David''s rise.', 'Ussher: 1095 BC (AM 2909).', 250),
-('David Anointed King',   -1055, NULL, 1, 1, 'traditional', 'other',     'major', 'God sends Samuel to Bethlehem to anoint David, Jesse''s youngest son and a shepherd, declaring that the Lord looks on the heart rather than outward stature. The Tel Dan inscription''s reference to the house of David gives his dynasty its earliest extrabiblical attestation.', 'Ussher: 1055 BC (combined reign, 2 Sam 5:4-5).', 260),
-('David Captures Jerusalem',-1049,NULL,1, 1, 'traditional', 'conquest',  'major', 'David takes the Jebusite stronghold of Zion and makes Jerusalem his capital, uniting the tribes around a city belonging to none of them and bringing up the ark in triumph. Excavations in the City of David, including the massive Stepped Stone Structure, illuminate the ancient citadel he claimed.', 'Ussher: c. 1049 BC.', 270),
-('Davidic Covenant',      -1045, NULL, 1, 1, 'traditional', 'covenant',  'major', 'Through the prophet Nathan, God promises David an everlasting house, kingdom, and throne, pledging a son whose reign will never end. This oath anchors the royal psalms and Israel''s prophetic hope, and the New Testament proclaims Jesus, son of David, as its ultimate fulfillment.', 'Ussher: c. 1045 BC.', 280),
-('Solomon Builds Temple',  -1012, -1005, 1, 1, 'traditional', 'other',     'major', 'Solomon builds the first temple on Jerusalem''s Mount Moriah, a cedar-lined house of hewn stone where the ark comes to rest and God''s glory fills the sanctuary at its dedication. Its long-room, tripartite plan resembles excavated Syrian temples such as Ain Dara, rooting it firmly in its ancient world.', 'Ussher: began 1012 BC (AM 2992), 4th year of Solomon (1 Kgs 6:1). 480 years after Exodus.', 290),
+INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
+(20, 'David', NULL, -1085, -1015, 0, 0, 'traditional', 'king', 'major', 'Judah', 266, NULL, 'Shepherd of Bethlehem who felled Goliath and rose to the throne after Saul, uniting the tribes and taking Jerusalem as his capital. Psalmist and covenant king promised an everlasting dynasty, his house is named on the Tel Dan stele, the earliest extrabiblical witness to his royal line.', 'Ussher: born 1085 BC; anointed by Samuel at Bethlehem c. 1063 BC; king at Hebron aged 30 in 1055 BC and over all Israel from 1048 BC; reigned forty years, seven and a half at Hebron and thirty-three at Jerusalem (2 Sam 5:4-5), and died 1015 BC. Mainstream scholarship dates his reign c. 1010-970 BC.'),
+(21, 'Solomon', NULL, -1034, -975, 1, 0, 'traditional', 'king', 'major', 'Judah', 20, 80, 'Son of David famed for God-given wisdom, he built the first temple in Jerusalem and presided over a golden age of trade, building, and proverbs. Monumental gates at Hazor, Megiddo, and Gezer have long been associated with his projects, yet his foreign marriages sowed the kingdom''s division.', 'Ussher: born 1034 BC to Bathsheba after the death of her first child by David (2 Sam 12:24); reigned forty years (1 Kgs 11:42), 1015-975 BC, and began the temple in 1012 BC. Mainstream scholarship dates his reign c. 970-931 BC.'),
+(22, 'Nathan the prophet', 'Nathan', -1085, -1005, 1, 1, 'possible', 'prophet', 'moderate', NULL, NULL, NULL, 'Prophet during David and Solomon''s reigns.', 'Life dates estimated. Active from the Davidic covenant (c. 1044 BC, 2 Sam 7) to Solomon''s anointing (1015 BC, 1 Kgs 1).'),
+(31, 'Jeroboam', 'Jeroboam I', -1010, -954, 1, 0, 'traditional', 'king', 'moderate', 'Ephraim', NULL, NULL, 'First king of the northern kingdom of Israel.', 'Ussher: reigned 975-954 BC (22 years counted inclusively, 1 Kgs 14:20); Nadab succeeded in Asa''s second year (1 Kgs 15:25). Thiele: 931-910 BC. Birth estimated.'),
+(79, 'Abigail', NULL, -1090, -1010, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Wise woman who became David''s wife after the death of Nabal.', 'Life dates estimated. Married David after Nabal''s death, c. 1060 BC (1 Sam 25); with him at Ziklag and Hebron (1 Sam 30:5; 2 Sam 2:2) and mother of his second son (2 Sam 3:3). Death unrecorded.'),
+(80, 'Bathsheba', NULL, -1065, -1000, 1, 1, 'possible', 'queen', 'moderate', NULL, NULL, NULL, 'Wife of David; mother of Solomon.', 'Life dates estimated. Taken by David c. 1035 BC (Ussher; 2 Sam 11); mother of Solomon (b. 1034 BC); alive early in Solomon''s reign (1 Kgs 2:19). Death unrecorded.'),
+(81, 'Joab', NULL, -1085, -1014, 1, 1, 'traditional', 'warrior', 'moderate', NULL, NULL, NULL, 'Commander of David''s army; politically shrewd and ruthless.', 'Birth estimated; son of David''s sister Zeruiah (1 Chr 2:16). Executed by Benaiah at Solomon''s command early in his reign, 1014 BC (Ussher; 1 Kgs 2:28-34).'),
+(82, 'Absalom', NULL, -1053, -1023, 1, 1, 'traditional', 'other', 'moderate', 'Judah', 20, NULL, 'David''s rebellious son who temporarily seized the throne.', 'Third son of David, born at Hebron (2 Sam 3:2-5) during the reign there of 1055-1048 BC; birth estimated. Killed Amnon c. 1030 BC, and rebelled and died in 1023 BC, "after forty years" (2 Sam 15:7), which Ussher counts from David''s anointing (2 Sam 13-18).'),
+(84, 'Michal', NULL, -1085, -1030, 1, 1, 'possible', 'queen', 'minor', 'Benjamin', 19, NULL, 'Saul''s daughter; David''s first wife who helped him escape.', 'Life dates estimated. Saul''s younger daughter (1 Sam 14:49), married to David after his victory over Goliath (c. 1063-1062 BC), given to Phaltiel, and returned to David in 1048 BC (2 Sam 3:14-16). Childless (2 Sam 6:23). Death unrecorded.'),
+(85, 'Rehoboam', NULL, -1016, -958, 0, 0, 'traditional', 'king', 'moderate', 'Judah', 21, NULL, 'Solomon''s son; his harshness caused the kingdom to divide.', 'Ussher: reigned 975-958 BC (17 years, 1 Kgs 14:21); 41 at accession, so born 1016 BC. Thiele: 931-913 BC.'),
+(98, 'Nadab', NULL, -990, -953, 1, 0, 'traditional', 'king', 'minor', 'Ephraim', 31, NULL, 'Son and successor of Jeroboam I; killed by Baasha after two years.', 'Ussher: reigned 954-953 BC (2 years counted inclusively, 1 Kgs 15:25-28), killed by Baasha in Asa''s third year. Thiele: 910-909 BC. Birth estimated.'),
+(99, 'Baasha', NULL, -980, -930, 1, 0, 'traditional', 'king', 'minor', 'Issachar', NULL, NULL, 'King of Israel who destroyed the house of Jeroboam.', 'Ussher: reigned 953-930 BC (24 years counted inclusively, 1 Kgs 15:33); Elah succeeded in Asa''s 26th year (16:8). Thiele: 909-886 BC. Birth estimated.'),
+(199, 'Ish-bosheth', 'Esh-Baal', -1095, -1048, 1, 0, 'traditional', 'king', 'minor', 'Benjamin', 19, NULL, 'Saul''s surviving son; made king over Israel by Abner while David reigned in Judah.', 'Forty when he began to reign, and reigned two years (2 Sam 2:10). Ussher takes his reign as beginning at Saul''s death (1055 BC), so born 1095 BC, the year Saul became king; murdered in 1048 BC, just before the tribes made David king (2 Sam 4-5). Others place his two years at the end of David''s seven and a half years at Hebron, making him born c. 1090 BC.'),
+(201, 'Mephibosheth', 'Merib-Baal', -1060, -1000, 0, 1, 'traditional', 'other', 'minor', 'Benjamin', 83, NULL, 'Son of Jonathan; lame in both feet. David showed him kindness for Jonathan''s sake.', 'Born 1060 BC: five years old when news came of the deaths of Saul and Jonathan in 1055 BC (2 Sam 4:4; Ussher). 2 Sam 9:1-13; 16:1-4; 19:24-30. Death unrecorded; c. 1000 BC is an estimate.'),
+(202, 'Uriah', 'Uriah the Hittite', -1060, -1035, 1, 1, 'traditional', 'warrior', 'minor', NULL, NULL, NULL, 'Loyal soldier; husband of Bathsheba. Killed by David''s order to cover his sin.', '2 Sam 11:1-27; Matt 1:6.'),
+(203, 'Hiram', 'Hiram of Tyre', -1070, -985, 1, 1, 'possible', 'king', 'moderate', NULL, NULL, NULL, 'King of Tyre; ally of David and Solomon. Supplied materials for the Temple.', 'On Ussher''s dates Hiram sent builders to David c. 1046 BC (2 Sam 5:11) and still dealt with Solomon c. 992 BC (1 Kgs 9:10-14). Josephus (Against Apion 1.18, from Menander of Ephesus) gives him a reign of 34 years and a life of 53, which mainstream chronology places c. 980-947 BC; on that reckoning 2 Sam 5:11 is told out of sequence. Life dates are estimates.'),
+(204, 'Adonijah', NULL, -1051, -1014, 1, 1, 'traditional', 'other', 'minor', 'Judah', 20, NULL, 'David''s fourth son who tried to seize the throne; executed by Solomon.', 'Fourth son of David, born at Hebron after Absalom (2 Sam 3:4); birth estimated. Claimed the throne as David lay dying in 1015 BC and was executed by Solomon early in his reign, 1014 BC (Ussher; 1 Kgs 1-2).'),
+(205, 'Shimei', 'Shimei son of Gera', -1070, -1011, 1, 1, 'traditional', 'other', 'minor', 'Benjamin', NULL, NULL, 'Cursed David during Absalom''s rebellion; later executed by Solomon.', '2 Sam 16:5-13; 19:16-23; 1 Kgs 2:36-46. Executed three years after Solomon confined him to Jerusalem, 1011 BC (Ussher). Birth estimated.'),
+(206, 'Hushai', 'Hushai the Archite', -1070, -1010, 1, 1, 'possible', 'sage', 'minor', NULL, NULL, NULL, 'David''s friend who pretended to join Absalom and thwarted Ahithophel''s counsel.', '2 Sam 15:32-37; 16:16-17:16.'),
+(208, 'Zadok the priest', 'Zadok', -1090, -1000, 1, 1, 'possible', 'priest', 'moderate', 'Levi', NULL, NULL, 'Faithful priest who supported David and anointed Solomon. His line continued as high priests.', '2 Sam 15:24-29; 1 Kgs 1:32-45; Ezek 44:15. Life dates estimated; "a young man mighty of valour" when he joined David at Hebron (1 Chr 12:28), c. 1048 BC.'),
+(270, 'Abijah', 'Abijam', -995, -955, 1, 0, 'traditional', 'king', 'minor', 'Judah', 85, NULL, 'King of Judah, son of Rehoboam. Reigned 3 years. Ancestor of Jesus in Matthew 1:7.', 'Ussher: reigned 958-955 BC (3 years, 1 Kgs 15:1-2), from the 18th year of Jeroboam. Birth estimated: the text gives no age, but he had fourteen wives and 38 children (2 Chr 13:21). Thiele: 913-911 BC. Not to be confused with Abijah the priest.'),
+(281, 'Nathan son of David', 'Nathan', -1030, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Judah', 20, 80, 'Son of David and Bathsheba. Ancestor of Jesus in Luke 3:31. Not the prophet Nathan.', '2 Sam 5:14; 1 Chr 3:5; Luke 3:31. Born in Jerusalem to Bathsheba. 1 Chr 3:5 lists him before Solomon, but Solomon was evidently her first son after the death of the child of 2 Sam 12 (c. 1034 BC), so a birth c. 1030 BC is estimated. Not to be confused with Nathan the prophet (2 Sam 7).');
 
 -- Divided Kingdom
-('Kingdom Divides',        -975, NULL, 1, 1, 'traditional',    'judgment',  'major', 'After Solomon''s death, Rehoboam''s harsh answer at Shechem drives ten northern tribes to crown Jeroboam, splitting the nation into Israel and Judah. The rupture sets the two kingdoms on divergent paths, and Pharaoh Shishak''s invasion, carved at Karnak, soon exploited their weakness.', 'Ussher: 975 BC (AM 3029), upon Solomon''s death.', 300),
-('Elijah on Mount Carmel', -905, NULL, 1, 1, 'traditional', 'miracle',   'major', 'On Mount Carmel, Elijah stands alone against the prophets of Baal, and fire from heaven consumes his water-drenched sacrifice, turning Israel''s heart back to the Lord. The contest confronts Baal, the Canaanite storm god, on his own claimed terrain of fire and rain, and ends a long drought at God''s word.', 'Ussher: during Ahab''s reign (918-897 BC). 1 Kgs 18:20-40.', 310),
-('Fall of Samaria',        -721, NULL, 0, 1, 'certain',     'judgment',  'major', 'After a three-year siege, Assyria captures Samaria and extinguishes the northern kingdom, deporting Israelites and resettling foreigners in their land. Sargon II''s annals boast of carrying off 27,290 captives, and the scattering of the ten tribes stands as sober vindication of the prophets'' warnings.', 'Ussher: 721 BC (AM 3283). Well-attested in Assyrian records.', 320),
-('Hezekiah''s Deliverance',-701, NULL, 0, 1, 'certain',     'miracle',   'major', 'When Sennacherib''s armies overrun Judah, Hezekiah spreads the Assyrian threat before the Lord and Isaiah promises rescue; the invader withdraws with Jerusalem untaken. Sennacherib''s prism boasts of shutting Hezekiah up like a caged bird yet claims no capture, while the Lachish reliefs depict the campaign''s fury.', 'Ussher: 701 BC, 14th year of Hezekiah (2 Kgs 18:13; Isa 36:1). Sennacherib''s prism confirms the siege.', 330),
-('Josiah''s Reforms',      -624, NULL, 0, 1, 'traditional', 'other',     'minor', 'King Josiah finds the Book of the Law and reforms worship.', 'Ussher: 18th year of Josiah (640-18=622 BC, 2 Kgs 22:3). Book found c. 624-622 BC.', 340),
-
--- Exile
-('Fall of Jerusalem',      -586, NULL, 0, 1, 'certain',     'judgment',  'major', 'Nebuchadnezzar''s Babylonian army breaches Jerusalem after a long siege, burning the temple, razing the walls, and deporting Judah''s people. The Babylonian Chronicle independently records his earlier seizure of the city, corroborating the biblical account of Judah''s collapse and exile.', 'One of the best-dated events in biblical history.', 350),
-('Babylonian Exile',       -586, -538, 0, 0, 'certain',     'exile',     'major', 'Uprooted to Babylon, Judah''s exiles mourn Zion by foreign rivers while prophets like Ezekiel and Daniel proclaim God''s presence far from the ruined temple. Cuneiform records, including ration tablets naming King Jehoiachin and the Al-Yahudu archive, document the exiled community''s life in Babylonia.', NULL, 360),
+INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
+(23, 'Elijah', NULL, -930, NULL, 1, 1, 'traditional', 'prophet', 'major', NULL, NULL, NULL, 'Prophet of Gilead who confronted Ahab and the prophets of Baal on Mount Carmel, where fire from heaven vindicated the Lord. Fed by ravens and met by a still small voice at Horeb, he was taken up in a whirlwind, and Malachi promises his return before the great day of the Lord.', 'Ussher: active during Ahab''s reign (918-897 BC). Translated c. 896 BC (2 Kgs 2:11), early in Joram of Israel''s reign. 2 Chr 21:12-15 records a writing from Elijah to Jehoram of Judah (reigned from 892 BC): either it was written before his translation or the dating is uncertain. Born c. 930 BC (estimated).'),
+(24, 'Elisha', NULL, -920, -839, 1, 1, 'traditional', 'prophet', 'major', NULL, NULL, NULL, 'Farmer called from the plow to succeed Elijah, receiving a double portion of his spirit. Serving Israel through the reigns of four kings, he healed Naaman''s leprosy, multiplied bread and oil, and raised the dead, extending God''s mercy to Israelite and foreigner alike.', 'Called by Elijah in Ahab''s reign (1 Kgs 19:19-21), before Ahab died in 897 BC; succeeded Elijah c. 896 BC (2 Kgs 2). Died early in the reign of Jehoash of Israel (2 Kgs 13:14-20), c. 839 BC (Ussher). Born c. 920 BC (estimated).'),
+(25, 'Isaiah', 'Yeshayahu', -783, -695, 1, 1, 'traditional', 'prophet', 'major', NULL, NULL, NULL, 'Jerusalem prophet who saw the Lord enthroned in the temple and counseled kings Ahaz and Hezekiah through the Assyrian crisis. His visions of Immanuel and the suffering servant shaped messianic hope, and the great Isaiah scroll from Qumran is the best preserved of the Dead Sea Scrolls.', 'Ussher: called in the year Uzziah died, 758 BC (Isa 6:1). Tradition: martyred by Manasseh c. 695 BC (cf. Heb 11:37). Isa 37:38 reports Sennacherib''s death, which Assyrian records date to 681 BC, so either Isaiah outlived 695 or the notice was added later. Born c. 783 BC (estimated).'),
+(26, 'Jeremiah', 'Yirmeyahu', -650, -570, 1, 1, 'probable', 'prophet', 'major', 'Levi', NULL, NULL, 'The weeping prophet who warned Judah for decades of coming Babylonian judgment, endured imprisonment and a muddy cistern, and promised a new covenant written on the heart. Clay bullae from the City of David bear names of royal officials, such as Jehucal son of Shelemiah, who appear in his book.', 'Called in the 13th year of Josiah (Jer 1:2), 628 BC on Ussher''s chain (627 in modern reckoning), while still a youth (1:6); active to the fall of Jerusalem and afterwards in Egypt (Jer 43-44). Birth and death estimated; tradition says he was stoned in Egypt.'),
+(27, 'Ezekiel', 'Yechezkel', -625, -570, 1, 1, 'probable', 'prophet', 'major', 'Levi', NULL, NULL, 'Priest deported to Babylon who received his prophetic call amid visions of the divine chariot beside the Chebar canal. Through stark symbolic acts he interpreted Jerusalem''s fall and foresaw dry bones living and a new temple; cuneiform records of Judean exile settlements corroborate his community''s setting.', 'Taken to Babylon with Jehoiachin (2 Kgs 24:14-16), 599 BC on Ussher''s chain (597 modern). Called in the fifth year of that captivity (Ezek 1:2), c. 595 BC; the thirtieth year of 1:1 is often read as his age. Last dated oracle in the 27th year (29:17), c. 573 BC. Birth and death estimated.'),
+(28, 'Daniel', NULL, -620, -534, 1, 1, 'probable', 'prophet', 'major', 'Judah', NULL, NULL, 'A Judean noble exiled to Babylon who rose to high office under Babylonian and Persian rulers while refusing to compromise his devotion to God. His deliverance from the lions'' den and his sweeping visions of successive empires shaped Jewish and Christian hope in God''s coming kingdom.', 'Deported as a youth in the third year of Jehoiakim (Dan 1:1-6), c. 606 BC on Ussher''s reckoning (605 modern). His last dated vision is in the third year of Cyrus (Dan 10:1), 534 BC counting from the decree of 536 (536 BC in modern reckoning); death unrecorded. Birth and death estimated.'),
+(29, 'Hezekiah', NULL, -751, -698, 0, 0, 'traditional', 'king', 'major', 'Judah', 90, NULL, 'A reforming king of Judah who purged idolatry and trusted God when Sennacherib''s Assyrian army besieged Jerusalem. His water tunnel from the Gihon spring survives, and the Siloam inscription found in it in 1880 records his workmen''s feat, corroborating the biblical account.', 'Ussher: reigned 726-698 BC (29 years counted inclusively, 2 Kgs 18:2). Samaria fell in his sixth year (721 BC, 18:10) and Sennacherib came in his fourteenth (713 BC, 18:13), after which fifteen years were added to his life (20:6). Age 25 at accession: born 751 BC, when by the text''s figures Ahaz was about 11 (2 Kgs 16:2). Thiele and most modern scholars: 715-686 BC, with Sennacherib''s invasion in 701 BC.'),
+(30, 'Josiah', NULL, -649, -610, 0, 0, 'traditional', 'king', 'major', 'Judah', 268, NULL, 'Judah''s young king whose temple repairs uncovered the book of the law, igniting the kingdom''s most sweeping religious reform. He centralized worship in Jerusalem, renewed the covenant, and kept a Passover unmatched since the judges; scholars link his lawbook to Deuteronomy.', 'Ussher: reigned 641-610 BC (31 years, 2 Kgs 22:1). Age 8 at accession: born 649 BC, when Amon was about 16; the text''s figures also make Josiah about 14 at the birth of Jehoiakim (25 in 610, 2 Kgs 23:36). Killed at Megiddo by Pharaoh Necho (2 Kgs 23:29). Thiele and modern scholarship: 640-609 BC.'),
+(32, 'Ahab', NULL, -945, -897, 1, 0, 'traditional', 'king', 'moderate', NULL, 100, NULL, 'Wicked king of Israel; husband of Jezebel.', 'Ussher: reigned 918-897 BC (22 years counted inclusively, 1 Kgs 16:29), from Asa''s 38th year; killed at Ramoth-gilead (1 Kgs 22:34-37). Thiele: 874-853 BC; Shalmaneser III''s Kurkh Monolith names him at Qarqar in 853 BC. Birth estimated.'),
+(48, 'Naaman', NULL, -930, -870, 1, 1, 'possible', 'warrior', 'moderate', NULL, NULL, NULL, 'Syrian army commander healed of leprosy by Elisha.', 'Healed during the reign of Jehoram of Israel, c. 890 BC on Ussher''s chain (2 Kgs 5-6). Birth estimated; death unrecorded, estimate only.'),
+(86, 'Asa', NULL, -975, -914, 1, 0, 'traditional', 'king', 'moderate', 'Judah', 270, NULL, 'Good king of Judah who removed idols and sought the Lord.', 'Ussher: reigned 955-914 BC (41 years, 1 Kgs 15:9-10), from the 20th year of Jeroboam. Birth estimated: his son Jehoshaphat was 35 when Asa died (1 Kgs 22:42) and Asa was diseased in his feet in his old age (1 Kgs 15:23). Thiele: 911-870 BC. 1 Kings 15:9-24; 2 Chronicles 14-16.'),
+(87, 'Jehoshaphat', NULL, -949, -889, 0, 0, 'traditional', 'king', 'moderate', 'Judah', 86, NULL, 'Good king of Judah who strengthened the nation and sent teachers through the land.', 'Ussher: reigned 914-889 BC (25 years, 1 Kgs 22:42), from the 4th year of Ahab. Age 35 at accession: born 949 BC. Thiele: 872-848 BC (including a coregency).'),
+(88, 'Jehoram of Judah', 'Joram', -924, -885, 0, 0, 'traditional', 'king', 'minor', 'Judah', 87, NULL, 'Wicked king of Judah who married Ahab''s daughter and led Judah astray.', 'Ussher chain: reigned 892-885 BC (8 years, 2 Kgs 8:16-17), from the fifth year of Joram of Israel while Jehoshaphat was still living; 2 Kgs 1:17 implies an earlier association with his father. Age 32 at accession: born 924 BC; died at about 40 (2 Chr 21:20). Thiele: 848-841 BC, coregent from 853.'),
+(89, 'Uzziah', 'Azariah', -826, -758, 0, 0, 'traditional', 'king', 'moderate', 'Judah', 96, NULL, 'Good king of Judah who became proud and was struck with leprosy.', 'Ussher: reigned 810-758 BC (52 years, 2 Kgs 15:2). Age 16 at accession: born 826 BC. 2 Kgs 15:1 (27th year of Jeroboam II) fits this only if Jeroboam''s years are reckoned from a coregency with his father. Thiele: 792-740 BC (coregent from 792).'),
+(90, 'Ahaz', NULL, -762, -726, 0, 0, 'traditional', 'king', 'moderate', 'Judah', 97, NULL, 'Wicked king of Judah who practiced child sacrifice and shut the Temple doors.', 'Ussher: reigned 742-726 BC (16 years, 2 Kgs 16:1-2), from the 17th year of Pekah. Age 20 at accession: born 762 BC. Taken as written, the figures make Ahaz about 11 at the birth of Hezekiah (25 at his accession in 726, 2 Kgs 18:2); the text is kept and the difficulty is unresolved (a coregency or a copyist''s error are proposed). Thiele: 732-715 BC. Isaiah 7.'),
+(91, 'Manasseh', NULL, -710, -643, 0, 0, 'traditional', 'king', 'moderate', 'Judah', 29, NULL, 'Most wicked king of Judah who later repented in exile.', 'Ussher: reigned 698-643 BC (55 years, 2 Kgs 21:1). Age 12 at accession: born 710 BC, within the fifteen years added to Hezekiah''s life. Thiele: 697-642 BC (coregent from 697).'),
+(92, 'Jehoiakim', 'Eliakim', -635, -599, 0, 0, 'traditional', 'king', 'minor', 'Judah', 30, NULL, 'King of Judah who burned Jeremiah''s scroll and rebelled against Babylon.', 'Ussher: reigned 610-599 BC (11 years, 2 Kgs 23:36). Age 25 at accession: born 635 BC. Thiele and modern scholarship: 609-598 BC.'),
+(93, 'Zedekiah', 'Mattaniah', -620, -588, 0, 1, 'traditional', 'king', 'minor', 'Judah', 30, NULL, 'Last king of Judah; blinded and taken captive to Babylon.', 'Ussher: reigned 599-588 BC (11 years, 2 Kgs 24:18). Age 21 at accession: born 620 BC. Blinded and taken to Babylon when Jerusalem fell in 588 BC; he died in prison there at an unrecorded date (Jer 52:11), so the death year is approximate. Modern scholarship: 597-587/586 BC.'),
+(94, 'Athaliah', NULL, -925, -878, 1, 0, 'traditional', 'queen', 'moderate', NULL, 32, NULL, 'Wicked queen of Judah who usurped the throne and killed royal heirs.', 'Ussher: reigned 884-878 BC (six years, 2 Kgs 11:3), after Ahaziah''s death in 884; killed in the seventh year when Joash was crowned (2 Kgs 11:4-16). Thiele: 841-835 BC. Called daughter of Ahab (2 Kgs 8:18) and of Omri (8:26), i.e. Ahab''s daughter and Omri''s granddaughter. Birth estimated.'),
+(95, 'Joash of Judah', 'Jehoash', -885, -839, 0, 0, 'traditional', 'king', 'moderate', 'Judah', 267, NULL, 'Boy king hidden in the Temple; restored proper worship under Jehoiada''s guidance.', 'Ussher: reigned 878-839 BC (40 years counted inclusively, 2 Kgs 12:1), from the 7th year of Jehu; slain by his servants (2 Kgs 12:20-21). Age 7 at accession (2 Kgs 11:21): born 885 BC. Thiele: 835-796 BC.'),
+(96, 'Amaziah', NULL, -864, -810, 0, 0, 'traditional', 'king', 'minor', 'Judah', 95, NULL, 'King of Judah who followed the Lord at first but later turned to idols.', 'Ussher: reigned 839-810 BC (29 years, 2 Kgs 14:2), from the second year of Jehoash of Israel; he outlived Jehoash by 15 years (14:17) and Jeroboam II began in his 15th year (14:23). Age 25 at accession: born 864 BC. Thiele: 796-767 BC.'),
+(97, 'Jotham', NULL, -783, -742, 0, 0, 'traditional', 'king', 'minor', 'Judah', 89, NULL, 'Good king of Judah who built the upper gate of the Temple.', 'Ussher: reigned 758-742 BC (16 years, 2 Kgs 15:33), from the second year of Pekah. Age 25 at accession: born 783 BC. Thiele: 750-732 BC (coregent with Uzziah from 750).'),
+(100, 'Omri', NULL, -970, -918, 1, 0, 'traditional', 'king', 'moderate', NULL, NULL, NULL, 'King of Israel who founded Samaria; politically powerful but godless.', 'Ussher: reigned 929-918 BC (12 years, 1 Kgs 16:23), at first contested by Tibni; his sole rule began in Asa''s 31st year. Named on the Moabite Stone. Thiele: 885-874 BC. Birth estimated.'),
+(101, 'Ahaziah of Israel', NULL, -922, -896, 1, 0, 'traditional', 'king', 'minor', NULL, 32, 107, 'Son of Ahab; wicked king who sought Baal-zebub instead of God.', 'Ussher: reigned 897-896 BC (2 years, 1 Kgs 22:51), from Jehoshaphat''s 17th year. Thiele: 853-852 BC. Birth estimated.'),
+(102, 'Jehoram of Israel', 'Joram of Israel', -920, -884, 1, 0, 'traditional', 'king', 'minor', NULL, 32, 107, 'Son of Ahab; last king of the Omride dynasty; killed by Jehu.', 'Ussher: reigned 896-884 BC (12 years, 2 Kgs 3:1), from Jehoshaphat''s 18th year; killed by Jehu (2 Kgs 9:24). Younger brother of Ahaziah, who had no son (2 Kgs 1:17). Thiele: 852-841 BC. Birth estimated.'),
+(103, 'Jehu', NULL, -920, -856, 1, 0, 'traditional', 'king', 'moderate', NULL, NULL, NULL, 'Anointed by Elisha''s servant; destroyed the house of Ahab and Baal worship.', 'Ussher: reigned 884-856 BC (28 years, 2 Kgs 10:36). Thiele: 841-814 BC; Shalmaneser III''s Black Obelisk shows him paying tribute in 841 BC. Birth estimated.'),
+(104, 'Jeroboam II', NULL, -856, -784, 1, 0, 'traditional', 'king', 'moderate', 'Ephraim', 441, NULL, 'Powerful king of Israel who expanded borders but tolerated idolatry.', 'Ussher: reigned 825-784 BC (41 years, 2 Kgs 14:23), from Amaziah''s 15th year. Jonah, Amos and Hosea were active in his reign (2 Kgs 14:25; Amos 1:1; Hos 1:1). Thiele: 793-753 BC (coregent from 793). Birth estimated.'),
+(105, 'Hoshea', 'Hosea (king)', -765, -721, 1, 1, 'traditional', 'king', 'minor', NULL, NULL, NULL, 'Last king of Israel; kingdom fell to Assyria during his reign.', 'Ussher: reigned 730-721 BC (9 years, 2 Kgs 17:1), from the 12th year of Ahaz; Samaria fell in his ninth year (2 Kgs 18:10), AM 3283. Imprisoned by the king of Assyria (17:4); his death is unrecorded, so the death year is approximate. Thiele: 732-723 BC. Birth estimated.'),
+(106, 'Zimri', NULL, -960, -929, 1, 0, 'traditional', 'king', 'minor', NULL, NULL, NULL, 'King of Israel for only seven days; died by suicide during Omri''s siege.', 'Ussher: reigned seven days in 929 BC, the 27th year of Asa (1 Kgs 16:15-18). Thiele: 885 BC. Birth estimated.'),
+(107, 'Jezebel', NULL, -943, -884, 1, 0, 'traditional', 'queen', 'moderate', NULL, NULL, NULL, 'Phoenician wife of Ahab; promoted Baal worship and persecuted prophets.', 'Her marriage to Ahab is reported at his accession in 918 BC (1 Kgs 16:31) and may have been earlier. Killed by Jehu in 884 BC (2 Kgs 9:30-37). Birth estimated.'),
+(108, 'Hosea', 'Hosea (prophet)', -805, -720, 1, 1, 'possible', 'prophet', 'moderate', NULL, NULL, NULL, 'Prophet who married Gomer to illustrate God''s love for unfaithful Israel.', 'Prophesied in the days of Uzziah, Jotham, Ahaz and Hezekiah of Judah and of Jeroboam II of Israel (Hos 1:1): on Ussher''s chain from before 784 BC into Hezekiah''s reign (from 726 BC). Birth and death estimated.'),
+(109, 'Joel', NULL, -865, -796, 1, 1, 'possible', 'prophet', 'minor', NULL, NULL, NULL, 'Prophet who described a locust plague and the Day of the Lord.', 'An early traditional dating places his ministry c. 835 BC, in the reign of Joash of Judah; the book names no king and modern dates range from the 9th to the 4th century BC. Birth and death estimated.'),
+(110, 'Amos', NULL, -820, -740, 1, 1, 'possible', 'prophet', 'moderate', NULL, NULL, NULL, 'Shepherd-prophet from Tekoa who denounced social injustice in Israel.', 'Prophesied in the days of Uzziah (810-758) and Jeroboam II (825-784), two years before the earthquake (Amos 1:1): between 810 and 784 BC on Ussher''s chain, c. 760 BC in modern reckoning. Birth and death estimated (death c. 740 BC).'),
+(111, 'Obadiah', NULL, -620, -550, 1, 1, 'possible', 'prophet', 'minor', NULL, NULL, NULL, 'Prophet who pronounced judgment on Edom for betraying Judah.', 'Usually dated soon after the fall of Jerusalem (Obad 11-14), 588 BC on Ussher''s chain (587/586 in modern reckoning); some date the book to Edom''s revolt under Jehoram of Judah (2 Kgs 8:20-22). Birth and death estimated.'),
+(112, 'Jonah', NULL, -830, -750, 1, 1, 'possible', 'prophet', 'moderate', NULL, NULL, NULL, 'Prophet sent to Nineveh; swallowed by a great fish after fleeing.', 'Foretold the restoration of Israel''s borders achieved by Jeroboam II (2 Kgs 14:25), who reigned 825-784 BC on Ussher''s chain; the mission to Nineveh is undated. Birth and death estimated (death c. 750 BC).'),
+(113, 'Micah', NULL, -775, -700, 1, 1, 'possible', 'prophet', 'moderate', NULL, NULL, NULL, 'Prophet who foretold Bethlehem as the Messiah''s birthplace.', 'Prophesied in the days of Jotham, Ahaz and Hezekiah (Mic 1:1; Jer 26:18), 758-698 BC on Ussher''s chain. Micah 1:1; 5:2. Birth and death estimated.'),
+(114, 'Nahum', NULL, -690, -615, 1, 1, 'possible', 'prophet', 'minor', NULL, NULL, NULL, 'Prophet who foretold the fall of Nineveh.', 'Prophesied after the fall of Thebes (No-amon, Nah 3:8; 663 BC) and before the fall of Nineveh (612 BC); dated here c. 660 BC. Birth and death estimated.'),
+(115, 'Habakkuk', NULL, -650, -580, 1, 1, 'possible', 'prophet', 'minor', NULL, NULL, NULL, 'Prophet who questioned God about evil and received answers about faith.', 'The book foresees the rise of the Chaldeans (Hab 1:6) and is usually dated c. 610-600 BC, late in Josiah''s reign or under Jehoiakim; it names no king. Contemporary of Jeremiah. Birth and death estimated.'),
+(116, 'Zephaniah', NULL, -660, -600, 1, 1, 'possible', 'prophet', 'minor', 'Judah', NULL, NULL, 'Prophet during Josiah''s reign who warned of the Day of the Lord.', 'Prophesied in the days of Josiah (Zeph 1:1), 641-610 BC on Ussher''s chain, probably before the reform of 623 BC. Birth and death estimated.'),
+(209, 'Widow of Zarephath', NULL, -935, -870, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Poor widow who fed Elijah during the famine; her son was raised from death.', '1 Kgs 17:8-24; Luke 4:25-26. Cared for Elijah during Ahab''s reign c. 910 BC per Ussher. Son raised from death. Est. death c. 870 BC.'),
+(210, 'Gehazi', NULL, -910, -840, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Servant of Elisha who was struck with leprosy for greed after Naaman''s healing.', '2 Kgs 4:12-37; 5:20-27; 8:4-5. Struck with leprosy for greed during Elisha''s ministry (c. 896-825 BC per Ussher). Still alive when telling the king of Israel, probably Jehoram (896-884 BC), about Elisha (2 Kgs 8:4-5). Birth and death estimated (death c. 840 BC).'),
+(211, 'Shunammite Woman', NULL, -915, -840, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Wealthy woman who provided for Elisha; her son was raised from death by Elisha.', '2 Kgs 4:8-37; 8:1-6. Son raised by Elisha early in his ministry (from c. 896 BC per Ussher). Returned from Philistia after a seven-year absence and appealed to the king, probably Jehoram (896-884 BC). Birth and death estimated (death c. 840 BC).'),
+(212, 'Hazael', NULL, -920, -840, 1, 1, 'possible', 'ruler', 'minor', NULL, NULL, NULL, 'King of Aram (Syria) whose accession Elisha foretold in Damascus; he smothered Ben-hadad and reigned in his place, and oppressed Israel through the reigns of Jehu and Jehoahaz.', 'Ussher: became king c. 885 BC, late in the reign of Joram of Israel (2 Kgs 8:7-15, 28-29). He oppressed Israel under Jehu and Jehoahaz (856-840 BC; 2 Kgs 10:32; 13:3, 22) and died c. 840 BC (13:24). Inscriptions of Shalmaneser III name him king of Damascus by 841 BC; modern dates c. 842-800 BC. Birth and death estimated.'),
+(213, 'Sennacherib', NULL, -745, -681, 1, 0, 'certain', 'ruler', 'moderate', NULL, NULL, NULL, 'Assyrian king who besieged Jerusalem under Hezekiah; his army destroyed by the angel of the LORD.', '2 Kgs 18:13-19:37; Isa 36-37. Reigned 705-681 BC. His annals (Sennacherib''s Prism) date the campaign against Hezekiah to 701 BC; Ussher''s chain places it in Hezekiah''s 14th year, 713 BC. Assassinated by his sons in 681 BC (2 Kgs 19:37). Birth estimated.'),
+(214, 'Nebuchadnezzar', 'Nebuchadrezzar', -634, -562, 1, 0, 'certain', 'ruler', 'major', NULL, NULL, NULL, 'The Babylonian king who besieged Jerusalem, destroyed Solomon''s temple, and carried Judah into exile, yet appears in Daniel as a ruler humbled to confess the Most High. The Babylonian Chronicle preserves his own court''s terse record of the first capture of the city.', '2 Kgs 24-25; Dan 1-4. Reigned 605-562 BC, dated by the Babylonian Chronicle. Ussher, placing Jerusalem''s fall (his 19th year, 2 Kgs 25:8) in 588 BC, starts his reign about two years earlier. Birth estimated (c. 634-630 BC).'),
+(216, 'Cyrus', 'Cyrus the Great', -600, -530, 1, 0, 'certain', 'ruler', 'major', NULL, NULL, NULL, 'Founder of the Persian Empire who took Babylon and permitted Judah''s exiles to return and rebuild the temple. Isaiah strikingly names this Gentile king the Lord''s anointed, and the Cyrus Cylinder documents his wider policy of restoring displaced peoples and their sanctuaries.', 'Isa 44:28; 45:1; 2 Chr 36:22-23; Ezra 1:1-4. Took Babylon in October 539 BC and died in 530 BC. Ussher dates his decree (Ezra 1:1) to 536 BC, counting his first year after Darius the Mede; modern scholarship gives 538 BC. Birth estimated.'),
+(217, 'Darius the Mede', 'Darius,Darius the Median', -601, NULL, 1, 1, 'possible', 'ruler', 'moderate', NULL, NULL, NULL, 'Ruler called Darius the Median who received the kingdom of Babylon at about 62 after Belshazzar''s death (Dan 5:31). Pressed by his officials, he had Daniel thrown to the lions and then honored Daniel''s God when he was delivered (Dan 6). He is not named outside Daniel and his identity is debated.', 'Dan 5:31; 6:1-28; 9:1; 11:1. Took the kingdom at about 62 when Babylon fell in 539 BC (Ussher 538), so born c. 601 BC; death unrecorded. Ussher gives him a reign of 538-536 BC before Cyrus. Variously identified with Gubaru/Ugbaru, Cyaxares II, or Cyrus himself; distinct from Darius I (522-486 BC).'),
+(218, 'Shadrach', 'Hananiah', -620, -550, 1, 1, 'possible', 'sage', 'minor', 'Judah', NULL, NULL, 'One of Daniel''s three companions who survived the fiery furnace.', 'Dan 1:6-7; 3:1-30. Deported with Daniel c. 606 BC on Ussher''s reckoning. Birth and death estimated.'),
+(219, 'Meshach', 'Mishael', -620, -550, 1, 1, 'possible', 'sage', 'minor', 'Judah', NULL, NULL, 'One of Daniel''s three companions who survived the fiery furnace.', 'Dan 1:6-7; 3:1-30. Deported with Daniel c. 606 BC on Ussher''s reckoning. Birth and death estimated.'),
+(220, 'Abednego', 'Azariah', -620, -550, 1, 1, 'possible', 'sage', 'minor', 'Judah', NULL, NULL, 'One of Daniel''s three companions who survived the fiery furnace.', 'Dan 1:6-7; 3:1-30. Deported with Daniel c. 606 BC on Ussher''s reckoning. Birth and death estimated.'),
+(222, 'Huldah', NULL, -660, -600, 1, 1, 'possible', 'prophet', 'minor', NULL, NULL, NULL, 'Prophetess in Jerusalem consulted by King Josiah about the Book of the Law found in the Temple.', '2 Kgs 22:14-20; 2 Chr 34:22-28. Consulted in the 18th year of Josiah, 623 BC on Ussher''s chain. Birth and death estimated.'),
+(223, 'Hilkiah', NULL, -670, -610, 1, 1, 'possible', 'priest', 'minor', 'Levi', NULL, NULL, 'High priest who found the Book of the Law in the Temple during Josiah''s reforms.', '2 Kgs 22:8-14; 2 Chr 34:14-21. Found the book of the law in the 18th year of Josiah (2 Kgs 22:3), 623 BC on Ussher''s chain. Birth and death estimated.'),
+(267, 'Ahaziah of Judah', 'Jehoahaz', -907, -884, 0, 0, 'traditional', 'king', 'minor', 'Judah', 88, 94, 'Son of Jehoram and Athaliah; king of Judah for one year. Killed by Jehu.', 'Ussher: reigned 885-884 BC (1 year, 2 Kgs 8:25-26), from the 12th year of Joram of Israel. Age 22 at accession: born 907 BC; 2 Chr 22:2 reads 42, which would make him older than his father and is usually taken as a copyist''s error. Killed by Jehu (2 Kgs 9:27-28). Thiele: 841 BC.'),
+(268, 'Amon', NULL, -665, -641, 0, 0, 'traditional', 'king', 'minor', 'Judah', 91, NULL, 'Son of Manasseh; evil king of Judah for 2 years. Assassinated by his servants.', 'Ussher: reigned 643-641 BC (2 years, 2 Kgs 21:19). Age 22 at accession: born 665 BC. Killed by his servants (21:23). Thiele: 642-640 BC.'),
+(269, 'Jehoiachin', 'Jeconiah,Coniah', -617, -560, 0, 1, 'traditional', 'king', 'minor', 'Judah', 92, NULL, 'Son of Jehoiakim; king of Judah for 3 months. Deported to Babylon; later released by Evil-Merodach. In the lineage of Jesus.', '2 Kgs 24:8-16; 25:27-30; Jer 22:24-30; Matt 1:11-12. Ussher: reigned three months in 599 BC, then deported; released by Evil-merodach in the 37th year of his captivity (2 Kgs 25:27), 562 BC. Age 18 at accession (2 Kgs 24:8): born 617 BC; 2 Chr 36:9 reads 8. The Babylonian Chronicle dates his surrender to March 597 BC. Died after 562 at an unrecorded date (estimated).'),
+(271, 'Shealtiel', 'Salathiel', -595, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 269, NULL, 'Son of Jehoiachin (Jeconiah) in Matthew 1:12 and 1 Chronicles 3:17, and father of Zerubbabel in Matthew, Luke and Ezra 3:2 (1 Chronicles 3:19 lists Pedaiah as Zerubbabel''s father). Luke 3:27 calls him the son of Neri, so the genealogies differ here. Two classic explanations are offered. One holds that Shealtiel was Jehoiachin''s son by birth and Neri''s heir by levirate or adoptive succession, Jehoiachin being recorded as childless in Jer 22:30. The other holds that Luke follows Mary''s line, in which Neri is her ancestor. This table follows Matthew for his father and shows Neri as a parent relationship. He lived in the exile in Babylon.', 'Exilic period. Born in Babylon after Jeconiah''s deportation, 599 BC on Ussher''s chain (597 BC by the Babylonian Chronicle; 1 Chr 3:17). Birth estimated.'),
+(300, 'Neri', NULL, -620, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 299, NULL, 'Named in Luke 3:27 as the son of Melchi and father of Shealtiel, the point where Luke''s line through Nathan touches the royal line of Matthew. Matthew 1:12 and 1 Chronicles 3:17 make Shealtiel a son of Jehoiachin (Jeconiah), so the lists disagree. Two classic explanations are offered. One treats it as a levirate or adoptive link, Shealtiel becoming heir to Neri''s line when Jehoiachin was recorded as childless (Jer 22:30). The other holds that Luke traces Mary''s ancestry, in which Neri is her forebear and the name Shealtiel belongs to a separate line or a shared name. This table keeps Matthew''s father for Shealtiel and shows Neri as a parent relationship.', 'Known only from Luke''s genealogy. Luke identifies Shealtiel as son of Neri rather than Jeconiah (Matt 1:12).'),
+(440, 'Jehoahaz of Israel', NULL, -895, -840, 1, 0, 'traditional', 'king', 'minor', NULL, 103, NULL, 'King of Israel, son of Jehu, who reigned seventeen years. Hazael of Aram and his son Ben-hadad oppressed Israel throughout his reign until he besought the Lord, who gave Israel a deliverer (2 Kgs 13:1-9).', 'Ussher: reigned 856-840 BC (17 years counted inclusively, 2 Kgs 13:1), from the 23rd year of Joash of Judah. Thiele: 814-798 BC. Birth estimated. Not Jehoahaz (Shallum) of Judah.'),
+(441, 'Jehoash of Israel', 'Joash,Joash of Israel', -876, -825, 1, 0, 'traditional', 'king', 'minor', NULL, 440, NULL, 'King of Israel, son of Jehoahaz. He wept over the dying Elisha, struck the ground only three times with the arrows, and so defeated Ben-hadad three times (2 Kgs 13:14-25). He also defeated Amaziah of Judah at Beth-shemesh and broke down part of Jerusalem''s wall (2 Kgs 14:8-14).', 'Ussher chain: reigned 840-825 BC (16 years counted inclusively, 2 Kgs 13:10); the synchronism with the 37th year of Joash of Judah implies a short overlap with his father. Thiele: 798-782 BC. Birth estimated. Not Joash (Jehoash) of Judah.'),
+(442, 'Elah', NULL, -955, -929, 1, 0, 'traditional', 'king', 'minor', NULL, 99, NULL, 'King of Israel, son of Baasha, who reigned two years. While he was drinking himself drunk in his steward''s house at Tirzah, Zimri, captain of half his chariots, killed him and destroyed the house of Baasha, as the prophet Jehu son of Hanani had foretold (1 Kgs 16:1-14).', 'Ussher: reigned 930-929 BC (2 years counted inclusively, 1 Kgs 16:8), from the 26th year of Asa; killed in Asa''s 27th year (16:10). Thiele: 886-885 BC. Birth estimated.'),
+(443, 'Zechariah of Israel', 'Zachariah', -820, -772, 1, 0, 'traditional', 'king', 'minor', NULL, 104, NULL, 'King of Israel, son of Jeroboam II and the last of Jehu''s dynasty, who reigned six months before Shallum son of Jabesh killed him before the people. His fall fulfilled the word that Jehu''s sons would sit on the throne to the fourth generation (2 Kgs 15:8-12; 10:30).', 'Ussher: reigned six months in 773-772 BC, from the 38th year of Azariah (2 Kgs 15:8), after an interregnum following Jeroboam II''s death. Thiele: 753 BC. Birth estimated. Not the prophet Zechariah.'),
+(444, 'Shallum of Israel', 'Shallum son of Jabesh', -810, -772, 1, 0, 'traditional', 'king', 'minor', NULL, NULL, NULL, 'Usurper who killed Zechariah son of Jeroboam II and reigned over Israel a full month in Samaria, until Menahem son of Gadi came up from Tirzah and killed him (2 Kgs 15:10-15).', 'Ussher: one month in 772 BC, in the 39th year of Uzziah (2 Kgs 15:13). Thiele: 752 BC. Birth estimated. Not Shallum (Jehoahaz) of Judah.'),
+(445, 'Menahem', NULL, -810, -761, 1, 0, 'traditional', 'king', 'minor', NULL, NULL, NULL, 'King of Israel for ten years who seized the throne by killing Shallum and brutally sacked Tiphsah (2 Kgs 15:14-16). He paid Pul king of Assyria a thousand talents of silver, raised from Israel''s wealthy men, to secure his kingdom (2 Kgs 15:19-20).', 'Ussher: reigned 772-761 BC (ten years from the 39th year of Azariah, 2 Kgs 15:17; Pekahiah succeeded in Azariah''s 50th, 15:23). Thiele: 752-742 BC; Assyrian records list Menahem of Samaria among Tiglath-pileser III''s tributaries c. 738 BC. Birth estimated.'),
+(446, 'Pekahiah', NULL, -785, -759, 1, 0, 'traditional', 'king', 'minor', NULL, 445, NULL, 'King of Israel, son of Menahem, who reigned two years before Pekah son of Remaliah, one of his captains, killed him in the palace at Samaria (2 Kgs 15:23-26).', 'Ussher: reigned 761-759 BC, from the 50th year of Azariah (2 Kgs 15:23). Thiele: 742-740 BC. Birth estimated.'),
+(447, 'Pekah', 'Pekah son of Remaliah', -780, -739, 1, 0, 'traditional', 'king', 'minor', NULL, NULL, NULL, 'King of Israel, son of Remaliah, who killed Pekahiah and allied with Rezin of Aram against Ahaz of Judah (2 Kgs 16:5; Isa 7:1-9). In his days Tiglath-pileser took Galilee and Gilead and carried their people captive, and Hoshea son of Elah conspired against him and killed him (2 Kgs 15:29-30).', 'Ussher: reigned 759-739 BC (20 years from the 52nd year of Azariah, 2 Kgs 15:27); Hoshea''s reign is reckoned from the 12th year of Ahaz (730 BC, 2 Kgs 17:1), leaving an interregnum. Thiele: 752-732 BC (partly overlapping); Assyrian records place his fall c. 732 BC. Birth estimated.'),
+(448, 'Jehoahaz of Judah', 'Shallum', -633, NULL, 0, 1, 'traditional', 'king', 'minor', 'Judah', 30, NULL, 'Son of Josiah, made king by the people of the land at 23 after his father fell at Megiddo. He reigned three months before Pharaoh Necho bound him at Riblah and took him to Egypt, where he died (2 Kgs 23:30-34; Jer 22:10-12).', 'Ussher: reigned three months in 610 BC (2 Kgs 23:31); age 23 at accession, so born 633 BC. Modern scholarship: 609 BC. Called Shallum in Jer 22:11 and 1 Chr 3:15. Died in Egypt at an unrecorded date. Not Jehoahaz of Israel; Ahaziah of Judah is also called Jehoahaz (2 Chr 21:17).'),
+(449, 'Tiglath-Pileser III', 'Pul,Tiglath-pileser,Tilgath-pilneser', -780, -727, 1, 0, 'certain', 'ruler', 'minor', NULL, NULL, NULL, 'Assyrian king who took tribute from Menahem (2 Kgs 15:19), seized Galilee and Gilead from Pekah (2 Kgs 15:29), and answered Ahaz''s plea by capturing Damascus (2 Kgs 16:7-9). He began the Assyrian deportations of Israel (2 Kgs 15:29; 1 Chr 5:26).', 'Reigned 745-727 BC, fixed by the Assyrian eponym lists. Called Pul in 2 Kgs 15:19 and 1 Chr 5:26, the name he used as king of Babylon. Ussher''s chain puts Menahem''s tribute before 745 BC, and older chronologers treated Pul as a separate, earlier king. Birth unknown (estimate).');
 
 -- Return & Restoration
-('Edict of Cyrus',         -538, NULL, 0, 1, 'certain',     'salvation', 'major', 'Cyrus of Persia, having taken Babylon, decrees that the exiled Judeans may return to Jerusalem to rebuild the house of the Lord, restoring the plundered temple vessels. The Cyrus Cylinder reflects his wider policy of restoring displaced peoples and shrines, and Isaiah strikingly names him God''s anointed.', 'Confirmed by the Cyrus Cylinder.', 370),
-('Second Temple Built',    -516, NULL, 0, 1, 'certain',     'other',     'major', 'Led by Zerubbabel and Jeshua and stirred by the prophets Haggai and Zechariah, the returned exiles complete a new temple in Jerusalem despite opposition and slender means. Elders wept remembering Solomon''s house, yet this second temple would anchor Jewish worship for centuries until the Roman era.', NULL, 380),
-('Ezra''s Return',         -458, NULL, 0, 1, 'probable',    'other',     'minor', 'Ezra leads a second return and reforms worship.', NULL, 390),
-('Nehemiah Rebuilds Walls',-445, NULL, 0, 1, 'probable',    'other',     'major', 'Nehemiah, cupbearer to the Persian king, returns to Jerusalem and rallies the people to rebuild the ruined walls in fifty-two days despite armed opposition from Sanballat and Tobiah. The Elephantine papyri independently name Sanballat as governor of Samaria, anchoring the memoir in Persian-era history.', NULL, 400),
-('Esther Saves Her People',-473, NULL, 1, 1, 'possible',    'salvation', 'major', 'In the Persian court at Susa, the Jewish queen Esther risks her life to expose Haman''s plot to annihilate her people, and the king''s counter-decree turns doom into deliverance. Commemorated each year at Purim, the story displays providence at work even though God is never named in the book.', 'During reign of Xerxes I (Ahasuerus).', 410),
+INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
+(33, 'Ezra', NULL, -500, -440, 1, 1, 'possible', 'priest', 'major', 'Levi', NULL, NULL, 'A priest and scribe skilled in the law of Moses who led a company of exiles from Babylon back to Jerusalem under Persian sanction. By publicly reading and teaching the Torah, he re-centered the restored community on Scripture, a legacy foundational to Jewish identity ever after.', 'Came to Jerusalem in the seventh year of Artaxerxes I (Ezra 7:7-8), 458 BC (457 on autumn-to-autumn reckoning), and read the law in Nehemiah''s time (Neh 8; 444 BC). Called son of Seraiah (Ezra 7:1), the high priest killed in 588 BC, meaning descendant. Birth and death estimated.'),
+(34, 'Nehemiah', NULL, -470, -400, 1, 1, 'possible', 'ruler', 'major', NULL, NULL, NULL, 'Cupbearer to the Persian king Artaxerxes who returned as governor of Judah and rebuilt Jerusalem''s shattered walls in fifty-two days despite fierce opposition. His memoirs join practical leadership to constant prayer, and with Ezra he anchored the restored community in covenant obedience.', 'Came to Jerusalem in the 20th year of Artaxerxes I (Neh 2:1), 445/444 BC; returned to the king in his 32nd year, 433/432 BC, and later came back (Neh 13:6-7). Birth and death estimated.'),
+(36, 'Esther', 'Hadassah', -500, -420, 1, 1, 'possible', 'queen', 'major', 'Benjamin', NULL, NULL, 'A Jewish orphan named Hadassah who became queen of Persia in the citadel of Susa and risked her life to expose Haman''s plot to annihilate her people. Her courage is celebrated yearly at Purim; the Ahasuerus of her story is commonly identified with Xerxes I of Persian history.', 'Became queen in the tenth month of the seventh year of Ahasuerus (Esth 2:16), 479/478 BC if he is Xerxes I; Haman''s plot falls in his twelfth year (3:7), 474/473 BC. Birth and death estimated.'),
+(119, 'Malachi', NULL, -490, -420, 1, 1, 'possible', 'prophet', 'moderate', NULL, NULL, NULL, 'Last of the twelve Minor Prophets, who called the restored community back to faithful worship and marriage and promised that Elijah would come before the day of the Lord (Mal 4:5).', 'Usually dated to the mid-5th century BC, c. 460-430, near the time of Ezra and Nehemiah (compare Mal 2:11 with Neh 13:23-29). Birth and death estimated.'),
+(120, 'Mordecai', NULL, -520, -440, 1, 1, 'possible', 'sage', 'moderate', 'Benjamin', NULL, NULL, 'Esther''s cousin who raised her; uncovered a plot against the king.', 'Esther 2-10. Cousin and guardian of Esther (Esth 2:7), promoted after Haman''s fall in the twelfth year of Ahasuerus. Esth 2:6 (carried away with Jeconiah) is best read of his great-grandfather Kish, since Mordecai himself would otherwise be over 120. Birth and death estimated.'),
+(224, 'Sanballat', NULL, -500, -430, 1, 1, 'possible', 'ruler', 'moderate', NULL, NULL, NULL, 'Governor of Samaria who opposed Nehemiah''s rebuilding of Jerusalem''s walls.', 'Neh 2:10, 19; 4:1-8; 6:1-14. Confirmed by Elephantine Papyri.'),
+(225, 'Tobiah', NULL, -500, -430, 1, 1, 'possible', 'ruler', 'minor', NULL, NULL, NULL, 'Ammonite official who opposed Nehemiah''s rebuilding and conspired against him.', 'Neh 2:10, 19; 4:3, 7; 6:1-14; 13:4-9.'),
+(226, 'Haman', NULL, -510, -473, 1, 1, 'possible', 'ruler', 'moderate', NULL, NULL, NULL, 'Persian official who plotted the genocide of the Jewish people; hanged on his own gallows.', 'Esth 3-7. Executed in the twelfth year of Ahasuerus (Esth 3:7; 7:10), 474/473 BC if he is Xerxes I. Birth estimated.'),
+(227, 'Vashti', NULL, -520, -470, 1, 1, 'possible', 'queen', 'moderate', NULL, NULL, NULL, 'Queen of Persia before Esther; deposed for refusing to appear before the king.', 'Esth 1:1-22. Deposed c. 483 BC. Talmud (Megillah 12b) identifies her as Nebuchadnezzar''s granddaughter. Death unrecorded; est. c. 470 BC.'),
+(228, 'Xerxes', 'Ahasuerus', -519, -465, 1, 0, 'certain', 'ruler', 'moderate', NULL, NULL, NULL, 'Persian king who married Esther; issued decree saving the Jews from Haman''s plot.', 'Esth 1-10. Reigned 486-465 BC. Most scholars identify him with the Ahasuerus of Esther; some older chronologers, including Ussher, identified Ahasuerus with another Persian king. Birth estimated.'),
+(272, 'Abiud', NULL, -507, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Judah', 35, NULL, 'Son of Zerubbabel, ancestor of Jesus in Matthew 1:13. Post-exilic figure.', 'Post-exilic period. Known only from Matthew''s genealogy. Birth year is an inferred placeholder, evenly spaced between Zerubbabel and Joseph (Matt 1:13-16); Matthew''s list probably omits generations, as it does in 1:8 and 1:11.'),
+(273, 'Eliakim, son of Abiud', 'Eliakim', -453, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Judah', 272, NULL, 'Son of Abiud, ancestor of Jesus in Matthew 1:13. Post-exilic figure.', 'Known only from Matthew''s genealogy. Not the Eliakim of 2 Kings 18. Birth year is an inferred placeholder, evenly spaced between Zerubbabel and Joseph (Matt 1:13-16); Matthew''s list probably omits generations, as it does in 1:8 and 1:11.'),
+(301, 'Rhesa', NULL, -500, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 35, NULL, 'Son of Zerubbabel, ancestor of Jesus in Luke 3:27.', 'Known only from Luke''s genealogy. Post-exilic period.'),
+(451, 'Artaxerxes I', 'Artaxerxes,Artaxerxes Longimanus', -485, -424, 1, 0, 'certain', 'ruler', 'minor', NULL, NULL, NULL, 'Persian king, son of Xerxes, who sent Ezra to Jerusalem in his seventh year (Ezra 7) and Nehemiah, his cupbearer, in his twentieth (Neh 2:1-8). He also ordered a halt to the rebuilding of Jerusalem''s walls after complaints from its neighbours (Ezra 4:7-23).', 'Reigned 465-424 BC by Persian and Greek records. Birth estimated. Some scholars identify Ezra''s king as Artaxerxes II (404-358 BC).');
+
+-- Exile
+INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
+(35, 'Zerubbabel', NULL, -560, -500, 1, 1, 'possible', 'ruler', 'major', 'Judah', 271, NULL, 'Led the first return from exile; rebuilt the Temple.', 'Led the return under Cyrus, 536 BC on Ussher''s chain (Ezra 2:2; 3:8), and saw the temple finished in the sixth year of Darius I, 515 BC (Ezra 6:15; Zech 4:9). Birth and death estimated.'),
+(117, 'Haggai', NULL, -560, -500, 1, 1, 'possible', 'prophet', 'minor', NULL, NULL, NULL, 'Post-exilic prophet who urged rebuilding of the Temple.', 'Prophesied in the second year of Darius I, 520 BC (Hag 1:1; 2:1-20). His age is unknown: the Lives of the Prophets says he came from Babylon as a youth, while some read Hag 2:3 as implying he had seen Solomon''s temple. Birth and death estimated.'),
+(118, 'Zechariah the prophet', 'Zechariah (prophet), Zechariah', -540, -480, 1, 1, 'possible', 'prophet', 'moderate', NULL, NULL, NULL, 'Post-exilic prophet with messianic visions; contemporary of Haggai.', 'Prophesied 520-518 BC, in the second to fourth years of Darius I (Zech 1:1; 7:1). Grandson of Iddo (Zech 1:1), a priest who returned with Zerubbabel (Neh 12:4). Birth and death estimated.'),
+(215, 'Belshazzar', NULL, -575, -539, 1, 0, 'certain', 'ruler', 'moderate', NULL, NULL, NULL, 'Last king of Babylon; saw the handwriting on the wall at his feast. Killed when Persia conquered Babylon.', 'Dan 5:30. Killed the night Babylon fell, 12 October 539 BC by the Nabonidus Chronicle; Ussher dates the fall to 538 BC. Son and coregent of Nabonidus. Birth estimated.'),
+(450, 'Darius I', 'Darius the Great,Darius Hystaspes', -550, -486, 1, 0, 'certain', 'ruler', 'minor', NULL, NULL, NULL, 'Persian king who confirmed Cyrus''s decree and had the records searched, so that work on the Second Temple resumed and was finished in his sixth year (Ezra 5-6). Haggai and Zechariah prophesied in his second year (Hag 1:1; Zech 1:1).', 'Reigned 522-486 BC, firmly dated by Persian and Babylonian records. Birth c. 550 BC (estimate). Not Darius the Mede (Dan 5:31).');
 
 -- Life of Christ
-('Birth of Jesus',          -5, NULL, 1, 1, 'probable',    'birth',     'major', 'In Bethlehem, Mary gives birth to Jesus, announced by angels to shepherds and honored by magi from the east; Matthew and Luke present him as Messiah, son of David, and Immanuel. The Gospels root his birth in Micah''s prophecy of a ruler from Bethlehem, opening the fulfillment of Israel''s long story.', 'Before Herod''s death in 4 BC; Luke 2.', 420),
-('Baptism of Jesus',        26, NULL, 1, 1, 'probable',    'other',     'major', 'Jesus is baptized by John in the Jordan River, where the Spirit descends like a dove and a voice from heaven declares him the beloved Son. The moment inaugurates his public ministry; John himself is independently attested by the historian Josephus, who records his baptizing movement and death.', 'Luke 3:1 — 15th year of Tiberius ~AD 26-29.', 430),
-('Sermon on the Mount',     28, NULL, 1, 1, 'possible',    'other',     'major', 'On a Galilean hillside, Jesus delivers his most famous teaching, opening with the Beatitudes and pressing the Law to its deepest intent on anger, love of enemies, and prayer, including the Lord''s Prayer. Matthew presents him as the authoritative teacher of a righteousness surpassing that of the scribes.', NULL, 440),
-('Crucifixion',             33, NULL, 1, 1, 'probable',    'salvation', 'major', 'Condemned under Pontius Pilate, Jesus is crucified at Golgotha outside Jerusalem at Passover, and the Gospels present his death as an atoning sacrifice foretold by the prophets. Pilate is attested by an inscription found at Caesarea, and a crucified man''s heel bone from Jerusalem confirms the Roman practice.', 'AD 30 or 33 based on Passover calculations.', 900),
-('Resurrection',            33, NULL, 1, 1, 'probable',    'miracle',   'major', 'On the third day, women find Jesus'' tomb empty and meet the risen Lord, who then appears to his disciples over forty days. Paul preserves an early creed listing eyewitnesses of the resurrection, the event Christians confess as death''s defeat and the firstfruits of the new creation.', NULL, 910),
-('Ascension',               33, NULL, 1, 1, 'probable',    'miracle',   'major', 'Forty days after the resurrection, Jesus blesses his disciples on the Mount of Olives and is taken up into heaven, commissioning them as witnesses to the ends of the earth. Angels declare he will return as he departed, framing the church''s mission between promise and hope.', NULL, 920),
+INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
+(37, 'Jesus', 'Yeshua, Jesus Christ', -5, 33, 1, 1, 'probable', 'messiah', 'major', 'Judah', 122, 38, 'The central figure of the Christian faith, proclaimed as Messiah and Son of God, whose teaching, crucifixion under Pontius Pilate, and resurrection stand at the heart of the gospel. The Pilate stone from Caesarea and the Caiaphas ossuary attest the very officials named at his trial.', 'Born before the death of Herod the Great (Matt 2:1, 19), who died in 4 BC; 5 BC is followed here, and most scholars place the birth between 6 and 4 BC. Crucifixion AD 33 is followed here, with AD 30 the main alternative.'),
+(39, 'John the Baptist', 'Yochanan', -5, 32, 1, 1, 'probable', 'prophet', 'major', 'Levi', 230, 231, 'A wilderness prophet who called Israel to repentance and baptism in the Jordan and pointed to Jesus as the coming one. Executed by Herod Antipas, he is also attested by Josephus, who reports that many Jews saw Antipas''s later military defeat as divine judgment for the killing.', 'Born about six months before Jesus (Luke 1:26, 36). Imprisoned by Herod Antipas after the first Passover of the ministry (John 3:24; Mark 1:14) and beheaded, probably at Machaerus (Josephus Ant. 18.116-119), shortly before the feeding of the 5,000 (Matt 14:12-13): late AD 31 or early 32 on this framework.'),
+(40, 'Peter', 'Simon, Cephas', -2, 67, 1, 1, 'probable', 'apostle', 'major', NULL, NULL, NULL, 'A Galilean fisherman whom Jesus called to lead the apostles, remembered for his bold confession, his denial, and his restoration. He preached at Pentecost, opened the door to Gentile believers at Cornelius''s house, and by early tradition was martyred in Rome under Nero.', 'Tradition places death ~AD 64-67 in Rome.'),
+(41, 'Paul', 'Saul of Tarsus', 5, 67, 1, 1, 'probable', 'apostle', 'major', 'Benjamin', NULL, NULL, 'A Pharisee who persecuted the church until an encounter with the risen Jesus made him the apostle to the Gentiles. His missionary journeys and letters shaped Christian theology more than any other early figure, and the Gallio inscription at Delphi helps anchor his career in history.', 'Dates correlate with Roman history (Gallio, Acts 18:12; Festus, Acts 25). His death under Nero is early church tradition (1 Clement 5; Eusebius HE 2.25), not recorded in Acts; AD 64-68 are proposed.'),
+(42, 'John the Apostle', 'John, John son of Zebedee', 6, 100, 1, 1, 'possible', 'apostle', 'major', NULL, NULL, NULL, 'A son of Zebedee and member of Jesus'' inner circle, traditionally identified as the beloved disciple behind the fourth Gospel. Linked with Ephesus and exile on Patmos, his legacy endures in the earliest known New Testament fragment, a papyrus scrap of his Gospel known as P52.', 'His death c. AD 98-100 at Ephesus is early church tradition (Irenaeus AH 2.22.5; Eusebius HE 3.23); Scripture is silent. His identification with the beloved disciple and with the author of the Gospel, the letters and Revelation is traditional and debated; John 21:20-24 does not name him.'),
+(43, 'James, son of Zebedee', 'James, James the Greater', 3, 44, 1, 0, 'probable', 'apostle', 'moderate', NULL, NULL, NULL, 'Son of Zebedee and brother of John, one of the inner three with Peter and John. Herod Agrippa I had him killed with the sword (Acts 12:2), the only one of the Twelve whose martyrdom Scripture records.', 'Killed shortly before Peter''s arrest at Passover (Acts 12:1-3); Agrippa died soon after in AD 44 (Acts 12:23; Josephus Ant. 19.343-352), so AD 44. Birth year is an estimate. The tradition of his preaching in Spain and burial at Santiago de Compostela is medieval.'),
+(44, 'Stephen', NULL, 1, 35, 1, 1, 'possible', 'disciple', 'moderate', NULL, NULL, NULL, 'First Christian martyr.', 'Born c. AD 1 (estimated). A Hellenistic Jewish believer, mature enough to be chosen as one of the Seven (Acts 6:5). First Christian martyr c. AD 35 (Acts 7:54-60).'),
+(45, 'Barnabas', NULL, 5, 61, 1, 1, 'possible', 'disciple', 'moderate', 'Levi', NULL, NULL, 'Companion of Paul on first missionary journey.', 'Joses surnamed Barnabas, a Levite of Cyprus (Acts 4:36). Birth year is an estimate. A 5th-century tradition (Acts of Barnabas) has him martyred at Salamis on Cyprus, c. AD 61; Acts is silent.'),
+(46, 'Timothy', NULL, 17, 97, 1, 1, 'possible', 'church-leader', 'moderate', NULL, NULL, NULL, 'Paul''s protégé; recipient of two epistles.', 'Born at Lystra to a Jewish mother (Eunice) and a Greek father (Acts 16:1; 2 Tim 1:5); still young when Paul wrote 1 Timothy (1 Tim 4:12). Birth c. AD 17 is an estimate. Later tradition (Acts of Timothy) has him killed at Ephesus c. AD 97.'),
+(47, 'Luke', NULL, 10, 94, 1, 1, 'possible', 'disciple', 'moderate', NULL, NULL, NULL, 'Physician; author of Luke and Acts.', 'Born c. AD 10 (estimate); from Antioch according to Eusebius (HE 3.4). Physician (Col 4:14); traditionally the author of Luke-Acts. The Anti-Marcionite Prologue says he died in Boeotia aged 84, which with the birth estimate gives c. AD 94.'),
+(123, 'Lazarus', 'Lazarus of Bethany', -5, 60, 1, 1, 'possible', 'disciple', 'moderate', NULL, NULL, NULL, 'Brother of Mary and Martha; raised from the dead by Jesus after four days.', 'John 11:1-44; 12:1-11. Birth and death years are estimates. Later traditions of his life (bishop of Kition on Cyprus, or Marseille) are legendary; Scripture is silent.'),
+(125, 'Mary Magdalene', NULL, -5, 60, 1, 1, 'possible', 'disciple', 'moderate', NULL, NULL, NULL, 'Follower of Jesus; first witness of the resurrection.', 'Luke 8:2; Mark 15:40; 16:9; John 20:1-18. Birth and death years are estimates. She is not the sister of Lazarus (that is Mary of Bethany), and the Gospels do not identify her with the sinful woman of Luke 7; that identification is a later Western tradition (Gregory the Great, AD 591). Traditions of her later life (Ephesus; Provence) are late.'),
+(127, 'Matthew', 'Levi', 2, 55, 1, 1, 'possible', 'apostle', 'moderate', NULL, NULL, NULL, 'Tax collector called by Jesus (Matt 9:9), one of the Twelve; traditionally the author of the first Gospel.', 'Matt 9:9; 10:3; called Levi son of Alphaeus in Mark 2:14 and Levi in Luke 5:27. Birth and death years are estimates; Scripture does not record his death and later traditions of it disagree.'),
+(128, 'Andrew', NULL, 5, 65, 1, 1, 'possible', 'apostle', 'moderate', NULL, NULL, NULL, 'Brother of Peter; one of the first disciples called.', 'John 1:35-42; Matt 4:18-20. Death c. AD 65 by crucifixion at Patras in Achaea is later tradition (Acts of Andrew); the X-shaped cross is a medieval detail. Scripture is silent.'),
+(129, 'Philip the Apostle', 'Philip', 5, 80, 1, 1, 'possible', 'apostle', 'minor', NULL, NULL, NULL, 'Apostle from Bethsaida who brought Nathanael to Jesus.', 'John 1:43-48; 6:5-7; 14:8-9. Death c. AD 80 at Hierapolis is tradition, and ancient writers sometimes confused him with Philip the Evangelist. Scripture is silent.'),
+(130, 'Bartholomew', 'Nathanael', 5, 70, 1, 1, 'possible', 'apostle', 'minor', NULL, NULL, NULL, 'Apostle whom Jesus described as an Israelite without guile.', 'Matt 10:3; John 1:45-51. Traditionally identified with Nathanael of Cana (John 21:2). Death c. AD 70 in Armenia is later tradition; Scripture is silent.'),
+(131, 'Thomas', 'Didymus', 5, 72, 1, 1, 'possible', 'apostle', 'moderate', NULL, NULL, NULL, 'Apostle known for his doubt and powerful confession of faith.', 'John 11:16; 14:5; 20:24-29. Death c. AD 72 at Mylapore near Chennai, India, is tradition (Acts of Thomas; the St Thomas Christians); Scripture is silent.'),
+(132, 'James, son of Alphaeus', 'James, James the Less', 5, 62, 1, 1, 'possible', 'apostle', 'minor', NULL, NULL, NULL, 'One of the twelve apostles; sometimes called James the Less.', 'Matt 10:3; Mark 3:18. Birth and death years are estimates. Later traditions of his death vary, and the year 62 may be borrowed from James the brother of Jesus. His identification with ''James the less'' (Mark 15:40) is traditional but uncertain. Scripture records nothing further.'),
+(133, 'Thaddaeus', 'Judas son of James', 5, 65, 1, 1, 'possible', 'apostle', 'minor', NULL, NULL, NULL, 'Apostle also known as Judas son of James; asked Jesus a question at the Last Supper.', 'Matt 10:3; Luke 6:16; John 14:22; Acts 1:13. Luke calls him ''Judas of James'' (KJV ''brother of James''). Not Judas Iscariot, and traditionally distinguished from Jude the brother of Jesus. Death c. AD 65 is later tradition (Armenian and Syriac); Scripture is silent.'),
+(134, 'Simon the Zealot', NULL, 5, 65, 1, 1, 'possible', 'apostle', 'minor', NULL, NULL, NULL, 'Apostle who may have been a member of the Zealot movement.', 'Matt 10:4; Luke 6:15; Acts 1:13. ''Zealot'' may describe his zeal or the Zealot movement. Death c. AD 65 is later tradition with conflicting accounts; Scripture is silent.'),
+(135, 'Judas Iscariot', NULL, 3, 33, 1, 1, 'probable', 'apostle', 'moderate', NULL, NULL, NULL, 'Apostle who betrayed Jesus for thirty pieces of silver.', 'Matthew 26:14-16, 47-50; 27:3-10; Acts 1:16-20.'),
+(136, 'Matthias', NULL, 5, 80, 1, 1, 'possible', 'apostle', 'minor', NULL, NULL, NULL, 'Chosen by lot to replace Judas Iscariot among the twelve.', 'Acts 1:21-26. Later tradition places his ministry in Judea, Cappadocia or Ethiopia; Scripture does not mention him after Acts 1. Birth and death years are estimates.'),
+(137, 'Mark', 'John Mark', 15, 68, 1, 1, 'possible', 'disciple', 'moderate', NULL, NULL, NULL, 'Companion of Paul and Barnabas (Acts 12:25; 15:37-39) and later of Peter (1 Pet 5:13); traditionally the author of the second Gospel.', 'Acts 12:12, 25; 15:37-39; Col 4:10; 2 Tim 4:11; 1 Pet 5:13. His identification with the evangelist and with the Mark of 1 Peter is traditional. Death c. AD 68 at Alexandria is later tradition (Eusebius HE 2.16 records his Alexandrian mission).'),
+(138, 'Silas', 'Silvanus', 5, 65, 1, 1, 'possible', 'disciple', 'minor', NULL, NULL, NULL, 'Prominent member of the Jerusalem church; companion of Paul on the second missionary journey.', 'Acts 15:22-40; 16-17; 1 Thessalonians 1:1.'),
+(139, 'Titus', NULL, 10, 70, 1, 1, 'possible', 'church-leader', 'minor', NULL, NULL, NULL, 'Gentile convert and co-worker of Paul; led the church in Crete.', 'Galatians 2:1-3; 2 Corinthians 7-8; Titus 1:4-5.'),
+(140, 'Priscilla', 'Prisca', 10, 68, 1, 1, 'possible', 'disciple', 'moderate', NULL, NULL, NULL, 'Wife of Aquila; together they mentored Apollos and hosted house churches.', 'Acts 18:2-3, 18-26; Romans 16:3-5.'),
+(141, 'Aquila', NULL, 10, 68, 1, 1, 'possible', 'disciple', 'minor', NULL, NULL, NULL, 'Husband of Priscilla; tentmaker who worked with Paul in Corinth.', 'Acts 18:2-3, 18-26; Romans 16:3-5.'),
+(142, 'Apollos', NULL, 10, 70, 1, 1, 'possible', 'disciple', 'moderate', NULL, NULL, NULL, 'Eloquent Alexandrian Jew who preached powerfully but was further taught by Priscilla and Aquila.', 'Acts 18:24-28; 1 Corinthians 1:12; 3:4-6.'),
+(143, 'Philemon', NULL, 10, 70, 1, 1, 'possible', 'disciple', 'minor', NULL, NULL, NULL, 'Wealthy Christian in Colossae to whom Paul wrote about the slave Onesimus.', 'Philemon 1-25.'),
+(144, 'James, brother of Jesus', 'James, James the Just', -2, 62, 1, 0, 'probable', 'church-leader', 'moderate', 'Judah', NULL, NULL, 'The Lord''s brother who came to faith after the resurrection and became the acknowledged leader of the Jerusalem church, remembered as James the Just. Paul names him a pillar, the historian Josephus records his execution, and the practical wisdom of his letter still guides believers.', 'Acts 15:13-21; Gal 1:19; 2:9; James 1:1. Josephus (Ant. 20.200) records his stoning in AD 62, between the death of Festus and the arrival of Albinus; Hegesippus (in Eusebius) gives a fuller account. Birth year is an estimate that assumes the brothers were younger sons of Mary and Joseph (the common Protestant view). The Orthodox tradition holds they were sons of Joseph by an earlier marriage (older than Jesus); the Catholic tradition, following Jerome, holds they were cousins.'),
+(234, 'Salome daughter of Herodias', NULL, 14, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, 233, 'Daughter of Herodias who danced before Herod and requested John the Baptist''s head.', 'Estimate: she was a girl when she danced before Herod Antipas, about AD 31-32 (Mark 6:22). Her name comes from Josephus (Antiquities 18.5.4); the Gospels do not name her.'),
+(237, 'Barabbas', NULL, -5, 55, 1, 1, 'possible', 'other', 'moderate', NULL, NULL, NULL, 'Criminal released by Pilate instead of Jesus at the crowd''s demand.', 'Matt 27:15-26. Released instead of Jesus in AD 33 (AD 30 on the alternative). No further record; birth and death years are estimates.'),
+(242, 'Cleopas', NULL, -5, 70, 1, 1, 'possible', 'disciple', 'minor', NULL, NULL, NULL, 'Disciple who encountered the risen Jesus on the road to Emmaus.', 'Luke 24:13-35.'),
+(244, 'Ananias of Damascus', NULL, 5, 60, 1, 1, 'possible', 'disciple', 'minor', NULL, NULL, NULL, 'Disciple in Damascus who baptized Paul after his conversion on the road to Damascus.', 'Acts 9:10-19; 22:12-16.'),
+(245, 'Cornelius', NULL, -5, 60, 1, 1, 'possible', 'disciple', 'moderate', NULL, NULL, NULL, 'Roman centurion in Caesarea; first Gentile convert. His household received the Holy Spirit.', 'Acts 10:1-48; 11:1-18.'),
+(246, 'Lydia', NULL, 10, 65, 1, 1, 'possible', 'disciple', 'moderate', NULL, NULL, NULL, 'Seller of purple cloth in Philippi; first European convert. Hosted Paul and Silas.', 'Acts 16:14-15, 40.'),
+(248, 'Agabus', NULL, 5, 65, 1, 1, 'possible', 'prophet', 'minor', NULL, NULL, NULL, 'Christian prophet who predicted a famine and later warned Paul of his arrest in Jerusalem.', 'Acts 11:27-28; 21:10-11.'),
+(249, 'Dorcas', 'Tabitha', 5, 41, 1, 1, 'possible', 'disciple', 'minor', NULL, NULL, NULL, 'Disciple in Joppa known for charitable works; raised from the dead by Peter.', 'Acts 9:36-43.'),
+(250, 'Philip the Evangelist', NULL, 5, 70, 1, 1, 'possible', 'disciple', 'minor', NULL, NULL, NULL, 'One of the Seven; evangelized Samaria and baptized the Ethiopian eunuch on the Gaza road.', 'Acts 6:5; 8:4-40; 21:8-9. Death c. AD 70 is an estimate; the Hierapolis tradition is sometimes confused with Philip the Apostle. Scripture is silent.'),
+(251, 'Ethiopian Eunuch', NULL, -5, 60, 1, 1, 'possible', 'disciple', 'minor', NULL, NULL, NULL, 'Official of the Ethiopian queen Candace; baptized by Philip after reading Isaiah.', 'Acts 8:26-39.'),
+(252, 'Onesimus', NULL, 30, 80, 1, 1, 'possible', 'disciple', 'moderate', NULL, NULL, NULL, 'Runaway slave of Philemon whom Paul sent back with a letter asking Philemon to receive him no longer as a slave but as a beloved brother (Philem 16).', 'Philem 1:10-21; Col 4:9.'),
+(253, 'Rhoda', NULL, 15, 70, 1, 1, 'possible', 'disciple', 'minor', NULL, NULL, NULL, 'Servant girl who answered the door when Peter was freed from prison; was so overjoyed she forgot to open it.', 'Acts 12:13-16.'),
+(255, 'Herod Agrippa II', NULL, 27, 100, 0, 1, 'probable', 'ruler', 'minor', NULL, 254, NULL, 'Last of the Herodian line; heard Paul''s defense at Caesarea. Said Paul almost persuaded him to be a Christian.', 'Acts 25:13-26:32. Born AD 27 or 28 (Josephus Ant. 19.354); king of Chalcis from AD 50, later of territories to the north-east; died c. AD 92-100 (Photius gives AD 100).'),
+(257, 'Festus', 'Porcius Festus', 10, 62, 1, 1, 'possible', 'ruler', 'minor', NULL, NULL, NULL, 'Roman governor who succeeded Felix; before whom Paul appealed to Caesar.', 'Acts 25:1-12; 26:24-32. Procurator c. AD 60-62 (some date his arrival to 59); died in office (Josephus Ant. 20.197, 200). Birth year is an estimate.'),
+(258, 'Ananias and Sapphira', NULL, -5, 34, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Husband and wife who lied to the Holy Spirit about the price of their property; both struck dead.', 'Acts 5:1-11.'),
+(259, 'Phoebe', NULL, 20, 70, 1, 1, 'possible', 'disciple', 'minor', NULL, NULL, NULL, 'Deaconess of the church at Cenchreae; commended by Paul as a patron and letter-carrier of Romans.', 'Rom 16:1-2.'),
+(319, 'Joses, brother of Jesus', 'Joses, Jose, Joseph', 1, NULL, 1, 1, 'possible', 'other', 'minor', 'Judah', NULL, NULL, 'Brother of Jesus mentioned in Mark 6:3 and Matthew 13:55.', 'Mark 6:3; Matthew 13:55. Birth year is an estimate that assumes the brothers were younger sons of Mary and Joseph (the common Protestant view). The Orthodox tradition holds they were sons of Joseph by an earlier marriage (older than Jesus); the Catholic tradition, following Jerome, holds they were cousins.'),
+(320, 'Simon, brother of Jesus', 'Simon', 2, NULL, 1, 1, 'possible', 'other', 'minor', 'Judah', NULL, NULL, 'Brother of Jesus mentioned in Mark 6:3 and Matthew 13:55. Not to be confused with Simon Peter or Simon the Zealot.', 'Mark 6:3; Matthew 13:55. Birth year is an estimate that assumes the brothers were younger sons of Mary and Joseph (the common Protestant view). The Orthodox tradition holds they were sons of Joseph by an earlier marriage (older than Jesus); the Catholic tradition, following Jerome, holds they were cousins.'),
+(321, 'Jude, brother of Jesus', 'Judas, Juda, Jude', 3, NULL, 1, 1, 'possible', 'other', 'minor', 'Judah', NULL, NULL, 'Brother of Jesus mentioned in Mark 6:3 and Matthew 13:55. Traditionally identified as the author of the Epistle of Jude.', 'Mark 6:3 (Juda); Matthew 13:55 (Judas); Jude 1:1 (''brother of James''). Birth year is an estimate that assumes the brothers were younger sons of Mary and Joseph (the common Protestant view). The Orthodox tradition holds they were sons of Joseph by an earlier marriage (older than Jesus); the Catholic tradition, following Jerome, holds they were cousins.');
+
+-- Intertestamental Period
+INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
+(38, 'Mary, mother of Jesus', 'Mary, Miriam, the Virgin Mary', -20, 48, 1, 1, 'possible', 'matriarch', 'major', NULL, NULL, NULL, 'The young woman of Nazareth chosen to bear Jesus, whose obedient response to the angel''s announcement made her the most honored woman in Scripture. Her Magnificat echoes Hannah''s song, and she appears from Bethlehem to the cross and among the praying disciples before Pentecost.', 'Birth and death years are estimates. Scripture last mentions her at Acts 1:14. Catholic and Orthodox Christians hold her Assumption or Dormition; Protestants generally hold that Scripture is silent on the end of her life. Tradition places her later life at Jerusalem or Ephesus.'),
+(122, 'Joseph of Nazareth', NULL, -25, 20, 1, 1, 'possible', 'other', 'moderate', 'Judah', 280, NULL, 'Husband of Mary and legal father of Jesus, a carpenter of Nazareth described as a righteous man (Matt 1:19). Matthew 1:16 calls him the son of Jacob, and this table follows Matthew for his father. Luke 3:23 calls him the son of Heli, so the two lists disagree. Two classic explanations are offered. Africanus (3rd century) held that Jacob and Heli were half-brothers by the same mother, and that when Heli died childless Jacob married the widow, so Joseph was Jacob''s son by birth and Heli''s by levirate law. Other writers, including many later Western and Eastern commentators, read Luke as tracing Mary''s line, with Heli as her father and Joseph as his son-in-law. The tradition of the church does not require a choice between them.', 'Matthew 1-2; Luke 2. Disappears from narrative after Jesus'' youth.'),
+(124, 'Martha', NULL, -10, 60, 1, 1, 'possible', 'disciple', 'moderate', NULL, NULL, NULL, 'Sister of Lazarus and Mary; known for her hospitality and service.', 'Luke 10:38-42; John 11; 12:2. Birth and death years are estimates. Later tradition (Provence) is legendary; Scripture is silent.'),
+(126, 'Nicodemus', NULL, -20, 63, 1, 1, 'possible', 'disciple', 'moderate', NULL, NULL, NULL, 'Pharisee who came to Jesus at night; helped bury Jesus.', 'John 3:1-21; 7:50-52; 19:39. Birth c. 20 BC and death c. AD 63 are estimates only: Scripture records neither and no early tradition dates his death.'),
+(145, 'Herod the Great', NULL, -73, -4, 1, 0, 'certain', 'ruler', 'moderate', NULL, NULL, NULL, 'King of Judea who rebuilt the Temple but ordered the massacre of infants in Bethlehem.', 'Matthew 2:1-19; confirmed by Josephus. Death in 4 BC is well-established.'),
+(146, 'Pontius Pilate', NULL, -10, 39, 1, 1, 'possible', 'ruler', 'moderate', NULL, NULL, NULL, 'Roman governor of Judea who authorized the crucifixion of Jesus.', 'Prefect of Judea AD 26-36 (Josephus; the Pilate Stone gives his title). Sent to Rome in AD 36; his later fate is unknown (Eusebius reports suicide under Caligula, a late tradition). The birth and death years in this row are conjecture.'),
+(147, 'Anna', 'Anna the Prophetess', -89, -3, 1, 1, 'possible', 'prophet', 'moderate', 'Asher', NULL, NULL, 'Elderly prophetess who recognized the infant Jesus at the Temple.', 'Luke 2:36-37: daughter of Phanuel of Asher, seven years married, then ''a widow of about fourscore and four years'', which may mean aged 84 or widowed 84 years (about 105). Taking 84 as her age at the presentation (c. 5 BC) gives a birth c. 89 BC; the death year is an estimate.'),
+(229, 'Simeon of Jerusalem', 'Simeon, Simeon at the Temple', -100, -2, 1, 1, 'possible', 'prophet', 'moderate', NULL, NULL, NULL, 'Devout man in Jerusalem who held the infant Jesus and prophesied. Promised he would see the Messiah.', 'Luke 2:25-35. Luke gives no age, only that he would not die before seeing the Lord''s Christ (Luke 2:26); birth and death years are estimates.'),
+(230, 'Zechariah, father of John the Baptist', 'Zechariah, Zacharias', -60, -5, 1, 1, 'possible', 'priest', 'moderate', 'Levi', NULL, NULL, 'Priest who was struck mute for doubting Gabriel''s announcement of John the Baptist''s birth.', 'Luke 1:5-25, 57-80. Luke says only that he and Elizabeth were ''well stricken in years'' (Luke 1:7); birth and death years are estimates. A second-century tradition (the Protoevangelium of James), not in Scripture, tells of his murder in the Temple; the Orthodox Church commemorates him as a martyr.'),
+(231, 'Elizabeth', 'Elisabeth', -55, -3, 1, 1, 'possible', 'matriarch', 'moderate', 'Levi', NULL, NULL, 'Wife of Zechariah; mother of John the Baptist. Relative of Mary.', 'Luke 1:5-7, 39-45, 57-60. Birth and death years are estimates.'),
+(232, 'Herod Antipas', 'Herod the Tetrarch', -20, 39, 1, 1, 'probable', 'ruler', 'moderate', NULL, 145, NULL, 'Son of Herod the Great; executed John the Baptist and mocked Jesus during his trial.', 'Matt 14:1-12; Mark 6:14-29; Luke 3:1; 13:31-32; 23:6-12. Tetrarch of Galilee and Perea from 4 BC; banished to Gaul in AD 39 (Josephus Ant. 18.240-255). His birth (c. 20 BC) is inferred and the year of his death is unknown.'),
+(233, 'Herodias', NULL, -15, 39, 1, 1, 'possible', 'other', 'moderate', NULL, NULL, NULL, 'Wife of Herod Antipas; orchestrated John the Baptist''s execution through her daughter.', 'Matt 14:3-11; Mark 6:17-28.'),
+(235, 'Caiaphas', 'Joseph Caiaphas', -30, 36, 1, 1, 'possible', 'priest', 'moderate', NULL, NULL, NULL, 'High priest who presided over Jesus'' trial; declared it expedient for one man to die for the people.', 'Matt 26:3, 57-68; John 11:49-53; 18:13-28. High priest c. AD 18-36/37 (Josephus Ant. 18.35, 18.95). An ossuary found in 1990 may be his (identification debated). Birth year is an estimate and the death year marks his deposition; his actual death is unrecorded.'),
+(236, 'Annas', NULL, -25, 40, 1, 1, 'possible', 'priest', 'moderate', NULL, NULL, NULL, 'Former high priest and father-in-law of Caiaphas; influential in Jesus'' trial.', 'Luke 3:2; John 18:13-24; Acts 4:6. High priest AD 6-15 (Josephus Ant. 18.26, 18.34); five of his sons and his son-in-law Caiaphas held the office afterwards. Birth and death years are estimates.'),
+(238, 'Joseph of Arimathea', NULL, -30, 50, 1, 1, 'possible', 'disciple', 'moderate', NULL, NULL, NULL, 'Rich member of the Sanhedrin who provided his tomb for Jesus'' burial.', 'Matt 27:57-60; Mark 15:42-46; Luke 23:50-53; John 19:38-42.'),
+(239, 'Simon of Cyrene', NULL, -10, 50, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Man from Cyrene compelled to carry Jesus'' cross.', 'Matt 27:32; Mark 15:21; Luke 23:26.'),
+(240, 'Zacchaeus', NULL, -20, 50, 1, 1, 'possible', 'disciple', 'moderate', NULL, NULL, NULL, 'Chief tax collector in Jericho who climbed a sycamore tree to see Jesus; converted.', 'Luke 19:1-10.'),
+(241, 'Jairus', NULL, -20, 50, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Synagogue ruler whose 12-year-old daughter Jesus raised from the dead.', 'Mark 5:22-43; Luke 8:41-56. Synagogue ruler in Galilee. Daughter raised by Jesus c. AD 31. Birth and death years are estimates.'),
+(243, 'Mary of Bethany', NULL, -10, 60, 1, 1, 'possible', 'disciple', 'moderate', NULL, NULL, NULL, 'Sister of Martha and Lazarus; sat at Jesus'' feet; anointed him with expensive perfume.', 'Luke 10:38-42; John 11:1-2; 12:1-8. Birth and death years are estimates. She is distinct from Mary Magdalene; the Western identification of the two (and of the sinful woman of Luke 7) goes back to Gregory the Great (AD 591), was never held in the East, and was dropped from the Roman calendar in 1969.'),
+(247, 'Gamaliel', NULL, -10, 52, 1, 1, 'possible', 'sage', 'moderate', NULL, NULL, NULL, 'Respected Pharisee and teacher of Paul; counseled moderation toward the apostles.', 'Acts 5:34-39; 22:3.'),
+(254, 'Herod Agrippa I', NULL, -10, 44, 1, 0, 'certain', 'ruler', 'minor', NULL, NULL, NULL, 'Grandson of Herod the Great; executed James son of Zebedee and imprisoned Peter. Struck dead by God.', 'Acts 12:1-23. Josephus says he died in AD 44 aged 54 (Ant. 19.343-352), so born c. 11/10 BC.'),
+(274, 'Azor', NULL, -400, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Judah', 273, NULL, 'Son of Eliakim, ancestor of Jesus in Matthew 1:13–14.', 'Known only from Matthew''s genealogy. Birth year is an inferred placeholder, evenly spaced between Zerubbabel and Joseph (Matt 1:13-16); Matthew''s list probably omits generations, as it does in 1:8 and 1:11.'),
+(275, 'Zadok, son of Azor', 'Zadok', -346, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Judah', 274, NULL, 'Son of Azor, ancestor of Jesus in Matthew 1:14. Not the priest Zadok of David''s time.', 'Known only from Matthew''s genealogy. Not to be confused with Zadok the priest (2 Sam 8:17). Birth year is an inferred placeholder, evenly spaced between Zerubbabel and Joseph (Matt 1:13-16); Matthew''s list probably omits generations, as it does in 1:8 and 1:11.'),
+(276, 'Achim', 'Jachin', -293, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Judah', 275, NULL, 'Son of Zadok, ancestor of Jesus in Matthew 1:14.', 'Known only from Matthew''s genealogy. Intertestamental period. Birth year is an inferred placeholder, evenly spaced between Zerubbabel and Joseph (Matt 1:13-16); Matthew''s list probably omits generations, as it does in 1:8 and 1:11.'),
+(277, 'Eliud', NULL, -239, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Judah', 276, NULL, 'Son of Achim, ancestor of Jesus in Matthew 1:14–15.', 'Known only from Matthew''s genealogy. Intertestamental period. Birth year is an inferred placeholder, evenly spaced between Zerubbabel and Joseph (Matt 1:13-16); Matthew''s list probably omits generations, as it does in 1:8 and 1:11.'),
+(278, 'Eleazar, son of Eliud', 'Eleazar', -186, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Judah', 277, NULL, 'Son of Eliud, ancestor of Jesus in Matthew 1:15. Not the priest Eleazar son of Aaron.', 'Known only from Matthew''s genealogy. Not to be confused with Eleazar the priest (Num 20:28). Birth year is an inferred placeholder, evenly spaced between Zerubbabel and Joseph (Matt 1:13-16); Matthew''s list probably omits generations, as it does in 1:8 and 1:11.'),
+(279, 'Matthan', NULL, -132, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Judah', 278, NULL, 'Son of Eleazar, grandfather of Joseph of Nazareth in Matthew 1:15.', 'Known only from Matthew''s genealogy (Matt 1:15). Birth year is an inferred placeholder spacing the ten generations from Zerubbabel to Joseph evenly; Matthew''s list is probably selective.'),
+(280, 'Jacob, son of Matthan', 'Jacob', -79, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Judah', 279, NULL, 'Son of Matthan, father of Joseph of Nazareth in Matthew 1:15–16. Not the patriarch Jacob.', 'Known only from Matthew''s genealogy (Matt 1:15-16). Birth year is an inferred placeholder; Matthew''s list is probably selective.'),
+(317, 'Matthat, father of Heli', 'Matthat', -80, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 316, NULL, 'Son of Levi, ancestor of Jesus in Luke 3:24. Post-exilic Matthat, grandfather of Joseph.', 'Known only from Luke''s genealogy. Late Second Temple period.'),
+(318, 'Heli', 'Eli', -60, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 317, NULL, 'Named in Luke 3:23 as the father of Joseph, in the line running back through Matthat and Levi to Nathan, a son of David. Matthew 1:16 gives Joseph''s father as Jacob instead, and the table keeps Matthew''s link as Joseph''s father_id and shows Heli''s link as a separate parent relationship. Two classic explanations are offered. Africanus held that Heli and Jacob were half-brothers, Heli dying childless so that Jacob fathered Joseph by levirate marriage and Joseph counted as Heli''s heir. Others hold that Luke gives Mary''s ancestry, making Heli Mary''s father and Joseph his son-in-law. Scripture does not say which is right.', 'Known only from Luke''s genealogy. Some scholars identify Heli as Mary''s father, making Luke''s genealogy the natural/maternal line.'),
+(452, 'Alexander the Great', 'Alexander of Macedon', -356, -323, 0, 0, 'certain', 'ruler', 'major', NULL, NULL, NULL, 'King of Macedon whose conquest of the Persian empire (334-323 BC) ended Persian rule over Judea and spread Greek language and culture across the east. Daniel''s vision of the he-goat whose great horn is the first king of Grecia is traditionally read as pointing to him (Dan 8:5-8, 21; 11:3-4), and 1 Maccabees opens with his conquests (1 Macc 1:1-7).', 'Born July 356 BC, died June 323 BC at Babylon. Reading the Daniel passages as Alexander is the traditional interpretation; scholars differ on the dating of Daniel itself.'),
+(453, 'Antiochus IV Epiphanes', 'Antiochus Epiphanes', -215, -164, 1, 0, 'certain', 'ruler', 'minor', NULL, NULL, NULL, 'Seleucid king who plundered the temple in Jerusalem, banned Jewish practice, and set up the abomination of desolation on its altar in December 167 BC, provoking the Maccabean revolt (1 Macc 1:10-64; 2 Macc 5-6). Many readers link him to the little horn of Dan 8:9-12 and to Dan 11:21-35, while some traditions also read these passages of a later figure.', 'Reigned 175-164 BC and died late in 164 BC in Persia (1 Macc 6:1-16). Birth estimated.'),
+(454, 'Judas Maccabeus', 'Judas Maccabaeus,Judah the Maccabee', -196, -160, 1, 0, 'probable', 'warrior', 'minor', 'Levi', NULL, NULL, 'Third son of the priest Mattathias, who led the Jewish revolt after his father''s death in 166 BC, defeated Seleucid armies, and rededicated the temple in December 164 BC, the event commemorated at Hanukkah (1 Macc 3-4; 2 Macc 8-10; John 10:22). He fell in battle at Elasa in 160 BC (1 Macc 9:5-18).', 'Died 160 BC (year 152 of the Seleucid era, 1 Macc 9:3). Birth estimated. The books of Maccabees are canonical for Catholic and Orthodox Christians and counted among the Apocrypha by Protestants.'),
+(470, 'Caesar Augustus', 'Augustus, Octavian', -63, 14, 0, 0, 'certain', 'ruler', 'moderate', NULL, NULL, NULL, 'First Roman emperor (27 BC-AD 14). Luke says his decree that all the world should be taxed brought Joseph and Mary to Bethlehem (Luke 2:1-5).', 'Born 23 September 63 BC; died 19 August AD 14. Luke 2:1.'),
+(471, 'Tiberius Caesar', 'Tiberius', -42, 37, 0, 0, 'certain', 'ruler', 'moderate', NULL, NULL, NULL, 'Second Roman emperor (AD 14-37). Luke dates the start of John the Baptist''s preaching to his fifteenth year (Luke 3:1), and Jesus was crucified under his prefect Pontius Pilate.', 'Born 16 November 42 BC; emperor from 19 August AD 14; died 16 March AD 37. Luke 3:1.'),
+(472, 'Claudius', 'Claudius Caesar, Tiberius Claudius Caesar', -10, 54, 0, 0, 'certain', 'ruler', 'minor', NULL, NULL, NULL, 'Fourth Roman emperor (AD 41-54). Acts dates the famine foretold by Agabus to his reign (Acts 11:28) and says his expulsion of the Jews from Rome brought Aquila and Priscilla to Corinth (Acts 18:2).', 'Born 1 August 10 BC; died 13 October AD 54. The expulsion is usually dated AD 49 (Orosius; compare Suetonius, Claudius 25).');
+
+-- Undated (known from genealogies)
+INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
+(176, 'Melchizedek', NULL, NULL, NULL, 1, 1, 'possible', 'priest', 'moderate', NULL, NULL, NULL, 'The enigmatic king of Salem and priest of God Most High who blessed Abram and received his tithe. Psalm 110 made his order a royal-priestly ideal, the Dead Sea Scrolls cast him as a heavenly deliverer, and Hebrews sees in him the pattern of Christ''s eternal priesthood.', 'Scripture records no birth or death for Melchizedek (Heb 7:3). He is placed on the timeline by his meeting with Abraham (Gen 14:18-20). A Jewish tradition identifies him with Shem; this timeline does not assume it.'),
+(256, 'Felix', 'Antonius Felix', NULL, NULL, 1, 1, 'possible', 'ruler', 'minor', NULL, NULL, NULL, 'Roman governor of Judea who heard Paul''s case and left him imprisoned for two years.', 'Acts 23:24-24:27. Procurator of Judea c. AD 52-60 (Josephus; Tacitus), recalled to Rome when Festus succeeded him. His birth and death years are unknown.'),
+(282, 'Mattatha', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 281, NULL, 'Son of Nathan, ancestor of Jesus in Luke 3:31.', 'Known only from Luke''s genealogy.'),
+(283, 'Menna', 'Menan', NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 282, NULL, 'Son of Mattatha, ancestor of Jesus in Luke 3:31.', 'Known only from Luke''s genealogy.'),
+(284, 'Melea', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 283, NULL, 'Son of Menna, ancestor of Jesus in Luke 3:31.', 'Known only from Luke''s genealogy.'),
+(285, 'Eliakim, son of Melea', 'Eliakim', NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 284, NULL, 'Son of Melea, ancestor of Jesus in Luke 3:30. Not the Eliakim of Matthew''s line or 2 Kings 18.', 'Known only from Luke''s genealogy. Luke 3:30.'),
+(286, 'Jonam', 'Jonan', NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 285, NULL, 'Son of Eliakim, ancestor of Jesus in Luke 3:30.', 'Known only from Luke''s genealogy.'),
+(287, 'Joseph, son of Jonam', 'Joseph', NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 286, NULL, 'Son of Jonam, ancestor of Jesus in Luke 3:30. Not Joseph of Nazareth.', 'Known only from Luke''s genealogy. One of several Josephs in the lineage.'),
+(288, 'Judah, son of Joseph', 'Judah, Juda', NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 287, NULL, 'Son of Joseph, ancestor of Jesus in Luke 3:30. Not the patriarch Judah son of Jacob.', 'Known only from Luke''s genealogy.'),
+(289, 'Simeon, son of Judah', 'Simeon', NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 288, NULL, 'Son of Judah, ancestor of Jesus in Luke 3:30. Not Simeon the patriarch or Simeon at the Temple.', 'Known only from Luke''s genealogy.'),
+(290, 'Levi, son of Simeon', 'Levi', NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 289, NULL, 'Son of Simeon, ancestor of Jesus in Luke 3:29. Not the patriarch Levi son of Jacob.', 'Known only from Luke''s genealogy.'),
+(291, 'Matthat, father of Jorim', 'Matthat', NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 290, NULL, 'Son of Levi, ancestor of Jesus in Luke 3:29.', 'Known only from Luke''s genealogy. Pre-exilic Matthat, distinct from the post-exilic Matthat.'),
+(292, 'Jorim', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 291, NULL, 'Son of Matthat, ancestor of Jesus in Luke 3:29.', 'Known only from Luke''s genealogy.'),
+(293, 'Eliezer', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 292, NULL, 'Son of Jorim, ancestor of Jesus in Luke 3:29. Not Eliezer servant of Abraham.', 'Known only from Luke''s genealogy.'),
+(294, 'Joshua, son of Eliezer', 'Joshua, Jose, Jesus', NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 293, NULL, 'Son of Eliezer, ancestor of Jesus in Luke 3:29. Same name as Jesus/Joshua in Hebrew. Not Joshua of the conquest.', 'Known only from Luke''s genealogy. Greek Iesous = Hebrew Yehoshua.'),
+(295, 'Er', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 294, NULL, 'Son of Joshua, ancestor of Jesus in Luke 3:28. Not Er son of Judah (Gen 38:3).', 'Known only from Luke''s genealogy.'),
+(296, 'Elmadam', 'Elmodam', NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 295, NULL, 'Son of Er, ancestor of Jesus in Luke 3:28.', 'Known only from Luke''s genealogy.'),
+(297, 'Cosam', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 296, NULL, 'Son of Elmadam, ancestor of Jesus in Luke 3:28.', 'Known only from Luke''s genealogy.'),
+(298, 'Addi', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 297, NULL, 'Son of Cosam, ancestor of Jesus in Luke 3:28.', 'Known only from Luke''s genealogy.'),
+(299, 'Melchi, son of Addi', 'Melchi', NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 298, NULL, 'Son of Addi, ancestor of Jesus in Luke 3:28. Pre-exilic Melchi, distinct from the post-exilic Melchi.', 'Known only from Luke''s genealogy. Luke 3:28.'),
+(302, 'Joanan', 'Joannas', NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 301, NULL, 'Son of Rhesa, ancestor of Jesus in Luke 3:27.', 'Known only from Luke''s genealogy.'),
+(303, 'Joda', 'Judah', NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 302, NULL, 'Son of Joanan, ancestor of Jesus in Luke 3:26.', 'Known only from Luke''s genealogy.'),
+(304, 'Josech', 'Josec, Joseph', NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 303, NULL, 'Son of Joda, ancestor of Jesus in Luke 3:26.', 'Known only from Luke''s genealogy.'),
+(305, 'Semein', 'Semei', NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 304, NULL, 'Son of Josech, ancestor of Jesus in Luke 3:26.', 'Known only from Luke''s genealogy.'),
+(306, 'Mattathias, son of Semein', 'Mattathias', NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 305, NULL, 'Son of Semein, ancestor of Jesus in Luke 3:26.', 'Known only from Luke''s genealogy. First of two Mattathias in Luke''s post-exilic line.'),
+(307, 'Maath', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 306, NULL, 'Son of Mattathias, ancestor of Jesus in Luke 3:26.', 'Known only from Luke''s genealogy.'),
+(308, 'Naggai', 'Nagge', NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 307, NULL, 'Son of Maath, ancestor of Jesus in Luke 3:25.', 'Known only from Luke''s genealogy.'),
+(309, 'Esli', 'Hesli', NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 308, NULL, 'Son of Naggai, ancestor of Jesus in Luke 3:25.', 'Known only from Luke''s genealogy.'),
+(310, 'Nahum, son of Esli', 'Nahum, Naum', NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 309, NULL, 'Son of Esli, ancestor of Jesus in Luke 3:25. Not the prophet Nahum.', 'Known only from Luke''s genealogy. Not to be confused with the prophet Nahum (Nah 1:1).'),
+(311, 'Amos, son of Nahum', 'Amos', NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 310, NULL, 'Son of Nahum, ancestor of Jesus in Luke 3:25. Not the prophet Amos.', 'Known only from Luke''s genealogy. Not to be confused with the prophet Amos (Amos 1:1).'),
+(312, 'Mattathias, son of Amos', 'Mattathias', NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 311, NULL, 'Son of Amos, ancestor of Jesus in Luke 3:25. Second Mattathias in Luke''s post-exilic line.', 'Known only from Luke''s genealogy. Luke 3:25.'),
+(313, 'Joseph, son of Mattathias', 'Joseph', NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 312, NULL, 'Son of Mattathias, ancestor of Jesus in Luke 3:24. Not Joseph of Nazareth.', 'Known only from Luke''s genealogy. One of several Josephs in the lineage.'),
+(314, 'Jannai', 'Janna', NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 313, NULL, 'Son of Joseph, ancestor of Jesus in Luke 3:24.', 'Known only from Luke''s genealogy.'),
+(315, 'Melchi, son of Jannai', 'Melchi', NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 314, NULL, 'Son of Jannai, ancestor of Jesus in Luke 3:24. Post-exilic Melchi, distinct from the pre-exilic Melchi.', 'Known only from Luke''s genealogy. Luke 3:24.'),
+(316, 'Levi, son of Melchi', 'Levi', NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 315, NULL, 'Son of Melchi, ancestor of Jesus in Luke 3:24. Not the patriarch Levi son of Jacob.', 'Known only from Luke''s genealogy.');
 
 -- Apostolic Age
-('Pentecost',               33, NULL, 1, 1, 'probable',    'miracle',   'major', 'On the feast of Pentecost, fifty days after Passover, the Holy Spirit descends on the disciples with rushing wind and tongues of fire, and Peter''s sermon draws about three thousand into the newborn church. Falling on Shavuot, the harvest festival, the event launches the gospel''s spread from Jerusalem.', NULL, 930),
-('Stoning of Stephen',      35, NULL, 1, 1, 'probable',    'other',     'minor', 'Stephen becomes the first Christian martyr.', NULL, 940),
-('Conversion of Paul',      35, NULL, 1, 1, 'probable',    'miracle',   'major', 'On the Damascus road, Saul of Tarsus, traveling to arrest followers of Jesus, was confronted by a blinding vision of the risen Christ. Acts recounts the event three times and Paul''s letters confirm it, marking the turning point that made the church''s fiercest persecutor its apostle to the Gentiles.', 'Galatians 1:15-18 correlates with Acts 9.', 950),
-('Paul''s First Missionary Journey', 47, 49, 1, 1, 'probable', 'other', 'minor', 'Paul and Barnabas travel through Cyprus and Asia Minor.', NULL, 960),
-('Council of Jerusalem',    49, NULL, 1, 1, 'probable',    'other',     'major', 'Apostles and elders gathered to decide whether Gentile converts must be circumcised and keep the law of Moses. With Peter testifying and James presiding, the council ruled that salvation comes by grace through faith, freeing the gospel to spread through the Gentile world; Acts 15 preserves its letter.', NULL, 970),
-('Paul''s Second Missionary Journey', 50, 53, 1, 1, 'probable', 'other', 'minor', 'Paul brings the gospel to Greece.', NULL, 980),
-('Paul''s Third Missionary Journey',  54, 58, 1, 1, 'probable', 'other', 'minor', 'Paul strengthens churches in Asia Minor and Greece.', NULL, 990),
-('Destruction of Jerusalem', 70, NULL, 0, 1, 'certain',    'judgment',  'major', 'Roman legions under Titus crushed the Jewish revolt, burning the city and demolishing the Second Temple. The catastrophe ended sacrificial worship, scattered the Jewish people, and echoed Jesus'' warning that no stone would be left on another; the Arch of Titus in Rome still depicts the looted menorah.', 'One of the most securely dated events.', 1000),
-('John Writes Revelation',  95, NULL, 1, 1, 'traditional', 'prophecy',  'major', 'Exiled on the rocky island of Patmos, John received sweeping visions of the risen Christ, letters for seven churches of Asia Minor, and the final triumph of the Lamb. Written to believers under Roman pressure, it closes the canon with the promise of a new heaven and new earth; Irenaeus placed it late in Domitian''s reign.', 'Early date (~AD 65) vs. late date (~AD 95).', 1010),
-('Death of John',           100, NULL, 1, 1, 'possible',    'other',    'minor', 'The last apostle dies, ending the Apostolic Age.', NULL, 1020),
+INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
+(323, 'Ignatius of Antioch', NULL, 35, 108, 1, 0, 'possible', 'church-leader', 'major', NULL, NULL, NULL, 'Bishop of Antioch and early Church Father. His seven letters on church order, the Eucharist, and martyrdom are among the earliest post-apostolic writings.', 'Birth year is unknown; c. 35 is a conventional estimate. Martyred in Rome under Trajan (reigned 98-117), traditionally dated c. 108; some scholars place it as late as c. 110-117.'),
+(324, 'Polycarp of Smyrna', NULL, 69, 155, 1, 1, 'probable', 'church-leader', 'moderate', NULL, NULL, NULL, 'Bishop of Smyrna, a leading figure of the generation after the apostles who, according to Irenaeus, had known the Apostle John. At his martyrdom he declared "Eighty-six years I have served Him, and He never did me any injury."', 'Birth c. 69 is inferred from his ''86 years'' remark (which could mean his age or the years since his conversion) and is uncertain. Martyred on 22/23 February in 155 or 156, the standard modern dating; Eusebius''s Chronicle points to c. 166-167, which most scholars now reject.'),
+(473, 'Nero', 'Nero Claudius Caesar', 37, 68, 0, 0, 'certain', 'ruler', 'moderate', NULL, NULL, NULL, 'Fifth Roman emperor (AD 54-68). He was the Caesar to whom Paul appealed (Acts 25:11). Tacitus records that he blamed the Christians for the great fire of AD 64 and put many to death; church tradition places the deaths of Peter and Paul in his reign.', 'Born 15 December AD 37; died 9 June AD 68. Acts 25:11; Tacitus, Annals 15.44.');
 
--- Miracles of Jesus — ordered by biblical narrative sequence
--- Early Galilean Ministry (John 2 – Luke 5)
-('Water Turned to Wine',    27, NULL, 1, 1, 'possible', 'miracle', 'major', 'At a wedding in Cana of Galilee, prompted by his mother Mary, Jesus turned water in six stone purification jars into choice wine. John alone records this first sign, which revealed Jesus'' glory to his disciples and inaugurated his public ministry with an image of messianic abundance.', 'First recorded miracle; John 2:1-11.', 450),
-('Healing of the Official''s Son', 27, NULL, 1, 1, 'possible', 'miracle', 'minor', 'Jesus heals a royal official''s son in Capernaum from a distance.', 'John 4:46-54; second sign in John.', 460),
-('Great Catch of Fish',     27, NULL, 1, 1, 'possible', 'miracle', 'minor', 'Jesus directs a miraculous catch of fish on the Sea of Galilee.', 'Luke 5:1-11; calling of the first disciples.', 470),
-('Healing of a Demon-Possessed Man in Capernaum', 27, NULL, 1, 1, 'possible', 'miracle', 'minor', 'Jesus casts out an unclean spirit in the Capernaum synagogue.', 'Mark 1:21-28; Luke 4:31-37.', 480),
-('Healing of Peter''s Mother-in-Law', 27, NULL, 1, 1, 'possible', 'miracle', 'minor', 'Jesus heals Simon Peter''s mother-in-law of a fever.', 'Matthew 8:14-15; Mark 1:29-31; Luke 4:38-39.', 490),
-('Cleansing of a Leper',    27, NULL, 1, 1, 'possible', 'miracle', 'minor', 'Jesus heals a man with leprosy by touching him.', 'Matthew 8:1-4; Mark 1:40-45; Luke 5:12-16.', 500),
-('Healing of the Paralytic', 27, NULL, 1, 1, 'possible', 'miracle', 'major', 'In Capernaum, four friends lowered a paralyzed man through the roof to reach Jesus, who first forgave his sins and then commanded him to walk. Matthew, Mark, and Luke record the miracle, which joined Jesus'' power to heal with his authority to forgive; Capernaum excavations reveal the crowded basalt houses such a scene assumes.', 'Matthew 9:1-8; Mark 2:1-12; Luke 5:17-26.', 510),
--- Middle Ministry (John 5 – Luke 8)
-('Healing at the Pool of Bethesda', 28, NULL, 1, 1, 'possible', 'miracle', 'minor', 'Jesus heals a man who had been an invalid for 38 years.', 'John 5:1-17; on a Sabbath.', 520),
-('Healing of a Withered Hand', 28, NULL, 1, 1, 'possible', 'miracle', 'minor', 'Jesus heals a man''s withered hand on the Sabbath in the synagogue.', 'Matthew 12:9-14; Mark 3:1-6; Luke 6:6-11.', 530),
-('Healing of the Centurion''s Servant', 28, NULL, 1, 1, 'possible', 'miracle', 'major', 'A Roman centurion in Capernaum asked Jesus to heal his dying servant, insisting a word from a distance would suffice. Jesus marveled that he had found no such faith in Israel and healed the servant without entering the house; Luke adds that this Gentile officer had built the town''s synagogue.', 'Matthew 8:5-13; Luke 7:1-10.', 540),
-('Raising of the Widow''s Son at Nain', 28, NULL, 1, 1, 'possible', 'miracle', 'major', 'Meeting a funeral procession at the gate of Nain, Jesus was moved by a widow who had lost her only son, touched the bier, and restored the young man to life. Found only in Luke, the miracle echoes Elijah''s raising of the widow''s son at Zarephath and led the crowd to hail a great prophet.', 'Luke 7:11-17; only in Luke.', 550),
-('Calming the Storm',       28, NULL, 1, 1, 'possible', 'miracle', 'major', 'When a sudden squall threatened to swamp the disciples'' boat on the Sea of Galilee, Jesus rose from sleep and stilled wind and waves with a word. All three synoptic gospels record the awed question of who this could be; a first-century fishing boat excavated from the lake''s mud vividly illustrates the scene.', 'Matthew 8:23-27; Mark 4:35-41; Luke 8:22-25.', 560),
-('Healing of the Gerasene Demoniac', 28, NULL, 1, 1, 'possible', 'miracle', 'major', 'In the Decapolis east of the Sea of Galilee, Jesus freed a tomb-dwelling man possessed by a legion of demons, which entered a herd of pigs and perished in the sea. Sent home rather than allowed to follow, the man became the first herald of Jesus in Gentile lands; manuscripts vary between Gerasenes, Gadarenes, and Gergesenes.', 'Matthew 8:28-34; Mark 5:1-20; Luke 8:26-39.', 570),
--- Late Galilean Ministry (Mark 5 – Mark 8)
-('Healing of the Woman with the Issue of Blood', 29, NULL, 1, 1, 'possible', 'miracle', 'minor', 'A woman touches Jesus'' garment and is healed after 12 years of bleeding.', 'Matthew 9:20-22; Mark 5:25-34; Luke 8:43-48.', 580),
-('Raising of Jairus'' Daughter', 29, NULL, 1, 1, 'possible', 'miracle', 'major', 'Jairus, a synagogue leader, begged Jesus to save his dying daughter, and though word came that she had died, Jesus took her hand and raised her. Mark preserves the original Aramaic command, Talitha koum, and all three synoptics interweave the story with the healing of the hemorrhaging woman.', 'Matthew 9:18-26; Mark 5:21-43; Luke 8:40-56.', 590),
-('Healing of Two Blind Men', 29, NULL, 1, 1, 'possible', 'miracle', 'minor', 'Jesus restores sight to two blind men who follow him crying for mercy.', 'Matthew 9:27-31.', 600),
-('Healing of a Mute Man',   29, NULL, 1, 1, 'possible', 'miracle', 'minor', 'Jesus casts out a demon and the mute man speaks.', 'Matthew 9:32-34.', 610),
-('Feeding of the 5,000',    29, NULL, 1, 1, 'probable', 'miracle', 'major', 'With five loaves and two fish from the crowd, Jesus fed thousands beside the Sea of Galilee, with twelve baskets left over. It is the only miracle of his ministry recorded in all four gospels, recalling the manna in the wilderness and prompting John''s discourse on Jesus as the bread of life.', 'Matthew 14:13-21; Mark 6:30-44; Luke 9:10-17; John 6:1-15. Only miracle in all four Gospels.', 620),
-('Walking on Water',        29, NULL, 1, 1, 'probable', 'miracle', 'major', 'In the night after feeding the multitude, Jesus came to his storm-battered disciples walking across the Sea of Galilee. Matthew, Mark, and John record the event, with Matthew adding Peter''s brief walk and sinking; Jesus'' reassurance, echoing the divine I am, moved the disciples to worship him as God''s Son.', 'Matthew 14:22-33; Mark 6:45-52; John 6:16-21.', 630),
-('Healing of the Syrophoenician Woman''s Daughter', 29, NULL, 1, 1, 'possible', 'miracle', 'minor', 'Jesus heals a Gentile woman''s demon-possessed daughter.', 'Matthew 15:21-28; Mark 7:24-30.', 640),
-('Healing of a Deaf and Mute Man', 29, NULL, 1, 1, 'possible', 'miracle', 'minor', 'Jesus heals a deaf man with a speech impediment in the Decapolis.', 'Mark 7:31-37.', 650),
-('Feeding of the 4,000',    29, NULL, 1, 1, 'probable', 'miracle', 'major', 'In the largely Gentile Decapolis region, Jesus fed a crowd that had stayed with him three days, multiplying seven loaves and a few fish with seven baskets remaining. Recorded by Matthew and Mark as distinct from the earlier feeding, it signals that the messianic banquet extends beyond Israel to the nations.', 'Matthew 15:32-39; Mark 8:1-10.', 660),
--- Transfiguration & Later Ministry (Matt 17 – John 9)
-('Healing of a Blind Man at Bethsaida', 30, NULL, 1, 1, 'possible', 'miracle', 'minor', 'Jesus heals a blind man in two stages at Bethsaida.', 'Mark 8:22-26; only in Mark.', 670),
-('Transfiguration',         30, NULL, 1, 1, 'possible', 'miracle', 'major', 'On a high mountain, Peter, James, and John saw Jesus transfigured in dazzling glory, conversing with Moses and Elijah as a voice from the cloud declared him the beloved Son. All three synoptics record the scene, which links law and prophets to Jesus; 2 Peter appeals to it as eyewitness testimony.', 'Matthew 17:1-13; Mark 9:2-13; Luke 9:28-36.', 680),
-('Healing of a Boy with a Demon', 30, NULL, 1, 1, 'possible', 'miracle', 'minor', 'Jesus casts out a demon the disciples could not.', 'Matthew 17:14-21; Mark 9:14-29; Luke 9:37-43.', 690),
-('Coin in the Fish''s Mouth', 30, NULL, 1, 1, 'possible', 'miracle', 'minor', 'Jesus instructs Peter to find a coin in a fish''s mouth for Temple tax.', 'Matthew 17:24-27; only in Matthew.', 700),
-('Healing of the Man Born Blind', 30, NULL, 1, 1, 'possible', 'miracle', 'major', 'Jesus anointed the eyes of a man blind from birth and sent him to wash in the Pool of Siloam, where he received sight. John alone tells the story, following the man''s bold testimony under interrogation; the stepped first-century pool itself has been uncovered in recent Jerusalem excavations.', 'John 9:1-41; extended discourse on spiritual blindness.', 710),
-('Healing of a Crippled Woman', 30, NULL, 1, 1, 'possible', 'miracle', 'minor', 'Jesus heals a woman bent over for 18 years on the Sabbath.', 'Luke 13:10-17; only in Luke.', 720),
--- Perean Ministry (Luke 14 – John 11)
-('Healing of a Man with Dropsy', 31, NULL, 1, 1, 'possible', 'miracle', 'minor', 'Jesus heals a man with dropsy (edema) on the Sabbath.', 'Luke 14:1-6; only in Luke.', 730),
-('Raising of Lazarus',      31, NULL, 1, 1, 'possible', 'miracle', 'major', 'At Bethany, Jesus called Lazarus out of the tomb four days after his death, having declared to Martha that he is the resurrection and the life. This climactic sign, recorded only in John, drew crowds toward Jerusalem and hardened the authorities'' resolve to put Jesus to death.', 'John 11:1-44; catalyst for the plot to kill Jesus.', 740),
-('Healing of Ten Lepers',   31, NULL, 1, 1, 'possible', 'miracle', 'minor', 'Jesus heals ten lepers; only one (a Samaritan) returns to give thanks.', 'Luke 17:11-19; only in Luke.', 750),
--- Final Week & Post-Resurrection (Matt 20 – John 21)
-('Healing of Blind Bartimaeus', 33, NULL, 1, 1, 'possible', 'miracle', 'minor', 'Jesus heals blind Bartimaeus on the road out of Jericho.', 'Matthew 20:29-34; Mark 10:46-52; Luke 18:35-43.', 850),
-('Healing of Two Blind Men at Jericho', 33, NULL, 1, 1, 'possible', 'miracle', 'minor', 'Jesus heals two blind men near Jericho.', 'Matthew 20:29-34; variant of the Bartimaeus narrative.', 855),
-('Cursing of the Fig Tree', 33, NULL, 1, 1, 'possible', 'miracle', 'minor', 'Jesus curses a barren fig tree and it withers.', 'Matthew 21:18-22; Mark 11:12-14, 20-25.', 860),
-('Healing of Malchus'' Ear', 33, NULL, 1, 1, 'probable', 'miracle', 'minor', 'Jesus heals the ear of the high priest''s servant during his arrest.', 'Luke 22:49-51; John 18:10-11.', 870),
-('Catch of 153 Fish',       33, NULL, 1, 1, 'probable', 'miracle', 'minor', 'The risen Jesus directs a miraculous catch of 153 fish.', 'John 21:1-14; post-resurrection appearance.', 925),
-
--- Non-Jesus miracles
-('Healing of Naaman', -850, NULL, 1, 1, 'possible', 'miracle', 'major', 'Naaman, commander of Aram''s army, sought healing from leprosy on the word of a captive Israelite servant girl. Directed by the prophet Elisha to wash seven times in the Jordan, he was cleansed and confessed Israel''s God; Jesus later cited him at Nazareth as a Gentile who received God''s mercy.', '2 Kings 5:1-27; during the ministry of Elisha.', 315),
-
--- ============================================================
--- CHURCH HISTORY EVENTS (IDs 95–159)
--- ============================================================
--- Era: Early Church & Persecution (100–313) ────────────────────
-('Martyrdom of Ignatius of Antioch', 108, NULL, 0, 1, 'probable', 'other', 'moderate', 'Bishop Ignatius is executed in Rome; his letters on church order and the real presence of Christ are among the earliest post-apostolic writings.', 'Eusebius, Church History III.36.', 1010),
-('Martyrdom of Polycarp', 155, NULL, 0, 1, 'probable', 'other', 'moderate', 'Bishop Polycarp of Smyrna is burned at the stake at age 86, saying "Eighty-six years I have served Him, and He never did me any injury."', 'Martyrdom of Polycarp; date debated (155 or 167).', 1020),
-('Irenaeus Writes Against Heresies', 180, NULL, 0, 1, 'probable', 'other', 'moderate', 'Irenaeus of Lyon publishes Against Heresies, establishing apostolic succession and refuting Gnosticism.', 'Against Heresies, c. 180 AD.', 1030),
-('Origen Opens Catechetical School', 203, NULL, 0, 1, 'probable', 'other', 'minor', 'Origen becomes head of the catechetical school in Alexandria at age 18, pioneering biblical scholarship and allegorical interpretation.', 'Eusebius, Church History VI.', 1040),
-('Diocletian Persecution Begins', 303, NULL, 0, 1, 'certain', 'other', 'moderate', 'Emperor Diocletian orders the most severe empire-wide persecution: churches destroyed, scriptures burned, clergy imprisoned.', 'Eusebius, Church History VIII; Diocletian issued edicts in 303-304.', 1050),
-('Edict of Milan', 313, NULL, 0, 0, 'certain', 'other', 'major', 'Emperors Constantine and Licinius agreed to grant full toleration to Christianity, ending the era of imperial persecution and ordering confiscated church property restored. After the empire-wide sufferings under Diocletian, the church moved from outlaw sect to protected faith, reshaping Christianity''s place in the world.', 'Lactantius, De Mortibus Persecutorum 48; Eusebius, Church History X.5.', 1060),
-
--- Era: Imperial Christianity (313–476) ─────────────────────────
-('Council of Nicaea', 325, NULL, 0, 0, 'certain', 'other', 'major', 'Constantine convened bishops from across the empire at Nicaea to settle the Arian controversy over the Son''s divinity. The council confessed Christ as homoousios, of one being with the Father, producing the creed that remains Christianity''s central confession; tradition numbers the assembled bishops at 318.', 'First Ecumenical Council, convened by Constantine in Nicaea.', 1070),
-('Athanasius Lists the 27 NT Books', 367, NULL, 0, 0, 'certain', 'other', 'major', 'In his thirty-ninth Festal Letter from Alexandria, Bishop Athanasius listed exactly the twenty-seven books of today''s New Testament, the earliest surviving list to match it precisely. Calling them the springs of salvation, he distinguished canonical Scripture from disputed and spurious writings.', 'Athanasius, 39th Festal Letter (367 AD).', 1080),
-('Council of Carthage Finalizes Canon', 397, NULL, 0, 0, 'certain', 'other', 'major', 'A synod of North African bishops, meeting in the era of Augustine''s influence, ratified the church''s canon of Scripture, confirming the twenty-seven New Testament books alongside the Old. Echoing the earlier council at Hippo, it gave formal conciliar shape to the canon long recognized in Christian worship.', 'Council of Carthage (397 AD).', 1085),
-('Jerome Completes the Vulgate', 405, NULL, 0, 1, 'probable', 'other', 'major', 'Working in a monastery at Bethlehem at the urging of Pope Damasus, Jerome translated the Scriptures into Latin, going behind the Greek Septuagint to the Hebrew text he called the hebraica veritas. His Vulgate became the standard Bible of Western Christendom for over a thousand years.', 'Jerome completed the OT translation c. 405. The Vulgate became the standard Bible of the Western church.', 1090),
-('Council of Chalcedon', 451, NULL, 0, 0, 'certain', 'other', 'major', 'Bishops meeting at Chalcedon defined that Christ is one person in two natures, fully God and fully man, without confusion or separation. Guided by Pope Leo''s Tome against Eutyches'' teaching, the definition became the touchstone of orthodox Christology, though several eastern churches rejected it, creating lasting divisions.', 'Fourth Ecumenical Council, Chalcedon (451 AD).', 1100),
-('Fall of the Western Roman Empire', 476, NULL, 0, 0, 'certain', 'other', 'moderate', 'Romulus Augustulus, the last Western Roman emperor, is deposed. Christianity is now the dominant cultural force in a fragmented Western Europe.', 'Traditional date: 476 AD.', 1110),
-
--- Era: Early Medieval (476–1054) ───────────────────────────────
-('Benedict Writes His Rule', 530, NULL, 0, 1, 'probable', 'other', 'moderate', 'Benedict of Nursia writes the Rule of St. Benedict — "ora et labora" (pray and work) — the foundation for Western monasticism and the preservation of learning through the Dark Ages.', 'Rule of St. Benedict, c. 530 AD.', 1120),
-('Synod of Whitby', 664, NULL, 0, 0, 'certain', 'other', 'minor', 'King Oswiu of Northumbria rules in favor of Roman over Celtic church practices, unifying English Christianity under Rome.', 'Bede, Ecclesiastical History of the English People, III.25.', 1130),
-('Rise of Islam and Muslim Conquests', 632, 750, 0, 1, 'certain', 'other', 'moderate', 'Following Muhammad''s death (632), Muslim armies conquer the Christian heartlands of Syria, Egypt, North Africa, and Persia within a century — permanently altering the geography of Christianity.', 'Rapid expansion of the Rashidun and Umayyad caliphates, 632–750 AD.', 1140),
-('Charlemagne Crowned Emperor', 800, NULL, 0, 0, 'certain', 'other', 'minor', 'Pope Leo III crowns Charlemagne Holy Roman Emperor on Christmas Day, fusing church and state in medieval Europe.', 'December 25, 800 AD; recorded by Einhard and the Royal Frankish Annals.', 1150),
-
--- Era: High Medieval & Crusades (1054–1400) ────────────────────
-('Great Schism: East-West Split', 1054, NULL, 0, 0, 'certain', 'other', 'major', 'Papal legate Humbert and Patriarch Michael Cerularius exchanged excommunications at Hagia Sophia in Constantinople, crystallizing centuries of tension over papal authority, the filioque clause, and diverging customs. The rupture divided Christendom into Roman Catholic West and Orthodox East, a breach never fully healed.', 'The Schism of 1054; mutual excommunications between Patriarch Michael Cerularius and Cardinal Humbert.', 1160),
-('Council of Clermont — First Crusade Called', 1095, NULL, 0, 0, 'certain', 'war', 'moderate', 'Pope Urban II calls Christians to liberate the Holy Land. The First Crusade captures Jerusalem in 1099, inaugurating two centuries of Crusading warfare.', 'Pope Urban II''s speech at the Council of Clermont, November 1095.', 1170),
-('Francis of Assisi Founds the Franciscans', 1209, NULL, 0, 0, 'certain', 'other', 'moderate', 'Francis renounces his wealthy life and founds the Order of Friars Minor, preaching radical poverty, simplicity, and care for the poor.', 'Francis received papal approval in 1209/1210.', 1180),
-('Thomas Aquinas Completes the Summa', 1274, NULL, 0, 1, 'probable', 'other', 'moderate', 'Aquinas leaves his Summa Theologiae unfinished at his death — the most influential work of Christian theology, synthesizing faith and reason.', 'Summa Theologiae written 1265–1274; left incomplete at Aquinas''s death.', 1190),
-('John Wycliffe Translates the Bible into English', 1382, NULL, 0, 1, 'probable', 'other', 'major', 'Oxford theologian John Wycliffe and his associates produced the first complete English Bible, rendered from the Latin Vulgate and spread in hand-copied manuscripts by his Lollard followers. Convinced that Scripture belonged to every Christian, he was condemned after death, yet nearly 250 manuscript copies survive.', 'Wycliffe Bible completed c. 1382-1395 by Wycliffe and his associates.', 1200),
-('Jan Hus Martyred', 1415, NULL, 0, 0, 'certain', 'other', 'moderate', 'Czech reformer Jan Hus is burned at the stake at the Council of Constance for challenging papal authority and calling for Scripture in the common language.', 'July 6, 1415, at the Council of Constance.', 1210),
-
--- Era: Reformation (1400–1648) ─────────────────────────────────
-('Gutenberg Prints the Bible', 1455, NULL, 0, 1, 'certain', 'other', 'major', 'In Mainz, Johannes Gutenberg used his new movable metal type to print the Latin Vulgate in a run of roughly 180 copies on paper and vellum, of which about 49 survive. The 42-line Bible was the first major book printed in Europe, and the press it launched would carry Scripture and reform across the continent.', 'Gutenberg Bible printed c. 1454-1455 in Mainz.', 1220),
-('Martin Luther Posts the 95 Theses', 1517, NULL, 0, 0, 'certain', 'other', 'major', 'Augustinian monk Martin Luther challenged the sale of indulgences with ninety-five theses for debate, traditionally posted on the castle church door at Wittenberg. Printers spread them across Germany within weeks, igniting the Reformation and its recovery of justification by faith and the authority of Scripture.', 'October 31, 1517.', 1230),
-('Diet of Worms', 1521, NULL, 0, 0, 'certain', 'other', 'major', 'Summoned before Emperor Charles V, Martin Luther refused to recant his writings, declaring his conscience captive to the Word of God. Outlawed by the imperial edict, he was hidden at Wartburg Castle, where he translated the New Testament into German from the Greek, laying the foundation of the German Bible.', 'April 17-18, 1521.', 1240),
-('Tyndale''s New Testament Published', 1526, NULL, 0, 0, 'certain', 'other', 'major', 'William Tyndale published the first printed English New Testament, translated directly from Erasmus'' Greek text and smuggled into England in bales of cloth. Though Tyndale was later executed, his vivid phrasing endured, shaping the great majority of the King James New Testament''s wording.', 'Tyndale NT printed in Worms, Germany, 1526; Tyndale executed 1536.', 1250),
-('Calvin Publishes Institutes of the Christian Religion', 1536, NULL, 0, 0, 'certain', 'other', 'moderate', 'John Calvin publishes his systematic theology at age 26 — the foundational text of Reformed Christianity.', 'First edition 1536; expanded final edition 1559.', 1260),
-('Council of Trent', 1545, 1563, 0, 0, 'certain', 'other', 'moderate', 'The Catholic Church''s Counter-Reformation council clarifies doctrine, reforms abuses, and reaffirms traditions challenged by Protestantism.', 'Council of Trent, 1545–1563 (three periods over 18 years).', 1270),
-('King James Version Published', 1611, NULL, 0, 0, 'certain', 'other', 'major', 'Commissioned by James I after the Hampton Court Conference, some four dozen scholars in companies at Westminster, Oxford, and Cambridge produced a new English Bible from the Hebrew and Greek. Building heavily on Tyndale, the King James Version became the most influential book in the English language.', 'Published 1611.', 1280),
-('Westminster Confession of Faith', 1646, NULL, 0, 0, 'certain', 'other', 'moderate', 'The Westminster Assembly produces the most influential Reformed confession of faith, adopted by Presbyterian and Reformed churches worldwide.', 'Completed 1646; adopted by the Church of Scotland (1647) and English Parliament (1648).', 1285),
-('Peace of Westphalia', 1648, NULL, 0, 0, 'certain', 'other', 'moderate', 'The treaties ending the Thirty Years'' War establish the principle of cuius regio, eius religio (whose realm, his religion), ending the era of religious wars in Europe.', 'Treaties signed October 24, 1648.', 1290),
-
--- Era: Enlightenment & Missions (1648–1900) ────────────────────
-('John Wesley''s Aldersgate Experience', 1738, NULL, 0, 0, 'certain', 'other', 'moderate', 'Wesley feels his heart "strangely warmed" at a Moravian meeting on Aldersgate Street, launching the Methodist movement.', 'May 24, 1738.', 1300),
-('Jonathan Edwards and the First Great Awakening', 1734, 1743, 0, 1, 'certain', 'other', 'moderate', 'Edwards'' sermon "Sinners in the Hands of an Angry God" (1741) and George Whitefield''s preaching spark the First Great Awakening across the American colonies and Britain.', 'First Great Awakening, c. 1734–1743.', 1310),
-('William Carey Sails for India', 1793, NULL, 0, 0, 'certain', 'other', 'moderate', 'The "father of modern missions" arrives in India, beginning a lifelong work of Bible translation, education, and social reform.', 'Carey departed June 13, 1793; established Serampore Mission.', 1320),
-('British and Foreign Bible Society Founded', 1804, NULL, 0, 0, 'certain', 'other', 'moderate', 'The world''s first Bible society is founded in London, dedicating itself to making the Scriptures available in every language.', 'Founded March 7, 1804.', 1330),
-('American Bible Society Founded', 1816, NULL, 0, 0, 'certain', 'other', 'minor', 'Founded to distribute Bibles across the expanding American frontier.', 'Founded May 11, 1816 in New York.', 1335),
-('Charles Spurgeon Begins Preaching in London', 1854, NULL, 0, 0, 'certain', 'other', 'minor', 'Spurgeon, the "Prince of Preachers," begins pastoring at New Park Street Chapel at age 19; his Metropolitan Tabernacle seats 5,000.', 'Spurgeon preached to millions over 38 years (1854–1892).', 1340),
-('D.L. Moody''s Revival Campaigns', 1873, 1899, 0, 0, 'certain', 'other', 'minor', 'Dwight L. Moody''s transatlantic revival campaigns in Britain and America bring millions to evangelistic meetings. He founds Moody Bible Institute (1886).', 'Major campaigns: Britain (1873–75), America (1875–99).', 1350),
-
--- Era: Modern Era (1900–2026) ──────────────────────────────────
-('Azusa Street Revival', 1906, 1909, 0, 0, 'certain', 'other', 'moderate', 'William Seymour leads a multiracial revival on Azusa Street in Los Angeles — the birth of the global Pentecostal movement, now encompassing over 600 million Christians.', 'Azusa Street Revival, 312 Azusa Street, April 1906 – c. 1909.', 1360),
-('Edinburgh Missionary Conference', 1910, NULL, 0, 0, 'certain', 'other', 'moderate', 'The World Missionary Conference in Edinburgh brings together 1,200 delegates, launching the modern ecumenical movement and galvanizing Protestant missions.', 'June 14–23, 1910.', 1370),
-('Barmen Declaration', 1934, NULL, 0, 0, 'certain', 'other', 'minor', 'The Confessing Church in Germany, led by Karl Barth, Dietrich Bonhoeffer, and Martin Niemöller, rejects Nazi ideology''s infiltration of the church.', 'Barmen Declaration, May 31, 1934.', 1380),
-('Discovery of the Dead Sea Scrolls', 1947, NULL, 0, 0, 'certain', 'other', 'major', 'A Bedouin shepherd''s find in a cave near Qumran opened the greatest manuscript find of modern times: some 900 scrolls from eleven caves, likely an Essene library. Every Hebrew Bible book except Esther is represented, and the Great Isaiah Scroll predates prior Hebrew manuscripts by a millennium, attesting faithful transmission.', 'First scrolls discovered in 1947; excavations continued through 1956.', 1390),
-('State of Israel Established', 1948, NULL, 0, 0, 'certain', 'other', 'major', 'As the British Mandate ended, David Ben-Gurion proclaimed the State of Israel, the first sovereign Jewish state in the land since antiquity. The ingathering of Jewish exiles and the revival of Hebrew as a living national language gave the ancient biblical homeland renewed centrality in Jewish life and Christian reflection.', 'May 14, 1948.', 1400),
-('Second Vatican Council', 1962, 1965, 0, 0, 'certain', 'other', 'moderate', 'Pope John XXIII convenes Vatican II, transforming Catholic worship (Mass in the vernacular), affirming religious liberty, and opening dialogue with Protestants and other faiths.', 'Vatican II, October 11, 1962 – December 8, 1965.', 1410),
-('Billy Graham''s Global Crusades', 1949, 2005, 0, 1, 'certain', 'other', 'moderate', 'Graham preaches the gospel to an estimated 215 million people across 185 countries over a career spanning five decades.', 'Los Angeles Crusade (1949) launched Graham''s global ministry.', 1420),
-('Lausanne Congress on World Evangelization', 1974, NULL, 0, 0, 'certain', 'other', 'minor', 'Billy Graham and John Stott convene 2,700 evangelical leaders from 150 nations; the resulting Lausanne Covenant defines evangelical mission for a generation.', 'July 16–25, 1974, Lausanne, Switzerland.', 1430),
-('Fall of the Soviet Union', 1991, NULL, 0, 0, 'certain', 'other', 'moderate', 'The collapse of the USSR opens Eastern Europe and Central Asia to religious freedom after 70 years of state atheism, sparking a wave of church growth and Bible distribution.', 'December 26, 1991.', 1440),
-('Christianity Shifts to the Global South', 2000, NULL, 0, 1, 'certain', 'other', 'moderate', 'By 2000, more Christians live in Africa, Asia, and Latin America than in Europe and North America — the most significant demographic shift in church history since the fall of Rome.', 'Philip Jenkins, The Next Christendom (2002); Pew Research Center data.', 1450),
-
--- Post-Resurrection Appearances of Jesus (IDs 143–148)
-('Appearance to Mary Magdalene', 33, NULL, 1, 1, 'probable', 'other', 'major', 'Weeping at the empty tomb, Mary Magdalene mistook the risen Jesus for the gardener until he spoke her name, and she answered, Rabbouni. John records this first appearance, and Jesus'' commission made her the first herald of the resurrection, honored in tradition as apostle to the apostles.', 'John 20:11-18; Mark 16:9-11. First post-resurrection appearance.', 911),
-('Road to Emmaus',               33, NULL, 1, 1, 'probable', 'other', 'major', 'Two downcast disciples walking to Emmaus were joined by the risen Jesus, unrecognized, who opened Moses and all the prophets to show that the Messiah had to suffer and enter glory. Luke alone tells the story in full; their eyes were opened when he broke the bread, and their hearts burned within them.', 'Luke 24:13-35; Mark 16:12-13. On the day of resurrection.', 912),
-('Appearance to the Disciples',  33, NULL, 1, 1, 'probable', 'other', 'major', 'On the evening of the resurrection, Jesus stood among his disciples behind locked doors, greeted them with peace, and showed them his hands and side. Luke notes that he ate broiled fish to prove he was no ghost, and John records him breathing on them the Holy Spirit and sending them as the Father sent him.', 'John 20:19-25; Luke 24:36-43. Thomas is absent.', 913),
-('Appearance to Thomas',         33, NULL, 1, 1, 'probable', 'other', 'major', 'A week after the resurrection, Jesus invited doubting Thomas to touch his wounds, and Thomas answered with the gospels'' most direct confession of Jesus'' deity, calling him his Lord and his God. Found only in John, the scene ends with a blessing on all who believe without seeing.', 'John 20:26-29. "Blessed are those who have not seen and yet have believed."', 914),
-('Restoration of Peter',         33, NULL, 1, 1, 'probable', 'other', 'major', 'Over a charcoal-fire breakfast by the Sea of Tiberias, the risen Jesus asked Peter three times whether he loved him, mirroring Peter''s three denials, and charged him to feed his sheep. John 21 records this restoration, which recommissioned the fallen disciple as shepherd of the early church.', 'John 21:15-19. Parallels Peter''s three denials.', 926),
-('Great Commission',             33, NULL, 1, 1, 'probable', 'other', 'major', 'On a mountain in Galilee, the risen Jesus claimed all authority in heaven and on earth and sent his disciples to make disciples of all nations, baptizing in the name of the Father, Son, and Holy Spirit. Matthew closes with this charge and the promise of Christ''s presence to the end of the age.', 'Matthew 28:16-20; Mark 16:15-18. Foundation of Christian mission.', 927),
-
--- New Testament Books Written (IDs 149–174)
--- Sorted chronologically by scholarly consensus date
-('James Written',            49, NULL, 1, 1, 'possible', 'other', 'minor', 'James, brother of Jesus, writes the earliest NT epistle from Jerusalem — practical wisdom on faith and works, addressed to Jewish Christians scattered abroad.', 'Often dated AD 45-49, before the Council of Jerusalem. Some scholars date it later (AD 60s).', 965),
-('Galatians Written',        49, NULL, 1, 1, 'probable', 'other', 'minor', 'Paul writes to the Galatian churches defending justification by faith alone against Judaizers who insisted Gentile converts must follow the Mosaic Law.', 'South Galatian theory: AD 49, before Jerusalem Council. North Galatian theory: AD 53-55.', 966),
-('1 Thessalonians Written',  51, NULL, 1, 1, 'probable', 'other', 'minor', 'Paul writes from Corinth to encourage the young Thessalonian church — the earliest surviving Pauline letter, with teaching on the return of Christ.', 'Written during Paul''s second missionary journey, c. AD 50-51.', 975),
-('2 Thessalonians Written',  51, NULL, 1, 1, 'probable', 'other', 'minor', 'Paul writes a follow-up to Thessalonica, correcting misunderstandings about the Day of the Lord and urging believers to continue working.', 'Written shortly after 1 Thessalonians, c. AD 51.', 976),
-('1 Corinthians Written',    55, NULL, 1, 1, 'probable', 'other', 'minor', 'Paul writes from Ephesus to the divided Corinthian church, addressing disputes, immorality, spiritual gifts, and the resurrection — including the great love chapter (ch. 13).', 'Written during Paul''s extended stay in Ephesus, c. AD 53-55.', 985),
-('Matthew Written',          55, NULL, 1, 1, 'possible', 'other', 'minor', 'The Gospel of Matthew is composed, presenting Jesus as the fulfillment of Old Testament prophecy, structured around five major discourses.', 'Traditional date: AD 50-60. Some scholars date it after AD 70. Likely written for a Jewish-Christian audience in Antioch.', 986),
-('Mark Written',             55, NULL, 1, 1, 'possible', 'other', 'minor', 'Mark composes the earliest Gospel — a fast-paced, action-oriented account of Jesus'' ministry, based on Peter''s eyewitness testimony.', 'Traditionally written in Rome based on Peter''s preaching. Papias: "Mark, interpreter of Peter." Dated AD 50-65.', 987),
-('2 Corinthians Written',    56, NULL, 1, 1, 'probable', 'other', 'minor', 'Paul writes his most personal letter from Macedonia, defending his apostleship and describing his sufferings — "when I am weak, then I am strong."', 'Written from Macedonia (likely Philippi), c. AD 55-56.', 988),
-('Romans Written',           57, NULL, 1, 1, 'probable', 'other', 'minor', 'Paul writes his theological masterpiece from Corinth to the Roman church — the fullest exposition of justification by faith, the role of the Law, and God''s plan for Jews and Gentiles.', 'Written from Corinth during Paul''s third journey, c. AD 57. Phoebe carried the letter (Rom 16:1-2).', 989),
-('Luke Written',             60, NULL, 1, 1, 'possible', 'other', 'minor', 'Luke the physician composes his orderly Gospel account, addressed to Theophilus — the most detailed account of Jesus'' birth and parables unique to Luke.', 'Traditional date: AD 58-63. Written before Acts. Possibly composed in Caesarea during Paul''s imprisonment.', 991),
-('Ephesians Written',        60, NULL, 1, 1, 'possible', 'other', 'minor', 'Paul writes from Roman imprisonment on the cosmic scope of God''s plan — the church as the body of Christ, spiritual blessings, and the armor of God.', 'First Roman imprisonment, c. AD 60-62. One of the "Prison Epistles."', 992),
-('Colossians Written',       60, NULL, 1, 1, 'possible', 'other', 'minor', 'Paul writes from prison to Colossae affirming Christ''s supremacy over all creation and warning against false philosophy — "in him the whole fullness of deity dwells bodily."', 'First Roman imprisonment, c. AD 60-62. Sent with Tychicus and Onesimus.', 993),
-('Philemon Written',         60, NULL, 1, 1, 'possible', 'other', 'minor', 'Paul writes a brief personal letter from prison urging Philemon to receive his runaway slave Onesimus back as a brother in Christ — a window into early Christian social ethics.', 'First Roman imprisonment, c. AD 60-62. Sent with Colossians.', 994),
-('Philippians Written',      61, NULL, 1, 1, 'probable', 'other', 'minor', 'Paul writes his letter of joy from prison to his most supportive church — including the great Christ-hymn (2:5-11) and "I can do all things through him who strengthens me."', 'First Roman imprisonment, c. AD 61-62.', 995),
-('Acts Written',             62, NULL, 1, 1, 'possible', 'other', 'minor', 'Luke composes Acts as the sequel to his Gospel, tracing the spread of the church from Jerusalem to Rome — ending abruptly with Paul under house arrest.', 'The abrupt ending suggests composition c. AD 62, before Paul''s trial outcome was known.', 996),
-('1 Timothy Written',        64, NULL, 1, 1, 'possible', 'other', 'minor', 'Paul writes to his young protégé Timothy at Ephesus with instructions on church leadership, false teaching, and godly conduct — "fight the good fight of the faith."', 'After Paul''s release from first Roman imprisonment, c. AD 63-65.', 997),
-('Titus Written',            64, NULL, 1, 1, 'possible', 'other', 'minor', 'Paul writes to Titus on Crete with instructions for appointing elders and promoting sound doctrine — "the grace of God has appeared, bringing salvation for all people."', 'After Paul''s release from first Roman imprisonment, c. AD 63-65.', 998),
-('1 Peter Written',          64, NULL, 1, 1, 'possible', 'other', 'minor', 'Peter writes from Rome (called "Babylon") to persecuted Christians scattered across Asia Minor, encouraging them to stand firm — "you are a chosen race, a royal priesthood."', 'Written from Rome, c. AD 62-64, before the Neronian persecution.', 999),
-('Jude Written',             65, NULL, 1, 1, 'possible', 'other', 'minor', 'Jude, brother of Jesus, writes a brief, urgent letter warning against false teachers who have infiltrated the church — "contend for the faith once delivered to the saints."', 'Dated AD 65-80. Written before 2 Peter, which draws on it.', 1001),
-('Hebrews Written',          67, NULL, 1, 1, 'traditional', 'other', 'minor', 'An unknown author writes this sophisticated argument for Christ''s superiority over angels, Moses, and the Levitical priesthood — "Jesus Christ is the same yesterday, today, and forever."', 'Author unknown. Pauline authorship debated since antiquity. Written before the destruction of the Temple (AD 70), likely from Rome.', 1002),
-('2 Timothy Written',        67, NULL, 1, 1, 'probable', 'other', 'minor', 'Paul writes his final letter from a Roman dungeon to Timothy — a deeply personal farewell: "I have fought the good fight, I have finished the race, I have kept the faith."', 'Paul''s second Roman imprisonment, c. AD 66-67. His last known letter before execution.', 1003),
-('2 Peter Written',          67, NULL, 1, 1, 'possible', 'other', 'minor', 'Peter writes his final letter shortly before his martyrdom, warning against false teachers and affirming the certainty of Christ''s return — "with the Lord one day is as a thousand years."', 'Written from Rome, c. AD 65-68, shortly before Peter''s death.', 1004),
-('John Written',             85, NULL, 1, 1, 'traditional', 'other', 'minor', 'The apostle John composes his Gospel in Ephesus — a theological masterpiece opening with "In the beginning was the Word," presenting Jesus as the divine Son of God.', 'Traditional date: AD 85-95. Written in Ephesus. Last Gospel composed, supplementing the Synoptics.', 1005),
-('1 John Written',           90, NULL, 1, 1, 'traditional', 'other', 'minor', 'John writes his first epistle from Ephesus, countering early Gnostic-like heresies and declaring that "God is light" and "God is love."', 'Dated AD 85-95. Written from Ephesus to churches in Asia Minor.', 1006),
-('2 John Written',           90, NULL, 1, 1, 'traditional', 'other', 'minor', 'John writes a brief letter to "the elect lady and her children" — a local church — warning against false teachers who deny Christ came in the flesh.', 'Dated AD 85-95. Written from Ephesus.', 1007),
-('3 John Written',           90, NULL, 1, 1, 'traditional', 'other', 'minor', 'John writes to Gaius commending his hospitality to traveling missionaries and rebuking Diotrephes, who "likes to put himself first."', 'Dated AD 85-95. Written from Ephesus.', 1008),
-
--- Acts Journey Detail Events (IDs 175–198) — promotes formerly journey-only stops to first-class events
-('Philip Preaches in Samaria',                  35, NULL, 1, 1, 'probable',    'miracle',   'minor',    'Philip the evangelist proclaims Christ in Samaria; many believe and miracles accompany his preaching.', 'Acts 8:4-25.', 942),
-('Ethiopian Eunuch Baptized',                   35, NULL, 1, 1, 'probable',    'salvation', 'minor',    'Philip meets an Ethiopian official on the Gaza road, explains Isaiah 53, and baptizes him.', 'Acts 8:26-40.', 943),
-('Peter Raises Tabitha in Joppa',               37, NULL, 1, 1, 'possible',    'miracle',   'minor',    'Peter raises the disciple Tabitha (Dorcas) from the dead in Joppa.', 'Acts 9:36-43.', 944),
-('Peter and Cornelius in Caesarea',             40, NULL, 1, 1, 'probable',    'salvation', 'major',    'Guided by paired visions, Peter entered the house of Cornelius, a centurion of the Italian Cohort in Caesarea, and preached Christ to Gentiles. When the Holy Spirit fell on the hearers before baptism, this Gentile Pentecost convinced the Jerusalem church that God shows no partiality, opening the door to the nations.', 'Acts 10:1-48; 11:1-18.', 945),
-('Church Established in Antioch',               43, NULL, 1, 1, 'probable',    'other',     'moderate', 'Believers are first called Christians in Antioch as Barnabas and Saul teach the church for a year.', 'Acts 11:19-30.', 946),
-('Barnabas and Saul in Cyprus',                 47, NULL, 1, 1, 'probable',    'miracle',   'minor',    'Paul blinds the sorcerer Bar-Jesus on Cyprus; the Roman proconsul Sergius Paulus believes.', 'Acts 13:4-12. First stop of the first missionary journey.', 961),
-('Paul Preaches in Pisidian Antioch',           47, NULL, 1, 1, 'probable',    'other',     'minor',    'Paul preaches in the synagogue at Pisidian Antioch; many believe but Jews stir up opposition and drive the missionaries out.', 'Acts 13:14-52.', 962),
-('Iconium — Belief and Opposition',             48, NULL, 1, 1, 'probable',    'other',     'minor',    'Paul and Barnabas preach in Iconium; the city divides; they flee before a planned stoning.', 'Acts 14:1-7.', 963),
-('Lystra — Healing and Stoning',                48, NULL, 1, 1, 'probable',    'miracle',   'minor',    'Paul heals a man lame from birth in Lystra; the crowd hails them as gods, then stones Paul and leaves him for dead.', 'Acts 14:8-20.', 964),
-('Derbe — Many Disciples',                      48, NULL, 1, 1, 'probable',    'other',     'minor',    'Paul and Barnabas make many disciples in Derbe and begin the return journey strengthening the new churches.', 'Acts 14:20-21.', 965),
-('Macedonian Vision at Troas',                  50, NULL, 1, 1, 'probable',    'prophecy',  'minor',    'Paul receives a vision at Troas: "Come over to Macedonia and help us." The gospel crosses into Europe.', 'Acts 16:8-10.', 981),
-('Lydia Converted in Philippi',                 50, NULL, 1, 1, 'probable',    'salvation', 'moderate', 'Lydia, a seller of purple cloth, becomes the first European convert; Paul and Silas are imprisoned and the jailer is converted.', 'Acts 16:11-40.', 982),
-('Paul in Thessalonica',                        50, NULL, 1, 1, 'probable',    'other',     'minor',    'Paul reasons in the synagogue at Thessalonica for three Sabbaths; opponents accuse the missionaries of "turning the world upside down."', 'Acts 17:1-9.', 983),
-('Noble-Minded Bereans',                        50, NULL, 1, 1, 'probable',    'other',     'minor',    'The Bereans receive the word eagerly and examine the Scriptures daily to verify Paul''s message.', 'Acts 17:10-15.', 984),
-('Paul on the Areopagus in Athens',             51, NULL, 1, 1, 'probable',    'other',     'moderate', 'Paul addresses the philosophers of Athens on Mars Hill, proclaiming the "Unknown God" and the resurrection.', 'Acts 17:16-34.', 985),
-('Paul in Corinth — 18 Months',                 51, 53,   1, 1, 'probable',    'other',     'moderate', 'Paul stays 18 months with Aquila and Priscilla in Corinth; the proconsul Gallio dismisses charges against him.', 'Acts 18:1-17. Gallio inscription dates this to AD 51-52.', 986),
-('Paul in Ephesus — 2 Years',                   54, 57,   1, 1, 'probable',    'miracle',   'moderate', 'Paul teaches in Ephesus for over two years with extraordinary miracles; new believers burn their occult scrolls; Demetrius the silversmith starts a riot.', 'Acts 19:1-41.', 991),
-('Farewell to Ephesian Elders at Miletus',      57, NULL, 1, 1, 'probable',    'other',     'minor',    'Paul calls the Ephesian elders to Miletus for an emotional farewell: "I have not coveted anyone''s silver or gold."', 'Acts 20:17-38.', 992),
-('Paul Arrested in Jerusalem',                  57, NULL, 1, 1, 'probable',    'other',     'moderate', 'Paul is seized in the temple, beaten by the crowd, and transferred to Roman custody under the tribune Claudius Lysias.', 'Acts 21:27–23:10.', 993),
-('Paul''s Trial before Felix and Festus',       58, 60,   1, 1, 'probable',    'other',     'moderate', 'Paul is held in Caesarea for two years under Felix and then Festus; he defends himself before Agrippa II and appeals to Caesar.', 'Acts 23:23–26:32.', 994),
-('Storm and Fair Havens of Crete',              60, NULL, 1, 1, 'probable',    'other',     'minor',    'Paul warns against sailing late in the season; a violent northeaster batters the ship for 14 days as it drifts toward Malta.', 'Acts 27:7-44.', 995),
-('Shipwreck on Malta',                          60, NULL, 1, 1, 'probable',    'miracle',   'moderate', 'All 276 aboard reach shore safely; Paul is bitten by a viper but unharmed and heals the sick on the island for three months.', 'Acts 27:39–28:10.', 996),
-('Landing at Puteoli',                          61, NULL, 1, 1, 'probable',    'other',     'minor',    'Paul and his companions land at the Italian port of Puteoli and stay seven days with believers there.', 'Acts 28:13-14.', 997),
-('Paul Arrives in Rome',                        61, 63,   1, 1, 'probable',    'other',     'major',    'After appealing to Caesar, surviving shipwreck at Malta, Paul reached Rome under guard and spent two years in rented lodging, welcoming all and preaching the kingdom unhindered. Acts closes with the gospel proclaimed in the empire''s capital, and tradition places several prison epistles in this period.', 'Acts 28:16-31.', 998);
-
--- ============================================================
--- BIBLICAL BOOKS
--- ============================================================
-INSERT INTO biblical_books (name, abbreviation, testament, genre, approx_writing_year, period_covered_start, period_covered_end) VALUES
-('Genesis',        'Gen',   'OT', 'law',       -1491, -4004, -1706),
-('Exodus',         'Exod',  'OT', 'law',       -1491, -1571, -1451),
-('Leviticus',      'Lev',   'OT', 'law',       -1491, -1491, -1490),
-('Numbers',        'Num',   'OT', 'law',       -1491, -1491, -1451),
-('Deuteronomy',    'Deut',  'OT', 'law',       -1451, -1451, -1451),
-('Joshua',         'Josh',  'OT', 'history',   -1420, -1451, -1420),
-('Judges',         'Judg',  'OT', 'history',   -1095, -1420, -1095),
-('Ruth',           'Ruth',  'OT', 'history',   -1095, -1195, -1145),
-('1 Samuel',       '1 Sam', 'OT', 'history',    -975, -1150, -1056),
-('2 Samuel',       '2 Sam', 'OT', 'history',    -975, -1055, -1015),
-('1 Kings',        '1 Kgs', 'OT', 'history',    -560, -1015,  -853),
-('2 Kings',        '2 Kgs', 'OT', 'history',    -560,  -853,  -586),
-('1 Chronicles',   '1 Chr', 'OT', 'history',    -450, -4004, -1015),
-('2 Chronicles',   '2 Chr', 'OT', 'history',    -450, -1015,  -586),
-('Ezra',           'Ezra',  'OT', 'history',    -440,  -538,  -458),
-('Nehemiah',       'Neh',   'OT', 'history',    -430,  -445,  -430),
-('Esther',         'Esth',  'OT', 'history',    -470,  -486,  -465),
-('Job',            'Job',   'OT', 'wisdom',    -2000, -2000, -2000),
-('Psalms',         'Ps',    'OT', 'wisdom',    -1015, -1491,  -450),
-('Proverbs',       'Prov',  'OT', 'wisdom',     -995, -1015,  -700),
-('Ecclesiastes',   'Eccl',  'OT', 'wisdom',     -985, -1015,  -975),
-('Song of Solomon','Song',  'OT', 'wisdom',    -1005, -1015,  -975),
-('Isaiah',         'Isa',   'OT', 'prophecy',   -700,  -740,  -680),
-('Jeremiah',       'Jer',   'OT', 'prophecy',   -586,  -627,  -586),
-('Lamentations',   'Lam',   'OT', 'prophecy',   -586,  -586,  -586),
-('Ezekiel',        'Ezek',  'OT', 'prophecy',   -570,  -593,  -571),
-('Daniel',         'Dan',   'OT', 'prophecy',   -536,  -605,  -536),
-('Hosea',          'Hos',   'OT', 'prophecy',   -725,  -755,  -725),
-('Joel',           'Joel',  'OT', 'prophecy',   -835,  -835,  -835),
-('Amos',           'Amos',  'OT', 'prophecy',   -760,  -760,  -760),
-('Obadiah',        'Obad',  'OT', 'prophecy',   -586,  -586,  -586),
-('Jonah',          'Jonah', 'OT', 'prophecy',   -760,  -760,  -760),
-('Micah',          'Mic',   'OT', 'prophecy',   -700,  -735,  -700),
-('Nahum',          'Nah',   'OT', 'prophecy',   -660,  -660,  -660),
-('Habakkuk',       'Hab',   'OT', 'prophecy',   -607,  -607,  -607),
-('Zephaniah',      'Zeph',  'OT', 'prophecy',   -625,  -625,  -625),
-('Haggai',         'Hag',   'OT', 'prophecy',   -520,  -520,  -520),
-('Zechariah',      'Zech',  'OT', 'prophecy',   -520,  -520,  -480),
-('Malachi',        'Mal',   'OT', 'prophecy',   -430,  -430,  -430),
-('Matthew',        'Matt',  'NT', 'gospel',       55,    -5,    33),
-('Mark',           'Mark',  'NT', 'gospel',       55,    26,    33),
-('Luke',           'Luke',  'NT', 'gospel',       60,    -5,    33),
-('John',           'John',  'NT', 'gospel',       85,    -5,    33),
-('Acts',           'Acts',  'NT', 'history',      62,    33,    62),
-('Romans',         'Rom',   'NT', 'epistle',      57,    57,    57),
-('1 Corinthians',  '1 Cor', 'NT', 'epistle',      55,    55,    55),
-('2 Corinthians',  '2 Cor', 'NT', 'epistle',      56,    56,    56),
-('Galatians',      'Gal',   'NT', 'epistle',      49,    49,    49),
-('Ephesians',      'Eph',   'NT', 'epistle',      60,    60,    60),
-('Philippians',    'Phil',  'NT', 'epistle',      61,    61,    61),
-('Colossians',     'Col',   'NT', 'epistle',      60,    60,    60),
-('1 Thessalonians','1 Thess','NT','epistle',       51,    51,    51),
-('2 Thessalonians','2 Thess','NT','epistle',       51,    51,    51),
-('1 Timothy',      '1 Tim', 'NT', 'epistle',      64,    64,    64),
-('2 Timothy',      '2 Tim', 'NT', 'epistle',      67,    67,    67),
-('Titus',          'Titus', 'NT', 'epistle',      64,    64,    64),
-('Philemon',       'Phlm',  'NT', 'epistle',      60,    60,    60),
-('Hebrews',        'Heb',   'NT', 'epistle',      67,    67,    67),
-('James',          'Jas',   'NT', 'epistle',      49,    49,    49),
-('1 Peter',        '1 Pet', 'NT', 'epistle',      64,    64,    64),
-('2 Peter',        '2 Pet', 'NT', 'epistle',      67,    67,    67),
-('1 John',         '1 John','NT', 'epistle',      90,    90,    90),
-('2 John',         '2 John','NT', 'epistle',      90,    90,    90),
-('3 John',         '3 John','NT', 'epistle',      90,    90,    90),
-('Jude',           'Jude',  'NT', 'epistle',      65,    65,    65),
-('Revelation',     'Rev',   'NT', 'apocalyptic',  95,    95,    95);
-
--- ============================================================
--- LOCATIONS
--- ============================================================
-INSERT INTO locations (name, modern_name, latitude, longitude, region, description) VALUES
-('Eden',        NULL,           NULL,    NULL,    'Mesopotamia', 'Garden where God placed Adam and Eve.'),
-('Ur',          'Tell el-Muqayyar', 30.96, 46.10, 'Mesopotamia', 'Birthplace of Abraham in southern Mesopotamia.'),
-('Haran',       'Harran',       36.86, 39.03, 'Mesopotamia', 'Where Abraham''s family settled before Canaan.'),
-('Canaan',      'Israel/Palestine', 31.77, 35.23, 'Levant', 'The Promised Land.'),
-('Egypt',       'Egypt',        26.82, 30.80, 'North Africa', 'Where Israel was enslaved for ~400 years.'),
-('Mount Sinai', 'Jebel Musa',   28.54, 33.97, 'Sinai Peninsula', 'Where God gave Moses the Law.'),
-('Jerusalem',   'Jerusalem',    31.77, 35.23, 'Judah', 'City of David; location of the Temple.'),
-('Bethlehem',   'Bethlehem',    31.70, 35.21, 'Judah', 'Birthplace of David and Jesus.'),
-('Babylon',     'Hillah, Iraq', 32.54, 44.42, 'Mesopotamia', 'Capital of Babylonian Empire; place of exile.'),
-('Nazareth',    'Nazareth',     32.70, 35.30, 'Galilee', 'Hometown of Jesus.'),
-('Capernaum',   'Kfar Nahum',   32.8831, 35.5747, 'Galilee', 'Base of Jesus'' Galilean ministry.'),
-('Damascus',    'Damascus',     33.51, 36.29, 'Syria', 'Where Paul was converted.'),
-('Antioch',     'Antakya',      36.20, 36.16, 'Syria', 'Center of early Gentile Christianity.'),
-('Rome',        'Rome',         41.90, 12.50, 'Italy', 'Capital of the Roman Empire; center of early church.'),
-('Patmos',      'Patmos',       37.32, 26.55, 'Aegean Sea', 'Island where John wrote Revelation.'),
-('Cana',        'Kafr Kanna',   32.75, 35.34, 'Galilee', 'Village where Jesus turned water into wine.'),
-('Sea of Galilee','Lake Tiberias',32.83,35.58, 'Galilee', 'Lake where Jesus calmed the storm and walked on water.'),
-('Bethsaida',   'Et-Tell',      32.91, 35.63, 'Galilee', 'Fishing village; home of Peter, Andrew, and Philip.'),
-('Nain',        'Nein',         32.63, 35.35, 'Galilee', 'Village where Jesus raised the widow''s son.'),
-('Bethany',     'Al-Eizariya',  31.77, 35.26, 'Judea', 'Village near Jerusalem; home of Mary, Martha, and Lazarus.'),
-('Gadara',      'Umm Qais',     32.66, 35.68, 'Decapolis', 'Region where Jesus healed the demon-possessed man.'),
-('Jericho',     'Jericho',      31.87, 35.44, 'Judea', 'Ancient city near the Jordan; site of Bartimaeus'' healing.'),
-('Tyre & Sidon','Tyre/Saida',   33.27, 35.20, 'Phoenicia', 'Coastal cities where Jesus healed the Syrophoenician woman''s daughter.'),
-('Decapolis',   NULL,           32.60, 35.80, 'Transjordan', 'League of ten Greco-Roman cities east of the Jordan.'),
-('Jordan River', NULL,          31.76, 35.56, 'Judea', 'River where Naaman was healed and Jesus was baptized.'),
--- Acts-journey locations (IDs 26-42)
-('Samaria',     'Sebastia',     32.28, 35.19, 'Samaria', 'Philip preached and performed miracles here (Acts 8).'),
-('Gaza Road',   NULL,           31.50, 34.47, 'Judea', 'Desert road where Philip baptized the Ethiopian eunuch (Acts 8:26).'),
-('Joppa',       'Jaffa/Tel Aviv',31.75,34.75, 'Judea', 'Where Peter raised Tabitha and had the vision of the sheet (Acts 9-10).'),
-('Caesarea',    'Caesarea',     32.50, 34.89, 'Judea', 'Roman capital of Judea; house of Cornelius; Paul''s imprisonment (Acts 10, 23-26).'),
-('Cyprus',      'Cyprus',       34.92, 33.63, 'Mediterranean', 'Home of Barnabas; first stop on Paul''s first journey (Acts 13:4-12).'),
-('Pisidian Antioch','Yalvaç',   38.30, 31.18, 'Asia Minor', 'Paul preached in the synagogue; many believed (Acts 13:14-52).'),
-('Iconium',     'Konya',        37.87, 32.49, 'Asia Minor', 'Paul and Barnabas preached but were driven out (Acts 14:1-7).'),
-('Lystra',      'Hatunsaray',   37.57, 32.36, 'Asia Minor', 'Paul healed a lame man; later stoned (Acts 14:8-20).'),
-('Derbe',       'Kerti Höyük',  37.36, 33.35, 'Asia Minor', 'Paul and Barnabas made many disciples (Acts 14:20-21).'),
-('Troas',       'Dalyan',       39.76, 26.18, 'Asia Minor', 'Paul received the Macedonian vision (Acts 16:8-10).'),
-('Philippi',    'Kavala region',41.01, 24.29, 'Macedonia', 'First European church; Lydia converted; Paul imprisoned (Acts 16:11-40).'),
-('Thessalonica','Thessaloniki', 40.63, 22.95, 'Macedonia', 'Paul preached in synagogue; accused of sedition (Acts 17:1-9).'),
-('Berea',       'Veria',        40.52, 22.20, 'Macedonia', 'Bereans examined Scriptures daily to verify Paul''s teaching (Acts 17:10-15).'),
-('Athens',      'Athens',       37.97, 23.73, 'Greece', 'Paul preached on the Areopagus about the Unknown God (Acts 17:16-34).'),
-('Corinth',     'Ancient Corinth',37.91,22.88,'Greece', 'Paul stayed 18 months; Gallio tribunal (Acts 18:1-17).'),
-('Ephesus',     'Selçuk',       37.94, 27.34, 'Asia Minor', 'Paul taught 2 years; riot of Demetrius the silversmith (Acts 19).'),
-('Miletus',     'Balat',        37.53, 27.28, 'Asia Minor', 'Paul''s farewell to Ephesian elders (Acts 20:17-38).'),
-('Crete',       'Crete',        35.24, 24.90, 'Mediterranean', 'Paul''s ship stopped at Fair Havens (Acts 27:7-12).'),
-('Malta',       'Malta',        35.94, 14.38, 'Mediterranean', 'Paul shipwrecked; healed the sick (Acts 27:39–28:10).'),
-('Puteoli',     'Pozzuoli',     40.82, 14.12, 'Italy', 'Port where Paul landed in Italy (Acts 28:13).'),
--- Genesis / Exodus / Luke / Jonah journey locations (IDs 46-57)
-('Shechem',     'Nablus',       32.21, 35.28, 'Samaria', 'Abraham built an altar here; Jacob bought land. First stop in Canaan.'),
-('Hebron',      'Al-Khalil',    31.53, 35.10, 'Judah', 'Abraham settled at the oaks of Mamre; burial site of the patriarchs.'),
-('Beersheba',   'Be''er Sheva', 31.25, 34.79, 'Negev', 'Well of the oath between Abraham and Abimelech; Isaac and Jacob lived here.'),
-('Goshen',      'Wadi Tumilat', 30.55, 31.80, 'Egypt', 'Region in eastern Egypt where Israel settled (Gen 45-47).'),
-('Peniel',      'Tulul ed-Dhahab',32.19,35.66,'Transjordan', 'Where Jacob wrestled with God and was renamed Israel (Gen 32:22-32).'),
-('Red Sea Crossing','Nuweiba',  29.03, 34.66, 'Sinai', 'Traditional and alternative sites for Israel''s crossing of the sea.'),
-('Marah',       'Ain Hawarah',  29.18, 33.11, 'Sinai', 'Bitter waters made sweet by Moses (Exod 15:23-25).'),
-('Elim',        'Wadi Gharandel',28.98,33.10, 'Sinai', 'Oasis with twelve springs and seventy palm trees (Exod 15:27).'),
-('Rephidim',    'Wadi Feiran',  28.70, 33.63, 'Sinai', 'Water from the rock; battle with Amalek (Exod 17).'),
-('Kadesh Barnea','Ein el-Qudeirat',30.60,34.40,'Negev', 'Israel camped before entering Canaan; spies sent out (Num 13-14).'),
-('Nineveh',     'Mosul, Iraq',  36.36, 43.15, 'Mesopotamia', 'Capital of Assyria where Jonah preached repentance.'),
-('Emmaus',      'Emmaus Nicopolis',31.84,34.99,'Judea', 'Village where the risen Jesus appeared to two disciples (Luke 24:13-35).'),
--- Church History Locations (IDs 58–80)
-('Constantinople','Istanbul, Turkey',41.01,28.98,'Asia Minor', 'Capital of the Eastern Roman Empire; seat of ecumenical patriarchate.'),
-('Carthage',    'Tunis, Tunisia',   36.86,10.32,'North Africa', 'Important early church center; home of Tertullian, Cyprian, and Augustine.'),
-('Hippo Regius','Annaba, Algeria',  36.90, 7.77,'North Africa', 'Bishopric of Augustine of Hippo.'),
-('Nicaea',      'İznik, Turkey',    40.43,29.72,'Asia Minor', 'Site of the First Ecumenical Council (325 AD).'),
-('Chalcedon',   'Kadıköy, Istanbul',40.98,29.03,'Asia Minor', 'Site of the Council of Chalcedon (451 AD).'),
-('Wittenberg',  'Wittenberg, Germany',51.87,12.65,'Europe', 'Where Martin Luther posted the 95 Theses (1517).'),
-('Geneva',      'Geneva, Switzerland',46.20,6.15,'Europe', 'Center of John Calvin''s Reformed tradition.'),
-('Mainz',       'Mainz, Germany',   50.00, 8.27,'Europe', 'Gutenberg''s city; birthplace of the printing press.'),
-('Canterbury',  'Canterbury, England',51.28,1.08,'Europe', 'Seat of the Archbishop of Canterbury; English Christianity.'),
-('Worms',       'Worms, Germany',   49.63, 8.37,'Europe', 'Diet of Worms (1521); Luther''s "Here I stand."'),
-('Trent',       'Trento, Italy',    46.07,11.12,'Europe', 'Council of Trent (1545–1563); Catholic Counter-Reformation.'),
-('Aldersgate',  'London, England',  51.52,-0.10,'Europe', 'Site of John Wesley''s evangelical conversion (1738).'),
-('Edinburgh',   'Edinburgh, Scotland',55.95,-3.19,'Europe', 'Edinburgh Missionary Conference (1910).'),
-('Azusa Street','Los Angeles, USA', 34.05,-118.25,'Americas', 'Azusa Street Revival (1906); birth of Pentecostalism.'),
-('Serampore',   'Serampore, India', 22.75,88.34,'Asia', 'William Carey''s mission base; Bible translation center.'),
-('Qumran',      'Qumran, Israel',   31.74,35.46,'Judea', 'Site where the Dead Sea Scrolls were discovered (1947).'),
-('Northampton', 'Northampton, MA, USA',42.33,-72.63,'Americas', 'Jonathan Edwards and the First Great Awakening.'),
-('Assisi',      'Assisi, Italy',    43.07,12.62,'Europe', 'Home of Francis of Assisi.'),
-('Nuremberg',   'Nuremberg, Germany',49.45,11.08,'Europe', 'Center of Reformation-era publishing and reform.'),
-('Whitby',      'Whitby, England',  54.49,-0.62,'Europe', 'Synod of Whitby (664); Celtic vs. Roman church.'),
-('Clermont',    'Clermont-Ferrand, France',45.78,3.08,'Europe', 'Council of Clermont (1095); Pope Urban II calls the First Crusade.'),
-('Wycliffe Country','Lutterworth, England',52.46,-1.20,'Europe', 'Home of John Wycliffe; Morning Star of the Reformation.');
-
--- ============================================================
--- PERSON-EVENT RELATIONSHIPS
--- ============================================================
-INSERT INTO person_events (person_id, event_id, role_in_event) VALUES
--- Adam & Eve
-(1, 1, 'participant'), (1, 2, 'participant'),
-(2, 1, 'participant'), (2, 2, 'participant'),
--- Noah
-(3, 3, 'protagonist'),
--- Abraham
-(4, 5, 'protagonist'), (4, 6, 'participant'), (4, 7, 'protagonist'),
--- Jacob
-(8, 10, 'protagonist'),
--- Joseph
-(9, 11, 'protagonist'), (9, 12, 'catalyst'),
--- Moses
-(10, 14, 'protagonist'), (10, 15, 'leader'), (10, 16, 'recipient'), (10, 17, 'leader'),
--- Aaron
-(11, 14, 'participant'), (11, 16, 'participant'),
--- Joshua
-(13, 19, 'protagonist'), (13, 20, 'leader'),
--- Deborah
-(14, 22, 'protagonist'),
--- Gideon
-(15, 23, 'protagonist'),
--- Samuel
-(18, 25, 'protagonist'),
--- Saul
-(19, 25, 'participant'),
--- David
-(20, 26, 'protagonist'), (20, 27, 'protagonist'), (20, 28, 'recipient'),
--- Solomon
-(21, 29, 'protagonist'),
--- Elijah
-(23, 31, 'protagonist'),
--- Hezekiah
-(29, 33, 'protagonist'),
--- Josiah
-(30, 34, 'protagonist'),
--- Jeremiah
-(26, 35, 'witness'),
--- Ezekiel
-(27, 36, 'participant'),
--- Daniel
-(28, 36, 'participant'),
--- Ezra
-(33, 39, 'protagonist'),
--- Nehemiah
-(34, 40, 'protagonist'),
--- Esther
-(36, 41, 'protagonist'),
--- Jesus (Birth, Baptism, Sermon, Crucifixion, Resurrection, Ascension)
-(37, 42, 'protagonist'), (37, 43, 'protagonist'), (37, 44, 'teacher'),
-(37, 45, 'protagonist'), (37, 46, 'protagonist'), (37, 47, 'protagonist'),
--- Ascension witnesses
-(40, 47, 'witness'), (42, 47, 'witness'),
--- Jesus miracles (events 58-93)
-(37, 58, 'protagonist'), (37, 59, 'protagonist'), (37, 60, 'protagonist'),
-(37, 61, 'protagonist'), (37, 62, 'protagonist'), (37, 63, 'protagonist'),
-(37, 64, 'protagonist'), (37, 65, 'protagonist'), (37, 66, 'protagonist'),
-(37, 67, 'protagonist'), (37, 68, 'protagonist'), (37, 69, 'protagonist'),
-(37, 70, 'protagonist'), (37, 71, 'protagonist'), (37, 72, 'protagonist'),
-(37, 73, 'protagonist'), (37, 74, 'protagonist'), (37, 75, 'protagonist'),
-(37, 76, 'protagonist'), (37, 77, 'protagonist'), (37, 78, 'protagonist'),
-(37, 79, 'protagonist'), (37, 80, 'protagonist'), (37, 81, 'protagonist'),
-(37, 82, 'protagonist'), (37, 83, 'protagonist'), (37, 84, 'protagonist'),
-(37, 85, 'protagonist'), (37, 86, 'protagonist'), (37, 87, 'protagonist'),
-(37, 88, 'protagonist'), (37, 89, 'protagonist'), (37, 90, 'protagonist'),
-(37, 91, 'protagonist'), (37, 92, 'protagonist'), (37, 93, 'protagonist'),
--- Peter in miracles
-(40, 60, 'participant'), -- Great Catch of Fish
-(40, 62, 'participant'), -- Peter's mother-in-law
-(40, 76, 'participant'), -- Walking on Water
-(40, 83, 'participant'), -- Coin in Fish's Mouth
-(40, 93, 'participant'), -- Catch of 153 Fish
--- Mary
-(38, 42, 'participant'),
--- John the Baptist
-(39, 43, 'officiant'),
--- Peter
-(40, 48, 'preacher'), (40, 52, 'participant'),
--- Paul
-(41, 50, 'protagonist'), (41, 51, 'protagonist'), (41, 52, 'participant'),
-(41, 53, 'protagonist'), (41, 54, 'protagonist'),
--- Stephen
-(44, 49, 'protagonist'),
--- John
-(42, 56, 'author'),
--- Elisha heals Naaman
-(24, 94, 'protagonist'),
-(48, 94, 'protagonist'),
--- New people in events
-(49, 1, 'participant'),   -- Seth in Creation (born after)
-(3, 4, 'participant'),     -- Noah in Tower of Babel
-(53, 4, 'participant'),    -- Shem in Tower of Babel
-(54, 4, 'participant'),    -- Ham in Tower of Babel
-(55, 4, 'participant'),    -- Japheth in Tower of Babel
-(56, 5, 'participant'),    -- Lot in Call of Abraham (traveled with Abraham)
-(57, 7, 'participant'),    -- Ishmael in Binding of Isaac (context)
-(58, 5, 'participant'),    -- Hagar in Call of Abraham (Sarah's servant)
-(59, 10, 'participant'),   -- Esau in Jacob Wrestles God (context)
-(61, 13, 'participant'),   -- Leah in Israel Enters Egypt
-(62, 11, 'participant'),   -- Rachel in Joseph Sold (died before Egypt)
-(63, 13, 'participant'),   -- Judah in Israel Enters Egypt
-(64, 13, 'participant'),   -- Benjamin in Israel Enters Egypt
-(65, 11, 'participant'),   -- Reuben in Joseph Sold (tried to save him)
-(66, 14, 'antagonist'),    -- Pharaoh in The Exodus
-(66, 15, 'antagonist'),    -- Pharaoh in Crossing the Red Sea
-(67, 17, 'participant'),   -- Caleb in Wilderness Wandering
-(67, 19, 'participant'),   -- Caleb in Conquest of Canaan
-(70, 14, 'participant'),   -- Zipporah in The Exodus
-(69, 16, 'participant'),   -- Jethro in Giving of the Law (advised Moses)
-(71, 21, 'protagonist'),   -- Othniel in Period of Judges
-(72, 21, 'protagonist'),   -- Ehud in Period of Judges
-(73, 21, 'protagonist'),   -- Jephthah in Period of Judges
-(74, 21, 'participant'),   -- Eli in Period of Judges
-(76, 21, 'participant'),   -- Boaz in Period of Judges
-(78, 21, 'participant'),   -- Abimelech in Period of Judges
-(81, 26, 'participant'),   -- Joab in David Anointed King
-(81, 27, 'participant'),   -- Joab in David Captures Jerusalem
-(83, 25, 'participant'),   -- Jonathan in Saul Anointed King
-(84, 25, 'participant'),   -- Michal in Saul Anointed King (context)
-(80, 28, 'participant'),   -- Bathsheba in Davidic Covenant (context)
-(85, 30, 'protagonist'),   -- Rehoboam in Kingdom Divides
-(31, 30, 'protagonist'),   -- Jeroboam I in Kingdom Divides
-(107, 31, 'antagonist'),   -- Jezebel in Elijah on Mount Carmel (context)
-(103, 32, 'participant'),  -- Jehu killed kings of Israel
-(91, 35, 'participant'),   -- Manasseh in Fall of Jerusalem (caused it, partially)
-(92, 35, 'participant'),   -- Jehoiakim in Fall of Jerusalem
-(93, 35, 'protagonist'),   -- Zedekiah in Fall of Jerusalem (last king)
-(120, 41, 'participant'),  -- Mordecai in Esther Saves Her People
-(122, 42, 'participant'),  -- Joseph of Nazareth in Birth of Jesus
-(145, 42, 'antagonist'),   -- Herod the Great in Birth of Jesus
-(135, 45, 'participant'),  -- Judas Iscariot in Crucifixion (betrayal)
-(146, 45, 'protagonist'),  -- Pontius Pilate in Crucifixion
-(147, 42, 'witness'),      -- Anna in Birth of Jesus (at Temple)
-(125, 46, 'witness'),      -- Mary Magdalene in Resurrection
-(126, 45, 'participant'),  -- Nicodemus in Crucifixion (burial)
-(123, 86, 'protagonist'),  -- Lazarus in Raising of Lazarus
-(124, 86, 'participant'),  -- Martha in Raising of Lazarus
-(136, 48, 'participant'),  -- Matthias in Pentecost (was present)
-(137, 51, 'participant'),  -- Mark in Paul's First Missionary Journey
-(138, 53, 'participant'),  -- Silas in Paul's Second Missionary Journey
-(142, 53, 'participant'),  -- Apollos in Paul's Second Missionary Journey (context)
--- Gen 11 ancestors in events
-(155, 4, 'participant'),   -- Peleg in Tower of Babel (born when earth divided)
-(159, 5, 'participant'),   -- Terah in Call of Abraham (Abraham left after Terah's death)
--- 100 Additional People in events
-(160, 2, 'participant'),   -- Cain in The Fall (born after)
-(161, 2, 'participant'),   -- Abel in The Fall (born after)
-(162, 13, 'participant'),  -- Dinah in Israel Enters Egypt
-(163, 13, 'participant'),  -- Simeon in Israel Enters Egypt
-(164, 13, 'participant'),  -- Levi in Israel Enters Egypt
-(182, 19, 'participant'),  -- Rahab in Conquest of Canaan
-(183, 19, 'participant'),  -- Achan in Conquest of Canaan
-(184, 17, 'participant'),  -- Eleazar in Wilderness Wandering
-(184, 19, 'participant'),  -- Eleazar in Conquest of Canaan
-(185, 14, 'participant'),  -- Hur in The Exodus
-(189, 22, 'participant'),  -- Barak in Deborah's Victory
-(190, 22, 'participant'),  -- Jael in Deborah's Victory
-(191, 22, 'antagonist'),   -- Sisera in Deborah's Victory
-(199, 26, 'antagonist'),   -- Ish-bosheth rival to David
-(200, 26, 'participant'),  -- Abner in David Anointed
-(208, 28, 'participant'),  -- Zadok in Davidic Covenant
-(214, 35, 'antagonist'),   -- Nebuchadnezzar in Fall of Jerusalem
-(214, 36, 'protagonist'),  -- Nebuchadnezzar in Babylonian Exile
-(218, 36, 'participant'),  -- Shadrach in Babylonian Exile
-(219, 36, 'participant'),  -- Meshach in Babylonian Exile
-(220, 36, 'participant'),  -- Abednego in Babylonian Exile
-(216, 37, 'protagonist'),  -- Cyrus in Edict of Cyrus
-(226, 41, 'antagonist'),   -- Haman in Esther Saves Her People
-(228, 41, 'participant'),  -- Xerxes in Esther Saves Her People
-(229, 42, 'witness'),      -- Simeon at Temple in Birth of Jesus
-(232, 43, 'antagonist'),   -- Herod Antipas in Baptism of Jesus (killed John)
-(235, 45, 'antagonist'),   -- Caiaphas in Crucifixion
-(236, 45, 'participant'),  -- Annas in Crucifixion
-(237, 45, 'participant'),  -- Barabbas in Crucifixion
-(238, 45, 'participant'),  -- Joseph of Arimathea in Crucifixion (burial)
-(239, 45, 'participant'),  -- Simon of Cyrene in Crucifixion
-(243, 86, 'participant'),  -- Mary of Bethany in Raising of Lazarus
-(244, 50, 'participant'),  -- Ananias in Paul's Conversion
-(245, 52, 'participant'),  -- Cornelius in Council of Jerusalem (context)
-(254, 49, 'antagonist');   -- Herod Agrippa I in Stephen's Martyrdom (killed James)
--- Post-Resurrection appearances
-INSERT INTO person_events (person_id, event_id, role_in_event) VALUES
-(37, 143, 'protagonist'),  -- Jesus in Appearance to Mary Magdalene
-(37, 144, 'protagonist'),  -- Jesus in Road to Emmaus
-(37, 145, 'protagonist'),  -- Jesus in Appearance to Disciples
-(37, 146, 'protagonist'),  -- Jesus in Appearance to Thomas
-(37, 147, 'protagonist'),  -- Jesus in Restoration of Peter
-(37, 148, 'protagonist'),  -- Jesus in Great Commission
-(125, 143, 'witness'),     -- Mary Magdalene in Appearance to Mary Magdalene
-(242, 144, 'participant'), -- Cleopas in Road to Emmaus
-(40, 145, 'participant'),  -- Peter in Appearance to Disciples
-(42, 145, 'participant'),  -- John in Appearance to Disciples
-(131, 146, 'protagonist'), -- Thomas in Appearance to Thomas
-(40, 146, 'participant'),  -- Peter in Appearance to Thomas
-(40, 147, 'protagonist'),  -- Peter in Restoration of Peter
-(42, 147, 'participant'),  -- John in Restoration of Peter
-(40, 148, 'participant'),  -- Peter in Great Commission
-(42, 148, 'participant');  -- John in Great Commission
--- NT Books Written — author links
-INSERT INTO person_events (person_id, event_id, role_in_event) VALUES
-(144, 149, 'author'),  -- James brother of Jesus → James Written
-(41, 150, 'author'),   -- Paul → Galatians Written
-(41, 151, 'author'),   -- Paul → 1 Thessalonians Written
-(41, 152, 'author'),   -- Paul → 2 Thessalonians Written
-(41, 153, 'author'),   -- Paul → 1 Corinthians Written
-(127, 154, 'author'),  -- Matthew → Matthew Written
-(137, 155, 'author'),  -- Mark → Mark Written
-(41, 156, 'author'),   -- Paul → 2 Corinthians Written
-(41, 157, 'author'),   -- Paul → Romans Written
-(47, 158, 'author'),   -- Luke → Luke Written
-(41, 159, 'author'),   -- Paul → Ephesians Written
-(41, 160, 'author'),   -- Paul → Colossians Written
-(41, 161, 'author'),   -- Paul → Philemon Written
-(41, 162, 'author'),   -- Paul → Philippians Written
-(47, 163, 'author'),   -- Luke → Acts Written
-(41, 164, 'author'),   -- Paul → 1 Timothy Written
-(41, 165, 'author'),   -- Paul → Titus Written
-(40, 166, 'author'),   -- Peter → 1 Peter Written
-(41, 169, 'author'),   -- Paul → 2 Timothy Written
-(40, 170, 'author'),   -- Peter → 2 Peter Written
-(42, 171, 'author'),   -- John → John Written
-(42, 172, 'author'),   -- John → 1 John Written
-(42, 173, 'author'),   -- John → 2 John Written
-(42, 174, 'author');   -- John → 3 John Written
-
--- ============================================================
--- PERSON RELATIONSHIPS
--- ============================================================
-INSERT INTO person_relationships (person_id_1, person_id_2, relationship_type) VALUES
-(4, 5, 'spouse'),   (5, 4, 'spouse'),
-(4, 6, 'parent'),   (6, 4, 'child'),
-(6, 7, 'spouse'),   (7, 6, 'spouse'),
-(6, 8, 'parent'),   (8, 6, 'child'),
-(8, 9, 'parent'),   (9, 8, 'child'),
-(10, 11, 'sibling'), (11, 10, 'sibling'),
-(10, 12, 'sibling'), (12, 10, 'sibling'),
-(10, 13, 'mentor'),  (13, 10, 'successor'),
-(18, 19, 'mentor'),  -- Samuel anointed Saul
-(18, 20, 'mentor'),  -- Samuel anointed David
-(23, 24, 'mentor'),  (24, 23, 'successor'), -- Elijah/Elisha
-(20, 21, 'parent'),  (21, 20, 'child'),     -- David/Solomon
-(38, 37, 'parent'),  -- Mary → Jesus
-(41, 46, 'mentor'),  -- Paul → Timothy
--- New person relationships
-(1, 49, 'parent'),   (49, 1, 'child'),     -- Adam → Seth
-(2, 49, 'parent'),   (49, 2, 'child'),     -- Eve → Seth
-(1, 2, 'spouse'),    (2, 1, 'spouse'),     -- Adam & Eve
-(50, 51, 'parent'),  (51, 50, 'child'),    -- Enoch → Methuselah
-(51, 52, 'parent'),  (52, 51, 'child'),    -- Methuselah → Lamech
-(52, 3, 'parent'),   (3, 52, 'child'),     -- Lamech → Noah
-(3, 53, 'parent'),   (53, 3, 'child'),     -- Noah → Shem
-(3, 54, 'parent'),   (54, 3, 'child'),     -- Noah → Ham
-(3, 55, 'parent'),   (55, 3, 'child'),     -- Noah → Japheth
-(53, 54, 'sibling'), (54, 53, 'sibling'),  -- Shem & Ham
-(53, 55, 'sibling'), (55, 53, 'sibling'),  -- Shem & Japheth
-(54, 55, 'sibling'), (55, 54, 'sibling'),  -- Ham & Japheth
-(4, 57, 'parent'),   (57, 4, 'child'),     -- Abraham → Ishmael
-(58, 57, 'parent'),  (57, 58, 'child'),    -- Hagar → Ishmael
-(4, 58, 'contemporary'),                   -- Abraham & Hagar (master/servant)
-(5, 58, 'contemporary'),                   -- Sarah & Hagar
-(6, 59, 'parent'),   (59, 6, 'child'),     -- Isaac → Esau
-(7, 59, 'parent'),   (59, 7, 'child'),     -- Rebekah → Esau
-(8, 59, 'sibling'),  (59, 8, 'sibling'),   -- Jacob & Esau twins
-(7, 60, 'sibling'),  (60, 7, 'sibling'),   -- Rebekah & Laban siblings
-(60, 61, 'parent'),  (61, 60, 'child'),    -- Laban → Leah
-(60, 62, 'parent'),  (62, 60, 'child'),    -- Laban → Rachel
-(8, 61, 'spouse'),   (61, 8, 'spouse'),    -- Jacob & Leah
-(8, 62, 'spouse'),   (62, 8, 'spouse'),    -- Jacob & Rachel
-(61, 62, 'sibling'), (62, 61, 'sibling'),  -- Leah & Rachel
-(8, 63, 'parent'),   (63, 8, 'child'),     -- Jacob → Judah
-(61, 63, 'parent'),  (63, 61, 'child'),    -- Leah → Judah
-(8, 64, 'parent'),   (64, 8, 'child'),     -- Jacob → Benjamin
-(62, 64, 'parent'),  (64, 62, 'child'),    -- Rachel → Benjamin
-(8, 65, 'parent'),   (65, 8, 'child'),     -- Jacob → Reuben
-(61, 65, 'parent'),  (65, 61, 'child'),    -- Leah → Reuben
-(62, 9, 'parent'),   (9, 62, 'child'),     -- Rachel → Joseph (mother)
-(63, 64, 'sibling'), (64, 63, 'sibling'),  -- Judah & Benjamin half-brothers
-(63, 65, 'sibling'), (65, 63, 'sibling'),  -- Judah & Reuben brothers
-(64, 9, 'sibling'),  (9, 64, 'sibling'),   -- Benjamin & Joseph brothers
-(69, 70, 'parent'),  (70, 69, 'child'),    -- Jethro → Zipporah
-(10, 70, 'spouse'),  (70, 10, 'spouse'),   -- Moses & Zipporah
-(75, 18, 'parent'),  (18, 75, 'child'),    -- Hannah → Samuel
-(76, 17, 'spouse'),  (17, 76, 'spouse'),   -- Boaz & Ruth
-(17, 77, 'contemporary'),                  -- Ruth & Naomi (daughter-in-law/mother-in-law)
-(15, 78, 'parent'),  (78, 15, 'child'),    -- Gideon → Abimelech
-(20, 79, 'spouse'),  (79, 20, 'spouse'),   -- David & Abigail
-(20, 80, 'spouse'),  (80, 20, 'spouse'),   -- David & Bathsheba
-(80, 21, 'parent'),  (21, 80, 'child'),    -- Bathsheba → Solomon (mother)
-(20, 82, 'parent'),  (82, 20, 'child'),    -- David → Absalom
-(19, 83, 'parent'),  (83, 19, 'child'),    -- Saul → Jonathan
-(19, 84, 'parent'),  (84, 19, 'child'),    -- Saul → Michal
-(20, 84, 'spouse'),  (84, 20, 'spouse'),   -- David & Michal
-(20, 83, 'contemporary'),                  -- David & Jonathan (friends)
-(83, 84, 'sibling'), (84, 83, 'sibling'),  -- Jonathan & Michal siblings
-(21, 85, 'parent'),  (85, 21, 'child'),    -- Solomon → Rehoboam
-(85, 86, 'parent'),  (86, 85, 'child'),    -- Rehoboam → Asa (via Abijah)
-(86, 87, 'parent'),  (87, 86, 'child'),    -- Asa → Jehoshaphat
-(87, 88, 'parent'),  (88, 87, 'child'),    -- Jehoshaphat → Jehoram of Judah
-(90, 29, 'parent'),  (29, 90, 'child'),    -- Ahaz → Hezekiah
-(29, 91, 'parent'),  (91, 29, 'child'),    -- Hezekiah → Manasseh
-(30, 92, 'parent'),  (92, 30, 'child'),    -- Josiah → Jehoiakim
-(30, 93, 'parent'),  (93, 30, 'child'),    -- Josiah → Zedekiah
-(92, 93, 'sibling'), (93, 92, 'sibling'),  -- Jehoiakim & Zedekiah siblings
-(95, 96, 'parent'),  (96, 95, 'child'),    -- Joash → Amaziah
-(96, 89, 'parent'),  (89, 96, 'child'),    -- Amaziah → Uzziah
-(89, 97, 'parent'),  (97, 89, 'child'),    -- Uzziah → Jotham
-(97, 90, 'parent'),  (90, 97, 'child'),    -- Jotham → Ahaz
-(31, 98, 'parent'),  (98, 31, 'child'),    -- Jeroboam I → Nadab
-(100, 32, 'parent'), (32, 100, 'child'),   -- Omri → Ahab
-(32, 107, 'spouse'), (107, 32, 'spouse'),  -- Ahab & Jezebel
-(32, 101, 'parent'), (101, 32, 'child'),   -- Ahab → Ahaziah of Israel
-(32, 102, 'parent'), (102, 32, 'child'),   -- Ahab → Jehoram of Israel
-(107, 101, 'parent'),(101, 107, 'child'),  -- Jezebel → Ahaziah of Israel
-(107, 102, 'parent'),(102, 107, 'child'),  -- Jezebel → Jehoram of Israel
-(101, 102, 'sibling'),(102, 101, 'sibling'), -- Ahaziah & Jehoram siblings
-(36, 120, 'contemporary'),                 -- Esther & Mordecai (cousins)
-(122, 37, 'parent'), (37, 122, 'child'),   -- Joseph of Nazareth → Jesus
-(122, 38, 'spouse'), (38, 122, 'spouse'),  -- Joseph & Mary
-(122, 144, 'parent'),(144, 122, 'child'),  -- Joseph → James brother of Jesus
-(38, 144, 'parent'), (144, 38, 'child'),   -- Mary → James brother of Jesus
-(37, 144, 'sibling'),(144, 37, 'sibling'), -- Jesus & James siblings
-(123, 124, 'sibling'),(124, 123, 'sibling'), -- Lazarus & Martha
-(42, 43, 'sibling'), (43, 42, 'sibling'),  -- John & James sons of Zebedee
-(128, 40, 'sibling'),(40, 128, 'sibling'), -- Andrew & Peter brothers
-(140, 141, 'spouse'),(141, 140, 'spouse'), -- Priscilla & Aquila
-(41, 138, 'contemporary'),                 -- Paul & Silas (co-workers)
-(41, 139, 'mentor'), (139, 41, 'child'),   -- Paul → Titus (mentor)
-(41, 137, 'contemporary'),                 -- Paul & Mark
-(41, 45, 'contemporary'),                  -- Paul & Barnabas (already linked)
--- Gen 5 ancestor relationships
-(49, 148, 'parent'),  (148, 49, 'child'),   -- Seth → Enosh
-(148, 149, 'parent'), (149, 148, 'child'),  -- Enosh → Kenan
-(149, 150, 'parent'), (150, 149, 'child'),  -- Kenan → Mahalalel
-(150, 151, 'parent'), (151, 150, 'child'),  -- Mahalalel → Jared
-(151, 50, 'parent'),  (50, 151, 'child'),   -- Jared → Enoch
--- Gen 11 ancestor relationships
-(53, 152, 'parent'),  (152, 53, 'child'),   -- Shem → Arphaxad
-(152, 153, 'parent'), (153, 152, 'child'),  -- Arphaxad → Salah
-(153, 154, 'parent'), (154, 153, 'child'),  -- Salah → Eber
-(154, 155, 'parent'), (155, 154, 'child'),  -- Eber → Peleg
-(155, 156, 'parent'), (156, 155, 'child'),  -- Peleg → Reu
-(156, 157, 'parent'), (157, 156, 'child'),  -- Reu → Serug
-(157, 158, 'parent'), (158, 157, 'child'),  -- Serug → Nahor
-(158, 159, 'parent'), (159, 158, 'child'),  -- Nahor → Terah
-(159, 4, 'parent'),   (4, 159, 'child'),    -- Terah → Abraham
--- 100 Additional People relationships
-(1, 160, 'parent'), (160, 1, 'child'),      -- Adam → Cain
-(2, 160, 'parent'), (160, 2, 'child'),      -- Eve → Cain
-(1, 161, 'parent'), (161, 1, 'child'),      -- Adam → Abel
-(2, 161, 'parent'), (161, 2, 'child'),      -- Eve → Abel
-(160, 161, 'sibling'), (161, 160, 'sibling'), -- Cain & Abel
-(8, 162, 'parent'), (162, 8, 'child'),      -- Jacob → Dinah
-(8, 163, 'parent'), (163, 8, 'child'),      -- Jacob → Simeon
-(8, 164, 'parent'), (164, 8, 'child'),      -- Jacob → Levi
-(8, 165, 'parent'), (165, 8, 'child'),      -- Jacob → Dan
-(8, 166, 'parent'), (166, 8, 'child'),      -- Jacob → Naphtali
-(8, 167, 'parent'), (167, 8, 'child'),      -- Jacob → Gad
-(8, 168, 'parent'), (168, 8, 'child'),      -- Jacob → Asher
-(8, 169, 'parent'), (169, 8, 'child'),      -- Jacob → Issachar
-(8, 170, 'parent'), (170, 8, 'child'),      -- Jacob → Zebulun
-(9, 171, 'parent'), (171, 9, 'child'),      -- Joseph → Manasseh
-(9, 172, 'parent'), (172, 9, 'child'),      -- Joseph → Ephraim
-(63, 174, 'parent'), (174, 63, 'child'),    -- Judah → Perez
-(11, 184, 'parent'), (184, 11, 'child'),    -- Aaron → Eleazar
-(184, 68, 'parent'), (68, 184, 'child'),    -- Eleazar → Phinehas
-(192, 16, 'parent'), (16, 192, 'child'),    -- Manoah → Samson
-(19, 199, 'parent'), (199, 19, 'child'),    -- Saul → Ish-bosheth
-(83, 201, 'parent'), (201, 83, 'child'),    -- Jonathan → Mephibosheth
-(20, 204, 'parent'), (204, 20, 'child'),    -- David → Adonijah
-(202, 80, 'spouse'), (80, 202, 'spouse'),   -- Uriah & Bathsheba (first marriage)
-(145, 232, 'parent'), (232, 145, 'child'),  -- Herod the Great → Herod Antipas
-(230, 39, 'parent'), (39, 230, 'child'),    -- Zechariah → John the Baptist
-(231, 39, 'parent'), (39, 231, 'child'),    -- Elizabeth → John the Baptist
-(230, 231, 'spouse'), (231, 230, 'spouse'), -- Zechariah & Elizabeth
-(232, 233, 'spouse'), (233, 232, 'spouse'), -- Herod Antipas & Herodias
-(233, 234, 'parent'), (234, 233, 'child'),  -- Herodias → Salome
-(235, 236, 'child'), (236, 235, 'parent'),  -- Caiaphas son-in-law of Annas
-(123, 243, 'sibling'), (243, 123, 'sibling'), -- Lazarus & Mary of Bethany
-(124, 243, 'sibling'), (243, 124, 'sibling'); -- Martha & Mary of Bethany
-
--- ============================================================
--- EVENT-LOCATION RELATIONSHIPS
--- ============================================================
-INSERT INTO event_locations (event_id, location_id) VALUES
--- Original events (IDs from actual DB)
-(5, 2),   -- Call of Abraham → Ur
-(7, 7),   -- Binding of Isaac → Jerusalem (Moriah)
-(13, 5),  -- Israel Enters Egypt → Egypt
-(14, 5),  -- The Exodus → Egypt
-(16, 6),  -- Giving of the Law → Mount Sinai
-(19, 4),  -- Conquest of Canaan → Canaan
-(20, 22), -- Fall of Jericho → Jericho
-(27, 7),  -- David Captures Jerusalem → Jerusalem
-(29, 7),  -- Solomon Builds Temple → Jerusalem
-(33, 7),  -- Hezekiah's Deliverance → Jerusalem
-(35, 7),  -- Fall of Jerusalem → Jerusalem
-(36, 9),  -- Babylonian Exile → Babylon
-(38, 7),  -- Second Temple Built → Jerusalem
-(40, 7),  -- Nehemiah Rebuilds Walls → Jerusalem
-(42, 8),  -- Birth of Jesus → Bethlehem
-(43, 25), -- Baptism of Jesus → Jordan River
-(45, 7),  -- Crucifixion → Jerusalem
-(48, 7),  -- Pentecost → Jerusalem
-(50, 12), -- Conversion of Paul → Damascus
-(55, 7),  -- Destruction of Jerusalem → Jerusalem
-(56, 15), -- John Writes Revelation → Patmos
--- Miracle locations (location IDs: 16=Cana, 17=Sea of Galilee, 18=Bethsaida, 19=Nain, 20=Bethany, 21=Gadara, 22=Jericho, 23=Tyre&Sidon, 24=Decapolis, 25=Jordan River)
-(58, 16), -- Water Turned to Wine → Cana
-(59, 11), -- Official's Son → Capernaum
-(60, 17), -- Great Catch of Fish → Sea of Galilee
-(61, 11), -- Demon in Capernaum → Capernaum
-(62, 11), -- Peter's Mother-in-Law → Capernaum
-(64, 11), -- Paralytic → Capernaum
-(65, 7),  -- Pool of Bethesda → Jerusalem
-(67, 11), -- Centurion's Servant → Capernaum
-(68, 19), -- Widow's Son at Nain → Nain
-(69, 17), -- Calming the Storm → Sea of Galilee
-(70, 21), -- Gerasene Demoniac → Gadara
-(75, 18), -- Feeding 5,000 → Bethsaida
-(76, 17), -- Walking on Water → Sea of Galilee
-(77, 23), -- Syrophoenician's Daughter → Tyre & Sidon
-(78, 24), -- Deaf and Mute Man → Decapolis
-(80, 18), -- Blind Man at Bethsaida → Bethsaida
-(83, 17), -- Coin in the Fish's Mouth → Sea of Galilee
-(84, 7),  -- Man Born Blind → Jerusalem
-(87, 20), -- Raising of Lazarus → Bethany
-(89, 22), -- Blind Bartimaeus → Jericho
-(90, 22), -- Two Blind Men at Jericho → Jericho
-(91, 7),  -- Cursing Fig Tree → Jerusalem
-(92, 7),  -- Malchus' Ear → Jerusalem
-(93, 17), -- Catch of 153 Fish → Sea of Galilee
-(94, 25), -- Healing of Naaman → Jordan River
--- Church History event locations
--- Location IDs: 58=Constantinople, 59=Carthage, 60=Hippo, 61=Nicaea, 62=Chalcedon,
--- 63=Wittenberg, 64=Geneva, 65=Mainz, 66=Canterbury, 67=Worms, 68=Trent,
--- 69=Aldersgate/London, 70=Edinburgh, 71=Azusa Street, 72=Serampore, 73=Qumran,
--- 74=Northampton, 75=Assisi, 76=Nuremberg, 77=Whitby, 78=Clermont, 79=Wycliffe Country
--- Event IDs: 95=Ignatius, 96=Polycarp, 97=Irenaeus, 98=Origen, 99=Diocletian,
--- 100=Edict Milan, 101=Nicaea, 102=Athanasius, 103=Carthage, 104=Jerome,
--- 105=Chalcedon, 106=Fall Rome, 107=Benedict, 108=Whitby, 109=Islam,
--- 110=Charlemagne, 111=Great Schism, 112=Clermont, 113=Francis, 114=Aquinas,
--- 115=Wycliffe, 116=Hus, 117=Gutenberg, 118=Luther, 119=Diet Worms, 120=Tyndale,
--- 121=Calvin, 122=Trent, 123=KJV, 124=Westminster, 125=Westphalia,
--- 126=Wesley, 127=Edwards, 128=Carey, 129=BFBS, 130=ABS, 131=Spurgeon,
--- 132=Moody, 133=Azusa, 134=Edinburgh, 135=Barmen, 136=Dead Sea, 137=Israel,
--- 138=Vatican II, 139=Graham, 140=Lausanne, 141=Soviet, 142=Global South
-(95, 14),  -- Martyrdom of Ignatius → Rome
-(101, 61), -- Council of Nicaea → Nicaea
-(103, 59), -- Council of Carthage → Carthage
-(104, 8),  -- Jerome Vulgate → Bethlehem
-(105, 62), -- Council of Chalcedon → Chalcedon
-(108, 77), -- Synod of Whitby → Whitby
-(111, 58), -- Great Schism → Constantinople
-(112, 78), -- Council of Clermont → Clermont
-(113, 75), -- Francis founds Franciscans → Assisi
-(115, 79), -- Wycliffe Bible → Wycliffe Country
-(117, 65), -- Gutenberg Bible → Mainz
-(118, 63), -- Luther 95 Theses → Wittenberg
-(119, 67), -- Diet of Worms → Worms
-(120, 67), -- Tyndale NT → Worms
-(121, 64), -- Calvin Institutes → Geneva
-(122, 68), -- Council of Trent → Trent
-(126, 69), -- Wesley Aldersgate → Aldersgate London
-(127, 74), -- Great Awakening → Northampton
-(128, 72), -- Carey sails → Serampore
-(133, 71), -- Azusa Street Revival → Azusa Street LA
-(134, 70), -- Edinburgh Conference → Edinburgh
-(136, 73), -- Dead Sea Scrolls → Qumran
-(137, 7);  -- State of Israel → Jerusalem
--- Post-Resurrection appearance locations
-INSERT INTO event_locations (event_id, location_id) VALUES
-(143, 7),  -- Appearance to Mary Magdalene → Jerusalem
-(47, 20),  -- Ascension → Bethany (near Mount of Olives)
-(144, 57), -- Road to Emmaus → Emmaus
-(145, 7),  -- Appearance to Disciples → Jerusalem
-(146, 7),  -- Appearance to Thomas → Jerusalem
-(147, 17); -- Restoration of Peter → Sea of Galilee
--- NT Books Written — locations
-INSERT INTO event_locations (event_id, location_id) VALUES
-(149, 7),   -- James Written → Jerusalem
-(150, 13),  -- Galatians Written → Antioch
-(151, 40),  -- 1 Thessalonians Written → Corinth
-(152, 40),  -- 2 Thessalonians Written → Corinth
-(153, 41),  -- 1 Corinthians Written → Ephesus
-(154, 13),  -- Matthew Written → Antioch
-(155, 14),  -- Mark Written → Rome
-(156, 36),  -- 2 Corinthians Written → Philippi (Macedonia)
-(157, 40),  -- Romans Written → Corinth
-(158, 29),  -- Luke Written → Caesarea
-(159, 14),  -- Ephesians Written → Rome
-(160, 14),  -- Colossians Written → Rome
-(161, 14),  -- Philemon Written → Rome
-(162, 14),  -- Philippians Written → Rome
-(163, 14),  -- Acts Written → Rome
-(164, 36),  -- 1 Timothy Written → Philippi (Macedonia)
-(165, 36),  -- Titus Written → Philippi (Macedonia)
-(166, 14),  -- 1 Peter Written → Rome
-(167, 7),   -- Jude Written → Jerusalem
-(168, 14),  -- Hebrews Written → Rome
-(169, 14),  -- 2 Timothy Written → Rome
-(170, 14),  -- 2 Peter Written → Rome
-(171, 41),  -- John Written → Ephesus
-(172, 41),  -- 1 John Written → Ephesus
-(173, 41),  -- 2 John Written → Ephesus
-(174, 41);  -- 3 John Written → Ephesus
-
--- ============================================================
--- SCRIPTURE REFERENCES
--- Order matters: SQLite auto-assigns IDs sequentially.
--- Events = IDs 1-52, People = IDs 53-99, Miracles = IDs 100-135
--- ============================================================
-INSERT INTO scripture_references (book_id, chapter_start, verse_start, chapter_end, verse_end, reference_text) VALUES
--- ── Event refs (IDs 1–52) ──
-(1, 1, 1, 2, 25, 'Genesis 1:1–2:25'),          -- 1  Creation
-(1, 3, 1, 3, 24, 'Genesis 3:1-24'),             -- 2  The Fall
-(1, 6, 1, 9, 17, 'Genesis 6:1–9:17'),           -- 3  The Flood
-(1, 11, 1, 11, 9, 'Genesis 11:1-9'),            -- 4  Tower of Babel
-(1, 12, 1, 12, 9, 'Genesis 12:1-9'),            -- 5  Call of Abraham
-(1, 15, 1, 15, 21, 'Genesis 15:1-21'),          -- 6  Abrahamic Covenant
-(1, 22, 1, 22, 19, 'Genesis 22:1-19'),          -- 7  Binding of Isaac
-(1, 32, 22, 32, 32, 'Genesis 32:22-32'),        -- 8  Jacob Wrestles God
-(1, 37, 12, 37, 36, 'Genesis 37:12-36'),        -- 9  Joseph Sold into Slavery
-(1, 46, 1, 46, 34, 'Genesis 46:1-34'),          -- 10 Israel Enters Egypt
-(2, 12, 1, 14, 31, 'Exodus 12:1–14:31'),        -- 11 The Exodus
-(2, 14, 1, 14, 31, 'Exodus 14:1-31'),           -- 12 Crossing the Red Sea
-(2, 20, 1, 20, 17, 'Exodus 20:1-17'),           -- 13 Giving of the Law
-(4, 14, 1, 14, 45, 'Numbers 14:1-45'),          -- 14 Wilderness Wandering
-(6, 1, 1, 12, 24, 'Joshua 1:1–12:24'),          -- 15 Conquest of Canaan
-(6, 6, 1, 6, 27, 'Joshua 6:1-27'),              -- 16 Fall of Jericho
-(7, 2, 6, 2, 23, 'Judges 2:6-23'),              -- 17 Period of the Judges
-(7, 4, 1, 5, 31, 'Judges 4:1–5:31'),            -- 18 Deborah Defeats Sisera
-(7, 7, 1, 7, 25, 'Judges 7:1-25'),              -- 19 Gideon Defeats Midian
-(9, 10, 1, 10, 27, '1 Samuel 10:1-27'),         -- 20 Saul Anointed King
-(10, 5, 1, 5, 5, '2 Samuel 5:1-5'),             -- 21 David Anointed King
-(10, 5, 6, 5, 10, '2 Samuel 5:6-10'),           -- 22 David Captures Jerusalem
-(10, 7, 1, 7, 29, '2 Samuel 7:1-29'),           -- 23 Davidic Covenant
-(11, 6, 1, 6, 38, '1 Kings 6:1-38'),            -- 24 Solomon Builds Temple
-(11, 12, 1, 12, 24, '1 Kings 12:1-24'),         -- 25 Kingdom Divides
-(11, 18, 20, 18, 40, '1 Kings 18:20-40'),       -- 26 Elijah on Mount Carmel
-(12, 17, 1, 17, 41, '2 Kings 17:1-41'),         -- 27 Fall of Samaria
-(12, 19, 1, 19, 37, '2 Kings 19:1-37'),         -- 28 Hezekiah's Deliverance
-(12, 22, 8, 23, 25, '2 Kings 22:8–23:25'),      -- 29 Josiah's Reforms
-(12, 25, 1, 25, 21, '2 Kings 25:1-21'),         -- 30 Fall of Jerusalem
-(25, 1, 1, 5, 22, 'Lamentations 1:1–5:22'),     -- 31 Babylonian Exile
-(15, 1, 1, 1, 11, 'Ezra 1:1-11'),               -- 32 Edict of Cyrus
-(15, 6, 14, 6, 22, 'Ezra 6:14-22'),             -- 33 Second Temple Built
-(15, 7, 1, 10, 44, 'Ezra 7:1–10:44'),           -- 34 Ezra's Return
-(16, 2, 11, 6, 19, 'Nehemiah 2:11–6:19'),       -- 35 Nehemiah Rebuilds Walls
-(17, 4, 1, 9, 32, 'Esther 4:1–9:32'),           -- 36 Esther Saves Her People
-(42, 2, 1, 2, 20, 'Luke 2:1-20'),               -- 37 Birth of Jesus
-(40, 3, 13, 3, 17, 'Matthew 3:13-17'),          -- 38 Baptism of Jesus
-(40, 5, 1, 7, 29, 'Matthew 5:1–7:29'),          -- 39 Sermon on the Mount
-(40, 27, 32, 27, 56, 'Matthew 27:32-56'),       -- 40 Crucifixion
-(40, 28, 1, 28, 10, 'Matthew 28:1-10'),         -- 41 Resurrection
-(44, 1, 9, 1, 11, 'Acts 1:9-11'),               -- 42 Ascension
-(44, 2, 1, 2, 47, 'Acts 2:1-47'),               -- 43 Pentecost
-(44, 7, 54, 7, 60, 'Acts 7:54-60'),             -- 44 Stoning of Stephen
-(44, 9, 1, 9, 31, 'Acts 9:1-31'),               -- 45 Conversion of Paul
-(44, 13, 1, 14, 28, 'Acts 13:1–14:28'),         -- 46 Paul's First Missionary Journey
-(44, 15, 1, 15, 35, 'Acts 15:1-35'),            -- 47 Council of Jerusalem
-(44, 15, 36, 18, 22, 'Acts 15:36–18:22'),       -- 48 Paul's Second Missionary Journey
-(44, 18, 23, 21, 16, 'Acts 18:23–21:16'),       -- 49 Paul's Third Missionary Journey
-(42, 21, 5, 21, 36, 'Luke 21:5-36'),            -- 50 Destruction of Jerusalem (prophecy)
-(66, 1, 1, 22, 21, 'Revelation 1:1–22:21'),     -- 51 John Writes Revelation
-(43, 21, 20, 21, 25, 'John 21:20-25'),          -- 52 Death of John
-
--- ── People refs (IDs 53–99) ──
-(1, 1, 26, 5, 5, 'Genesis 1:26–5:5'),           -- 53 Adam
-(1, 3, 20, 3, 20, 'Genesis 3:20'),              -- 54 Eve
-(1, 6, 8, 9, 29, 'Genesis 6:8–9:29'),           -- 55 Noah
-(1, 12, 1, 25, 11, 'Genesis 12:1–25:11'),       -- 56 Abraham
-(1, 17, 15, 23, 19, 'Genesis 17:15–23:19'),     -- 57 Sarah
-(1, 21, 1, 35, 29, 'Genesis 21:1–35:29'),       -- 58 Isaac
-(1, 24, 1, 27, 46, 'Genesis 24:1–27:46'),       -- 59 Rebekah
-(1, 25, 19, 49, 33, 'Genesis 25:19–49:33'),     -- 60 Jacob
-(1, 37, 1, 50, 26, 'Genesis 37:1–50:26'),       -- 61 Joseph
-(5, 34, 1, 34, 12, 'Deuteronomy 34:1-12'),      -- 62 Moses
-(2, 4, 14, 4, 16, 'Exodus 4:14-16'),            -- 63 Aaron
-(2, 15, 20, 15, 21, 'Exodus 15:20-21'),         -- 64 Miriam
-(6, 1, 1, 24, 33, 'Joshua 1:1–24:33'),          -- 65 Joshua
-(7, 4, 4, 5, 31, 'Judges 4:4–5:31'),            -- 66 Deborah
-(7, 6, 11, 8, 35, 'Judges 6:11–8:35'),          -- 67 Gideon
-(7, 13, 1, 16, 31, 'Judges 13:1–16:31'),        -- 68 Samson
-(8, 1, 1, 4, 22, 'Ruth 1:1–4:22'),              -- 69 Ruth
-(9, 1, 1, 25, 1, '1 Samuel 1:1–25:1'),          -- 70 Samuel
-(9, 9, 1, 31, 13, '1 Samuel 9:1–31:13'),        -- 71 Saul
-(9, 16, 1, 11, 27, '1 Samuel 16:1–1 Kings 2:11'),-- 72 David
-(11, 1, 1, 11, 43, '1 Kings 1:1–11:43'),        -- 73 Solomon
-(10, 12, 1, 12, 15, '2 Samuel 12:1-15'),        -- 74 Nathan
-(11, 17, 1, 12, 2, '1 Kings 17:1–2 Kings 2:11'),-- 75 Elijah
-(12, 2, 1, 13, 21, '2 Kings 2:1–13:21'),        -- 76 Elisha
-(23, 1, 1, 66, 24, 'Isaiah 1:1–66:24'),         -- 77 Isaiah
-(24, 1, 1, 52, 34, 'Jeremiah 1:1–52:34'),       -- 78 Jeremiah
-(26, 1, 1, 48, 35, 'Ezekiel 1:1–48:35'),        -- 79 Ezekiel
-(27, 1, 1, 12, 13, 'Daniel 1:1–12:13'),         -- 80 Daniel
-(12, 18, 1, 20, 21, '2 Kings 18:1–20:21'),      -- 81 Hezekiah
-(12, 22, 1, 23, 30, '2 Kings 22:1–23:30'),      -- 82 Josiah
-(11, 12, 25, 14, 20, '1 Kings 12:25–14:20'),    -- 83 Jeroboam
-(11, 16, 29, 22, 40, '1 Kings 16:29–22:40'),    -- 84 Ahab
-(15, 7, 1, 10, 44, 'Ezra 7:1–10:44'),           -- 85 Ezra
-(16, 1, 1, 13, 31, 'Nehemiah 1:1–13:31'),       -- 86 Nehemiah
-(15, 2, 1, 5, 2, 'Ezra 2:1–5:2'),               -- 87 Zerubbabel
-(17, 1, 1, 10, 3, 'Esther 1:1–10:3'),           -- 88 Esther
-(42, 1, 26, 24, 53, 'Luke 1:26–24:53'),         -- 89 Jesus
-(42, 1, 26, 2, 52, 'Luke 1:26–2:52'),           -- 90 Mary
-(42, 1, 5, 3, 20, 'Luke 1:5–3:20'),             -- 91 John the Baptist
-(40, 4, 18, 16, 19, 'Matthew 4:18–16:19'),      -- 92 Peter
-(44, 9, 1, 28, 31, 'Acts 9:1–28:31'),           -- 93 Paul
-(43, 13, 23, 21, 25, 'John 13:23–21:25'),       -- 94 John the Apostle
-(44, 12, 1, 12, 2, 'Acts 12:1-2'),              -- 95 James son of Zebedee
-(44, 6, 5, 7, 60, 'Acts 6:5–7:60'),             -- 96 Stephen
-(44, 4, 36, 15, 39, 'Acts 4:36–15:39'),         -- 97 Barnabas
-(44, 16, 1, 16, 5, 'Acts 16:1-5'),              -- 98 Timothy
-(42, 1, 1, 1, 4, 'Luke 1:1-4'),                 -- 99 Luke
-
--- ── Miracle refs (IDs 100–135) ──
-(43, 2, 1, 2, 11, 'John 2:1-11'),               -- 100 Water Turned to Wine
-(43, 4, 46, 4, 54, 'John 4:46-54'),             -- 101 Official's Son
-(42, 5, 1, 5, 11, 'Luke 5:1-11'),               -- 102 Great Catch of Fish
-(41, 1, 21, 1, 28, 'Mark 1:21-28'),             -- 103 Demon in Capernaum
-(40, 8, 14, 8, 15, 'Matthew 8:14-15'),          -- 104 Peter's Mother-in-Law
-(40, 8, 1, 8, 4, 'Matthew 8:1-4'),              -- 105 Cleansing a Leper
-(41, 2, 1, 2, 12, 'Mark 2:1-12'),               -- 106 Healing the Paralytic
-(43, 5, 1, 5, 17, 'John 5:1-17'),               -- 107 Pool of Bethesda
-(40, 12, 9, 12, 14, 'Matthew 12:9-14'),         -- 108 Withered Hand
-(40, 8, 5, 8, 13, 'Matthew 8:5-13'),            -- 109 Centurion's Servant
-(42, 7, 11, 7, 17, 'Luke 7:11-17'),             -- 110 Widow's Son at Nain
-(41, 4, 35, 4, 41, 'Mark 4:35-41'),             -- 111 Calming the Storm
-(41, 5, 1, 5, 20, 'Mark 5:1-20'),               -- 112 Gerasene Demoniac
-(41, 5, 25, 5, 34, 'Mark 5:25-34'),             -- 113 Woman with Issue of Blood
-(41, 5, 21, 5, 43, 'Mark 5:21-43'),             -- 114 Jairus' Daughter
-(40, 9, 27, 9, 31, 'Matthew 9:27-31'),          -- 115 Two Blind Men
-(40, 9, 32, 9, 34, 'Matthew 9:32-34'),          -- 116 Mute Man
-(43, 6, 1, 6, 15, 'John 6:1-15'),               -- 117 Feeding 5000
-(40, 14, 22, 14, 33, 'Matthew 14:22-33'),       -- 118 Walking on Water
-(40, 15, 21, 15, 28, 'Matthew 15:21-28'),       -- 119 Syrophoenician Daughter
-(41, 7, 31, 7, 37, 'Mark 7:31-37'),             -- 120 Deaf and Mute Man
-(40, 15, 32, 15, 39, 'Matthew 15:32-39'),       -- 121 Feeding 4000
-(41, 8, 22, 8, 26, 'Mark 8:22-26'),             -- 122 Blind Man at Bethsaida
-(40, 17, 1, 17, 13, 'Matthew 17:1-13'),         -- 123 Transfiguration
-(41, 9, 14, 9, 29, 'Mark 9:14-29'),             -- 124 Boy with a Demon
-(43, 9, 1, 9, 41, 'John 9:1-41'),               -- 125 Man Born Blind
-(42, 13, 10, 13, 17, 'Luke 13:10-17'),          -- 126 Crippled Woman
-(42, 14, 1, 14, 6, 'Luke 14:1-6'),              -- 127 Man with Dropsy
-(43, 11, 1, 11, 44, 'John 11:1-44'),            -- 128 Raising of Lazarus
-(42, 17, 11, 17, 19, 'Luke 17:11-19'),          -- 129 Ten Lepers
-(41, 10, 46, 10, 52, 'Mark 10:46-52'),          -- 130 Blind Bartimaeus
-(40, 21, 18, 21, 22, 'Matthew 21:18-22'),       -- 131 Cursing the Fig Tree
-(42, 22, 49, 22, 51, 'Luke 22:49-51'),          -- 132 Malchus' Ear
-(43, 21, 1, 21, 14, 'John 21:1-14'),            -- 133 Catch of 153 Fish
-(40, 17, 24, 17, 27, 'Matthew 17:24-27'),       -- 134 Coin in Fish's Mouth
-(40, 20, 29, 20, 34, 'Matthew 20:29-34'),       -- 135 Two Blind Men at Jericho
-(12, 5, 1, 5, 27, '2 Kings 5:1-27'),             -- 136 Naaman (person)
-(12, 5, 1, 5, 27, '2 Kings 5:1-27'),             -- 137 Healing of Naaman (event)
-
--- ── New People refs (IDs 138–237) ──
-(1, 4, 25, 5, 8, 'Genesis 4:25–5:8'),            -- 138 Seth
-(1, 5, 18, 5, 24, 'Genesis 5:18-24'),            -- 139 Enoch
-(1, 5, 25, 5, 27, 'Genesis 5:25-27'),            -- 140 Methuselah
-(1, 5, 28, 5, 31, 'Genesis 5:28-31'),            -- 141 Lamech
-(1, 10, 21, 11, 26, 'Genesis 10:21–11:26'),      -- 142 Shem
-(1, 10, 6, 10, 20, 'Genesis 10:6-20'),           -- 143 Ham
-(1, 10, 2, 10, 5, 'Genesis 10:2-5'),             -- 144 Japheth
-(1, 13, 1, 19, 38, 'Genesis 13:1–19:38'),        -- 145 Lot
-(1, 16, 1, 25, 18, 'Genesis 16:1–25:18'),        -- 146 Ishmael
-(1, 16, 1, 21, 21, 'Genesis 16:1–21:21'),        -- 147 Hagar
-(1, 25, 19, 36, 43, 'Genesis 25:19–36:43'),      -- 148 Esau
-(1, 24, 29, 31, 55, 'Genesis 24:29–31:55'),      -- 149 Laban
-(1, 29, 16, 30, 21, 'Genesis 29:16–30:21'),      -- 150 Leah
-(1, 29, 6, 35, 20, 'Genesis 29:6–35:20'),        -- 151 Rachel
-(1, 38, 1, 49, 12, 'Genesis 38:1–49:12'),        -- 152 Judah
-(1, 35, 16, 45, 14, 'Genesis 35:16–45:14'),      -- 153 Benjamin
-(1, 37, 21, 49, 4, 'Genesis 37:21–49:4'),        -- 154 Reuben
-(2, 5, 1, 14, 31, 'Exodus 5:1–14:31'),           -- 155 Pharaoh of Exodus
-(4, 13, 6, 14, 38, 'Numbers 13:6–14:38'),        -- 156 Caleb
-(4, 25, 6, 25, 13, 'Numbers 25:6-13'),           -- 157 Phinehas
-(2, 18, 1, 18, 27, 'Exodus 18:1-27'),            -- 158 Jethro
-(2, 2, 21, 4, 26, 'Exodus 2:21–4:26'),           -- 159 Zipporah
-(7, 3, 7, 3, 11, 'Judges 3:7-11'),               -- 160 Othniel
-(7, 3, 12, 3, 30, 'Judges 3:12-30'),             -- 161 Ehud
-(7, 11, 1, 12, 7, 'Judges 11:1–12:7'),           -- 162 Jephthah
-(9, 1, 1, 4, 22, '1 Samuel 1:1–4:22'),           -- 163 Eli
-(9, 1, 1, 2, 21, '1 Samuel 1:1–2:21'),           -- 164 Hannah
-(8, 2, 1, 4, 22, 'Ruth 2:1–4:22'),               -- 165 Boaz
-(8, 1, 1, 4, 17, 'Ruth 1:1–4:17'),               -- 166 Naomi
-(7, 9, 1, 9, 57, 'Judges 9:1-57'),               -- 167 Abimelech
-(9, 25, 2, 25, 42, '1 Samuel 25:2-42'),          -- 168 Abigail
-(10, 11, 1, 12, 25, '2 Samuel 11:1–12:25'),      -- 169 Bathsheba
-(10, 2, 13, 20, 23, '2 Samuel 2:13–20:23'),      -- 170 Joab
-(10, 13, 1, 18, 33, '2 Samuel 13:1–18:33'),      -- 171 Absalom
-(9, 14, 1, 31, 2, '1 Samuel 14:1–31:2'),         -- 172 Jonathan
-(9, 18, 20, 19, 17, '1 Samuel 18:20–19:17'),     -- 173 Michal
-(11, 12, 1, 14, 31, '1 Kings 12:1–14:31'),       -- 174 Rehoboam
-(11, 15, 9, 15, 24, '1 Kings 15:9-24'),          -- 175 Asa
-(11, 22, 41, 22, 50, '1 Kings 22:41-50'),        -- 176 Jehoshaphat
-(12, 8, 16, 8, 24, '2 Kings 8:16-24'),           -- 177 Jehoram of Judah
-(12, 15, 1, 15, 7, '2 Kings 15:1-7'),            -- 178 Uzziah
-(12, 16, 1, 16, 20, '2 Kings 16:1-20'),          -- 179 Ahaz
-(12, 21, 1, 21, 18, '2 Kings 21:1-18'),          -- 180 Manasseh
-(12, 23, 34, 24, 6, '2 Kings 23:34–24:6'),       -- 181 Jehoiakim
-(12, 24, 17, 25, 7, '2 Kings 24:17–25:7'),       -- 182 Zedekiah
-(12, 11, 1, 11, 20, '2 Kings 11:1-20'),          -- 183 Athaliah
-(12, 11, 21, 12, 21, '2 Kings 11:21–12:21'),     -- 184 Joash of Judah
-(12, 14, 1, 14, 20, '2 Kings 14:1-20'),          -- 185 Amaziah
-(12, 15, 32, 15, 38, '2 Kings 15:32-38'),        -- 186 Jotham
-(11, 15, 25, 15, 32, '1 Kings 15:25-32'),        -- 187 Nadab
-(11, 15, 33, 16, 7, '1 Kings 15:33–16:7'),       -- 188 Baasha
-(11, 16, 21, 16, 28, '1 Kings 16:21-28'),        -- 189 Omri
-(11, 22, 51, 22, 53, '1 Kings 22:51-53'),        -- 190 Ahaziah of Israel
-(12, 3, 1, 3, 27, '2 Kings 3:1-27'),             -- 191 Jehoram of Israel
-(12, 9, 1, 10, 36, '2 Kings 9:1–10:36'),         -- 192 Jehu
-(12, 14, 23, 14, 29, '2 Kings 14:23-29'),        -- 193 Jeroboam II
-(12, 17, 1, 17, 6, '2 Kings 17:1-6'),            -- 194 Hoshea
-(11, 16, 9, 16, 20, '1 Kings 16:9-20'),          -- 195 Zimri
-(11, 16, 31, 21, 25, '1 Kings 16:31–21:25'),     -- 196 Jezebel
-(28, 1, 1, 14, 9, 'Hosea 1:1–14:9'),             -- 197 Hosea (prophet)
-(29, 1, 1, 3, 21, 'Joel 1:1–3:21'),              -- 198 Joel
-(30, 1, 1, 9, 15, 'Amos 1:1–9:15'),              -- 199 Amos
-(31, 1, 1, 1, 21, 'Obadiah 1:1-21'),             -- 200 Obadiah
-(32, 1, 1, 4, 11, 'Jonah 1:1–4:11'),             -- 201 Jonah
-(33, 1, 1, 7, 20, 'Micah 1:1–7:20'),             -- 202 Micah
-(34, 1, 1, 3, 19, 'Nahum 1:1–3:19'),             -- 203 Nahum
-(35, 1, 1, 3, 19, 'Habakkuk 1:1–3:19'),          -- 204 Habakkuk
-(36, 1, 1, 3, 20, 'Zephaniah 1:1–3:20'),         -- 205 Zephaniah
-(37, 1, 1, 2, 23, 'Haggai 1:1–2:23'),            -- 206 Haggai
-(38, 1, 1, 14, 21, 'Zechariah 1:1–14:21'),       -- 207 Zechariah (prophet)
-(39, 1, 1, 4, 6, 'Malachi 1:1–4:6'),             -- 208 Malachi
-(17, 2, 5, 10, 3, 'Esther 2:5–10:3'),            -- 209 Mordecai
-(18, 1, 1, 42, 17, 'Job 1:1–42:17'),             -- 210 Job
-(40, 1, 18, 2, 23, 'Matthew 1:18–2:23'),         -- 211 Joseph of Nazareth
-(43, 11, 1, 12, 11, 'John 11:1–12:11'),          -- 212 Lazarus
-(42, 10, 38, 10, 42, 'Luke 10:38-42'),           -- 213 Martha
-(43, 20, 1, 20, 18, 'John 20:1-18'),             -- 214 Mary Magdalene
-(43, 3, 1, 19, 42, 'John 3:1–19:42'),            -- 215 Nicodemus
-(40, 9, 9, 10, 3, 'Matthew 9:9–10:3'),           -- 216 Matthew/Levi
-(43, 1, 35, 1, 42, 'John 1:35-42'),              -- 217 Andrew
-(43, 1, 43, 14, 9, 'John 1:43–14:9'),            -- 218 Philip
-(43, 1, 45, 1, 51, 'John 1:45-51'),              -- 219 Bartholomew/Nathanael
-(43, 11, 16, 20, 29, 'John 11:16–20:29'),        -- 220 Thomas
-(40, 10, 3, 10, 3, 'Matthew 10:3'),              -- 221 James son of Alphaeus
-(43, 14, 22, 14, 22, 'John 14:22'),              -- 222 Thaddaeus
-(42, 6, 15, 6, 15, 'Luke 6:15'),                 -- 223 Simon the Zealot
-(40, 26, 14, 27, 10, 'Matthew 26:14–27:10'),     -- 224 Judas Iscariot
-(44, 1, 21, 1, 26, 'Acts 1:21-26'),              -- 225 Matthias
-(44, 12, 12, 15, 39, 'Acts 12:12–15:39'),        -- 226 Mark
-(44, 15, 22, 17, 15, 'Acts 15:22–17:15'),        -- 227 Silas
-(56, 1, 4, 1, 5, 'Titus 1:4-5'),                 -- 228 Titus
-(44, 18, 2, 18, 26, 'Acts 18:2-26'),             -- 229 Priscilla
-(44, 18, 2, 18, 26, 'Acts 18:2-26'),             -- 230 Aquila
-(44, 18, 24, 18, 28, 'Acts 18:24-28'),           -- 231 Apollos
-(57, 1, 1, 1, 25, 'Philemon 1:1-25'),            -- 232 Philemon
-(44, 15, 13, 15, 21, 'Acts 15:13-21'),           -- 233 James brother of Jesus
-(40, 2, 1, 2, 19, 'Matthew 2:1-19'),             -- 234 Herod the Great
-(40, 27, 11, 27, 26, 'Matthew 27:11-26'),        -- 235 Pontius Pilate
-(42, 2, 36, 2, 38, 'Luke 2:36-38'),              -- 236 Anna
-
--- ── Parallel Gospel / multi-source event refs (IDs 237+) ──
--- Life of Christ parallel accounts
-(40, 1, 18, 2, 23, 'Matthew 1:18–2:23'),         -- 237 Birth of Jesus (Matthew)
-(41, 1, 9, 1, 11, 'Mark 1:9-11'),                -- 238 Baptism of Jesus (Mark)
-(42, 3, 21, 3, 22, 'Luke 3:21-22'),              -- 239 Baptism of Jesus (Luke)
-(43, 1, 29, 1, 34, 'John 1:29-34'),              -- 240 Baptism of Jesus (John)
-(42, 6, 17, 6, 49, 'Luke 6:17-49'),              -- 241 Sermon on the Plain (Luke)
-(41, 15, 21, 15, 41, 'Mark 15:21-41'),           -- 242 Crucifixion (Mark)
-(42, 23, 26, 23, 49, 'Luke 23:26-49'),           -- 243 Crucifixion (Luke)
-(43, 19, 17, 19, 37, 'John 19:17-37'),           -- 244 Crucifixion (John)
-(41, 16, 1, 16, 8, 'Mark 16:1-8'),               -- 245 Resurrection (Mark)
-(42, 24, 1, 24, 12, 'Luke 24:1-12'),             -- 246 Resurrection (Luke)
-(43, 20, 1, 20, 18, 'John 20:1-18'),             -- 247 Resurrection (John)
-(42, 24, 50, 24, 53, 'Luke 24:50-53'),           -- 248 Ascension (Luke)
-(41, 16, 19, 16, 20, 'Mark 16:19-20'),           -- 249 Ascension (Mark)
--- Miracle parallel accounts
-(42, 4, 31, 4, 37, 'Luke 4:31-37'),              -- 250 Demon in Capernaum (Luke)
-(41, 1, 29, 1, 31, 'Mark 1:29-31'),              -- 251 Peter's Mother-in-Law (Mark)
-(42, 4, 38, 4, 39, 'Luke 4:38-39'),              -- 252 Peter's Mother-in-Law (Luke)
-(41, 1, 40, 1, 45, 'Mark 1:40-45'),              -- 253 Cleansing a Leper (Mark)
-(42, 5, 12, 5, 16, 'Luke 5:12-16'),              -- 254 Cleansing a Leper (Luke)
-(40, 9, 1, 9, 8, 'Matthew 9:1-8'),               -- 255 Healing the Paralytic (Matthew)
-(42, 5, 17, 5, 26, 'Luke 5:17-26'),              -- 256 Healing the Paralytic (Luke)
-(41, 3, 1, 3, 6, 'Mark 3:1-6'),                  -- 257 Withered Hand (Mark)
-(42, 6, 6, 6, 11, 'Luke 6:6-11'),                -- 258 Withered Hand (Luke)
-(42, 7, 1, 7, 10, 'Luke 7:1-10'),                -- 259 Centurion's Servant (Luke)
-(40, 8, 23, 8, 27, 'Matthew 8:23-27'),           -- 260 Calming the Storm (Matthew)
-(42, 8, 22, 8, 25, 'Luke 8:22-25'),              -- 261 Calming the Storm (Luke)
-(40, 8, 28, 8, 34, 'Matthew 8:28-34'),           -- 262 Gerasene Demoniac (Matthew)
-(42, 8, 26, 8, 39, 'Luke 8:26-39'),              -- 263 Gerasene Demoniac (Luke)
-(40, 9, 20, 9, 22, 'Matthew 9:20-22'),           -- 264 Woman with Issue of Blood (Matthew)
-(42, 8, 43, 8, 48, 'Luke 8:43-48'),              -- 265 Woman with Issue of Blood (Luke)
-(40, 9, 18, 9, 26, 'Matthew 9:18-26'),           -- 266 Jairus' Daughter (Matthew)
-(42, 8, 40, 8, 56, 'Luke 8:40-56'),              -- 267 Jairus' Daughter (Luke)
-(40, 14, 13, 14, 21, 'Matthew 14:13-21'),        -- 268 Feeding 5000 (Matthew)
-(41, 6, 30, 6, 44, 'Mark 6:30-44'),              -- 269 Feeding 5000 (Mark)
-(42, 9, 10, 9, 17, 'Luke 9:10-17'),              -- 270 Feeding 5000 (Luke)
-(41, 6, 45, 6, 52, 'Mark 6:45-52'),              -- 271 Walking on Water (Mark)
-(43, 6, 16, 6, 21, 'John 6:16-21'),              -- 272 Walking on Water (John)
-(41, 7, 24, 7, 30, 'Mark 7:24-30'),              -- 273 Syrophoenician Daughter (Mark)
-(41, 8, 1, 8, 10, 'Mark 8:1-10'),                -- 274 Feeding 4000 (Mark)
-(41, 9, 2, 9, 13, 'Mark 9:2-13'),                -- 275 Transfiguration (Mark)
-(42, 9, 28, 9, 36, 'Luke 9:28-36'),              -- 276 Transfiguration (Luke)
-(40, 17, 14, 17, 21, 'Matthew 17:14-21'),        -- 277 Boy with a Demon (Matthew)
-(42, 9, 37, 9, 43, 'Luke 9:37-43'),              -- 278 Boy with a Demon (Luke)
-(40, 20, 29, 20, 34, 'Matthew 20:29-34'),        -- 279 Blind Bartimaeus (Matthew)
-(42, 18, 35, 18, 43, 'Luke 18:35-43'),           -- 280 Blind Bartimaeus (Luke)
-(41, 11, 12, 11, 25, 'Mark 11:12-25'),           -- 281 Cursing the Fig Tree (Mark)
-(43, 18, 10, 18, 11, 'John 18:10-11'),           -- 282 Malchus' Ear (John)
--- OT events with parallel accounts
-(14, 36, 1, 36, 23, '2 Chronicles 36:1-23'),     -- 283 Fall of Jerusalem (2 Chronicles)
-(24, 52, 1, 52, 34, 'Jeremiah 52:1-34'),         -- 284 Fall of Jerusalem (Jeremiah)
-(14, 32, 1, 32, 23, '2 Chronicles 32:1-23'),     -- 285 Hezekiah's Deliverance (2 Chronicles)
-(23, 36, 1, 37, 38, 'Isaiah 36:1–37:38'),        -- 286 Hezekiah's Deliverance (Isaiah)
-(14, 34, 1, 35, 27, '2 Chronicles 34:1–35:27'),  -- 287 Josiah's Reforms (2 Chronicles)
-(13, 10, 1, 13, 14, '1 Chronicles 10:1-14'),     -- 288 Saul Anointed / Death (1 Chronicles)
-(13, 11, 1, 11, 9, '1 Chronicles 11:1-9'),       -- 289 David Anointed King (1 Chronicles)
-(13, 17, 1, 17, 27, '1 Chronicles 17:1-27'),     -- 290 Davidic Covenant (1 Chronicles)
-(14, 3, 1, 7, 22, '2 Chronicles 3:1–7:22'),      -- 291 Solomon Builds Temple (2 Chronicles)
-(14, 10, 1, 10, 19, '2 Chronicles 10:1-19'),     -- 292 Kingdom Divides (2 Chronicles)
-
--- ── Gen 5/11 ancestor refs (IDs 293-304) ──
-(1, 5, 6, 5, 11, 'Genesis 5:6-11'),              -- 293 Enosh
-(1, 5, 9, 5, 14, 'Genesis 5:9-14'),              -- 294 Kenan
-(1, 5, 12, 5, 17, 'Genesis 5:12-17'),            -- 295 Mahalalel
-(1, 5, 15, 5, 20, 'Genesis 5:15-20'),            -- 296 Jared
-(1, 11, 10, 11, 13, 'Genesis 11:10-13'),         -- 297 Arphaxad
-(1, 11, 12, 11, 15, 'Genesis 11:12-15'),         -- 298 Salah
-(1, 11, 14, 11, 17, 'Genesis 11:14-17'),         -- 299 Eber
-(1, 11, 16, 11, 19, 'Genesis 11:16-19'),         -- 300 Peleg
-(1, 11, 18, 11, 21, 'Genesis 11:18-21'),         -- 301 Reu
-(1, 11, 20, 11, 23, 'Genesis 11:20-23'),         -- 302 Serug
-(1, 11, 22, 11, 25, 'Genesis 11:22-25'),         -- 303 Nahor
-(1, 11, 24, 11, 32, 'Genesis 11:24-32'),         -- 304 Terah
-
--- ── 100 Additional People refs (IDs 305–380) ──
-(1, 4, 1, 4, 16, 'Genesis 4:1-16'),              -- 305 Cain and Abel
-(1, 4, 8, 4, 8, 'Genesis 4:8'),                   -- 306 Abel murdered
-(1, 34, 1, 34, 31, 'Genesis 34:1-31'),           -- 307 Dinah at Shechem
-(1, 38, 1, 38, 30, 'Genesis 38:1-30'),           -- 308 Tamar and Judah
-(1, 48, 1, 48, 20, 'Genesis 48:1-20'),           -- 309 Jacob adopts Manasseh & Ephraim
-(1, 14, 18, 14, 20, 'Genesis 14:18-20'),         -- 310 Melchizedek blesses Abraham
-(58, 7, 1, 7, 28, 'Hebrews 7:1-28'),             -- 311 Melchizedek type of Christ
-(1, 39, 1, 39, 20, 'Genesis 39:1-20'),           -- 312 Potiphar and Joseph
-(1, 25, 1, 25, 4, 'Genesis 25:1-4'),             -- 313 Keturah
-(4, 16, 1, 16, 35, 'Numbers 16:1-35'),           -- 314 Korah's rebellion
-(4, 22, 1, 24, 25, 'Numbers 22:1–24:25'),        -- 315 Balaam
-(6, 2, 1, 2, 24, 'Joshua 2:1-24'),               -- 316 Rahab and the spies
-(58, 11, 31, 11, 31, 'Hebrews 11:31'),           -- 317 Rahab in Hebrews
-(6, 7, 1, 7, 26, 'Joshua 7:1-26'),               -- 318 Achan's sin
-(2, 17, 10, 17, 12, 'Exodus 17:10-12'),          -- 319 Hur holds up Moses' arms
-(2, 31, 1, 31, 11, 'Exodus 31:1-11'),            -- 320 Bezalel the craftsman
-(4, 20, 28, 20, 28, 'Numbers 20:28'),            -- 321 Eleazar succeeds Aaron
-(7, 4, 1, 4, 24, 'Judges 4:1-24'),               -- 322 Barak and Deborah
-(7, 4, 17, 4, 22, 'Judges 4:17-22'),             -- 323 Jael kills Sisera
-(7, 13, 1, 13, 25, 'Judges 13:1-25'),            -- 324 Manoah and Samson's birth
-(7, 16, 4, 16, 21, 'Judges 16:4-21'),            -- 325 Delilah betrays Samson
-(10, 2, 8, 2, 10, '2 Samuel 2:8-10'),            -- 326 Ish-bosheth made king
-(10, 3, 27, 3, 27, '2 Samuel 3:27'),             -- 327 Abner killed by Joab
-(10, 9, 1, 9, 13, '2 Samuel 9:1-13'),            -- 328 Mephibosheth
-(10, 11, 1, 11, 27, '2 Samuel 11:1-27'),         -- 329 Uriah the Hittite
-(11, 5, 1, 5, 18, '1 Kings 5:1-18'),             -- 330 Hiram of Tyre
-(11, 1, 5, 1, 53, '1 Kings 1:5-53'),             -- 331 Adonijah
-(10, 16, 5, 16, 13, '2 Samuel 16:5-13'),         -- 332 Shimei curses David
-(10, 15, 32, 15, 37, '2 Samuel 15:32-37'),       -- 333 Hushai the Archite
-(10, 17, 1, 17, 23, '2 Samuel 17:1-23'),         -- 334 Ahithophel
-(10, 15, 24, 15, 29, '2 Samuel 15:24-29'),       -- 335 Zadok the priest
-(11, 17, 8, 17, 24, '1 Kings 17:8-24'),          -- 336 Widow of Zarephath
-(12, 5, 20, 5, 27, '2 Kings 5:20-27'),           -- 337 Gehazi
-(12, 4, 8, 4, 37, '2 Kings 4:8-37'),             -- 338 Shunammite woman
-(12, 8, 7, 8, 15, '2 Kings 8:7-15'),             -- 339 Hazael
-(12, 18, 13, 19, 37, '2 Kings 18:13–19:37'),     -- 340 Sennacherib
-(27, 1, 1, 1, 21, 'Daniel 1:1-21'),              -- 341 Daniel's friends
-(27, 3, 1, 3, 30, 'Daniel 3:1-30'),              -- 342 Fiery furnace
-(27, 5, 1, 5, 31, 'Daniel 5:1-31'),              -- 343 Belshazzar's feast
-(23, 44, 28, 45, 1, 'Isaiah 44:28–45:1'),        -- 344 Cyrus prophesied
-(14, 36, 22, 36, 23, '2 Chronicles 36:22-23'),   -- 345 Cyrus decree
-(27, 6, 1, 6, 28, 'Daniel 6:1-28'),              -- 346 Darius and the lions' den
-(9, 25, 2, 25, 42, '1 Samuel 25:2-42'),          -- 347 Nabal and Abigail
-(12, 22, 14, 22, 20, '2 Kings 22:14-20'),        -- 348 Huldah the prophetess
-(12, 22, 8, 22, 14, '2 Kings 22:8-14'),          -- 349 Hilkiah finds the book
-(16, 2, 10, 2, 20, 'Nehemiah 2:10-20'),          -- 350 Sanballat opposes
-(17, 3, 1, 3, 15, 'Esther 3:1-15'),              -- 351 Haman's plot
-(17, 1, 1, 1, 22, 'Esther 1:1-22'),              -- 352 Vashti deposed
-(42, 2, 25, 2, 35, 'Luke 2:25-35'),              -- 353 Simeon at the Temple
-(42, 1, 5, 1, 25, 'Luke 1:5-25'),                -- 354 Zechariah
-(42, 1, 39, 1, 45, 'Luke 1:39-45'),              -- 355 Elizabeth
-(40, 14, 1, 14, 12, 'Matthew 14:1-12'),          -- 356 Herod Antipas
-(40, 14, 6, 14, 11, 'Matthew 14:6-11'),          -- 357 Salome's dance
-(40, 26, 57, 26, 68, 'Matthew 26:57-68'),        -- 358 Caiaphas at trial
-(43, 18, 13, 18, 24, 'John 18:13-24'),           -- 359 Annas questions Jesus
-(40, 27, 15, 27, 26, 'Matthew 27:15-26'),        -- 360 Barabbas
-(40, 27, 57, 27, 60, 'Matthew 27:57-60'),        -- 361 Joseph of Arimathea
-(40, 27, 32, 27, 32, 'Matthew 27:32'),           -- 362 Simon of Cyrene
-(42, 19, 1, 19, 10, 'Luke 19:1-10'),             -- 363 Zacchaeus
-(41, 5, 22, 5, 43, 'Mark 5:22-43'),              -- 364 Jairus' daughter
-(42, 24, 13, 24, 35, 'Luke 24:13-35'),           -- 365 Cleopas on Emmaus road
-(43, 12, 1, 12, 8, 'John 12:1-8'),               -- 366 Mary of Bethany anoints Jesus
-(44, 9, 10, 9, 19, 'Acts 9:10-19'),              -- 367 Ananias baptizes Paul
-(44, 10, 1, 10, 48, 'Acts 10:1-48'),             -- 368 Cornelius
-(44, 16, 14, 16, 15, 'Acts 16:14-15'),           -- 369 Lydia
-(44, 5, 34, 5, 39, 'Acts 5:34-39'),              -- 370 Gamaliel
-(44, 11, 27, 11, 28, 'Acts 11:27-28'),           -- 371 Agabus
-(44, 9, 36, 9, 43, 'Acts 9:36-43'),              -- 372 Dorcas raised
-(44, 8, 4, 8, 40, 'Acts 8:4-40'),                -- 373 Philip the Evangelist
-(57, 1, 10, 1, 21, 'Philemon 1:10-21'),          -- 374 Onesimus
-(44, 12, 13, 12, 16, 'Acts 12:13-16'),           -- 375 Rhoda
-(44, 12, 1, 12, 23, 'Acts 12:1-23'),             -- 376 Herod Agrippa I
-(44, 25, 13, 26, 32, 'Acts 25:13–26:32'),        -- 377 Herod Agrippa II
-(44, 24, 1, 24, 27, 'Acts 24:1-27'),             -- 378 Felix
-(44, 25, 1, 25, 12, 'Acts 25:1-12'),             -- 379 Festus
-(44, 5, 1, 5, 11, 'Acts 5:1-11'),                -- 380 Ananias and Sapphira
-(45, 16, 1, 16, 2, 'Romans 16:1-2'),             -- 381 Phoebe
--- ── New event refs for added events (IDs 382–386) ──
-(1, 19, 1, 19, 29, 'Genesis 19:1-29'),           -- 382 Destruction of Sodom and Gomorrah
-(1, 17, 1, 17, 27, 'Genesis 17:1-27'),           -- 383 Covenant of Circumcision
-(1, 41, 37, 41, 57, 'Genesis 41:37-57'),         -- 384 Joseph Made Ruler of Egypt
-(2, 40, 1, 40, 38, 'Exodus 40:1-38'),            -- 385 Tabernacle Completed
-(9, 4, 1, 4, 11, '1 Samuel 4:1-11'),             -- 386 Ark Captured by Philistines
--- ── Post-Resurrection appearance refs (IDs 387–396) ──
-(43, 20, 11, 20, 18, 'John 20:11-18'),            -- 387 Appearance to Mary Magdalene
-(41, 16, 9, 16, 11, 'Mark 16:9-11'),              -- 388 Appearance to Mary Magdalene (parallel)
-(42, 24, 13, 24, 35, 'Luke 24:13-35'),            -- 389 Road to Emmaus
-(41, 16, 12, 16, 13, 'Mark 16:12-13'),            -- 390 Road to Emmaus (parallel)
-(43, 20, 19, 20, 25, 'John 20:19-25'),            -- 391 Appearance to Disciples
-(42, 24, 36, 24, 43, 'Luke 24:36-43'),            -- 392 Appearance to Disciples (parallel)
-(43, 20, 26, 20, 29, 'John 20:26-29'),            -- 393 Appearance to Thomas
-(43, 21, 15, 21, 19, 'John 21:15-19'),            -- 394 Restoration of Peter
-(40, 28, 16, 28, 20, 'Matthew 28:16-20'),         -- 395 Great Commission
-(41, 16, 15, 16, 18, 'Mark 16:15-18');            -- 396 Great Commission (parallel)
--- ── NT Books Written refs (IDs 397–422) ──
-INSERT INTO scripture_references (book_id, chapter_start, verse_start, chapter_end, verse_end, reference_text) VALUES
-(59, 1, 1, 1, 1, 'James 1:1'),                   -- 397 James Written
-(48, 1, 1, 1, 5, 'Galatians 1:1-5'),             -- 398 Galatians Written
-(52, 1, 1, 1, 1, '1 Thessalonians 1:1'),         -- 399 1 Thessalonians Written
-(53, 1, 1, 1, 2, '2 Thessalonians 1:1-2'),       -- 400 2 Thessalonians Written
-(46, 1, 1, 1, 3, '1 Corinthians 1:1-3'),         -- 401 1 Corinthians Written
-(40, 1, 1, 1, 1, 'Matthew 1:1'),                 -- 402 Matthew Written
-(41, 1, 1, 1, 1, 'Mark 1:1'),                    -- 403 Mark Written
-(47, 1, 1, 1, 2, '2 Corinthians 1:1-2'),         -- 404 2 Corinthians Written
-(45, 1, 1, 1, 7, 'Romans 1:1-7'),                -- 405 Romans Written
-(42, 1, 1, 1, 4, 'Luke 1:1-4'),                  -- 406 Luke Written
-(49, 1, 1, 1, 2, 'Ephesians 1:1-2'),             -- 407 Ephesians Written
-(51, 1, 1, 1, 2, 'Colossians 1:1-2'),            -- 408 Colossians Written
-(57, 1, 1, 1, 3, 'Philemon 1-3'),                -- 409 Philemon Written
-(50, 1, 1, 1, 2, 'Philippians 1:1-2'),           -- 410 Philippians Written
-(44, 1, 1, 1, 2, 'Acts 1:1-2'),                  -- 411 Acts Written
-(54, 1, 1, 1, 2, '1 Timothy 1:1-2'),             -- 412 1 Timothy Written
-(56, 1, 1, 1, 4, 'Titus 1:1-4'),                 -- 413 Titus Written
-(60, 1, 1, 1, 2, '1 Peter 1:1-2'),               -- 414 1 Peter Written
-(65, 1, 1, 1, 2, 'Jude 1-2'),                    -- 415 Jude Written
-(58, 1, 1, 1, 4, 'Hebrews 1:1-4'),               -- 416 Hebrews Written
-(55, 1, 1, 1, 2, '2 Timothy 1:1-2'),             -- 417 2 Timothy Written
-(61, 1, 1, 1, 2, '2 Peter 1:1-2'),               -- 418 2 Peter Written
-(43, 1, 1, 1, 5, 'John 1:1-5'),                  -- 419 John Written
-(62, 1, 1, 1, 4, '1 John 1:1-4'),                -- 420 1 John Written
-(63, 1, 1, 1, 3, '2 John 1-3'),                  -- 421 2 John Written
-(64, 1, 1, 1, 4, '3 John 1-4');                  -- 422 3 John Written
-
--- Link events to scripture
--- NOTE: event_id is determined by INSERT order, NOT by scripture_id.
--- The mapping below uses the correct event IDs from the events table.
-INSERT INTO event_scripture (event_id, scripture_id) VALUES
--- Primeval & Patriarchs (events 1–13)
-(1, 1),    -- Creation → Genesis 1:1–2:25
-(2, 2),    -- The Fall → Genesis 3:1-24
-(3, 3),    -- The Flood → Genesis 6:1–9:17
-(4, 4),    -- Tower of Babel → Genesis 11:1-9
-(5, 5),    -- Call of Abraham → Genesis 12:1-9
-(6, 6),    -- Abrahamic Covenant → Genesis 15:1-21
-(7, 7),    -- Binding of Isaac → Genesis 22:1-19
-(8, 382),  -- Destruction of Sodom and Gomorrah → Genesis 19:1-29
-(9, 383),  -- Covenant of Circumcision → Genesis 17:1-27
-(10, 8),   -- Jacob Wrestles God → Genesis 32:22-32
-(11, 9),   -- Joseph Sold into Slavery → Genesis 37:12-36
-(12, 384), -- Joseph Made Ruler of Egypt → Genesis 41:37-57
-(13, 10),  -- Israel Enters Egypt → Genesis 46:1-34
--- Egypt & Exodus (events 14–18)
-(14, 11),  -- The Exodus → Exodus 12:1–14:31
-(15, 12),  -- Crossing the Red Sea → Exodus 14:1-31
-(16, 13),  -- Giving of the Law → Exodus 20:1-17
-(17, 14),  -- Wilderness Wandering → Numbers 14:1-45
-(18, 385), -- Tabernacle Completed → Exodus 40:1-38
--- Conquest & Judges (events 19–24)
-(19, 15),  -- Conquest of Canaan → Joshua 1:1–12:24
-(20, 16),  -- Fall of Jericho → Joshua 6:1-27
-(21, 17),  -- Period of the Judges → Judges 2:6-23
-(22, 18),  -- Deborah Defeats Sisera → Judges 4:1–5:31
-(23, 19),  -- Gideon Defeats Midian → Judges 7:1-25
-(24, 386), -- Ark Captured by Philistines → 1 Samuel 4:1-11
--- United Kingdom (events 25–30)
-(25, 20),  -- Saul Anointed King → 1 Samuel 10:1-27
-(26, 21),  -- David Anointed King → 2 Samuel 5:1-5
-(27, 22),  -- David Captures Jerusalem → 2 Samuel 5:6-10
-(28, 23),  -- Davidic Covenant → 2 Samuel 7:1-29
-(29, 24),  -- Solomon Builds Temple → 1 Kings 6:1-38
-(30, 25),  -- Kingdom Divides → 1 Kings 12:1-24
--- Divided Kingdom (events 31–34)
-(31, 26),  -- Elijah on Mount Carmel → 1 Kings 18:20-40
-(32, 27),  -- Fall of Samaria → 2 Kings 17:1-41
-(33, 28),  -- Hezekiah's Deliverance → 2 Kings 19:1-37
-(34, 29),  -- Josiah's Reforms → 2 Kings 22:8–23:25
--- Exile & Return (events 35–41)
-(35, 30),  -- Fall of Jerusalem → 2 Kings 25:1-21
-(36, 31),  -- Babylonian Exile → Lamentations 1:1–5:22
-(37, 32),  -- Edict of Cyrus → Ezra 1:1-11
-(38, 33),  -- Second Temple Built → Ezra 6:14-22
-(39, 34),  -- Ezra's Return → Ezra 7:1–10:44
-(40, 35),  -- Nehemiah Rebuilds Walls → Nehemiah 2:11–6:19
-(41, 36),  -- Esther Saves Her People → Esther 4:1–9:32
--- Life of Christ (events 42–47)
-(42, 37),  -- Birth of Jesus → Luke 2:1-20
-(43, 38),  -- Baptism of Jesus → Matthew 3:13-17
-(44, 39),  -- Sermon on the Mount → Matthew 5:1–7:29
-(45, 40),  -- Crucifixion → Matthew 27:32-56
-(46, 41),  -- Resurrection → Matthew 28:1-10
-(47, 42),  -- Ascension → Acts 1:9-11
--- Apostolic Age (events 48–57)
-(48, 43),  -- Pentecost → Acts 2:1-47
-(49, 44),  -- Stoning of Stephen → Acts 7:54-60
-(50, 45),  -- Conversion of Paul → Acts 9:1-31
-(51, 46),  -- Paul's First Missionary Journey → Acts 13:1–14:28
-(52, 47),  -- Council of Jerusalem → Acts 15:1-35
-(53, 48),  -- Paul's Second Missionary Journey → Acts 15:36–18:22
-(54, 49),  -- Paul's Third Missionary Journey → Acts 18:23–21:16
-(55, 50),  -- Destruction of Jerusalem → Luke 21:5-36
-(56, 51),  -- John Writes Revelation → Revelation 1:1–22:21
-(57, 52),  -- Death of John → John 21:20-25
--- Miracles of Jesus (events 58–94)
-(58, 100),  -- Water Turned to Wine → John 2:1-11
-(59, 101),  -- Healing of the Official's Son → John 4:46-54
-(60, 102),  -- Great Catch of Fish → Luke 5:1-11
-(61, 103),  -- Demon in Capernaum → Mark 1:21-28
-(62, 104),  -- Peter's Mother-in-Law → Matthew 8:14-15
-(63, 105),  -- Cleansing of a Leper → Matthew 8:1-4
-(64, 106),  -- Healing of the Paralytic → Mark 2:1-12
-(65, 107),  -- Healing at Pool of Bethesda → John 5:1-17
-(66, 108),  -- Healing of a Withered Hand → Matthew 12:9-14
-(67, 109),  -- Centurion's Servant → Matthew 8:5-13
-(68, 110),  -- Widow's Son at Nain → Luke 7:11-17
-(69, 111),  -- Calming the Storm → Mark 4:35-41
-(70, 112),  -- Gerasene Demoniac → Mark 5:1-20
-(71, 113),  -- Woman with Issue of Blood → Mark 5:25-34
-(72, 114),  -- Raising of Jairus' Daughter → Mark 5:21-43
-(73, 115),  -- Healing of Two Blind Men → Matthew 9:27-31
-(74, 116),  -- Healing of a Mute Man → Matthew 9:32-34
-(75, 117),  -- Feeding of the 5,000 → John 6:1-15
-(76, 118),  -- Walking on Water → Matthew 14:22-33
-(77, 119),  -- Syrophoenician Woman's Daughter → Matthew 15:21-28
-(78, 120),  -- Deaf and Mute Man → Mark 7:31-37
-(79, 121),  -- Feeding of the 4,000 → Matthew 15:32-39
-(80, 122),  -- Blind Man at Bethsaida → Mark 8:22-26
-(81, 123),  -- Transfiguration → Matthew 17:1-13
-(82, 124),  -- Boy with a Demon → Mark 9:14-29
-(83, 134),  -- Coin in the Fish's Mouth → Matthew 17:24-27
-(84, 125),  -- Man Born Blind → John 9:1-41
-(85, 126),  -- Crippled Woman → Luke 13:10-17
-(86, 127),  -- Man with Dropsy → Luke 14:1-6
-(87, 128),  -- Raising of Lazarus → John 11:1-44
-(88, 129),  -- Healing of Ten Lepers → Luke 17:11-19
-(89, 130),  -- Healing of Blind Bartimaeus → Mark 10:46-52
-(90, 135),  -- Two Blind Men at Jericho → Matthew 20:29-34
-(91, 131),  -- Cursing of the Fig Tree → Matthew 21:18-22
-(92, 132),  -- Healing of Malchus' Ear → Luke 22:49-51
-(93, 133),  -- Catch of 153 Fish → John 21:1-14
-(94, 137),  -- Healing of Naaman → 2 Kings 5:1-27
--- Parallel Gospel references for Life of Christ events
-(42, 237),  -- Birth of Jesus (Matthew 1:18–2:23)
-(43, 238),  -- Baptism of Jesus (Mark 1:9-11)
-(43, 239),  -- Baptism of Jesus (Luke 3:21-22)
-(43, 240),  -- Baptism of Jesus (John 1:29-34)
-(44, 241),  -- Sermon on the Mount/Plain (Luke 6:17-49)
-(45, 242),  -- Crucifixion (Mark 15:21-41)
-(45, 243),  -- Crucifixion (Luke 23:26-49)
-(45, 244),  -- Crucifixion (John 19:17-37)
-(46, 245),  -- Resurrection (Mark 16:1-8)
-(46, 246),  -- Resurrection (Luke 24:1-12)
-(46, 247),  -- Resurrection (John 20:1-18)
-(47, 248),  -- Ascension (Luke 24:50-53)
-(47, 249),  -- Ascension (Mark 16:19-20)
--- Parallel miracle references
-(61, 250),  -- Demon in Capernaum (Luke 4:31-37)
-(62, 251),  -- Peter's Mother-in-Law (Mark 1:29-31)
-(62, 252),  -- Peter's Mother-in-Law (Luke 4:38-39)
-(63, 253),  -- Cleansing a Leper (Mark 1:40-45)
-(63, 254),  -- Cleansing a Leper (Luke 5:12-16)
-(64, 255),  -- Healing the Paralytic (Matthew 9:1-8)
-(64, 256),  -- Healing the Paralytic (Luke 5:17-26)
-(66, 257),  -- Withered Hand (Mark 3:1-6)
-(66, 258),  -- Withered Hand (Luke 6:6-11)
-(67, 259),  -- Centurion's Servant (Luke 7:1-10)
-(69, 260),  -- Calming the Storm (Matthew 8:23-27)
-(69, 261),  -- Calming the Storm (Luke 8:22-25)
-(70, 262),  -- Gerasene Demoniac (Matthew 8:28-34)
-(70, 263),  -- Gerasene Demoniac (Luke 8:26-39)
-(71, 264),  -- Woman with Issue of Blood (Matthew 9:20-22)
-(71, 265),  -- Woman with Issue of Blood (Luke 8:43-48)
-(72, 266),  -- Jairus' Daughter (Matthew 9:18-26)
-(72, 267),  -- Jairus' Daughter (Luke 8:40-56)
-(75, 268),  -- Feeding 5000 (Matthew 14:13-21)
-(75, 269),  -- Feeding 5000 (Mark 6:30-44)
-(75, 270),  -- Feeding 5000 (Luke 9:10-17)
-(76, 271),  -- Walking on Water (Mark 6:45-52)
-(76, 272),  -- Walking on Water (John 6:16-21)
-(77, 273),  -- Syrophoenician Daughter (Mark 7:24-30)
-(79, 274),  -- Feeding 4000 (Mark 8:1-10)
-(81, 275),  -- Transfiguration (Mark 9:2-13)
-(81, 276),  -- Transfiguration (Luke 9:28-36)
-(82, 277),  -- Boy with a Demon (Matthew 17:14-21)
-(82, 278),  -- Boy with a Demon (Luke 9:37-43)
-(89, 279),  -- Blind Bartimaeus (Matthew 20:29-34)
-(89, 280),  -- Blind Bartimaeus (Luke 18:35-43)
-(91, 281),  -- Cursing the Fig Tree (Mark 11:12-25)
-(92, 282),  -- Malchus' Ear (John 18:10-11)
--- OT parallel accounts
-(35, 283),  -- Fall of Jerusalem (2 Chronicles 36:1-23)
-(35, 284),  -- Fall of Jerusalem (Jeremiah 52:1-34)
-(33, 285),  -- Hezekiah's Deliverance (2 Chronicles 32:1-23)
-(33, 286),  -- Hezekiah's Deliverance (Isaiah 36:1–37:38)
-(34, 287),  -- Josiah's Reforms (2 Chronicles 34:1–35:27)
-(25, 288),  -- Saul Anointed (1 Chronicles 10:1-14)
-(26, 289),  -- David Anointed King (1 Chronicles 11:1-9)
-(28, 290),  -- Davidic Covenant (1 Chronicles 17:1-27)
-(29, 291),  -- Solomon Builds Temple (2 Chronicles 3:1–7:22)
-(30, 292);  -- Kingdom Divides (2 Chronicles 10:1-19)
--- Post-Resurrection appearances
-INSERT INTO event_scripture (event_id, scripture_id) VALUES
-(143, 387), -- Appearance to Mary Magdalene → John 20:11-18
-(143, 388), -- Appearance to Mary Magdalene → Mark 16:9-11
-(144, 389), -- Road to Emmaus → Luke 24:13-35
-(144, 390), -- Road to Emmaus → Mark 16:12-13
-(145, 391), -- Appearance to Disciples → John 20:19-25
-(145, 392), -- Appearance to Disciples → Luke 24:36-43
-(146, 393), -- Appearance to Thomas → John 20:26-29
-(147, 394), -- Restoration of Peter → John 21:15-19
-(148, 395), -- Great Commission → Matthew 28:16-20
-(148, 396); -- Great Commission → Mark 16:15-18
--- NT Books Written
-INSERT INTO event_scripture (event_id, scripture_id) VALUES
-(149, 397), -- James Written → James 1:1
-(150, 398), -- Galatians Written → Galatians 1:1-5
-(151, 399), -- 1 Thessalonians Written → 1 Thessalonians 1:1
-(152, 400), -- 2 Thessalonians Written → 2 Thessalonians 1:1-2
-(153, 401), -- 1 Corinthians Written → 1 Corinthians 1:1-3
-(154, 402), -- Matthew Written → Matthew 1:1
-(155, 403), -- Mark Written → Mark 1:1
-(156, 404), -- 2 Corinthians Written → 2 Corinthians 1:1-2
-(157, 405), -- Romans Written → Romans 1:1-7
-(158, 406), -- Luke Written → Luke 1:1-4
-(159, 407), -- Ephesians Written → Ephesians 1:1-2
-(160, 408), -- Colossians Written → Colossians 1:1-2
-(161, 409), -- Philemon Written → Philemon 1-3
-(162, 410), -- Philippians Written → Philippians 1:1-2
-(163, 411), -- Acts Written → Acts 1:1-2
-(164, 412), -- 1 Timothy Written → 1 Timothy 1:1-2
-(165, 413), -- Titus Written → Titus 1:1-4
-(166, 414), -- 1 Peter Written → 1 Peter 1:1-2
-(167, 415), -- Jude Written → Jude 1-2
-(168, 416), -- Hebrews Written → Hebrews 1:1-4
-(169, 417), -- 2 Timothy Written → 2 Timothy 1:1-2
-(170, 418), -- 2 Peter Written → 2 Peter 1:1-2
-(171, 419), -- John Written → John 1:1-5
-(172, 420), -- 1 John Written → 1 John 1:1-4
-(173, 421), -- 2 John Written → 2 John 1-3
-(174, 422); -- 3 John Written → 3 John 1-4
-
--- Link people to scripture (all 47 people)
-INSERT INTO person_scripture (person_id, scripture_id) VALUES
-(1, 53),   -- Adam
-(2, 54),   -- Eve
-(3, 55),   -- Noah
-(4, 56),   -- Abraham
-(5, 57),   -- Sarah
-(6, 58),   -- Isaac
-(7, 59),   -- Rebekah
-(8, 60),   -- Jacob
-(9, 61),   -- Joseph
-(10, 62),  -- Moses
-(11, 63),  -- Aaron
-(12, 64),  -- Miriam
-(13, 65),  -- Joshua
-(14, 66),  -- Deborah
-(15, 67),  -- Gideon
-(16, 68),  -- Samson
-(17, 69),  -- Ruth
-(18, 70),  -- Samuel
-(19, 71),  -- Saul
-(20, 72),  -- David
-(21, 73),  -- Solomon
-(22, 74),  -- Nathan
-(23, 75),  -- Elijah
-(24, 76),  -- Elisha
-(25, 77),  -- Isaiah
-(26, 78),  -- Jeremiah
-(27, 79),  -- Ezekiel
-(28, 80),  -- Daniel
-(29, 81),  -- Hezekiah
-(30, 82),  -- Josiah
-(31, 83),  -- Jeroboam
-(32, 84),  -- Ahab
-(33, 85),  -- Ezra
-(34, 86),  -- Nehemiah
-(35, 87),  -- Zerubbabel
-(36, 88),  -- Esther
-(37, 89),  -- Jesus
-(38, 90),  -- Mary
-(39, 91),  -- John the Baptist
-(40, 92),  -- Peter
-(41, 93),  -- Paul
-(42, 94),  -- John the Apostle
-(43, 95),  -- James son of Zebedee
-(44, 96),  -- Stephen
-(45, 97),  -- Barnabas
-(46, 98),  -- Timothy
-(47, 99),  -- Luke
-(48, 136), -- Naaman
--- New people (IDs 49-148 → scripture IDs 138-236)
-(49, 138),  -- Seth
-(50, 139),  -- Enoch
-(51, 140),  -- Methuselah
-(52, 141),  -- Lamech
-(53, 142),  -- Shem
-(54, 143),  -- Ham
-(55, 144),  -- Japheth
-(56, 145),  -- Lot
-(57, 146),  -- Ishmael
-(58, 147),  -- Hagar
-(59, 148),  -- Esau
-(60, 149),  -- Laban
-(61, 150),  -- Leah
-(62, 151),  -- Rachel
-(63, 152),  -- Judah
-(64, 153),  -- Benjamin
-(65, 154),  -- Reuben
-(66, 155),  -- Pharaoh of Exodus
-(67, 156),  -- Caleb
-(68, 157),  -- Phinehas
-(69, 158),  -- Jethro
-(70, 159),  -- Zipporah
-(71, 160),  -- Othniel
-(72, 161),  -- Ehud
-(73, 162),  -- Jephthah
-(74, 163),  -- Eli
-(75, 164),  -- Hannah
-(76, 165),  -- Boaz
-(77, 166),  -- Naomi
-(78, 167),  -- Abimelech
-(79, 168),  -- Abigail
-(80, 169),  -- Bathsheba
-(81, 170),  -- Joab
-(82, 171),  -- Absalom
-(83, 172),  -- Jonathan
-(84, 173),  -- Michal
-(85, 174),  -- Rehoboam
-(86, 175),  -- Asa
-(87, 176),  -- Jehoshaphat
-(88, 177),  -- Jehoram of Judah
-(89, 178),  -- Uzziah
-(90, 179),  -- Ahaz
-(91, 180),  -- Manasseh
-(92, 181),  -- Jehoiakim
-(93, 182),  -- Zedekiah
-(94, 183),  -- Athaliah
-(95, 184),  -- Joash of Judah
-(96, 185),  -- Amaziah
-(97, 186),  -- Jotham
-(98, 187),  -- Nadab
-(99, 188),  -- Baasha
-(100, 189), -- Omri
-(101, 190), -- Ahaziah of Israel
-(102, 191), -- Jehoram of Israel
-(103, 192), -- Jehu
-(104, 193), -- Jeroboam II
-(105, 194), -- Hoshea
-(106, 195), -- Zimri
-(107, 196), -- Jezebel
-(108, 197), -- Hosea (prophet)
-(109, 198), -- Joel
-(110, 199), -- Amos
-(111, 200), -- Obadiah
-(112, 201), -- Jonah
-(113, 202), -- Micah
-(114, 203), -- Nahum
-(115, 204), -- Habakkuk
-(116, 205), -- Zephaniah
-(117, 206), -- Haggai
-(118, 207), -- Zechariah (prophet)
-(119, 208), -- Malachi
-(120, 209), -- Mordecai
-(121, 210), -- Job
-(122, 211), -- Joseph of Nazareth
-(123, 212), -- Lazarus
-(124, 213), -- Martha
-(125, 214), -- Mary Magdalene
-(126, 215), -- Nicodemus
-(127, 216), -- Matthew/Levi
-(128, 217), -- Andrew
-(129, 218), -- Philip
-(130, 219), -- Bartholomew/Nathanael
-(131, 220), -- Thomas
-(132, 221), -- James son of Alphaeus
-(133, 222), -- Thaddaeus
-(134, 223), -- Simon the Zealot
-(135, 224), -- Judas Iscariot
-(136, 225), -- Matthias
-(137, 226), -- Mark
-(138, 227), -- Silas
-(139, 228), -- Titus
-(140, 229), -- Priscilla
-(141, 230), -- Aquila
-(142, 231), -- Apollos
-(143, 232), -- Philemon
-(144, 233), -- James brother of Jesus
-(145, 234), -- Herod the Great
-(146, 235), -- Pontius Pilate
-(147, 236), -- Anna
--- Gen 5/11 ancestors (IDs 148-159 → scripture IDs 293-304)
-(148, 293), -- Enosh
-(149, 294), -- Kenan
-(150, 295), -- Mahalalel
-(151, 296), -- Jared
-(152, 297), -- Arphaxad
-(153, 298), -- Salah
-(154, 299), -- Eber
-(155, 300), -- Peleg
-(156, 301), -- Reu
-(157, 302), -- Serug
-(158, 303), -- Nahor
-(159, 304), -- Terah
--- 100 Additional People → scripture refs
-(160, 305), -- Cain
-(161, 305), -- Abel (same chapter)
-(161, 306), -- Abel murdered
-(162, 307), -- Dinah
-(163, 307), -- Simeon (in Dinah incident)
-(164, 307), -- Levi (in Dinah incident)
-(171, 309), -- Manasseh son of Joseph
-(172, 309), -- Ephraim
-(173, 308), -- Tamar
-(174, 308), -- Perez
-(176, 310), -- Melchizedek (Genesis)
-(176, 311), -- Melchizedek (Hebrews)
-(177, 312), -- Potiphar
-(175, 313), -- Keturah
-(179, 314), -- Korah
-(180, 315), -- Balaam
-(182, 316), -- Rahab (Joshua)
-(182, 317), -- Rahab (Hebrews)
-(183, 318), -- Achan
-(185, 319), -- Hur
-(186, 320), -- Bezalel
-(184, 321), -- Eleazar
-(189, 322), -- Barak
-(190, 323), -- Jael
-(191, 323), -- Sisera
-(192, 324), -- Manoah
-(193, 325), -- Delilah
-(199, 326), -- Ish-bosheth
-(200, 327), -- Abner
-(201, 328), -- Mephibosheth
-(202, 329), -- Uriah
-(203, 330), -- Hiram
-(204, 331), -- Adonijah
-(205, 332), -- Shimei
-(206, 333), -- Hushai
-(207, 334), -- Ahithophel
-(208, 335), -- Zadok
-(209, 336), -- Widow of Zarephath
-(210, 337), -- Gehazi
-(211, 338), -- Shunammite Woman
-(212, 339), -- Hazael
-(213, 340), -- Sennacherib
-(218, 341), -- Shadrach
-(219, 341), -- Meshach
-(220, 341), -- Abednego
-(218, 342), -- Shadrach (furnace)
-(219, 342), -- Meshach (furnace)
-(220, 342), -- Abednego (furnace)
-(215, 343), -- Belshazzar
-(216, 344), -- Cyrus (Isaiah)
-(216, 345), -- Cyrus (Chronicles)
-(217, 346), -- Darius
-(221, 347), -- Nabal
-(222, 348), -- Huldah
-(223, 349), -- Hilkiah
-(224, 350), -- Sanballat
-(226, 351), -- Haman
-(227, 352), -- Vashti
-(229, 353), -- Simeon at Temple
-(230, 354), -- Zechariah
-(231, 355), -- Elizabeth
-(232, 356), -- Herod Antipas
-(234, 357), -- Salome
-(235, 358), -- Caiaphas
-(236, 359), -- Annas
-(237, 360), -- Barabbas
-(238, 361), -- Joseph of Arimathea
-(239, 362), -- Simon of Cyrene
-(240, 363), -- Zacchaeus
-(241, 364), -- Jairus
-(242, 365), -- Cleopas
-(243, 366), -- Mary of Bethany
-(244, 367), -- Ananias of Damascus
-(245, 368), -- Cornelius
-(246, 369), -- Lydia
-(247, 370), -- Gamaliel
-(248, 371), -- Agabus
-(249, 372), -- Dorcas
-(250, 373), -- Philip the Evangelist
-(252, 374), -- Onesimus
-(253, 375), -- Rhoda
-(254, 376), -- Herod Agrippa I
-(255, 377), -- Herod Agrippa II
-(256, 378), -- Felix
-(257, 379), -- Festus
-(258, 380), -- Ananias and Sapphira
-(259, 381); -- Phoebe
-
--- ============================================================
--- LINEAGE OF JESUS — Matthew 1 & Luke 3
--- Complete genealogical chain from Adam to Jesus
--- ============================================================
-
--- Matthew 1 additions (missing links in the royal/legal line)
-INSERT INTO people (name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
-('Abijah', 'Abijam', -958, -955, 1, 1, 'probable', 'king', 'minor', 'Judah', 85, NULL, 'King of Judah, son of Rehoboam. Reigned 3 years. Ancestor of Jesus in Matthew 1:7.', 'Ussher: reigned 958–955 BC (3 years, 1 Kings 15:1–2). Not to be confused with Abijah the priest.'),
-('Shealtiel', 'Salathiel', -595, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 269, NULL, 'Son of Jeconiah (Jehoiachin), father of Zerubbabel. Exilic-period ancestor of Jesus (Matt 1:12, Luke 3:27).', 'Exilic period. Born during Babylonian captivity after Jeconiah''s exile in 597 BC.'),
-('Abiud', NULL, -520, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 35, NULL, 'Son of Zerubbabel, ancestor of Jesus in Matthew 1:13. Post-exilic figure.', 'Post-exilic period. Known only from Matthew''s genealogy.'),
-('Eliakim', NULL, -490, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 272, NULL, 'Son of Abiud, ancestor of Jesus in Matthew 1:13. Post-exilic figure.', 'Known only from Matthew''s genealogy. Not the Eliakim of 2 Kings 18.'),
-('Azor', NULL, -460, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 273, NULL, 'Son of Eliakim, ancestor of Jesus in Matthew 1:13–14.', 'Known only from Matthew''s genealogy.'),
-('Zadok', NULL, -430, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 274, NULL, 'Son of Azor, ancestor of Jesus in Matthew 1:14. Not the priest Zadok of David''s time.', 'Known only from Matthew''s genealogy. Not to be confused with Zadok the priest (2 Sam 8:17).'),
-('Achim', 'Jachin', -400, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 275, NULL, 'Son of Zadok, ancestor of Jesus in Matthew 1:14.', 'Known only from Matthew''s genealogy. Intertestamental period.'),
-('Eliud', NULL, -370, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 276, NULL, 'Son of Achim, ancestor of Jesus in Matthew 1:14–15.', 'Known only from Matthew''s genealogy. Intertestamental period.'),
-('Eleazar', NULL, -340, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 277, NULL, 'Son of Eliud, ancestor of Jesus in Matthew 1:15. Not the priest Eleazar son of Aaron.', 'Known only from Matthew''s genealogy. Not to be confused with Eleazar the priest (Num 20:28).'),
-('Matthan', NULL, -100, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 278, NULL, 'Son of Eleazar, grandfather of Joseph of Nazareth in Matthew 1:15.', 'Known only from Matthew''s genealogy. Late Second Temple period.'),
-('Jacob', NULL, -70, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 279, NULL, 'Son of Matthan, father of Joseph of Nazareth in Matthew 1:15–16. Not the patriarch Jacob.', 'Known only from Matthew''s genealogy. Father of Joseph, the husband of Mary.');
-
--- Luke 3 additions — David to Zerubbabel via Nathan (Mary's/natural line)
-INSERT INTO people (name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
-('Nathan', NULL, -1000, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 20, 80, 'Son of David and Bathsheba. Ancestor of Jesus in Luke 3:31. Not the prophet Nathan.', '2 Samuel 5:14, 1 Chronicles 3:5. Born during David''s reign in Jerusalem. Not to be confused with Nathan the prophet (2 Sam 7).'),
-('Mattatha', NULL, NULL, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 281, NULL, 'Son of Nathan, ancestor of Jesus in Luke 3:31.', 'Known only from Luke''s genealogy.'),
-('Menna', 'Menan', NULL, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 282, NULL, 'Son of Mattatha, ancestor of Jesus in Luke 3:31.', 'Known only from Luke''s genealogy.'),
-('Melea', NULL, NULL, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 283, NULL, 'Son of Menna, ancestor of Jesus in Luke 3:31.', 'Known only from Luke''s genealogy.'),
-('Eliakim', NULL, NULL, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 284, NULL, 'Son of Melea, ancestor of Jesus in Luke 3:30. Not the Eliakim of Matthew''s line or 2 Kings 18.', 'Known only from Luke''s genealogy. Luke 3:30.'),
-('Jonam', 'Jonan', NULL, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 285, NULL, 'Son of Eliakim, ancestor of Jesus in Luke 3:30.', 'Known only from Luke''s genealogy.'),
-('Joseph', NULL, NULL, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 286, NULL, 'Son of Jonam, ancestor of Jesus in Luke 3:30. Not Joseph of Nazareth.', 'Known only from Luke''s genealogy. One of several Josephs in the lineage.'),
-('Judah', NULL, NULL, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 287, NULL, 'Son of Joseph, ancestor of Jesus in Luke 3:30. Not the patriarch Judah son of Jacob.', 'Known only from Luke''s genealogy.'),
-('Simeon', NULL, NULL, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 288, NULL, 'Son of Judah, ancestor of Jesus in Luke 3:30. Not Simeon the patriarch or Simeon at the Temple.', 'Known only from Luke''s genealogy.'),
-('Levi', NULL, NULL, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 289, NULL, 'Son of Simeon, ancestor of Jesus in Luke 3:29. Not the patriarch Levi son of Jacob.', 'Known only from Luke''s genealogy.'),
-('Matthat', NULL, NULL, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 290, NULL, 'Son of Levi, ancestor of Jesus in Luke 3:29.', 'Known only from Luke''s genealogy. Pre-exilic Matthat, distinct from the post-exilic Matthat.'),
-('Jorim', NULL, NULL, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 291, NULL, 'Son of Matthat, ancestor of Jesus in Luke 3:29.', 'Known only from Luke''s genealogy.'),
-('Eliezer', NULL, NULL, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 292, NULL, 'Son of Jorim, ancestor of Jesus in Luke 3:29. Not Eliezer servant of Abraham.', 'Known only from Luke''s genealogy.'),
-('Joshua', 'Jesus', NULL, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 293, NULL, 'Son of Eliezer, ancestor of Jesus in Luke 3:29. Same name as Jesus/Joshua in Hebrew. Not Joshua of the conquest.', 'Known only from Luke''s genealogy. Greek Iesous = Hebrew Yehoshua.'),
-('Er', NULL, NULL, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 294, NULL, 'Son of Joshua, ancestor of Jesus in Luke 3:28. Not Er son of Judah (Gen 38:3).', 'Known only from Luke''s genealogy.'),
-('Elmadam', 'Elmodam', NULL, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 295, NULL, 'Son of Er, ancestor of Jesus in Luke 3:28.', 'Known only from Luke''s genealogy.'),
-('Cosam', NULL, NULL, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 296, NULL, 'Son of Elmadam, ancestor of Jesus in Luke 3:28.', 'Known only from Luke''s genealogy.'),
-('Addi', NULL, NULL, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 297, NULL, 'Son of Cosam, ancestor of Jesus in Luke 3:28.', 'Known only from Luke''s genealogy.'),
-('Melchi', NULL, NULL, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 298, NULL, 'Son of Addi, ancestor of Jesus in Luke 3:28. Pre-exilic Melchi, distinct from the post-exilic Melchi.', 'Known only from Luke''s genealogy. Luke 3:28.'),
-('Neri', NULL, -620, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 299, NULL, 'Son of Melchi, father of Shealtiel in Luke 3:27. Links to the exilic line.', 'Known only from Luke''s genealogy. Luke identifies Shealtiel as son of Neri rather than Jeconiah (Matt 1:12).');
-
--- Luke 3 additions — Zerubbabel to Joseph (post-exilic)
-INSERT INTO people (name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
-('Rhesa', NULL, -500, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 35, NULL, 'Son of Zerubbabel, ancestor of Jesus in Luke 3:27.', 'Known only from Luke''s genealogy. Post-exilic period.'),
-('Joanan', 'Joannas', NULL, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 301, NULL, 'Son of Rhesa, ancestor of Jesus in Luke 3:27.', 'Known only from Luke''s genealogy.'),
-('Joda', 'Judah', NULL, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 302, NULL, 'Son of Joanan, ancestor of Jesus in Luke 3:26.', 'Known only from Luke''s genealogy.'),
-('Josech', 'Josec, Joseph', NULL, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 303, NULL, 'Son of Joda, ancestor of Jesus in Luke 3:26.', 'Known only from Luke''s genealogy.'),
-('Semein', 'Semei', NULL, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 304, NULL, 'Son of Josech, ancestor of Jesus in Luke 3:26.', 'Known only from Luke''s genealogy.'),
-('Mattathias', NULL, NULL, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 305, NULL, 'Son of Semein, ancestor of Jesus in Luke 3:26.', 'Known only from Luke''s genealogy. First of two Mattathias in Luke''s post-exilic line.'),
-('Maath', NULL, NULL, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 306, NULL, 'Son of Mattathias, ancestor of Jesus in Luke 3:26.', 'Known only from Luke''s genealogy.'),
-('Naggai', 'Nagge', NULL, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 307, NULL, 'Son of Maath, ancestor of Jesus in Luke 3:25.', 'Known only from Luke''s genealogy.'),
-('Esli', 'Hesli', NULL, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 308, NULL, 'Son of Naggai, ancestor of Jesus in Luke 3:25.', 'Known only from Luke''s genealogy.'),
-('Nahum', NULL, NULL, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 309, NULL, 'Son of Esli, ancestor of Jesus in Luke 3:25. Not the prophet Nahum.', 'Known only from Luke''s genealogy. Not to be confused with the prophet Nahum (Nah 1:1).'),
-('Amos', NULL, NULL, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 310, NULL, 'Son of Nahum, ancestor of Jesus in Luke 3:25. Not the prophet Amos.', 'Known only from Luke''s genealogy. Not to be confused with the prophet Amos (Amos 1:1).'),
-('Mattathias', NULL, NULL, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 311, NULL, 'Son of Amos, ancestor of Jesus in Luke 3:25. Second Mattathias in Luke''s post-exilic line.', 'Known only from Luke''s genealogy. Luke 3:25.'),
-('Joseph', NULL, NULL, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 312, NULL, 'Son of Mattathias, ancestor of Jesus in Luke 3:24. Not Joseph of Nazareth.', 'Known only from Luke''s genealogy. One of several Josephs in the lineage.'),
-('Jannai', 'Janna', NULL, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 313, NULL, 'Son of Joseph, ancestor of Jesus in Luke 3:24.', 'Known only from Luke''s genealogy.'),
-('Melchi', NULL, NULL, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 314, NULL, 'Son of Jannai, ancestor of Jesus in Luke 3:24. Post-exilic Melchi, distinct from the pre-exilic Melchi.', 'Known only from Luke''s genealogy. Luke 3:24.'),
-('Levi', NULL, NULL, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 315, NULL, 'Son of Melchi, ancestor of Jesus in Luke 3:24. Not the patriarch Levi son of Jacob.', 'Known only from Luke''s genealogy.'),
-('Matthat', NULL, -80, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 316, NULL, 'Son of Levi, ancestor of Jesus in Luke 3:24. Post-exilic Matthat, grandfather of Joseph.', 'Known only from Luke''s genealogy. Late Second Temple period.'),
-('Heli', 'Eli', -60, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 317, NULL, 'Father of Joseph in Luke 3:23. Traditionally understood as Mary''s father or Joseph''s father-in-law.', 'Known only from Luke''s genealogy. Some scholars identify Heli as Mary''s father, making Luke''s genealogy the natural/maternal line.');
-
--- ── Brothers of Jesus (Mark 6:3) ────────────────────────────
--- IDs 319-321: Joses, Simon, Judas/Jude
-INSERT INTO people (name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes)
-VALUES
-('Joses', 'Jose', 0, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 122, 38, 'Brother of Jesus mentioned in Mark 6:3 and Matthew 13:55.', 'Mark 6:3; Matthew 13:55.'),
-('Simon', NULL, 2, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 122, 38, 'Brother of Jesus mentioned in Mark 6:3 and Matthew 13:55. Not to be confused with Simon Peter or Simon the Zealot.', 'Mark 6:3; Matthew 13:55.'),
-('Judas', 'Jude', 3, NULL, 1, 1, 'traditional', 'other', 'minor', 'Judah', 122, 38, 'Brother of Jesus mentioned in Mark 6:3 and Matthew 13:55. Traditionally identified as the author of the Epistle of Jude.', 'Mark 6:3; Matthew 13:55; Jude 1:1.');
-
--- ── Update existing records to link into Jesus's genealogy ────
-
--- Fix Asa's father: was set to Rehoboam (85), should be Abijah (270)
-UPDATE people SET father_id = 270 WHERE id = 86;                -- Asa → Abijah (not directly Rehoboam)
-
--- Link Zerubbabel to Shealtiel
-UPDATE people SET father_id = 271 WHERE id = 35;                -- Zerubbabel → Shealtiel
-
--- Link Joseph of Nazareth to Jacob (Matthew's genealogy)
-UPDATE people SET father_id = 280 WHERE id = 122;               -- Joseph of Nazareth → Jacob (Matt 1:16)
-
--- ── Lineage of Jesus — person_relationships ──────────────────
-
-INSERT INTO person_relationships (person_id_1, person_id_2, relationship_type) VALUES
--- Abijah (King of Judah)
-(85, 270, 'parent'),   -- Rehoboam → Abijah
-(270, 85, 'child'),    -- Abijah → Rehoboam
-(270, 86, 'parent'),   -- Abijah → Asa
-(86, 270, 'child'),    -- Asa → Abijah
-
--- Shealtiel
-(269, 271, 'parent'),  -- Jehoiachin → Shealtiel
-(271, 269, 'child'),   -- Shealtiel → Jehoiachin
-(271, 35, 'parent'),   -- Shealtiel → Zerubbabel
-(35, 271, 'child'),    -- Zerubbabel → Shealtiel
-
--- Jacob father of Joseph
-(280, 122, 'parent'),  -- Jacob → Joseph of Nazareth
-(122, 280, 'child'),   -- Joseph → Jacob
-
--- Nathan son of David
-(20, 281, 'parent'),   -- David → Nathan
-(281, 20, 'child'),    -- Nathan → David
-(80, 281, 'parent'),   -- Bathsheba → Nathan
-(281, 80, 'child'),    -- Nathan → Bathsheba
-(281, 21, 'sibling'),  -- Nathan & Solomon (half-brothers via Bathsheba)
-(21, 281, 'sibling'),  -- Solomon & Nathan
-
--- Heli (father/father-in-law of Joseph)
-(318, 122, 'parent'),  -- Heli → Joseph of Nazareth (Luke's genealogy)
-(122, 318, 'child'),   -- Joseph → Heli
-
--- Brothers of Jesus (Mark 6:3)
-(122, 319, 'parent'),  -- Joseph → Joses
-(319, 122, 'child'),   -- Joses → Joseph
-(38, 319, 'parent'),   -- Mary → Joses
-(319, 38, 'child'),    -- Joses → Mary
-(122, 320, 'parent'),  -- Joseph → Simon
-(320, 122, 'child'),   -- Simon → Joseph
-(38, 320, 'parent'),   -- Mary → Simon
-(320, 38, 'child'),    -- Simon → Mary
-(122, 321, 'parent'),  -- Joseph → Judas/Jude
-(321, 122, 'child'),   -- Judas/Jude → Joseph
-(38, 321, 'parent'),   -- Mary → Judas/Jude
-(321, 38, 'child'),    -- Judas/Jude → Mary
-(37, 319, 'sibling'),  -- Jesus & Joses
-(319, 37, 'sibling'),
-(37, 320, 'sibling'),  -- Jesus & Simon
-(320, 37, 'sibling'),
-(37, 321, 'sibling'),  -- Jesus & Judas/Jude
-(321, 37, 'sibling'),
-(144, 319, 'sibling'), -- James & Joses
-(319, 144, 'sibling'),
-(144, 320, 'sibling'), -- James & Simon
-(320, 144, 'sibling'),
-(144, 321, 'sibling'), -- James & Judas/Jude
-(321, 144, 'sibling'),
-(319, 320, 'sibling'), -- Joses & Simon
-(320, 319, 'sibling'),
-(319, 321, 'sibling'), -- Joses & Judas/Jude
-(321, 319, 'sibling'),
-(320, 321, 'sibling'), -- Simon & Judas/Jude
-(321, 320, 'sibling');
-
--- ── Bethany family — father of Lazarus, Martha, Mary of Bethany ──
--- The Bible does not name their father, but identifies the three as siblings
--- (John 11:1-2, 19, 21; Luke 10:38-42). We create a placeholder parent so
--- the family tree renders correctly.
-INSERT INTO people (name, alt_names, birth_year, death_year, birth_approx, death_approx,
-    date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes)
-VALUES ('Father of Lazarus', 'Father of Martha and Mary', -40, NULL, 1, 1,
-    'possible', 'other', 'minor', NULL, NULL, NULL,
-    'Unnamed father of Lazarus, Martha, and Mary of Bethany. Not named in Scripture.',
-    'Dates estimated based on children''s lifetimes.');
-
--- Link the three siblings to their father
-UPDATE people SET father_id = (SELECT id FROM people WHERE name = 'Father of Lazarus') WHERE id = 123; -- Lazarus
-UPDATE people SET father_id = (SELECT id FROM people WHERE name = 'Father of Lazarus') WHERE id = 124; -- Martha
-UPDATE people SET father_id = (SELECT id FROM people WHERE name = 'Father of Lazarus') WHERE id = 243; -- Mary of Bethany
-
--- ============================================================
--- CHURCH HISTORY PEOPLE (IDs 323–357)
--- ============================================================
-INSERT INTO people (name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
 -- Early Church & Persecution
-('Ignatius of Antioch', NULL, 35, 108, 1, 0, 'probable', 'other', 'moderate', NULL, NULL, NULL, 'Bishop of Antioch and early Church Father. His seven letters on church order, the Eucharist, and martyrdom are among the earliest post-apostolic writings.', 'Born c. 35 AD; martyred c. 108 AD in Rome under Trajan.'),
-('Polycarp of Smyrna', NULL, 69, 155, 1, 0, 'probable', 'other', 'moderate', NULL, NULL, NULL, 'Bishop of Smyrna and disciple of the Apostle John. Martyred at age 86, declaring "Eighty-six years I have served Him."', 'Born c. 69 AD; martyred c. 155 AD (some sources say 167).'),
-('Irenaeus of Lyon', NULL, 130, 202, 1, 1, 'probable', 'other', 'moderate', NULL, NULL, NULL, 'Bishop of Lyon; student of Polycarp. His work Against Heresies is foundational for Christian orthodoxy and established the importance of apostolic succession.', 'Born c. 130 in Smyrna; died c. 202 in Lyon.'),
-('Origen of Alexandria', NULL, 185, 253, 0, 0, 'probable', 'other', 'minor', NULL, NULL, NULL, 'Prolific scholar and head of the catechetical school in Alexandria. Pioneered biblical criticism and allegorical interpretation. His Hexapla was the first side-by-side Bible.', 'Born c. 185 in Alexandria; died c. 253 in Tyre.'),
-('Tertullian', 'Quintus Septimius Florens Tertullianus', 155, 220, 1, 1, 'probable', 'other', 'minor', NULL, NULL, NULL, 'Church Father in Carthage. Coined the term "Trinity" (trinitas) and many other theological Latin terms. Later joined the Montanist movement.', 'Born c. 155 in Carthage; died c. 220.'),
+INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
+(325, 'Irenaeus of Lyon', NULL, 130, 202, 1, 1, 'possible', 'church-leader', 'major', NULL, NULL, NULL, 'Bishop of Lyon who, by his own account, heard Polycarp as a young man. His work Against Heresies is foundational for early Christian orthodoxy and appeals to Scripture, the rule of faith and the succession of bishops from the apostles as tests of true teaching.', 'Born in Asia Minor (probably Smyrna) c. 130-142; died c. 202. Both dates are estimates.'),
+(326, 'Origen of Alexandria', NULL, 185, 253, 1, 1, 'probable', 'church-leader', 'moderate', NULL, NULL, NULL, 'Prolific scholar and head of the catechetical school in Alexandria, later teaching at Caesarea in Palestine. Pioneered textual criticism and allegorical interpretation of Scripture. His Hexapla set the Hebrew Old Testament beside several Greek versions in parallel columns. Some of his speculative teachings were later condemned, but his influence on Eastern and Western exegesis was immense.', 'Born c. 185 in Alexandria; died c. 253-254 in Tyre, after suffering torture in the Decian persecution (250-251).'),
+(327, 'Tertullian', 'Quintus Septimius Florens Tertullianus', 155, 220, 1, 1, 'possible', 'church-leader', 'moderate', NULL, NULL, NULL, 'Early Latin Christian writer in Carthage. The earliest surviving Latin use of the word trinitas is his, and he shaped much of Latin theological vocabulary. Later he joined the Montanist movement, which is why he is not always counted among the Church Fathers.', 'Born c. 155 in Carthage; died c. 220. Both dates are estimates.'),
+(328, 'Athanasius of Alexandria', NULL, 296, 373, 1, 0, 'probable', 'church-leader', 'major', NULL, NULL, NULL, 'Bishop of Alexandria who defended Christ''s full deity against Arianism through five exiles, holding the line for the Nicene faith. His Easter festal letter contains the earliest known list of exactly the twenty-seven New Testament books, a landmark in the history of the canon.', 'Born c. 296 (estimates c. 293-298); died 2 May 373. Exiled five times by common count.'),
+(490, 'Constantine the Great', 'Flavius Valerius Constantinus, Constantine I', 272, 337, 1, 0, 'probable', 'ruler', 'major', NULL, NULL, NULL, 'Roman emperor who, after the Milvian Bridge (312), favored Christianity, agreed with Licinius to extend toleration (313), and convened the Council of Nicaea (325). He was baptized shortly before his death in 337. Christianity became legal and favored, not the state religion, under him.', 'Born c. 272 (Naissus); died 22 May 337 near Nicomedia.');
 
 -- Imperial Christianity
-('Athanasius of Alexandria', NULL, 296, 373, 1, 0, 'probable', 'other', 'major', NULL, NULL, NULL, 'Bishop of Alexandria who defended Christ''s full deity against Arianism through five exiles, holding the line for the Nicene faith. His Easter festal letter contains the earliest known list of exactly the twenty-seven New Testament books, a landmark in the history of the canon.', 'Born c. 296; died May 2, 373.'),
-('Jerome', 'Eusebius Sophronius Hieronymus', 347, 420, 0, 0, 'probable', 'other', 'major', NULL, NULL, NULL, 'A brilliant, irascible scholar-monk who translated the Scriptures into Latin, working from the Hebrew and Greek in his study at Bethlehem. His Vulgate became the Bible of the Western church for a millennium and set an enduring precedent for translation from the original languages.', 'Born c. 347 in Stridon; died September 30, 420 in Bethlehem.'),
-('Augustine of Hippo', 'Aurelius Augustinus', 354, 430, 0, 0, 'certain', 'other', 'major', NULL, NULL, NULL, 'A North African rhetorician converted in a Milan garden who became bishop of Hippo and the most influential theologian of the Western church. His Confessions pioneered spiritual autobiography, and his teaching on grace, sin, and the City of God shaped Catholic and Protestant thought alike.', 'Born November 13, 354 in Thagaste; died August 28, 430 in Hippo.'),
+INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
+(329, 'Jerome', 'Eusebius Sophronius Hieronymus', 347, 420, 1, 0, 'probable', 'church-leader', 'major', NULL, NULL, NULL, 'A learned and irascible monk and biblical scholar who revised the Latin Gospels and Psalms and translated most of the Old Testament into Latin from the Hebrew, settling in Bethlehem around 386. The resulting Vulgate, a composite text that gradually replaced the Old Latin versions, became the Bible of the Western church for about a thousand years.', 'Born c. 347 (some scholars c. 342) in Stridon; died 30 September 420 in Bethlehem.'),
+(330, 'Augustine of Hippo', 'Aurelius Augustinus', 354, 430, 0, 0, 'certain', 'church-leader', 'major', NULL, NULL, NULL, 'A North African rhetorician converted in a Milan garden who became bishop of Hippo and the most influential theologian of the Western church. His Confessions pioneered spiritual autobiography, and his teaching on grace, sin, and the City of God shaped Catholic and Protestant thought alike.', 'Born November 13, 354 in Thagaste; died August 28, 430 in Hippo.'),
+(332, 'Patrick of Ireland', 'Patricius', 385, 461, 1, 1, 'possible', 'church-leader', 'moderate', NULL, NULL, NULL, 'Missionary to Ireland. Captured as a slave at about 16, he escaped and later returned to evangelize the Irish. Irish Christianity went on to become a notable center of monastic learning and mission.', 'Traditional dates c. 385-461; many modern scholars place his mission in the later fifth century (died c. 490s). Born in Roman Britain; his own Confessio gives no years.'),
+(491, 'John Chrysostom', 'Golden-mouthed, John of Antioch', 347, 407, 1, 0, 'probable', 'church-leader', 'moderate', NULL, NULL, NULL, 'Archbishop of Constantinople, famed for his preaching and his expositions of Scripture, who criticized the wealthy and the imperial court and died in exile. Honored in the Eastern and Western churches; his name means Golden-mouthed.', 'Born c. 347 (344-354) in Antioch; died 14 September 407 at Comana in Pontus.');
 
 -- Early Medieval
-('Benedict of Nursia', NULL, 480, 547, 1, 1, 'probable', 'other', 'moderate', NULL, NULL, NULL, 'Father of Western monasticism. His Rule of St. Benedict — "ora et labora" (pray and work) — became the foundation for monastic communities that preserved learning through the Dark Ages.', 'Born c. 480 in Nursia; died c. 547 at Monte Cassino.'),
-('Patrick of Ireland', 'Patricius', 385, 461, 1, 1, 'probable', 'other', 'minor', NULL, NULL, NULL, 'Missionary to Ireland. Captured as a slave at 16, he escaped and later returned to evangelize the Irish. His mission transformed Ireland into a center of Christian learning.', 'Born c. 385 in Roman Britain; died c. 461.'),
+INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
+(331, 'Benedict of Nursia', NULL, 480, 547, 1, 1, 'probable', 'church-leader', 'major', NULL, NULL, NULL, 'Founder of Monte Cassino and author of the Rule of St. Benedict, which became the standard rule of Western monasticism. Its balance of prayer, work and study, later summed up in the motto "ora et labora", shaped monastic communities that preserved learning in the early Middle Ages.', 'Born c. 480 in Nursia; died c. 547 (some sources c. 543) at Monte Cassino. Almost all details come from Gregory the Great''s Dialogues, book II.'),
+(492, 'Gregory the Great', 'Gregory I', 540, 604, 1, 0, 'probable', 'church-leader', 'major', NULL, NULL, NULL, 'Pope from 590 to 604, who strengthened the Roman see, sent Augustine of Canterbury to England, and wrote the Pastoral Rule and the Dialogues (the main source for the life of Benedict). He is honored by Catholic and Orthodox churches.', 'Born c. 540 in Rome; died 12 March 604.');
 
--- High Medieval
-('Francis of Assisi', 'Giovanni di Pietro di Bernardone', 1182, 1226, 0, 0, 'certain', 'other', 'moderate', NULL, NULL, NULL, 'Founder of the Franciscan Order. Renounced wealth to live in radical poverty and preached to the poor. Received the stigmata (1224). Patron saint of animals and ecology.', 'Born 1181 or 1182 in Assisi; died October 3, 1226.'),
-('Thomas Aquinas', NULL, 1225, 1274, 0, 0, 'certain', 'other', 'moderate', NULL, NULL, NULL, 'Dominican friar and the greatest medieval theologian. His Summa Theologiae synthesized faith and reason, integrating Aristotelian philosophy with Christian theology.', 'Born 1225 in Roccasecca; died March 7, 1274.'),
-('John Wycliffe', NULL, 1328, 1384, 1, 0, 'probable', 'other', 'major', NULL, NULL, NULL, 'An Oxford philosopher who challenged papal wealth and authority and inspired the first complete Bible in English, rendered from the Latin Vulgate. Condemned after death, his bones were burned and scattered, yet his Lollard followers earned him the title morning star of the Reformation.', 'Born c. 1328 in Yorkshire; died December 31, 1384.'),
-('Jan Hus', 'John Hus', 1372, 1415, 1, 0, 'certain', 'other', 'moderate', NULL, NULL, NULL, 'Czech reformer and rector of the University of Prague. Influenced by Wycliffe, he preached in the common language and challenged papal authority. Burned at the stake at the Council of Constance.', 'Born c. 1372; burned July 6, 1415.'),
+-- High Medieval & Crusades
+INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
+(333, 'Francis of Assisi', 'Giovanni di Pietro di Bernardone', 1182, 1226, 1, 0, 'certain', 'church-leader', 'major', NULL, NULL, NULL, 'Founder of the Franciscan Order. Renounced wealth to live in radical poverty and preached to the poor. According to tradition he received the stigmata in 1224. Patron saint of animals and ecology.', 'Born 1181 or 1182 in Assisi; died October 3, 1226.'),
+(334, 'Thomas Aquinas', NULL, 1225, 1274, 1, 0, 'certain', 'church-leader', 'major', NULL, NULL, NULL, 'Dominican friar and one of the most influential medieval theologians, honored in the Catholic Church as a Doctor of the Church. His Summa Theologiae brought Aristotelian philosophy into a systematic account of Christian doctrine.', 'Born c. 1224-25 at Roccasecca; died 7 March 1274 at Fossanova Abbey.'),
+(335, 'John Wycliffe', NULL, 1328, 1384, 1, 0, 'probable', 'reformer', 'major', NULL, NULL, NULL, 'An Oxford theologian who challenged papal wealth and authority and inspired the first complete Bible in English, rendered from the Latin Vulgate by his associates. Condemned after death at the Council of Constance, his remains were exhumed and burned in 1428; his Lollard followers and later admirers gave him the title morning star of the Reformation.', 'Born c. 1328 in Yorkshire; died December 31, 1384.'),
+(336, 'Jan Hus', 'John Hus', 1372, 1415, 1, 0, 'probable', 'reformer', 'moderate', NULL, NULL, NULL, 'Czech reformer and rector of the University of Prague. Influenced by Wycliffe, he preached in the common language and challenged papal authority. Burned at the stake at the Council of Constance.', 'Born c. 1372; burned July 6, 1415.');
 
 -- Reformation
-('Johannes Gutenberg', NULL, 1400, 1468, 1, 0, 'certain', 'other', 'moderate', NULL, NULL, NULL, 'Inventor of the mechanical movable-type printing press. His Gutenberg Bible (c. 1455) revolutionized the spread of Scripture and made the Reformation possible.', 'Born c. 1400 in Mainz; died February 3, 1468.'),
-('Martin Luther', NULL, 1483, 1546, 0, 0, 'certain', 'other', 'major', NULL, NULL, NULL, 'An Augustinian monk whose Ninety-five Theses against indulgences ignited the Protestant Reformation. Standing on justification by faith alone at the Diet of Worms, he translated the New Testament into German while hidden at the Wartburg, reshaping both church and language.', 'Born November 10, 1483; died February 18, 1546.'),
-('William Tyndale', NULL, 1494, 1536, 1, 0, 'certain', 'other', 'major', NULL, NULL, NULL, 'A gifted linguist who translated the New Testament into English directly from the Greek, printing it abroad and smuggling copies into England in bales of cloth. Strangled and burned as a heretic, his phrasing lives on, since most of the King James Version descends from his work.', 'Born c. 1494; executed October 6, 1536 near Brussels.'),
-('John Calvin', 'Jean Cauvin', 1509, 1564, 0, 0, 'certain', 'other', 'moderate', NULL, NULL, NULL, 'French theologian and reformer. His Institutes of the Christian Religion (1536) is the foundational text of Reformed theology. Led the church in Geneva.', 'Born July 10, 1509; died May 27, 1564.'),
-('John Knox', NULL, 1514, 1572, 1, 0, 'certain', 'other', 'minor', NULL, NULL, NULL, 'Scottish reformer and founder of Presbyterianism. His preaching transformed Scotland from a Catholic to a Protestant nation.', 'Born c. 1514; died November 24, 1572.'),
+INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
+(337, 'Johannes Gutenberg', NULL, 1400, 1468, 1, 0, 'probable', 'other', 'major', NULL, NULL, NULL, 'Goldsmith of Mainz who developed movable-type printing in Europe. His Gutenberg Bible (c. 1455) transformed the spread of Scripture, and the printing press greatly aided the Reformation.', 'Born c. 1400 in Mainz; died February 3, 1468.'),
+(338, 'Martin Luther', NULL, 1483, 1546, 0, 0, 'certain', 'reformer', 'major', NULL, NULL, NULL, 'An Augustinian monk whose Ninety-five Theses against indulgences ignited the Protestant Reformation. At the Diet of Worms he refused to recant unless convinced by Scripture and plain reason, and while hidden at the Wartburg he translated the New Testament into German, reshaping both church and language.', 'Born November 10, 1483; died February 18, 1546.'),
+(339, 'William Tyndale', NULL, 1494, 1536, 1, 0, 'probable', 'reformer', 'major', NULL, NULL, NULL, 'A gifted linguist who translated the New Testament into English directly from the Greek, printing it abroad and smuggling copies into England in bales of cloth. Strangled and burned as a heretic, his phrasing lives on, since much of the King James Version, above all its New Testament, descends from his work.', 'Born c. 1494; executed October 6, 1536 near Brussels.'),
+(340, 'John Calvin', 'Jean Cauvin', 1509, 1564, 0, 0, 'certain', 'reformer', 'major', NULL, NULL, NULL, 'French theologian and reformer. His Institutes of the Christian Religion (1536) is the foundational text of Reformed theology. Led the church in Geneva.', 'Born July 10, 1509; died May 27, 1564.'),
+(341, 'John Knox', NULL, 1514, 1572, 1, 0, 'probable', 'reformer', 'moderate', NULL, NULL, NULL, 'Scottish reformer and a principal leader of the Reformation in Scotland. His preaching and writing helped shape the Church of Scotland, whose Reformed, Presbyterian character emerged from the 1560 Reformation Parliament.', 'Born between c. 1505 and 1514 (c. 1514 is conventional); died 24 November 1572 in Edinburgh.'),
+(493, 'Bartolome de las Casas', 'Bartolomé de las Casas', 1484, 1566, 1, 0, 'probable', 'church-leader', 'moderate', NULL, NULL, NULL, 'Spanish Dominican friar and Bishop of Chiapas who opposed the enslavement and abuse of Indigenous peoples in the Spanish Americas and wrote A Short Account of the Destruction of the Indies.', 'Born 1484 (older sources 1474); died 17 July 1566 in Madrid.'),
+(494, 'Francis Xavier', 'Francisco de Jasso y Azpilicueta', 1506, 1552, 0, 0, 'certain', 'church-leader', 'moderate', NULL, NULL, NULL, 'Spanish Jesuit missionary, a co-founder of the Society of Jesus, who preached in India, Southeast Asia and Japan and died off the coast of China in 1552.', 'Born 7 April 1506; died 3 December 1552 on Shangchuan Island.');
 
 -- Enlightenment & Missions
-('John Wesley', NULL, 1703, 1791, 0, 0, 'certain', 'other', 'moderate', NULL, NULL, NULL, 'Anglican clergyman and founder of the Methodist movement. His heart was "strangely warmed" at Aldersgate Street (1738). Traveled 250,000 miles and preached 40,000 sermons.', 'Born June 28, 1703; died March 2, 1791.'),
-('Jonathan Edwards', NULL, 1703, 1758, 0, 0, 'certain', 'other', 'moderate', NULL, NULL, NULL, 'American theologian and preacher of the First Great Awakening. His sermon "Sinners in the Hands of an Angry God" (1741) is one of the most famous in history.', 'Born October 5, 1703; died March 22, 1758.'),
-('William Carey', NULL, 1761, 1834, 0, 0, 'certain', 'other', 'moderate', NULL, NULL, NULL, 'English Baptist missionary known as the "father of modern missions." Worked in India for over 40 years translating the Bible into Bengali, Sanskrit, and dozens of other languages.', 'Born August 17, 1761; died June 9, 1834.'),
-('Charles Spurgeon', 'C.H. Spurgeon', 1834, 1892, 0, 0, 'certain', 'other', 'minor', NULL, NULL, NULL, 'English Baptist preacher known as the "Prince of Preachers." Pastored the Metropolitan Tabernacle in London (seating 5,000). Sermons still widely read.', 'Born June 19, 1834; died January 31, 1892.'),
-('D.L. Moody', 'Dwight Lyman Moody', 1837, 1899, 0, 0, 'certain', 'other', 'minor', NULL, NULL, NULL, 'American evangelist whose revival campaigns reached millions. Founded the Moody Bible Institute (1886) and the Moody Church in Chicago.', 'Born February 5, 1837; died December 22, 1899.'),
+INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
+(342, 'John Wesley', NULL, 1703, 1791, 0, 0, 'certain', 'church-leader', 'major', NULL, NULL, NULL, 'Anglican clergyman and leader of the Methodist movement, which separated from the Church of England only after his death. His heart was "strangely warmed" at Aldersgate Street (1738). Traditional estimates say he traveled about 250,000 miles and preached over 40,000 sermons.', 'Born June 28, 1703; died March 2, 1791.'),
+(343, 'Jonathan Edwards', NULL, 1703, 1758, 0, 0, 'certain', 'church-leader', 'moderate', NULL, NULL, NULL, 'American Congregationalist theologian and preacher of the First Great Awakening. His sermon "Sinners in the Hands of an Angry God" (preached at Enfield, 1741) is among the most famous in American history.', 'Born October 5, 1703; died March 22, 1758.'),
+(344, 'William Carey', NULL, 1761, 1834, 0, 0, 'certain', 'church-leader', 'moderate', NULL, NULL, NULL, 'English Baptist missionary often called the "father of modern missions." Worked in India for over 40 years; he and his Serampore colleagues translated Scripture, in whole or in part, into dozens of languages of South Asia.', 'Born August 17, 1761; died June 9, 1834.'),
+(345, 'Charles Spurgeon', 'C.H. Spurgeon', 1834, 1892, 0, 0, 'certain', 'church-leader', 'moderate', NULL, NULL, NULL, 'English Baptist preacher known as the "Prince of Preachers." Pastored the Metropolitan Tabernacle in London (seating 5,000). Sermons still widely read.', 'Born June 19, 1834; died January 31, 1892.'),
+(346, 'D.L. Moody', 'Dwight Lyman Moody', 1837, 1899, 0, 0, 'certain', 'church-leader', 'moderate', NULL, NULL, NULL, 'American evangelist whose revival campaigns reached millions. Founded the Moody Bible Institute (1886) and the Moody Church in Chicago.', 'Born February 5, 1837; died December 22, 1899.'),
+(348, 'C.S. Lewis', 'Clive Staples Lewis', 1898, 1963, 0, 0, 'certain', 'other', 'moderate', NULL, NULL, NULL, 'British scholar and author. Converted from atheism to theism in 1929 and to Christianity in 1931. Works such as Mere Christianity and The Screwtape Letters remain among the most widely read Christian apologetics, and he also wrote the Chronicles of Narnia.', 'Born November 29, 1898; died November 22, 1963.'),
+(495, 'George Whitefield', NULL, 1714, 1770, 0, 0, 'certain', 'church-leader', 'moderate', NULL, NULL, NULL, 'Anglican evangelist whose open-air preaching in Britain and the American colonies was central to the First Great Awakening and helped spread evangelicalism.', 'Born 16 December 1714; died 30 September 1770 at Newburyport.'),
+(496, 'Samuel Ajayi Crowther', 'Samuel Adjai Crowther', 1809, 1891, 1, 0, 'probable', 'church-leader', 'moderate', NULL, NULL, NULL, 'Yoruba-born freed slave who became the first African Anglican bishop (consecrated 1864), led the Niger Mission, and translated the Bible into Yoruba and other languages.', 'Born c. 1809 in Osogun; died 31 December 1891 in Lagos.');
 
 -- Modern Era
-('Dietrich Bonhoeffer', NULL, 1906, 1945, 0, 0, 'certain', 'other', 'moderate', NULL, NULL, NULL, 'German Lutheran pastor and theologian who opposed Nazism. Co-authored the Barmen Declaration. Executed in Flossenbürg concentration camp weeks before liberation. Author of The Cost of Discipleship.', 'Born February 4, 1906; hanged April 9, 1945.'),
-('C.S. Lewis', 'Clive Staples Lewis', 1898, 1963, 0, 0, 'certain', 'other', 'moderate', NULL, NULL, NULL, 'British scholar and author. Converted from atheism to Christianity (1931). His works — Mere Christianity, The Screwtape Letters, The Chronicles of Narnia — remain the most widely read Christian apologetics.', 'Born November 29, 1898; died November 22, 1963.'),
-('Billy Graham', 'William Franklin Graham Jr.', 1918, 2018, 0, 0, 'certain', 'other', 'major', NULL, NULL, NULL, 'An American evangelist whose stadium crusades and broadcasts carried a simple gospel invitation to more people than perhaps any preacher in history. A counselor to presidents who insisted on integrated seating at his meetings, he became the face of twentieth-century evangelicalism.', 'Born November 7, 1918; died February 21, 2018.');
+INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
+(347, 'Dietrich Bonhoeffer', NULL, 1906, 1945, 0, 0, 'certain', 'church-leader', 'moderate', NULL, NULL, NULL, 'German Lutheran pastor and theologian who opposed Nazism and was a leader of the Confessing Church. Arrested in 1943 and hanged at Flossenburg concentration camp on 9 April 1945, weeks before its liberation. Author of The Cost of Discipleship and Life Together.', 'Born February 4, 1906; hanged April 9, 1945.'),
+(349, 'Billy Graham', 'William Franklin Graham Jr.', 1918, 2018, 0, 0, 'certain', 'church-leader', 'major', NULL, NULL, NULL, 'An American evangelist whose stadium crusades and broadcasts carried a simple gospel invitation to more people than perhaps any preacher in history. A counselor to presidents who insisted on integrated seating at his meetings, he became the face of twentieth-century evangelicalism.', 'Born November 7, 1918; died February 21, 2018.');
 
 -- ============================================================
--- CHURCH HISTORY — PERSON-EVENT RELATIONSHIPS
+-- EVENTS (241)
 -- ============================================================
--- People IDs: 323=Ignatius, 324=Polycarp, 325=Irenaeus, 326=Origen, 327=Tertullian,
--- 328=Athanasius, 329=Jerome, 330=Augustine, 331=Benedict, 332=Patrick,
--- 333=Francis, 334=Aquinas, 335=Wycliffe, 336=Hus, 337=Gutenberg,
--- 338=Luther, 339=Tyndale, 340=Calvin, 341=Knox, 342=Wesley,
--- 343=Edwards, 344=Carey, 345=Spurgeon, 346=Moody, 347=Bonhoeffer,
--- 348=Lewis, 349=Graham (actually 350)
+-- Creation & Primeval History
+INSERT INTO events (id, name, start_year, end_year, start_approx, end_approx, date_confidence, category, significance, description, date_notes, sort_order) VALUES
+(1, 'Creation', -4004, NULL, 1, 1, 'traditional', 'creation', 'major', 'In the Bible''s opening scene, God speaks an ordered cosmos into being, crowning it with humanity made in the divine image and a day of rest. Unlike Babylon''s Enuma Elish, where creation follows divine combat, Genesis presents one sovereign God whose word alone brings light, life, and order.', 'Ussher: 4004 BC (AM 1). October 23, 4004 BC per Annales. Mainstream scholarship does not derive the age of the world from the Genesis genealogies, which may omit generations; Ussher''s figure is one traditional reading.', 10),
+(2, 'The Fall', -4004, NULL, 1, 1, 'traditional', 'judgment', 'major', 'In Eden, Adam and Eve eat from the forbidden tree at the serpent''s urging, breaking trust with their Creator. Their exile from the garden brings sin, death, and alienation into the human story, setting the stage for the long biblical drama of redemption that Scripture traces to Christ.', 'Ussher: 4004 BC.', 20),
+(3, 'The Flood', -2349, -2348, 0, 0, 'traditional', 'judgment', 'major', 'Grieved by human violence, God cleanses the earth with a flood while preserving Noah, his family, and the animals in the ark, then seals a covenant with the rainbow sign. Mesopotamian epics like Gilgamesh and Atrahasis preserve parallel flood tales, yet Genesis uniquely grounds the deluge in divine justice.', 'Ussher: began 2349 BC (AM 1656), ended 2348 BC. Gen 8:13-14 puts the drying of the earth in Noah''s 601st year. Mainstream scholarship does not date the Flood from the Genesis genealogies.', 50),
+(4, 'Tower of Babel', -2247, NULL, 1, 1, 'traditional', 'judgment', 'moderate', 'United humanity builds a tower on the plain of Shinar to make a name for itself, and God scatters the builders by confusing their language. The story evokes Mesopotamian ziggurats such as Babylon''s Etemenanki and explains the dispersion of nations, which Genesis places generations before God''s call of Abraham.', 'Ussher: 2247 BC (AM 1757), when Peleg was born and the earth was divided (Gen 10:25), about 326 years before Abraham left Haran in 1921 BC.', 60),
+(300, 'Cain Kills Abel', -3880, NULL, 1, 1, 'possible', 'death', 'moderate', 'Cain, angered that God accepted Abel''s offering and not his own, kills his brother in the field. It is the first death recorded in Scripture, and God sends Cain away as a restless wanderer, yet under a protective mark.', 'Estimate. Scripture gives no date; Abel was killed before Seth was born when Adam was 130 (Gen 4:25; 5:3). The year matches the estimate in Abel''s row.', 30),
+(301, 'Enoch Taken by God', -3017, NULL, 0, 1, 'traditional', 'miracle', 'moderate', 'Enoch walks with God for 300 years after the birth of Methuselah and then is not, for God takes him in the 365th year of his life. Hebrews says he was taken up without seeing death.', 'Ussher: AM 987 from Gen 5:21-24 (born 3382 BC, aged 365). Matches the year given in Enoch''s row.', 40);
+
+-- Patriarchs
+INSERT INTO events (id, name, start_year, end_year, start_approx, end_approx, date_confidence, category, significance, description, date_notes, sort_order) VALUES
+(5, 'Call of Abraham', -1921, NULL, 0, 1, 'traditional', 'covenant', 'major', 'God summons Abram to leave his homeland and his father''s house, going by way of Haran, for a country God would show him, promising to make him a great nation and a blessing to all peoples of the earth. His obedient departure launches the covenant story that the rest of Scripture traces through Israel to the Messiah.', 'Ussher: 1921 BC (AM 2083), when Abraham left Haran aged 75 (Gen 12:4) after Terah''s death at 205 (Acts 7:4). Acts 7:2-4 and Gen 15:7 indicate that God first called him in Ur, earlier.', 70),
+(6, 'Abrahamic Covenant', -1913, NULL, 1, 1, 'traditional', 'covenant', 'major', 'In a solemn night ceremony, God passes between divided animal carcasses as a smoking firepot and blazing torch, swearing to give Abram countless descendants and the land of Canaan. The rite mirrors ancient Near Eastern treaty customs, yet here God alone walks the path, bearing the covenant obligation himself.', 'Ussher: c. 1913 BC (AM 2091).', 80),
+(7, 'Binding of Isaac', -1872, NULL, 1, 1, 'traditional', 'covenant', 'moderate', 'God tests Abraham by commanding the sacrifice of Isaac, the son of promise, on Mount Moriah; at the final moment an angel stays the knife and a ram is offered instead. Known in Jewish tradition as the Akedah, the event affirms that God himself provides the sacrifice, a theme Christians hear echoed at Calvary.', 'Ussher: c. 1872 BC. Scripture gives no age for Isaac (Gen 22:5 calls him a lad); about 24 follows from Ussher''s date, and Josephus (Antiquities 1) says 25.', 130),
+(8, 'Destruction of Sodom and Gomorrah', -1897, NULL, 0, 1, 'traditional', 'judgment', 'moderate', 'Fire and sulfur destroy Sodom and Gomorrah after the outcry against their wickedness reaches heaven, though angels lead Lot''s family out; his wife looks back and becomes a pillar of salt. The doomed cities of the Dead Sea plain become Scripture''s enduring emblem of judgment, invoked by prophets and by Jesus.', 'Ussher: c. 1897 BC (Gen 19). Abraham was 99 years old.', 100),
+(9, 'Covenant of Circumcision', -1897, NULL, 0, 1, 'traditional', 'covenant', 'moderate', 'God gives Abraham circumcision as the enduring sign of the covenant, marking every male of his household and renaming Abram and Sarai as heirs of the promise of nations and kings. Though circumcision was practiced in Egypt and elsewhere, Israel uniquely made it a covenant emblem binding each generation to God.', 'Ussher: c. 1897 BC. Abraham aged 99 (Gen 17:1, 24).', 110),
+(10, 'Jacob Wrestles God', -1739, NULL, 0, 1, 'traditional', 'miracle', 'moderate', 'Jacob wrestles with God and is renamed Israel.', 'Ussher: c. 1739 BC (Gen 32:22-32).', 180),
+(11, 'Joseph Sold into Slavery', -1728, NULL, 0, 1, 'traditional', 'other', 'moderate', 'Joseph''s brothers sell him to traders going to Egypt.', 'Ussher: c. 1728 BC (Joseph aged 17, Gen 37:2).', 190),
+(12, 'Joseph Made Ruler of Egypt', -1715, NULL, 0, 1, 'traditional', 'kingdom', 'moderate', 'Sold by his brothers yet raised from prison to Pharaoh''s right hand, Joseph interprets dreams of coming famine and administers Egypt''s grain stores. His rise turns betrayal into rescue, positioning him to preserve Jacob''s family, the fledgling covenant line, through seven years of scarcity.', 'Ussher: c. 1715 BC. Joseph aged 30 (Gen 41:46).', 200),
+(302, 'Birth of Ishmael', -1910, NULL, 0, 1, 'traditional', 'birth', 'moderate', 'After ten years in Canaan Sarai gives her servant Hagar to Abram, and Hagar bears Ishmael when Abram is 86. God hears the boy''s cry and promises to make him a great nation, though the covenant line runs through Isaac.', 'Gen 16:3, 16: Abram aged 86 (Ussher 1910 BC).', 90),
+(303, 'Birth of Isaac', -1896, NULL, 0, 1, 'traditional', 'birth', 'moderate', 'Isaac is born to Abraham at 100 and Sarah at 90, the child of promise whose name means laughter. He is circumcised on the eighth day, and the covenant line runs through him.', 'Gen 21:5; 17:17: Abraham aged 100 (Ussher 1896 BC).', 120),
+(304, 'Death of Sarah and Purchase of Machpelah', -1859, NULL, 0, 1, 'traditional', 'death', 'moderate', 'Sarah dies at 127 in Hebron, and Abraham buys the cave of Machpelah from Ephron the Hittite for 400 shekels of silver. It is his only possession in the promised land, and later holds Abraham, Isaac, Rebekah, Leah and Jacob.', 'Gen 23:1-20: Sarah aged 127 (born 1986 BC).', 140),
+(305, 'Isaac Marries Rebekah', -1856, NULL, 0, 1, 'traditional', 'other', 'moderate', 'Abraham''s servant travels to Mesopotamia and brings back Rebekah, who marries Isaac when he is 40, three years after Sarah''s death. Isaac is comforted after his mother''s death.', 'Gen 24; 25:20: Isaac aged 40 (born 1896 BC).', 150),
+(306, 'Jacob Flees to Haran', -1759, NULL, 1, 1, 'traditional', 'other', 'moderate', 'Having gained Isaac''s blessing and the birthright, Jacob flees Esau''s anger toward Haran, and at Bethel dreams of a ladder to heaven where God confirms the Abrahamic promise to him.', 'Gen 27-28. Derived: Jacob was 91 at Joseph''s birth (Gen 41:46; 45:6; 47:9) at the end of 14 years of service (Gen 30:25; 31:41), so he left about age 77 (1759 BC).', 160),
+(307, 'Jacob Marries Leah and Rachel', -1752, NULL, 1, 1, 'traditional', 'other', 'moderate', 'Jacob serves Laban seven years for Rachel but is given Leah; he receives Rachel a week later and serves seven more. Eleven of the twelve tribal ancestors and Dinah are born over the following years.', 'Gen 29:18-30; derived date: 7 years after his arrival in 1759 BC, Jacob about 84.', 170),
+(308, 'Seven Years of Famine Begin', -1708, NULL, 0, 1, 'traditional', 'other', 'moderate', 'After seven years of plenty, famine spreads across Egypt and the nearby lands, and Joseph opens the storehouses. In the second year of famine Joseph''s brothers come to buy grain, and he reveals himself to them.', 'Gen 41:46, 53-57; 45:6: Joseph ruler at 30 (1715 BC) + 7 years of plenty gives famine year 1 = 1708 BC, year 2 = 1707 BC; Jacob enters Egypt 1706 BC.', 210);
+
+-- Egypt & Exodus
+INSERT INTO events (id, name, start_year, end_year, start_approx, end_approx, date_confidence, category, significance, description, date_notes, sort_order) VALUES
+(13, 'Israel Enters Egypt', -1706, NULL, 0, 1, 'traditional', 'other', 'moderate', 'Jacob and his whole household migrate to Egypt at Joseph''s invitation, settling in the fertile land of Goshen and growing there into a numerous people. Egyptian art such as the Beni Hasan tomb painting depicts Semitic families entering Egypt, illustrating this well-traveled path in times of famine.', 'Ussher: 1706 BC (AM 2298). Jacob aged 130 (Gen 47:9).', 220),
+(14, 'The Exodus', -1491, NULL, 0, 0, 'traditional', 'salvation', 'major', 'After ten plagues break Pharaoh''s resistance, Israel departs Egypt under Moses on Passover night, freed from slavery to become a covenant nation. The Merneptah Stele, an Egyptian victory monument, preserves the earliest known extrabiblical mention of Israel as a people.', 'Ussher: 1491 BC (AM 2513), 430 years after the call of Abraham (Gal 3:17; Exod 12:40-41). Many scholars favour an early date c. 1446 BC (1 Kgs 6:1); others a late date c. 1260-1250 BC.', 230),
+(15, 'Crossing the Red Sea', -1491, NULL, 0, 0, 'traditional', 'miracle', 'major', 'Trapped between Pharaoh''s chariots and the sea, Israel watches God part the waters at Moses'' outstretched hand, crossing on dry ground while the pursuing army is drowned. The Song of the Sea celebrating this rescue is reckoned among the oldest poetry preserved in the Hebrew Bible.', 'Ussher: 1491 BC.', 240),
+(16, 'Giving of the Law', -1491, NULL, 0, 0, 'traditional', 'law', 'major', 'Amid thunder and fire on Mount Sinai, God speaks the Ten Commandments and gives Moses the Torah, constituting rescued slaves as a kingdom of priests and a holy nation. Scholars note that the covenant''s structure parallels ancient suzerainty treaties, casting God as Israel''s sovereign King.', 'Ussher: 1491 BC (AM 2513), third month after Exodus.', 250),
+(17, 'Wilderness Wandering', -1491, -1451, 0, 0, 'traditional', 'judgment', 'moderate', 'After refusing to enter Canaan at the spies'' fearful report, Israel wanders the wilderness for forty years until the unbelieving generation passes away. Sustained by manna, water from the rock, and the guiding cloud, the nation is disciplined and shaped for covenant life in the promised land.', 'Ussher: 1491-1451 BC.', 260),
+(18, 'Tabernacle Completed', -1490, NULL, 0, 0, 'traditional', 'worship', 'moderate', 'Following the pattern revealed on Sinai, Israel completes the tabernacle, a portable tent sanctuary where God''s glory descends to dwell at the center of the camp. Its gilded frames recall Egyptian portable shrines of the era, while its design anticipates the temple and, for Christians, the incarnation.', 'Ussher: 1490 BC (Exod 40:17). One year after the Exodus.', 270);
+
+-- Conquest & Judges
+INSERT INTO events (id, name, start_year, end_year, start_approx, end_approx, date_confidence, category, significance, description, date_notes, sort_order) VALUES
+(19, 'Conquest of Canaan', -1451, -1445, 0, 0, 'traditional', 'conquest', 'major', 'Under Joshua, Israel crosses the Jordan and campaigns through Canaan, defeating coalitions of kings and allotting the land among the twelve tribes. Destruction layers at sites like Hazor, the greatest Canaanite city of the region, fuel lively scholarly debate over the conquest''s scope and character.', 'Ussher: the war began in 1451 BC (AM 2553), after forty years in the wilderness, and ended in 1445 BC, when Caleb was 85 (Josh 14:7-10) and "the land rested from war" (Josh 11:23; 14:15). Early-date scholars place the conquest c. 1406 BC; late-date scholars c. 1220 BC.', 300),
+(20, 'Fall of Jericho', -1451, NULL, 0, 0, 'traditional', 'miracle', 'moderate', 'Israel circles Jericho for seven days behind the ark until the walls collapse at the trumpet blast and shout, giving Joshua his first victory in Canaan; only faithful Rahab''s family is spared. Famous excavations by John Garstang and Kathleen Kenyon made Jericho a landmark case in biblical archaeology.', 'Ussher: 1451 BC.', 310),
+(21, 'Period of the Judges', -1426, -1095, 1, 0, 'traditional', 'other', 'moderate', 'Between Joshua and the monarchy, Israel cycles through apostasy, oppression, and rescue as God raises deliverers such as Deborah, Gideon, and Samson. Archaeology reveals a surge of small highland villages in this era, the material footprint of early Israel taking root in Canaan''s hill country.', 'Ussher: from Joshua''s death (c. 1426 BC, estimated) to Saul''s accession in 1095 BC. The figures in Judges add up to more than this span; Ussher keeps the 480 years of 1 Kgs 6:1 by measuring each period of rest (Judg 3:11, 3:30, 5:31, 8:28) from the previous deliverance and by running the Ammonite oppression alongside Jair and the Philistine forty years alongside Eli and Samson. Main deliverances: Othniel c. 1405, Ehud c. 1325, Deborah c. 1285, Gideon c. 1245, Jephthah 1188 BC. Mainstream scholarship places the judges c. 1200-1050 BC, many of them regional and overlapping.', 330),
+(22, 'Deborah Defeats Sisera', -1285, NULL, 1, 1, 'possible', 'war', 'moderate', 'Deborah and Barak defeat Canaanite general Sisera.', 'Ussher: c. 1285 BC, after twenty years of oppression by Jabin (Judg 4:3).', 340),
+(23, 'Gideon Defeats Midian', -1245, NULL, 1, 1, 'possible', 'war', 'moderate', 'Gideon defeats the Midianites with 300 men.', 'Ussher: c. 1245 BC, after seven years of Midianite oppression (Judg 6:1).', 350),
+(24, 'Ark Captured by Philistines', -1116, NULL, 1, 1, 'traditional', 'judgment', 'minor', 'The Philistines capture the Ark of the Covenant at the battle of Aphek. Eli dies upon hearing the news.', 'Ussher: 1116 BC (1 Sam 4:1-22). Eli, aged 98, died on hearing the news, having judged Israel forty years (1 Sam 4:15-18).', 380),
+(320, 'Death of Moses', -1451, NULL, 0, 0, 'traditional', 'death', 'moderate', 'At 120 years old, his eye not dim nor his strength abated, Moses climbs Mount Nebo, views the promised land, and dies in Moab; the LORD buries him in a valley there and no one knows his grave. Israel mourns thirty days, and Joshua, full of the spirit of wisdom, leads in his place.', 'Ussher: 1451 BC, in the last month of the 40th year after the Exodus (Deut 1:3; 34:5-8).', 280),
+(321, 'Israel Crosses the Jordan', -1451, NULL, 0, 0, 'traditional', 'miracle', 'moderate', 'On the tenth day of the first month, the priests bearing the ark step into the Jordan in flood and the waters stand up in a heap; the whole nation crosses on dry ground. Twelve stones from the riverbed are set up at Gilgal as a memorial.', 'Ussher: 1451 BC, forty years after the Exodus (Josh 4:19).', 290),
+(322, 'Death of Joshua', -1426, NULL, 1, 1, 'possible', 'death', 'moderate', 'Joshua son of Nun dies at 110 and is buried at Timnath-serah in Mount Ephraim. Israel serves the LORD all his days and the days of the elders who outlived him.', 'Year not given in Scripture; c. 1426 BC follows Josephus''s 25 years of leadership after Moses (Antiquities 5.117). Ussher leaves it open between c. 1443 and 1413 BC.', 320),
+(326, 'Jephthah Defeats the Ammonites', -1188, NULL, 1, 1, 'traditional', 'war', 'moderate', 'Recalled from exile by the elders of Gilead, Jephthah argues Israel''s title to the land and then defeats the Ammonites, ending eighteen years of oppression. His vow to offer whatever first came out of his house to meet him falls on his only daughter.', 'Ussher: 1188 BC, ending the eighteen-year oppression begun c. 1206 BC (Judg 10:8).', 360),
+(327, 'Death of Samson', -1117, NULL, 1, 1, 'traditional', 'death', 'moderate', 'Blinded and set to grind in the prison at Gaza after Delilah''s betrayal, Samson is brought out to entertain the Philistines at a feast to Dagon. Praying for strength one last time, he pulls down the pillars of the temple, killing more Philistines at his death than in his life.', 'Ussher: 1117 BC, after Samson had judged Israel twenty years (Judg 15:20; 16:31).', 370),
+(329, 'Samuel Judges Israel at Mizpah', -1096, NULL, 1, 1, 'traditional', 'war', 'moderate', 'After twenty years of the ark at Kirjath-jearim, Samuel calls Israel to put away their idols and gathers them at Mizpah to fast and confess. When the Philistines attack, the LORD thunders against them and Israel routs them; Samuel sets up the stone Ebenezer, "Hitherto hath the LORD helped us."', 'Ussher: 1096 BC, twenty years after the ark came to Kirjath-jearim (1 Sam 7:2) and a year before Saul.', 390);
+
+-- United Kingdom
+INSERT INTO events (id, name, start_year, end_year, start_approx, end_approx, date_confidence, category, significance, description, date_notes, sort_order) VALUES
+(25, 'Saul Anointed King', -1095, NULL, 0, 1, 'traditional', 'kingdom', 'major', 'When the people demand a king like the nations, God directs Samuel to anoint Saul of Benjamin as Israel''s first monarch. Tall, striking, and initially victorious over Ammon and the Philistines, Saul forfeits his dynasty through disobedience, opening the way for David''s rise.', 'Ussher: 1095 BC (AM 2909); Saul reigned forty years (Acts 13:21). Mainstream scholarship places his accession c. 1050 BC.', 400),
+(26, 'David Anointed by Samuel', -1063, NULL, 1, 1, 'traditional', 'kingdom', 'moderate', 'God sends Samuel to Bethlehem to anoint David, Jesse''s youngest son and a shepherd, declaring that the Lord looks on the heart rather than outward stature. The Tel Dan inscription''s reference to the house of David gives his dynasty its earliest extrabiblical attestation.', 'Ussher: 1063 BC, forty years before Absalom''s revolt (2 Sam 15:7); David was then a youth keeping his father''s sheep (1 Sam 16:11-12). He became king at Hebron only after Saul''s death, in 1055 BC.', 420),
+(27, 'David Captures Jerusalem', -1048, NULL, 0, 1, 'traditional', 'conquest', 'moderate', 'David takes the Jebusite stronghold of Zion and makes Jerusalem his capital, uniting the tribes around a city belonging to none of them; a few years later he brings the ark there (2 Sam 6). Excavations in the City of David, including the massive Stepped Stone Structure, illuminate the ancient citadel he claimed.', 'Ussher: 1048 BC, at the start of David''s 33 years in Jerusalem (2 Sam 5:5-9).', 460),
+(28, 'Davidic Covenant', -1044, NULL, 1, 1, 'traditional', 'covenant', 'major', 'Through the prophet Nathan, God promises David an everlasting house, kingdom, and throne, pledging a son whose reign will never end. This oath anchors the royal psalms and Israel''s prophetic hope, and the New Testament proclaims Jesus, son of David, as its ultimate fulfillment.', 'Ussher: c. 1044 BC, when David was settled in his house of cedar (2 Sam 7:1-2).', 480),
+(29, 'Solomon Builds Temple', -1012, -1005, 0, 0, 'traditional', 'worship', 'major', 'Solomon builds the first temple on Jerusalem''s Mount Moriah, a cedar-lined house of hewn stone where the ark comes to rest and God''s glory fills the sanctuary at its dedication. Its long-room, tripartite plan resembles excavated Syrian temples such as Ain Dara, rooting it firmly in its ancient world.', 'Ussher: began 1012 BC (AM 2992), in the 4th year of Solomon, the 480th year after the Exodus (1 Kgs 6:1); finished 1005 BC (1 Kgs 6:38). Mainstream chronology (Thiele) dates the start c. 966 BC.', 490),
+(323, 'Death of Saul at Gilboa', -1055, NULL, 0, 0, 'traditional', 'death', 'moderate', 'Routed by the Philistines on Mount Gilboa, with Jonathan and two other sons already dead, the wounded Saul falls on his own sword. The men of Jabesh-gilead recover the bodies from the wall of Beth-shan and bury them.', 'Ussher: 1055 BC, closing Saul''s forty-year reign (Acts 13:21; 1 Sam 31).', 430),
+(324, 'David Made King at Hebron', -1055, NULL, 0, 0, 'traditional', 'kingdom', 'moderate', 'After Saul''s death, David goes up to Hebron and the men of Judah anoint him king over the house of Judah. Abner sets up Saul''s son Ish-bosheth over the other tribes, and David reigns in Hebron seven and a half years.', 'Ussher: 1055 BC; David was thirty (2 Sam 2:1-11; 5:4-5).', 440),
+(325, 'David Anointed King over All Israel', -1048, NULL, 0, 0, 'traditional', 'kingdom', 'moderate', 'After Abner''s death and the murder of Ish-bosheth, the elders of all the tribes come to David at Hebron, make a covenant with him, and anoint him king over Israel. He goes on to reign thirty-three years over all Israel and Judah.', 'Ussher: 1048 BC, after seven and a half years at Hebron (2 Sam 5:1-5).', 450),
+(328, 'David Defeats Goliath', -1063, NULL, 1, 1, 'possible', 'war', 'major', 'In the valley of Elah the Philistine champion Goliath of Gath defies the armies of Israel for forty days. The young David, sent by Jesse with food for his brothers, faces him in the name of the LORD and kills him with a sling stone, and Israel routs the Philistines.', 'Year estimated: soon after Samuel anointed David (Ussher c. 1063 BC) and before David fled from Saul to Gath (Ussher 1060 BC).', 410),
+(330, 'David Brings the Ark to Jerusalem', -1045, NULL, 1, 1, 'traditional', 'worship', 'moderate', 'David brings the ark up from Kirjath-jearim; after Uzzah is struck down it rests three months in the house of Obed-edom, then enters the city of David with sacrifice and dancing. Michal despises David for dancing before the LORD.', 'Ussher: 1045 BC (2 Sam 6; 1 Chr 13; 15-16).', 470);
+
+-- Divided Kingdom
+INSERT INTO events (id, name, start_year, end_year, start_approx, end_approx, date_confidence, category, significance, description, date_notes, sort_order) VALUES
+(30, 'Kingdom Divides', -975, NULL, 0, 1, 'traditional', 'kingdom', 'major', 'After Solomon''s death, Rehoboam''s harsh answer at Shechem drives ten northern tribes to crown Jeroboam, splitting the nation into Israel and Judah. The rupture sets the two kingdoms on divergent paths, and Pharaoh Shishak''s invasion, carved at Karnak, soon exploited their weakness.', 'Ussher: 975 BC (AM 3029), upon Solomon''s death. Thiele and most modern scholars date the division c. 931/930 BC.', 500),
+(31, 'Elijah on Mount Carmel', -905, NULL, 1, 1, 'traditional', 'miracle', 'moderate', 'On Mount Carmel, Elijah stands alone against the prophets of Baal, and fire from heaven consumes his water-drenched sacrifice, turning Israel''s heart back to the Lord. The contest confronts Baal, the Canaanite storm god, on his own claimed terrain of fire and rain, and ends a long drought at God''s word.', 'Ussher: during Ahab''s reign (918-897 BC). 1 Kgs 18:20-40.', 510),
+(32, 'Fall of Samaria', -721, NULL, 0, 1, 'certain', 'judgment', 'major', 'After a three-year siege, Assyria captures Samaria and extinguishes the northern kingdom, deporting Israelites and resettling foreigners in their land. Sargon II''s annals boast of carrying off 27,290 captives, and the scattering of the ten tribes stands as sober vindication of the prophets'' warnings.', 'Ussher: 721 BC (AM 3283). Well-attested in Assyrian records.', 530),
+(33, 'Hezekiah''s Deliverance', -713, NULL, 0, 1, 'traditional', 'salvation', 'moderate', 'When Sennacherib''s armies overrun Judah, Hezekiah spreads the Assyrian threat before the Lord and Isaiah promises rescue; the invader withdraws with Jerusalem untaken. Sennacherib''s prism boasts of shutting Hezekiah up like a caged bird yet claims no capture, while the Lachish reliefs depict the campaign''s fury.', 'Ussher: 713 BC, the 14th year of Hezekiah (2 Kgs 18:13; Isa 36:1), fifteen years before his death in 698 (2 Kgs 20:6). Sennacherib''s prism dates the campaign to 701 BC, which most scholars follow, placing Hezekiah''s accession c. 715 BC.', 540),
+(34, 'Josiah''s Reforms', -623, NULL, 0, 1, 'traditional', 'worship', 'moderate', 'King Josiah finds the Book of the Law and reforms worship.', 'Ussher: the 18th year of Josiah (2 Kgs 22:3; 2 Chr 34:8), 623 BC on his 641 BC accession; the purge had begun in his 12th year (2 Chr 34:3). Modern scholarship: 622 BC.', 550),
+(94, 'Healing of Naaman', -890, NULL, 1, 1, 'possible', 'miracle', 'moderate', 'Naaman, commander of Aram''s army, sought healing from leprosy on the word of a captive Israelite servant girl. Directed by the prophet Elisha to wash seven times in the Jordan, he was cleansed and confessed Israel''s God; Jesus later cited him at Nazareth as a Gentile who received God''s mercy.', '2 Kgs 5:1-27; during the ministry of Elisha, in the reign of Jehoram of Israel (896-884 BC on Ussher''s chain). Year estimated.', 520);
+
+-- Exile
+INSERT INTO events (id, name, start_year, end_year, start_approx, end_approx, date_confidence, category, significance, description, date_notes, sort_order) VALUES
+(35, 'Fall of Jerusalem', -588, NULL, 0, 1, 'traditional', 'judgment', 'major', 'Nebuchadnezzar''s Babylonian army breaches Jerusalem after a long siege, burning the temple, razing the walls, and deporting Judah''s people. The Babylonian Chronicle independently records his earlier seizure of the city, corroborating the biblical account of Judah''s collapse and exile.', 'Ussher: 588 BC (AM 3416), the 11th year of Zedekiah and 19th of Nebuchadnezzar (2 Kgs 25:2, 8). Most modern scholarship dates the fall to 587 or 586 BC, anchored in the Babylonian Chronicle.', 560),
+(36, 'Babylonian Exile', -588, -536, 0, 0, 'traditional', 'exile', 'major', 'Uprooted to Babylon, Judah''s exiles mourn Zion by foreign rivers while prophets like Ezekiel and Daniel proclaim God''s presence far from the ruined temple. Cuneiform records, including ration tablets naming King Jehoiachin and the Al-Yahudu archive, document the exiled community''s life in Babylonia.', 'Dated here from the fall of Jerusalem (588 BC, Ussher) to Cyrus''s decree (536 BC). Ussher counts the seventy years (Jer 25:11-12; 29:10; Dan 9:2) from the first deportation in 606 BC. Modern scholarship dates the exile 586-538 BC.', 570),
+(340, 'Fall of Babylon to Cyrus', -539, NULL, 0, 1, 'certain', 'conquest', 'moderate', 'Babylon falls to the Medes and Persians in a single night. Belshazzar is killed after the writing on the wall is read at his feast, and Darius the Mede takes the kingdom (Dan 5). The Nabonidus Chronicle independently records the city''s capture without a battle.', '12 October 539 BC by the Nabonidus Chronicle, followed by modern scholarship; Ussher dates it 538 BC (AM 3466).', 580);
+
+-- Return & Restoration
+INSERT INTO events (id, name, start_year, end_year, start_approx, end_approx, date_confidence, category, significance, description, date_notes, sort_order) VALUES
+(37, 'Edict of Cyrus', -536, NULL, 0, 1, 'traditional', 'salvation', 'major', 'Cyrus of Persia, having taken Babylon, decrees that the exiled Judeans may return to Jerusalem to rebuild the house of the Lord, restoring the plundered temple vessels. The Cyrus Cylinder reflects his wider policy of restoring displaced peoples and shrines, and Isaiah strikingly names him God''s anointed.', 'Ussher: 536 BC (AM 3468), the first year of Cyrus (Ezra 1:1) as Ussher counts it, after Darius the Mede. Modern scholarship dates the decree to 538 BC; the Cyrus Cylinder reflects the same policy.', 590),
+(38, 'Second Temple Built', -515, NULL, 0, 1, 'certain', 'worship', 'major', 'Led by Zerubbabel and Jeshua and stirred by the prophets Haggai and Zechariah, the returned exiles complete a new temple in Jerusalem despite opposition and slender means. Elders wept remembering Solomon''s house, yet this second temple would anchor Jewish worship for centuries until the Roman era.', 'Begun in the second year of the return (Ezra 3:8), halted, and resumed in the second year of Darius I, 520 BC (Hag 1:1; Ezra 4:24); finished on 3 Adar in his sixth year (Ezra 6:15), March 515 BC. Ussher likewise gives 515 BC.', 600),
+(39, 'Ezra''s Return', -458, NULL, 0, 1, 'probable', 'worship', 'moderate', 'Ezra leads a second return and reforms worship.', 'Seventh year of Artaxerxes I (Ezra 7:7-9): 458 BC by Persian reckoning, 457 BC if his years are counted autumn to autumn (the traditional start of the seventy weeks). Some scholars place Ezra in 398 BC under Artaxerxes II.', 620),
+(40, 'Nehemiah Rebuilds Walls', -445, NULL, 0, 1, 'probable', 'reform', 'moderate', 'Nehemiah, cupbearer to the Persian king, returns to Jerusalem and rallies the people to rebuild the ruined walls in fifty-two days despite armed opposition from Sanballat and Tobiah. The Elephantine papyri independently name Sanballat as governor of Samaria, anchoring the memoir in Persian-era history.', 'Twentieth year of Artaxerxes I (Neh 2:1), 445/444 BC; the wall was finished in 52 days (Neh 6:15).', 630),
+(41, 'Esther Saves Her People', -473, NULL, 1, 1, 'possible', 'salvation', 'moderate', 'In the Persian court at Susa, the Jewish queen Esther risks her life to expose Haman''s plot to annihilate her people, and the king''s counter-decree turns doom into deliverance. Commemorated each year at Purim, the story displays providence at work even though God is never named in the book.', 'The lot was cast in the twelfth year of Ahasuerus and the decree fell on 13 Adar (Esth 3:7; 9:1), 473 BC if Ahasuerus is Xerxes I (486-465 BC).', 610);
+
+-- Life of Christ
+INSERT INTO events (id, name, start_year, end_year, start_approx, end_approx, date_confidence, category, significance, description, date_notes, sort_order) VALUES
+(42, 'Birth of Jesus', -5, NULL, 1, 1, 'probable', 'birth', 'major', 'In Bethlehem, Mary gives birth to Jesus, announced by angels to shepherds and honored by magi from the east; Matthew and Luke present him as Messiah, son of David, and Immanuel. The Gospels root his birth in Micah''s prophecy of a ruler from Bethlehem, opening the fulfillment of Israel''s long story.', 'Matthew places the birth before the death of Herod the Great (Matt 2:1, 19), who died in 4 BC. 5 BC is followed here; most scholars place it between 6 and 4 BC.', 700),
+(43, 'Baptism of Jesus', 29, NULL, 1, 1, 'probable', 'other', 'major', 'Jesus is baptized by John in the Jordan River, where the Spirit descends like a dove and a voice from heaven declares him the beloved Son. The moment inaugurates his public ministry; John himself is independently attested by the historian Josephus, who records his baptizing movement and death.', 'Luke 3:1 dates John''s preaching to the fifteenth year of Tiberius (AD 28/29, counting from his accession in AD 14); AD 29 is followed here. Luke 3:23 says Jesus was ''about thirty''; on a 5 BC birth he was about 33. Others place the baptism in AD 26/27 (counting from a co-regency) or AD 30.', 730),
+(44, 'Sermon on the Mount', 31, NULL, 1, 1, 'possible', 'teaching', 'major', 'On a Galilean hillside, Jesus delivers his most famous teaching, opening with the Beatitudes and pressing the Law to its deepest intent on anger, love of enemies, and prayer, including the Lord''s Prayer. Matthew presents him as the authoritative teacher of a righteousness surpassing that of the scribes.', 'Matthew 5-7; compare Luke 6:20-49. Placed in AD 31 by harmonisation: the Galilean ministry between the feast of John 5:1 and the Passover of John 6:4 (AD 32). Luke places the Sermon on the Plain after the withered hand and the choosing of the Twelve (Luke 6:6-20).', 760),
+(58, 'Water Turned to Wine', 30, NULL, 1, 1, 'possible', 'miracle', 'moderate', 'At a wedding in Cana of Galilee, prompted by his mother Mary, Jesus turned water in six stone purification jars into choice wine. John alone records this first sign, which revealed Jesus'' glory to his disciples and inaugurated his public ministry with an image of messianic abundance.', 'First recorded miracle; John 2:1-11. Placed in AD 30 by harmonisation, before the first Passover of the ministry (John 2:13).', 740),
+(59, 'Healing of the Official''s Son', 30, NULL, 1, 1, 'possible', 'miracle', 'minor', 'Jesus heals a royal official''s son in Capernaum from a distance.', 'John 4:46-54; second sign in John. After the first Passover (John 2:13) and the stay in Samaria about four months before harvest (John 4:35): the end of AD 30 by harmonisation.', 750),
+(60, 'Great Catch of Fish', 31, NULL, 1, 1, 'possible', 'miracle', 'minor', 'Jesus directs a miraculous catch of fish on the Sea of Galilee.', 'Luke 5:1-11; calling of the first disciples. Placed in AD 31 by harmonisation: the Galilean ministry begun after John''s imprisonment (Mark 1:14; John 3:24) and before the feast of John 5:1.', 770),
+(61, 'Healing of a Demon-Possessed Man in Capernaum', 31, NULL, 1, 1, 'possible', 'miracle', 'minor', 'Jesus casts out an unclean spirit in the Capernaum synagogue.', 'Mark 1:21-28; Luke 4:31-37. Placed in AD 31 by harmonisation: the Galilean ministry begun after John''s imprisonment (Mark 1:14; John 3:24) and before the feast of John 5:1.', 780),
+(62, 'Healing of Peter''s Mother-in-Law', 31, NULL, 1, 1, 'possible', 'miracle', 'minor', 'Jesus heals Simon Peter''s mother-in-law of a fever.', 'Matthew 8:14-15; Mark 1:29-31; Luke 4:38-39. Placed in AD 31 by harmonisation: the Galilean ministry begun after John''s imprisonment (Mark 1:14; John 3:24) and before the feast of John 5:1.', 790),
+(63, 'Cleansing of a Leper', 31, NULL, 1, 1, 'possible', 'miracle', 'minor', 'Jesus heals a man with leprosy by touching him.', 'Matthew 8:1-4; Mark 1:40-45; Luke 5:12-16. Placed in AD 31 by harmonisation: the Galilean ministry begun after John''s imprisonment (Mark 1:14; John 3:24) and before the feast of John 5:1.', 800),
+(64, 'Healing of the Paralytic', 31, NULL, 1, 1, 'possible', 'miracle', 'moderate', 'In Capernaum, four friends lowered a paralyzed man through the roof to reach Jesus, who first forgave his sins and then commanded him to walk. Matthew, Mark, and Luke record the miracle, which joined Jesus'' power to heal with his authority to forgive; Capernaum excavations reveal the crowded basalt houses such a scene assumes.', 'Matthew 9:1-8; Mark 2:1-12; Luke 5:17-26. Placed in AD 31 by harmonisation: the Galilean ministry begun after John''s imprisonment (Mark 1:14; John 3:24) and before the feast of John 5:1.', 810),
+(65, 'Healing at the Pool of Bethesda', 31, NULL, 1, 1, 'possible', 'miracle', 'minor', 'Jesus heals a man who had been an invalid for 38 years.', 'John 5:1-17; on a Sabbath. The unnamed feast of John 5:1 is taken here as the Passover of AD 31 (some take it as Tabernacles or Purim); year placed by harmonisation.', 820),
+(66, 'Healing of a Withered Hand', 31, NULL, 1, 1, 'possible', 'miracle', 'minor', 'Jesus heals a man''s withered hand on the Sabbath in the synagogue.', 'Matthew 12:9-14; Mark 3:1-6; Luke 6:6-11. Placed in AD 31 by harmonisation: the Galilean ministry between the feast of John 5:1 and the Passover of John 6:4 (AD 32).', 830),
+(67, 'Healing of the Centurion''s Servant', 31, NULL, 1, 1, 'possible', 'miracle', 'moderate', 'A Roman centurion in Capernaum asked Jesus to heal his dying servant, insisting a word from a distance would suffice. Jesus marveled that he had found no such faith in Israel and healed the servant without entering the house; Luke adds that this Gentile officer had built the town''s synagogue.', 'Matthew 8:5-13; Luke 7:1-10. Placed in AD 31 by harmonisation: the Galilean ministry between the feast of John 5:1 and the Passover of John 6:4 (AD 32).', 840),
+(68, 'Raising of the Widow''s Son at Nain', 31, NULL, 1, 1, 'possible', 'miracle', 'moderate', 'Meeting a funeral procession at the gate of Nain, Jesus was moved by a widow who had lost her only son, touched the bier, and restored the young man to life. Found only in Luke, the miracle echoes Elijah''s raising of the widow''s son at Zarephath and led the crowd to hail a great prophet.', 'Luke 7:11-17; only in Luke. Placed in AD 31 by harmonisation: the Galilean ministry between the feast of John 5:1 and the Passover of John 6:4 (AD 32).', 850),
+(69, 'Calming the Storm', 31, NULL, 1, 1, 'possible', 'miracle', 'moderate', 'When a sudden squall threatened to swamp the disciples'' boat on the Sea of Galilee, Jesus rose from sleep and stilled wind and waves with a word. All three synoptic gospels record the awed question of who this could be; a first-century fishing boat excavated from the lake''s mud vividly illustrates the scene.', 'Matthew 8:23-27; Mark 4:35-41; Luke 8:22-25. Placed in AD 31 by harmonisation: the Galilean ministry between the feast of John 5:1 and the Passover of John 6:4 (AD 32).', 860),
+(70, 'Healing of the Gerasene Demoniac', 31, NULL, 1, 1, 'possible', 'miracle', 'moderate', 'In the Decapolis east of the Sea of Galilee, Jesus freed a tomb-dwelling man possessed by a legion of demons, which entered a herd of pigs and perished in the sea. Sent home rather than allowed to follow, the man became the first herald of Jesus in Gentile lands; manuscripts vary between Gerasenes, Gadarenes, and Gergesenes.', 'Matthew 8:28-34; Mark 5:1-20; Luke 8:26-39. Placed in AD 31 by harmonisation: the Galilean ministry between the feast of John 5:1 and the Passover of John 6:4 (AD 32).', 870),
+(71, 'Healing of the Woman with the Issue of Blood', 31, NULL, 1, 1, 'possible', 'miracle', 'minor', 'A woman touches Jesus'' garment and is healed after 12 years of bleeding.', 'Matthew 9:20-22; Mark 5:25-34; Luke 8:43-48. Placed in AD 31 by harmonisation: the Galilean ministry between the feast of John 5:1 and the Passover of John 6:4 (AD 32).', 880),
+(72, 'Raising of Jairus'' Daughter', 31, NULL, 1, 1, 'possible', 'miracle', 'moderate', 'Jairus, a synagogue leader, begged Jesus to save his dying daughter, and though word came that she had died, Jesus took her hand and raised her. Mark preserves the original Aramaic command, Talitha koum, and all three synoptics interweave the story with the healing of the hemorrhaging woman.', 'Matthew 9:18-26; Mark 5:21-43; Luke 8:40-56. Placed in AD 31 by harmonisation: the Galilean ministry between the feast of John 5:1 and the Passover of John 6:4 (AD 32).', 890),
+(73, 'Healing of Two Blind Men', 31, NULL, 1, 1, 'possible', 'miracle', 'minor', 'Jesus restores sight to two blind men who follow him crying for mercy.', 'Matthew 9:27-31. Placed in AD 31 by harmonisation: the Galilean ministry between the feast of John 5:1 and the Passover of John 6:4 (AD 32). Matthew sets it directly after Jairus'' daughter.', 900),
+(74, 'Healing of a Mute Man', 31, NULL, 1, 1, 'possible', 'miracle', 'minor', 'Jesus casts out a demon and the mute man speaks.', 'Matthew 9:32-34. Placed in AD 31 by harmonisation: the Galilean ministry between the feast of John 5:1 and the Passover of John 6:4 (AD 32).', 910),
+(75, 'Feeding of the 5,000', 32, NULL, 1, 1, 'possible', 'miracle', 'major', 'With five loaves and two fish from the crowd, Jesus fed thousands beside the Sea of Galilee, with twelve baskets left over. It is the only miracle of his ministry recorded in all four gospels, recalling the manna in the wilderness and prompting John''s discourse on Jesus as the bread of life.', 'Matthew 14:13-21; Mark 6:30-44; Luke 9:10-17; John 6:1-15. Only miracle in all four Gospels. Shortly before the Passover of John 6:4, AD 32 on this framework.', 920),
+(76, 'Walking on Water', 32, NULL, 1, 1, 'possible', 'miracle', 'moderate', 'In the night after feeding the multitude, Jesus came to his storm-battered disciples walking across the Sea of Galilee. Matthew, Mark, and John record the event, with Matthew adding Peter''s brief walk and sinking; Jesus'' reassurance, echoing the divine I am, moved the disciples to worship him as God''s Son.', 'Matthew 14:22-33; Mark 6:45-52; John 6:16-21. The night after the feeding of the 5,000, near the Passover of AD 32 (John 6:4); year placed by harmonisation.', 930),
+(77, 'Healing of the Syrophoenician Woman''s Daughter', 32, NULL, 1, 1, 'possible', 'miracle', 'minor', 'Jesus heals a Gentile woman''s demon-possessed daughter.', 'Matthew 15:21-28; Mark 7:24-30. Placed in AD 32 by harmonisation: after the feeding of the 5,000 near the Passover of John 6:4.', 940),
+(78, 'Healing of a Deaf and Mute Man', 32, NULL, 1, 1, 'possible', 'miracle', 'minor', 'Jesus heals a deaf man with a speech impediment in the Decapolis.', 'Mark 7:31-37. Placed in AD 32 by harmonisation: after the feeding of the 5,000 near the Passover of John 6:4.', 950),
+(79, 'Feeding of the 4,000', 32, NULL, 1, 1, 'possible', 'miracle', 'moderate', 'In the largely Gentile Decapolis region, Jesus fed a crowd that had stayed with him three days, multiplying seven loaves and a few fish with seven baskets remaining. Recorded by Matthew and Mark as distinct from the earlier feeding, it signals that the messianic banquet extends beyond Israel to the nations.', 'Matthew 15:32-39; Mark 8:1-10. Placed in AD 32 by harmonisation: after the feeding of the 5,000 near the Passover of John 6:4.', 960),
+(80, 'Healing of a Blind Man at Bethsaida', 32, NULL, 1, 1, 'possible', 'miracle', 'minor', 'Jesus heals a blind man in two stages at Bethsaida.', 'Mark 8:22-26; only in Mark. Placed in AD 32 by harmonisation: after the feeding of the 5,000 near the Passover of John 6:4.', 970),
+(81, 'Transfiguration', 32, NULL, 1, 1, 'possible', 'miracle', 'major', 'On a high mountain, Peter, James, and John saw Jesus transfigured in dazzling glory, conversing with Moses and Elijah as a voice from the cloud declared him the beloved Son. All three synoptics record the scene, which links law and prophets to Jesus; 2 Peter appeals to it as eyewitness testimony.', 'Matthew 17:1-13; Mark 9:2-13; Luke 9:28-36. Placed in AD 32 by harmonisation: after the feeding of the 5,000 near the Passover of John 6:4. Six (Luke: about eight) days after Peter''s confession (Matt 17:1; Luke 9:28).', 980),
+(82, 'Healing of a Boy with a Demon', 32, NULL, 1, 1, 'possible', 'miracle', 'minor', 'Jesus casts out a demon the disciples could not.', 'Matthew 17:14-21; Mark 9:14-29; Luke 9:37-43. Placed in AD 32 by harmonisation: after the feeding of the 5,000 near the Passover of John 6:4.', 990),
+(83, 'Coin in the Fish''s Mouth', 32, NULL, 1, 1, 'possible', 'miracle', 'minor', 'Jesus instructs Peter to find a coin in a fish''s mouth for Temple tax.', 'Matthew 17:24-27; only in Matthew. Placed in AD 32 by harmonisation: after the feeding of the 5,000 near the Passover of John 6:4.', 1000),
+(84, 'Healing of the Man Born Blind', 32, NULL, 1, 1, 'possible', 'miracle', 'moderate', 'Jesus anointed the eyes of a man blind from birth and sent him to wash in the Pool of Siloam, where he received sight. John alone tells the story, following the man''s bold testimony under interrogation; the stepped first-century pool itself has been uncovered in recent Jerusalem excavations.', 'John 9:1-41; extended discourse on spiritual blindness. Follows the Feast of Tabernacles (John 7:2, 37) and precedes the Feast of Dedication (John 10:22): autumn AD 32 on this framework.', 1010),
+(85, 'Healing of a Crippled Woman', 32, NULL, 1, 1, 'possible', 'miracle', 'minor', 'Jesus heals a woman bent over for 18 years on the Sabbath.', 'Luke 13:10-17; only in Luke. Within Luke''s journey to Jerusalem (Luke 9:51-19:28); winter AD 32/33 by harmonisation.', 1020),
+(360, 'Annunciation to Mary', -5, NULL, 1, 1, 'possible', 'birth', 'moderate', 'The angel Gabriel announces to Mary at Nazareth that she will conceive by the Holy Spirit and bear a son named Jesus, and Mary consents. She then visits her relative Elizabeth, who is six months pregnant with John. Matthew tells of the angel''s message to Joseph in a dream.', 'Nine months before the birth of Jesus (5 BC on this framework); Luke 1:26 sets it in the sixth month of Elizabeth''s pregnancy.', 670),
+(361, 'Birth of John the Baptist', -5, NULL, 1, 1, 'possible', 'birth', 'moderate', 'Elizabeth bears a son to the aged priest Zechariah, who regains his speech when he writes that the child''s name is John. Zechariah''s song (the Benedictus) foretells that the child will prepare the way of the Lord.', 'About six months before the birth of Jesus (Luke 1:26, 36); 5 BC on this framework.', 680),
+(362, 'Visit of the Magi and Flight into Egypt', -4, NULL, 1, 1, 'possible', 'birth', 'moderate', 'Magi from the east follow a star to Jerusalem and Bethlehem, worship the child Jesus and, warned in a dream, go home another way. Herod the Great orders the killing of the boys of Bethlehem aged two and under; Joseph, warned by an angel, takes Mary and the child to Egypt until Herod''s death and then settles in Nazareth.', 'Between the birth of Jesus and the death of Herod in 4 BC (Matt 2:1, 19); the Gospel gives no date. Matthew does not say the Magi were three, or kings. The massacre is recorded only by Matthew.', 710),
+(363, 'Presentation of Jesus in the Temple', -5, NULL, 1, 1, 'possible', 'worship', 'minor', 'Forty days after the birth, Mary and Joseph bring Jesus to the Temple to present him to the Lord and offer the sacrifice of the poor. The aged Simeon takes him in his arms and blesses God (the Nunc Dimittis), and the prophetess Anna speaks of him to all who looked for redemption.', 'At the end of Mary''s purification, forty days after the birth (Luke 2:22; Lev 12:2-4); 5 BC on this framework.', 690),
+(364, 'Boy Jesus in the Temple', 8, NULL, 1, 1, 'possible', 'worship', 'minor', 'At twelve, Jesus goes up to Jerusalem with Mary and Joseph for Passover and stays behind; after three days they find him in the Temple among the teachers, who are astonished at his understanding. He returns with them to Nazareth and grows in wisdom and stature. It is the last time Joseph appears in the Gospels.', 'Luke 2:42 gives his age as twelve; AD 8 on a 5 BC birth.', 720);
+
+-- Apostolic Age
+INSERT INTO events (id, name, start_year, end_year, start_approx, end_approx, date_confidence, category, significance, description, date_notes, sort_order) VALUES
+(45, 'Crucifixion', 33, NULL, 1, 1, 'probable', 'salvation', 'major', 'Condemned under Pontius Pilate, Jesus is crucified at Golgotha outside Jerusalem at Passover, and the Gospels present his death as an atoning sacrifice foretold by the prophets. Pilate is attested by an inscription found at Caesarea, and a crucified man''s heel bone from Jerusalem confirms the Roman practice.', 'AD 33 is followed here (Friday 3 April on the usual reckoning); AD 30 (Friday 7 April) is the main alternative. Both fall within Pilate''s prefecture (AD 26-36) and Caiaphas''s high priesthood.', 1120),
+(46, 'Resurrection', 33, NULL, 1, 1, 'probable', 'salvation', 'major', 'On the third day, women find Jesus'' tomb empty and meet the risen Lord, who then appears to his disciples over forty days. Paul preserves an early creed listing eyewitnesses of the resurrection, the event Christians confess as death''s defeat and the firstfruits of the new creation.', 'The third day after the crucifixion; AD 33 on this framework (AD 30 on the main alternative).', 1130),
+(47, 'Ascension', 33, NULL, 1, 1, 'probable', 'miracle', 'major', 'Forty days after the resurrection, Jesus blesses his disciples on the Mount of Olives and is taken up into heaven, commissioning them as witnesses to the ends of the earth. Angels declare he will return as he departed, framing the church''s mission between promise and hope.', 'Forty days after the resurrection (Acts 1:3); AD 33 on this framework.', 1180),
+(48, 'Pentecost', 33, NULL, 1, 1, 'probable', 'miracle', 'major', 'On the feast of Pentecost, fifty days after Passover, the Holy Spirit descends on the disciples with rushing wind and tongues of fire, and Peter''s sermon draws about three thousand into the newborn church. Falling on Shavuot, the harvest festival, the event launches the gospel''s spread from Jerusalem.', 'Fifty days after the Passover of the crucifixion year (Acts 2:1; Lev 23:15-16); AD 33 on this framework (AD 30 on the main alternative).', 1220),
+(49, 'Stoning of Stephen', 35, NULL, 1, 1, 'probable', 'persecution', 'moderate', 'Stephen becomes the first Christian martyr.', 'Acts 6:8-8:1 gives no year. Placed shortly before Saul''s conversion (Acts 8:1-3; 9:1), c. AD 35 in this chronology; on an AD 30 crucifixion it falls c. AD 31-34.', 1230),
+(50, 'Conversion of Paul', 35, NULL, 1, 1, 'probable', 'miracle', 'major', 'On the Damascus road, Saul of Tarsus, traveling to arrest followers of Jesus, was confronted by a blinding vision of the risen Christ. Acts recounts the event three times and Paul''s letters confirm it, marking the turning point that made the church''s fiercest persecutor its apostle to the Gentiles.', 'Acts 9:1-19; Gal 1:15-18. AD 35 is followed here: Paul went up to Jerusalem ''after three years'' (Gal 1:18) and ''fourteen years after'' (Gal 2:1), here counted from the conversion and identified with the council of AD 49. Scholars range AD 33-36.', 1260),
+(51, 'Paul''s First Missionary Journey', 47, 49, 1, 1, 'probable', 'mission', 'moderate', 'Paul and Barnabas travel through Cyprus and Asia Minor.', 'Acts 13:1-14:28, c. AD 47-49 (Cyprus, then southern Galatia); begins after the famine-relief visit (Acts 11:30; 12:25).', 1310),
+(52, 'Council of Jerusalem', 49, NULL, 1, 1, 'probable', 'council', 'major', 'Apostles and elders gathered to decide whether Gentile converts must be circumcised and keep the law of Moses. After Peter testified that Jews and Gentiles alike are saved through the grace of the Lord Jesus (Acts 15:11) and James gave his judgment, the council freed Gentile believers from circumcision and asked them to abstain from food offered to idols, blood, things strangled and sexual immorality (Acts 15:20, 29).', 'Acts 15. AD 49 follows from Gal 2:1 (fourteen years after the conversion of AD 35) if that visit is the council; scholars range AD 48-50. Some identify Gal 2:1 with the famine visit of Acts 11:30 instead.', 1390),
+(53, 'Paul''s Second Missionary Journey', 50, 52, 1, 1, 'probable', 'mission', 'moderate', 'Paul brings the gospel to Greece.', 'Acts 15:36-18:22. Begins ''some days'' after the council (Acts 15:36) and ends with the return to Antioch after the Corinthian stay (Gallio, AD 51-52).', 1400),
+(54, 'Paul''s Third Missionary Journey', 54, 58, 1, 1, 'probable', 'mission', 'moderate', 'Paul strengthens churches in Asia Minor and Greece.', 'Acts 18:23-21:17. About three years at Ephesus (Acts 19:8-10; 20:31), then Macedonia and three months in Greece (Acts 20:2-3); ends at Jerusalem by Pentecost (Acts 20:16), AD 58 in this chronology.', 1490),
+(55, 'Destruction of Jerusalem', 70, NULL, 0, 1, 'certain', 'judgment', 'major', 'Roman legions under Titus crushed the Jewish revolt, burning the city and demolishing the Second Temple. The catastrophe ended sacrificial worship, scattered the Jewish people, and echoed Jesus'' warning that no stone would be left on another; the Arch of Titus in Rome still depicts the looted menorah.', 'The siege began near Passover AD 70; the Temple burned in the month of Av (August) and the upper city fell in September (Josephus, War 6). Masada held out until AD 73 or 74.', 1790),
+(56, 'John Writes Revelation', 95, NULL, 1, 1, 'traditional', 'scripture', 'moderate', 'Exiled on the rocky island of Patmos, John received sweeping visions of the risen Christ, letters for seven churches of Asia Minor, and the final triumph of the Lamb. Written to believers under Roman pressure, it closes the canon with the promise of a new heaven and new earth; Irenaeus placed it late in Domitian''s reign.', 'Early date (~AD 65) vs. late date (~AD 95).', 1840),
+(86, 'Healing of a Man with Dropsy', 33, NULL, 1, 1, 'possible', 'miracle', 'minor', 'Jesus heals a man with dropsy (edema) on the Sabbath.', 'Luke 14:1-6; only in Luke. Within Luke''s journey to Jerusalem (Luke 9:51-19:28); placed in the last months before the Passover of AD 33 by harmonisation.', 1060),
+(87, 'Raising of Lazarus', 33, NULL, 1, 1, 'possible', 'miracle', 'major', 'At Bethany, Jesus called Lazarus out of the tomb four days after his death, having declared to Martha that he is the resurrection and the life. This climactic sign, recorded only in John, drew crowds toward Jerusalem and hardened the authorities'' resolve to put Jesus to death.', 'John 11:1-44; catalyst for the plot to kill Jesus. After the Feast of Dedication (John 10:22, winter AD 32) and the stay beyond the Jordan (John 10:40), and shortly before the last Passover (John 11:55): early AD 33.', 1070),
+(88, 'Healing of Ten Lepers', 33, NULL, 1, 1, 'possible', 'miracle', 'minor', 'Jesus heals ten lepers; only one (a Samaritan) returns to give thanks.', 'Luke 17:11-19; only in Luke. On the final journey to Jerusalem through Samaria and Galilee (Luke 17:11); early AD 33 by harmonisation.', 1080),
+(89, 'Healing of Blind Bartimaeus', 33, NULL, 1, 1, 'possible', 'miracle', 'minor', 'As Jesus leaves Jericho on his last journey to Jerusalem, blind Bartimaeus son of Timaeus cries out to the Son of David and receives his sight (Mark 10:46-52). Matthew tells of two blind men (Matt 20:29-34) and Luke sets the healing as Jesus drew near to Jericho (Luke 18:35-43); most harmonies treat the three accounts as one incident.', 'Mark 10:46-52; Matthew 20:29-34; Luke 18:35-43. Days before the Triumphal Entry, AD 33 on this framework.', 1090),
+(91, 'Cursing of the Fig Tree', 33, NULL, 1, 1, 'possible', 'miracle', 'minor', 'Jesus curses a barren fig tree and it withers.', 'Matthew 21:18-22; Mark 11:12-14, 20-25.', 1100),
+(92, 'Healing of Malchus'' Ear', 33, NULL, 1, 1, 'probable', 'miracle', 'minor', 'Jesus heals the ear of the high priest''s servant during his arrest.', 'Luke 22:49-51; John 18:10-11.', 1110),
+(93, 'Catch of 153 Fish', 33, NULL, 1, 1, 'probable', 'miracle', 'minor', 'The risen Jesus directs a miraculous catch of 153 fish.', 'John 21:1-14; post-resurrection appearance.', 1190),
+(143, 'Appearance to Mary Magdalene', 33, NULL, 1, 1, 'probable', 'miracle', 'moderate', 'Weeping at the empty tomb, Mary Magdalene mistook the risen Jesus for the gardener until he spoke her name, and she answered, Rabbouni. John records this first appearance, and Jesus'' commission made her the first herald of the resurrection, honored in tradition as apostle to the apostles.', 'John 20:11-18; Mark 16:9-11. First post-resurrection appearance.', 1140),
+(144, 'Road to Emmaus', 33, NULL, 1, 1, 'probable', 'miracle', 'moderate', 'Two downcast disciples walking to Emmaus were joined by the risen Jesus, unrecognized, who opened Moses and all the prophets to show that the Messiah had to suffer and enter glory. Luke alone tells the story in full; their eyes were opened when he broke the bread, and their hearts burned within them.', 'Luke 24:13-35; Mark 16:12-13. On the day of resurrection.', 1150),
+(145, 'Appearance to the Disciples', 33, NULL, 1, 1, 'probable', 'miracle', 'moderate', 'On the evening of the resurrection, Jesus stood among his disciples behind locked doors, greeted them with peace, and showed them his hands and side. Luke notes that he ate broiled fish to prove he was no ghost, and John records him breathing on them the Holy Spirit and sending them as the Father sent him.', 'John 20:19-25; Luke 24:36-43. Thomas is absent.', 1160),
+(146, 'Appearance to Thomas', 33, NULL, 1, 1, 'probable', 'miracle', 'moderate', 'A week after the resurrection, Jesus invited doubting Thomas to touch his wounds, and Thomas answered with the gospels'' most direct confession of Jesus'' deity, calling him his Lord and his God. Found only in John, the scene ends with a blessing on all who believe without seeing.', 'John 20:26-29. "Blessed are those who have not seen and yet have believed."', 1170),
+(147, 'Restoration of Peter', 33, NULL, 1, 1, 'probable', 'mission', 'moderate', 'Over a charcoal-fire breakfast by the Sea of Tiberias, the risen Jesus asked Peter three times whether he loved him, mirroring Peter''s three denials, and charged him to feed his sheep. John 21 records this restoration, which recommissioned the fallen disciple as shepherd of the early church.', 'John 21:15-19. Parallels Peter''s three denials.', 1200),
+(148, 'Great Commission', 33, NULL, 1, 1, 'probable', 'mission', 'major', 'On a mountain in Galilee, the risen Jesus claimed all authority in heaven and on earth and sent his disciples to make disciples of all nations, baptizing in the name of the Father, Son, and Holy Spirit. Matthew closes with this charge and the promise of Christ''s presence to the end of the age.', 'Matthew 28:16-20; Mark 16:15-18. Foundation of Christian mission.', 1210),
+(149, 'James Written', 49, NULL, 1, 1, 'possible', 'scripture', 'minor', 'James, brother of Jesus, writes the earliest NT epistle from Jerusalem — practical wisdom on faith and works, addressed to Jewish Christians scattered abroad.', 'Often dated AD 45-49, before the Council of Jerusalem. Some scholars date it later (AD 60s).', 1370),
+(150, 'Galatians Written', 49, NULL, 1, 1, 'probable', 'scripture', 'minor', 'Paul writes to the Galatian churches defending justification by faith alone against Judaizers who insisted Gentile converts must follow the Mosaic Law.', 'South Galatian theory: AD 49, before Jerusalem Council. North Galatian theory: AD 53-55.', 1380),
+(151, '1 Thessalonians Written', 51, NULL, 1, 1, 'probable', 'scripture', 'minor', 'Paul writes from Corinth to encourage the young Thessalonian church, with teaching on the return of Christ. It is among the earliest of Paul''s letters: the earliest on most reckonings, though Galatians comes first on the South Galatian view followed in this timeline.', 'Written during Paul''s second missionary journey, c. AD 50-51.', 1450),
+(152, '2 Thessalonians Written', 51, NULL, 1, 1, 'probable', 'scripture', 'minor', 'Paul writes a follow-up to Thessalonica, correcting misunderstandings about the Day of the Lord and urging believers to continue working.', 'Written shortly after 1 Thessalonians, c. AD 51.', 1460),
+(153, '1 Corinthians Written', 57, NULL, 1, 1, 'probable', 'scripture', 'minor', 'Paul writes from Ephesus to the divided Corinthian church, addressing disputes, immorality, spiritual gifts, and the resurrection — including the great love chapter (ch. 13).', 'Written at Ephesus near the end of Paul''s stay, before Pentecost (1 Cor 16:8): spring AD 57 in this chronology. Many scholars, with an earlier Ephesian stay, date it AD 53-55.', 1530),
+(154, 'Matthew Written', 55, NULL, 1, 1, 'possible', 'scripture', 'moderate', 'The Gospel of Matthew is composed, presenting Jesus as the fulfillment of Old Testament prophecy, structured around five major discourses.', 'Early church tradition (Irenaeus, Origen) holds that Matthew wrote first, c. AD 50-60; most modern scholars place it after Mark, c. AD 70-90, with Antioch among suggested places of writing.', 1510),
+(155, 'Mark Written', 55, NULL, 1, 1, 'possible', 'scripture', 'minor', 'Mark composes a fast-paced account of Jesus'' ministry. Early church tradition (Papias, Irenaeus) says it records Peter''s preaching; most modern scholars regard it as the earliest Gospel, while the church fathers generally placed Matthew first.', 'Written in Rome according to tradition. Irenaeus places it after the deaths of Peter and Paul (c. AD 64-68); Clement of Alexandria says during Peter''s lifetime. Papias: ''Mark, the interpreter of Peter.'' Range AD 50-70.', 1520),
+(156, '2 Corinthians Written', 57, NULL, 1, 1, 'probable', 'scripture', 'minor', 'Paul writes his most personal letter from Macedonia, defending his apostleship and describing his sufferings — "when I am weak, then I am strong."', 'Written from Macedonia after 1 Corinthians and Titus''s report (2 Cor 2:12-13; 7:5-7), c. AD 57 in this chronology (many date it 55-56). Philippi is traditional but not named in the letter.', 1540),
+(157, 'Romans Written', 57, NULL, 1, 1, 'probable', 'scripture', 'moderate', 'Paul writes his theological masterpiece from Corinth to the Roman church — the fullest exposition of justification by faith, the role of the Law, and God''s plan for Jews and Gentiles.', 'Written from Corinth during the three months in Greece (Acts 20:2-3), winter AD 57/58 in this chronology. Phoebe carried the letter (Rom 16:1-2).', 1550),
+(158, 'Luke Written', 60, NULL, 1, 1, 'possible', 'scripture', 'minor', 'Luke the physician composes his orderly Gospel account, addressed to Theophilus — the most detailed account of Jesus'' birth and parables unique to Luke.', 'Traditional date: AD 58-63. Written before Acts. Possibly composed in Caesarea during Paul''s imprisonment.', 1590),
+(159, 'Ephesians Written', 62, NULL, 1, 1, 'possible', 'scripture', 'minor', 'Paul writes from Roman imprisonment on the cosmic scope of God''s plan — the church as the body of Christ, spiritual blessings, and the armor of God.', 'Rome imprisonment AD 61-63 (Acts 28:30); Ephesians, Colossians and Philemon c. AD 62. A minority place the Prison Epistles in Caesarea (AD 58-60) or Ephesus.', 1650),
+(160, 'Colossians Written', 62, NULL, 1, 1, 'possible', 'scripture', 'minor', 'Paul writes from prison to Colossae affirming Christ''s supremacy over all creation and warning against false philosophy — "in him the whole fullness of deity dwells bodily."', 'Rome imprisonment AD 61-63; c. AD 62, sent with Tychicus and Onesimus (Col 4:7-9). Some hold a Caesarean or Ephesian origin.', 1660),
+(161, 'Philemon Written', 62, NULL, 1, 1, 'possible', 'scripture', 'minor', 'Paul writes a brief personal letter from prison urging Philemon to receive his runaway slave Onesimus back as a brother in Christ — a window into early Christian social ethics.', 'Rome imprisonment AD 61-63; c. AD 62, sent with Colossians. Some hold a Caesarean or Ephesian origin.', 1670),
+(162, 'Philippians Written', 62, NULL, 1, 1, 'probable', 'scripture', 'minor', 'Paul writes his letter of joy from prison to his most supportive church — including the great Christ-hymn (2:5-11) and "I can do all things through him who strengthens me."', 'Rome imprisonment AD 61-63; c. AD 62-63. A minority place it in Ephesus or Caesarea.', 1680),
+(163, 'Acts Written', 63, NULL, 1, 1, 'possible', 'scripture', 'minor', 'Luke composes Acts as the sequel to his Gospel, tracing the spread of the church from Jerusalem to Rome — ending abruptly with Paul under house arrest.', 'Acts closes after Paul''s two full years in Rome (Acts 28:30), so on an early date it was finished c. AD 63, before the outcome of his trial was known. Many scholars date Acts AD 80-90.', 1690),
+(164, '1 Timothy Written', 64, NULL, 1, 1, 'possible', 'scripture', 'minor', 'Paul writes to his young protégé Timothy at Ephesus with instructions on church leadership, false teaching, and godly conduct — "fight the good fight of the faith."', 'Assumes Paul was released after the two years of Acts 28:30 and travelled again (early tradition: 1 Clement 5; Eusebius HE 2.22); Acts does not say so. c. AD 63-65. Many critical scholars date the Pastoral Epistles later.', 1710),
+(165, 'Titus Written', 64, NULL, 1, 1, 'possible', 'scripture', 'minor', 'Paul writes to Titus on Crete with instructions for appointing elders and promoting sound doctrine — "the grace of God has appeared, bringing salvation for all people."', 'Assumes Paul was released after the two years of Acts 28:30 and travelled again (early tradition: 1 Clement 5; Eusebius HE 2.22); Acts does not say so. c. AD 63-65. Many critical scholars date the Pastoral Epistles later.', 1720),
+(166, '1 Peter Written', 64, NULL, 1, 1, 'possible', 'scripture', 'minor', 'Peter writes from Rome (called "Babylon") to persecuted Christians scattered across Asia Minor, encouraging them to stand firm — "you are a chosen race, a royal priesthood."', 'Written from Rome, c. AD 62-64, before the Neronian persecution.', 1730),
+(167, 'Jude Written', 65, NULL, 1, 1, 'possible', 'scripture', 'minor', 'Jude, brother of Jesus, writes a brief, urgent letter warning against false teachers who have infiltrated the church — "contend for the faith once delivered to the saints."', 'Dated AD 65-80. Most scholars think 2 Peter drew on Jude, though some reverse the dependence.', 1740),
+(168, 'Hebrews Written', 67, NULL, 1, 1, 'possible', 'scripture', 'minor', 'An unknown author writes this sophisticated argument for Christ''s superiority over angels, Moses, and the Levitical priesthood — "Jesus Christ is the same yesterday, today, and forever."', 'Author unknown; Pauline authorship was accepted in the East and doubted in the West from antiquity. Often dated before AD 70 because the Temple service is spoken of in the present tense. ''They of Italy salute you'' (Heb 13:24) does not settle whether it was sent from or to Italy.', 1760),
+(169, '2 Timothy Written', 67, NULL, 1, 1, 'probable', 'scripture', 'minor', 'Paul writes his final letter from a Roman dungeon to Timothy — a deeply personal farewell: "I have fought the good fight, I have finished the race, I have kept the faith."', 'Second Roman imprisonment, c. AD 66-67, on the traditional view that Paul was released and later re-arrested. His death under Nero is early church tradition (1 Clement 5; Eusebius HE 2.25), not recorded in Acts.', 1770),
+(170, '2 Peter Written', 67, NULL, 1, 1, 'possible', 'scripture', 'minor', 'Peter writes his final letter shortly before his martyrdom, warning against false teachers and affirming the certainty of Christ''s return — "with the Lord one day is as a thousand years."', 'Written from Rome, c. AD 65-68, shortly before Peter''s death.', 1780),
+(171, 'John Written', 85, NULL, 1, 1, 'traditional', 'scripture', 'moderate', 'The apostle John composes his Gospel in Ephesus — a theological masterpiece opening with "In the beginning was the Word," presenting Jesus as the divine Son of God.', 'Traditional date: AD 85-95. Written in Ephesus. Last Gospel composed, supplementing the Synoptics.', 1800),
+(172, '1 John Written', 90, NULL, 1, 1, 'traditional', 'scripture', 'minor', 'John writes his first epistle from Ephesus, countering early Gnostic-like heresies and declaring that "God is light" and "God is love."', 'Dated AD 85-95. Written from Ephesus to churches in Asia Minor.', 1810),
+(173, '2 John Written', 90, NULL, 1, 1, 'traditional', 'scripture', 'minor', 'John writes a brief letter to "the elect lady and her children" — a local church — warning against false teachers who deny Christ came in the flesh.', 'Dated AD 85-95. Written from Ephesus.', 1820),
+(174, '3 John Written', 90, NULL, 1, 1, 'traditional', 'scripture', 'minor', 'John writes to Gaius commending his hospitality to traveling missionaries and rebuking Diotrephes, who "likes to put himself first."', 'Dated AD 85-95. Written from Ephesus.', 1830),
+(175, 'Philip Preaches in Samaria', 35, NULL, 1, 1, 'probable', 'mission', 'minor', 'Philip the evangelist proclaims Christ in Samaria; many believe and miracles accompany his preaching.', 'Acts 8:4-25.', 1240),
+(176, 'Ethiopian Eunuch Baptized', 35, NULL, 1, 1, 'probable', 'mission', 'minor', 'Philip meets an Ethiopian official on the Gaza road, explains Isaiah 53, and baptizes him.', 'Acts 8:26-40.', 1250),
+(177, 'Peter Raises Tabitha in Joppa', 37, NULL, 1, 1, 'possible', 'miracle', 'moderate', 'Peter raises the disciple Tabitha (Dorcas) from the dead in Joppa.', 'Acts 9:36-43.', 1270),
+(178, 'Peter and Cornelius in Caesarea', 40, NULL, 1, 1, 'probable', 'mission', 'major', 'Guided by paired visions, Peter entered the house of Cornelius, a centurion of the Italian Cohort in Caesarea, and preached Christ to Gentiles. When the Holy Spirit fell on the hearers before baptism, this Gentile Pentecost convinced the Jerusalem church that God shows no partiality, opening the door to the nations.', 'Acts 10:1-48; 11:1-18.', 1280),
+(179, 'Church Established in Antioch', 43, NULL, 1, 1, 'probable', 'mission', 'moderate', 'Believers are first called Christians in Antioch as Barnabas and Saul teach the church for a year.', 'Acts 11:19-30.', 1290),
+(180, 'Barnabas and Saul in Cyprus', 47, NULL, 1, 1, 'probable', 'miracle', 'minor', 'Paul blinds the sorcerer Bar-Jesus on Cyprus; the Roman proconsul Sergius Paulus believes.', 'Acts 13:4-12. First stop of the first missionary journey.', 1320),
+(181, 'Paul Preaches in Pisidian Antioch', 47, NULL, 1, 1, 'probable', 'mission', 'minor', 'Paul preaches in the synagogue at Pisidian Antioch; many believe but Jews stir up opposition and drive the missionaries out.', 'Acts 13:14-52.', 1330),
+(182, 'Iconium — Belief and Opposition', 48, NULL, 1, 1, 'probable', 'mission', 'minor', 'Paul and Barnabas preach in Iconium; the city divides; they flee before a planned stoning.', 'Acts 14:1-7.', 1340),
+(183, 'Lystra — Healing and Stoning', 48, NULL, 1, 1, 'probable', 'miracle', 'minor', 'Paul heals a man lame from birth in Lystra; the crowd hails them as gods, then stones Paul and leaves him for dead.', 'Acts 14:8-20.', 1350),
+(184, 'Derbe — Many Disciples', 48, NULL, 1, 1, 'probable', 'mission', 'minor', 'Paul and Barnabas make many disciples in Derbe and begin the return journey strengthening the new churches.', 'Acts 14:20-21.', 1360),
+(185, 'Macedonian Vision at Troas', 50, NULL, 1, 1, 'probable', 'mission', 'minor', 'Paul receives a vision at Troas: "Come over to Macedonia and help us." The gospel crosses into Europe.', 'Acts 16:8-10.', 1410),
+(186, 'Lydia Converted in Philippi', 50, NULL, 1, 1, 'probable', 'mission', 'moderate', 'Lydia, a seller of purple cloth, becomes the first European convert; Paul and Silas are imprisoned and the jailer is converted.', 'Acts 16:11-40.', 1420),
+(187, 'Paul in Thessalonica', 50, NULL, 1, 1, 'probable', 'mission', 'minor', 'Paul reasons in the synagogue at Thessalonica for three Sabbaths; opponents accuse the missionaries of "turning the world upside down."', 'Acts 17:1-9.', 1430),
+(188, 'Noble-Minded Bereans', 50, NULL, 1, 1, 'probable', 'mission', 'minor', 'The Bereans receive the word eagerly and examine the Scriptures daily to verify Paul''s message.', 'Acts 17:10-15.', 1440),
+(189, 'Paul on the Areopagus in Athens', 51, NULL, 1, 1, 'probable', 'mission', 'moderate', 'Paul addresses the philosophers of Athens on Mars Hill, proclaiming the "Unknown God" and the resurrection.', 'Acts 17:16-34.', 1470),
+(190, 'Paul in Corinth — 18 Months', 51, 52, 1, 1, 'probable', 'mission', 'moderate', 'Paul stays 18 months with Aquila and Priscilla in Corinth; the proconsul Gallio dismisses charges against him.', 'Acts 18:1-18. A year and six months (Acts 18:11); the Gallio inscription dates his proconsulship to AD 51-52, so Paul was in Corinth c. AD 51-52.', 1480),
+(191, 'Paul in Ephesus — 2 Years', 54, 57, 1, 1, 'probable', 'mission', 'moderate', 'Paul teaches in Ephesus for over two years with extraordinary miracles; new believers burn their occult scrolls; Demetrius the silversmith starts a riot.', 'Acts 19:1-41.', 1500),
+(192, 'Farewell to Ephesian Elders at Miletus', 58, NULL, 1, 1, 'probable', 'teaching', 'minor', 'Paul calls the Ephesian elders to Miletus for an emotional farewell: "I have not coveted anyone''s silver or gold."', 'Acts 20:17-38. Spring AD 58: Paul hurried to reach Jerusalem by Pentecost (Acts 20:16).', 1560),
+(193, 'Paul Arrested in Jerusalem', 58, NULL, 1, 1, 'probable', 'persecution', 'moderate', 'Paul is seized in the temple, beaten by the crowd, and transferred to Roman custody under the tribune Claudius Lysias.', 'Acts 21:27-23:10. Pentecost AD 58 in this chronology: two years under Felix (Acts 24:27) lead to Festus (c. AD 60) and Rome (AD 61-63). Many scholars date the arrest AD 57.', 1570),
+(194, 'Paul''s Trial before Felix and Festus', 58, 60, 1, 1, 'probable', 'persecution', 'moderate', 'Paul is held in Caesarea two years under Felix (Acts 24:27), then stands before his successor Festus; he defends himself before Agrippa II and Bernice and appeals to Caesar.', 'Acts 23:23-26:32. Felix''s two years, AD 58-60; Festus arrived c. AD 60 (some date it AD 59).', 1580),
+(195, 'Storm and Fair Havens of Crete', 60, NULL, 1, 1, 'probable', 'mission', 'minor', 'Paul warns against sailing late in the season; a violent northeaster batters the ship for 14 days as it drifts toward Malta.', 'Acts 27:7-44.', 1600),
+(196, 'Shipwreck on Malta', 60, NULL, 1, 1, 'probable', 'miracle', 'moderate', 'All 276 aboard reach shore safely; Paul is bitten by a viper but unharmed and heals the sick on the island for three months.', 'Acts 27:39–28:10.', 1610),
+(197, 'Landing at Puteoli', 61, NULL, 1, 1, 'probable', 'mission', 'minor', 'Paul and his companions land at the Italian port of Puteoli and stay seven days with believers there.', 'Acts 28:13-14.', 1620),
+(198, 'Paul Arrives in Rome', 61, 63, 1, 1, 'probable', 'mission', 'moderate', 'After appealing to Caesar, surviving shipwreck at Malta, Paul reached Rome under guard and spent two years in rented lodging, welcoming all and preaching the kingdom unhindered. Acts closes with the gospel proclaimed in the empire''s capital, and tradition places several prison epistles in this period.', 'Acts 28:16-31.', 1630),
+(365, 'Triumphal Entry into Jerusalem', 33, NULL, 1, 1, 'probable', 'kingdom', 'major', 'Jesus rides into Jerusalem on a colt while the crowds spread garments and branches and cry Hosanna to the Son of David, as in Zechariah 9:9. It opens the week of his passion.', 'The Sunday before the crucifixion (John 12:1, 12); AD 33 on this framework (AD 30 on the main alternative).', 1030),
+(366, 'Last Supper', 33, NULL, 1, 1, 'probable', 'covenant', 'major', 'On the night he was betrayed Jesus eats a final meal with the Twelve, washes their feet (John 13), gives them the bread and the cup as his body and his blood of the new covenant, and foretells Judas''s betrayal and Peter''s denial. Christians understand the Lord''s Supper differently but all trace it to this meal.', 'AD 33 on this framework. The Synoptic Gospels call it the Passover meal (Luke 22:15); John places the crucifixion on the day of preparation (John 18:28; 19:14), a long-debated question of harmonisation.', 1040),
+(367, 'Arrest and Trials of Jesus', 33, NULL, 1, 1, 'probable', 'persecution', 'moderate', 'After praying in Gethsemane, Jesus is arrested by a party guided by Judas and taken to Annas and Caiaphas and before the council, while Peter denies him three times. In the morning he is brought to Pilate, who sends him to Herod Antipas and then, after offering to release him instead of Barabbas, hands him over to be crucified.', 'From the night of the Last Supper to the morning of the crucifixion; AD 33 on this framework.', 1050),
+(368, 'James Killed and Peter Imprisoned by Agrippa I', 44, NULL, 0, 1, 'probable', 'persecution', 'moderate', 'Herod Agrippa I has James the brother of John killed with the sword and, seeing that it pleased the people, arrests Peter during the days of unleavened bread. An angel frees Peter, who goes to the house of Mary the mother of John Mark. Soon afterwards Agrippa is struck down at Caesarea and dies.', 'Agrippa I died in AD 44 (Josephus Ant. 19.343-352; Acts 12:23); the death of James and Peter''s arrest come shortly before, at Passover (Acts 12:3).', 1300),
+(369, 'Martyrdom of James, Brother of Jesus', 62, NULL, 0, 1, 'probable', 'persecution', 'moderate', 'James, leader of the Jerusalem church, is condemned by the high priest Ananus and stoned at Jerusalem while Judea is without a Roman governor. Josephus records the event, and the second-century writer Hegesippus (quoted by Eusebius) gives a fuller account. Scripture does not record it.', 'Josephus (Ant. 20.200) places it between the death of Festus and the arrival of Albinus, AD 62.', 1640),
+(370, 'Great Fire of Rome and Nero''s Persecution', 64, NULL, 0, 1, 'certain', 'persecution', 'moderate', 'In July AD 64 a fire destroys much of Rome. Rumour blames Nero, who fastens the guilt on the Christians and has many of them put to death with great cruelty (Tacitus). It is the first known Roman state violence against Christians.', 'Tacitus, Annals 15.38-44, dates the fire to July AD 64.', 1700),
+(371, 'Martyrdom of Peter and Paul', 67, NULL, 1, 1, 'traditional', 'persecution', 'moderate', 'Early church tradition holds that Peter and Paul were both put to death at Rome under Nero, Paul by the sword and Peter by crucifixion (1 Clement 5; Eusebius). Scripture does not record either death, though Jesus foretells Peter''s (John 21:18-19) and Paul anticipates his own (2 Tim 4:6-8).', 'Tradition only. Eusebius''s Chronicle places it c. AD 67/68; many link it to the persecution after the fire of AD 64. Nero died in June AD 68.', 1750);
+
+-- Early Church & Persecution
+INSERT INTO events (id, name, start_year, end_year, start_approx, end_approx, date_confidence, category, significance, description, date_notes, sort_order) VALUES
+(57, 'Death of John', 100, NULL, 1, 1, 'traditional', 'death', 'minor', 'According to early tradition (Irenaeus, Eusebius), John lived at Ephesus into the reign of Trajan (from AD 98) and died there, the last of the Twelve; his death is taken to close the Apostolic Age. Scripture records nothing about it (John 21:23 only corrects a rumour that he would not die).', 'Tradition only (Irenaeus, Eusebius): died at Ephesus under Trajan, c. AD 98-100.', 1850),
+(95, 'Martyrdom of Ignatius of Antioch', 108, NULL, 1, 1, 'probable', 'persecution', 'moderate', 'Bishop Ignatius of Antioch is taken to Rome and executed under Trajan; his seven letters on church order, the Eucharist and martyrdom are among the earliest post-apostolic writings.', 'Traditional date c. 108 (Eusebius, Church History III.36, under Trajan, 98-117); modern estimates range from c. 107 to c. 117.', 1860),
+(96, 'Martyrdom of Polycarp', 155, NULL, 1, 1, 'probable', 'persecution', 'moderate', 'Bishop Polycarp of Smyrna is put to death in the stadium at Smyrna, saying "Eighty-six years I have served Him, and He never did me any injury." In the earliest account the flames did not consume him and he was finally stabbed.', '22/23 February, 155 or 156 (standard modern view); Eusebius''s Chronicle implies c. 166-167, which most scholars reject.', 1870),
+(97, 'Irenaeus Writes Against Heresies', 180, NULL, 1, 1, 'probable', 'teaching', 'moderate', 'Irenaeus of Lyon writes Against Heresies (the Greek original is largely lost; a complete Latin translation survives), refuting Gnostic teaching and appealing to Scripture, the rule of faith and the succession of bishops from the apostles.', 'Written in Greek, c. 175-185, while Irenaeus was bishop of Lyon (Book III mentions Eleutherus as pope, 174-189).', 1880),
+(98, 'Origen Opens Catechetical School', 203, NULL, 1, 1, 'probable', 'teaching', 'minor', 'Origen, at about age 18, becomes head of the catechetical school in Alexandria, beginning a career of biblical scholarship and allegorical interpretation.', 'Eusebius, Church History VI.3, gives his age as 18 under Bishop Demetrius; c. 203.', 1890),
+(99, 'Diocletian Persecution Begins', 303, NULL, 0, 1, 'certain', 'persecution', 'major', 'Emperor Diocletian and his co-emperors issue edicts ordering churches destroyed, scriptures burned and clergy imprisoned: the most severe empire-wide persecution, though enforcement varied widely from region to region.', 'Eusebius, Church History VIII; Diocletian issued edicts in 303-304.', 1910),
+(390, 'Conversion of Armenia', 301, NULL, 1, 1, 'traditional', 'mission', 'moderate', 'According to Armenian tradition, Gregory the Illuminator converts King Tiridates III, making Armenia the first state to adopt Christianity officially. The Armenian Apostolic Church remains one of the oldest national churches.', 'Traditional date 301; some scholars prefer c. 314.', 1900);
+
+-- Imperial Christianity
+INSERT INTO events (id, name, start_year, end_year, start_approx, end_approx, date_confidence, category, significance, description, date_notes, sort_order) VALUES
+(100, 'Edict of Milan', 313, NULL, 0, 0, 'certain', 'kingdom', 'major', 'In 313 the emperors Constantine and Licinius agreed to extend religious toleration to Christians and other cults and to restore confiscated church property, building on Galerius''s edict of toleration (311). Christianity became a legally protected faith, though not yet the state religion.', 'Agreement reached at Milan in early 313; the text survives as Licinius''s rescript issued at Nicomedia in June 313 (Lactantius, De Mortibus Persecutorum 48; Eusebius, Church History X.5). Galerius had already granted toleration in 311.', 1920),
+(101, 'Council of Nicaea', 325, NULL, 0, 0, 'certain', 'council', 'major', 'Constantine convened bishops from across the empire at Nicaea to settle the Arian controversy over the Son''s divinity. The council confessed Christ as homoousios, of one being with the Father; the Nicene Creed in use today is the form expanded at Constantinople in 381. Tradition numbers the assembled bishops at 318.', 'First Ecumenical Council, convened by Constantine at Nicaea, May-June 325.', 1930),
+(102, 'Athanasius Lists the 27 NT Books', 367, NULL, 0, 0, 'certain', 'scripture', 'major', 'In his thirty-ninth Festal Letter from Alexandria, Bishop Athanasius listed exactly the twenty-seven books of today''s New Testament, the earliest surviving list to match it precisely. Calling them the springs of salvation, he distinguished canonical Scripture from disputed and spurious writings.', 'Athanasius, 39th Festal Letter (367 AD).', 1950),
+(103, 'Council of Carthage Affirms the Biblical Canon', 397, NULL, 0, 0, 'probable', 'scripture', 'moderate', 'A synod of North African bishops, in which Augustine took part, affirmed a list of Scripture that included the twenty-seven New Testament books and an Old Testament that included the books Protestants call the Apocrypha. Following the earlier synod of Hippo (393), it was a regional statement that later received wider authority in the West; the Eastern churches and the Reformers did not adopt it unchanged.', 'Council of Carthage, 397 AD (the list is also reaffirmed at Carthage in 419).', 1980),
+(104, 'Jerome Translates the Latin Bible (the Vulgate)', 382, 405, 1, 1, 'probable', 'scripture', 'moderate', 'Beginning at the request of Pope Damasus in Rome (382) and continuing in his monastery at Bethlehem, Jerome revised the Latin Gospels and Psalms and translated the Old Testament from the Hebrew text he called the hebraica veritas rather than from the Greek Septuagint. The resulting Vulgate became the standard Bible of Western Christendom for about a thousand years.', 'Begun 382 under Damasus; the Old Testament translation from Hebrew was finished c. 405. The name ''Vulgate'' and the final composition of the book came later.', 1970),
+(105, 'Council of Chalcedon', 451, NULL, 0, 0, 'certain', 'council', 'major', 'Bishops meeting at Chalcedon defined that Christ is one person in two natures, fully God and fully man, without confusion or separation. Guided by Pope Leo''s Tome against Eutyches'' teaching, the definition became the standard of Christology for the Catholic, Eastern Orthodox and most Protestant churches; the Oriental Orthodox churches did not accept it, and the division has lasted.', 'Fourth Ecumenical Council, Chalcedon (451 AD).', 2000),
+(391, 'Conversion of the Kingdom of Aksum (Ethiopia)', 330, NULL, 1, 1, 'possible', 'mission', 'moderate', 'Under King Ezana, Aksum embraces Christianity through the missionary Frumentius, consecrated first bishop by Athanasius of Alexandria. The Ethiopian Orthodox Tewahedo Church traces its origin here.', 'c. 330-340; Rufinus (Church History I.9) and Ezana''s inscriptions and coins.', 1940),
+(392, 'Council of Constantinople', 381, NULL, 0, 1, 'certain', 'council', 'major', 'The Second Ecumenical Council, called by Theodosius I, reaffirms Nicaea against Arian and Macedonian views and confesses the deity of the Holy Spirit. The creed now recited as the Nicene Creed (the Niceno-Constantinopolitan Creed) is linked to this council.', 'May-July 381.', 1960),
+(393, 'Council of Ephesus', 431, NULL, 0, 1, 'certain', 'council', 'moderate', 'The Third Ecumenical Council, meeting June-July 431, condemns Nestorius, affirms that Mary may be called Theotokos (God-bearer), and upholds the unity of Christ''s person. The Church of the East did not accept it.', 'Opened 22 June 431.', 1990);
+
+-- Early Medieval
+INSERT INTO events (id, name, start_year, end_year, start_approx, end_approx, date_confidence, category, significance, description, date_notes, sort_order) VALUES
+(106, 'Fall of the Western Roman Empire', 476, NULL, 0, 0, 'certain', 'kingdom', 'moderate', 'Romulus Augustulus, traditionally counted as the last Western Roman emperor, is deposed by Odoacer. The church, already organised under bishops across the former provinces, became a main carrier of continuity in a fragmented West.', 'Traditional date: 476 AD.', 2010),
+(107, 'Benedict Writes His Rule', 530, NULL, 1, 1, 'probable', 'reform', 'major', 'Benedict of Nursia writes his Rule for monks, which became the standard foundation of Western monastic life and helped preserve learning in the early Middle Ages. The later motto "ora et labora" (pray and work) sums up its spirit.', 'Rule of St. Benedict, traditionally c. 530 at Monte Cassino; some scholars date it to c. 540s. It draws on the earlier anonymous Rule of the Master.', 2020),
+(108, 'Synod of Whitby', 664, NULL, 0, 0, 'certain', 'council', 'minor', 'King Oswiu of Northumbria decides in favor of the Roman method of dating Easter and the Roman tonsure over the Ionan (Celtic) customs, aligning the Northumbrian church with Rome.', 'Bede, Ecclesiastical History of the English People, III.25.', 2050),
+(109, 'Rise of Islam and Muslim Conquests', 632, 750, 0, 1, 'certain', 'conquest', 'moderate', 'After Muhammad''s death (632), Muslim armies conquer Syria, Egypt and North Africa, most of them long Christian lands, and the Sasanian Persian Empire, home to the Church of the East, within about a century, permanently altering the geography of Christianity.', 'Rapid expansion of the Rashidun and Umayyad caliphates, 632–750 AD.', 2030),
+(110, 'Charlemagne Crowned Emperor', 800, NULL, 0, 0, 'certain', 'kingdom', 'moderate', 'Pope Leo III crowns Charlemagne emperor of the Romans on Christmas Day, 800, reviving the imperial title in the West; the Byzantine empire contested it. The title ''Holy Roman Emperor'' came later.', 'December 25, 800 AD; recorded by Einhard and the Royal Frankish Annals.', 2070),
+(394, 'Alopen Brings Christianity to China', 635, NULL, 0, 1, 'probable', 'mission', 'moderate', 'The Church of the East missionary Alopen reaches Chang''an and is received by Emperor Taizong. The Xi''an Stele (781) records the early Christian presence in Tang China.', 'Arrival 635 per the Xi''an Stele (781).', 2040),
+(395, 'Second Council of Nicaea', 787, NULL, 0, 1, 'certain', 'council', 'moderate', 'The Seventh Ecumenical Council restores the veneration of icons after the iconoclast controversy, distinguishing veneration from the worship due to God alone. It is the last council accepted by both Catholic and Orthodox churches as ecumenical.', 'September-October 787.', 2060),
+(396, 'Cyril and Methodius Mission to Moravia', 863, NULL, 0, 1, 'certain', 'mission', 'moderate', 'The Byzantine brothers Cyril and Methodius reach Great Moravia, creating the Glagolitic script and translating Scripture and liturgy into Slavic, laying the foundation for Slavic Christianity.', 'Arrival 863; Cyril died 869, Methodius 885.', 2080);
+
+-- High Medieval & Crusades
+INSERT INTO events (id, name, start_year, end_year, start_approx, end_approx, date_confidence, category, significance, description, date_notes, sort_order) VALUES
+(111, 'Great Schism: East-West Split', 1054, NULL, 0, 0, 'certain', 'other', 'major', 'In July 1054 Cardinal Humbert, legate of Pope Leo IX (who had died that April), laid a bull of excommunication on the altar of Hagia Sophia, and Patriarch Michael Cerularius and his synod responded in kind. The episode became the conventional date for the division of Christendom into a Roman Catholic West and an Orthodox East, though the estrangement over papal authority, the filioque clause and diverging customs was gradual and long in the making.', 'In July 1054 Cardinal Humbert and Patriarch Michael Cerularius excommunicated one another, an episode that became the conventional date for the split; the estrangement was gradual and the mutual anathemas of 1054 were lifted in 1965.', 2090),
+(112, 'Council of Clermont — First Crusade Called', 1095, NULL, 0, 0, 'certain', 'war', 'moderate', 'Pope Urban II calls on Christians to aid the Byzantine Empire and recover Jerusalem; the exact wording of the speech is known only from later accounts. The First Crusade captured Jerusalem in 1099, beginning two centuries of Crusading warfare.', 'Pope Urban II''s speech at the Council of Clermont, November 1095.', 2100),
+(113, 'Francis of Assisi Founds the Franciscans', 1209, NULL, 1, 0, 'probable', 'reform', 'moderate', 'Francis renounces his wealthy life and founds the Order of Friars Minor, preaching radical poverty, simplicity, and care for the poor.', 'Francis received papal approval in 1209/1210.', 2110),
+(114, 'Thomas Aquinas Writes the Summa Theologiae', 1265, 1273, 1, 0, 'probable', 'teaching', 'moderate', 'Aquinas works on his Summa Theologiae from about 1265 until he stops writing in December 1273, leaving the third part unfinished at his death in 1274. It became one of the most influential works of Christian theology, setting out faith and reason in a single systematic plan.', 'Begun c. 1265; Aquinas ceased writing in December 1273 and died 7 March 1274, leaving the work incomplete.', 2120),
+(115, 'The Wycliffe Bible Appears in English', 1382, NULL, 0, 1, 'probable', 'scripture', 'major', 'The first complete Bible in English, translated from the Latin Vulgate, appears in the Wycliffe circle: an Early Version c. 1382, largely by Nicholas Hereford, and a smoother Later Version c. 1388-1395 by John Purvey and others. Spread in hand-copied manuscripts by his Lollard followers, it survives in nearly 250 copies; Wycliffe himself was condemned after death.', 'Early Version c. 1382 (largely Nicholas Hereford); Later Version c. 1388-1395 (John Purvey and others). Wycliffe''s personal share is uncertain.', 2130);
+
+-- Reformation
+INSERT INTO events (id, name, start_year, end_year, start_approx, end_approx, date_confidence, category, significance, description, date_notes, sort_order) VALUES
+(116, 'Jan Hus Martyred', 1415, NULL, 0, 0, 'certain', 'persecution', 'moderate', 'Czech reformer Jan Hus is condemned as a heretic and burned at the stake at the Council of Constance, which judged his teaching on the church and papal authority heretical; he had also preached in Czech.', 'July 6, 1415, at the Council of Constance.', 2140),
+(117, 'Gutenberg Prints the Bible', 1455, NULL, 1, 1, 'probable', 'scripture', 'major', 'In Mainz, Johannes Gutenberg used movable metal type to print the Latin Vulgate in a run of perhaps 180 copies on paper and vellum, of which about 49 survive. The 42-line Bible was the first major book printed with movable type in Europe, and the press it launched would carry Scripture and reform across the continent.', 'Gutenberg Bible printed c. 1454-1455 in Mainz; copies were on sale by March 1455.', 2160),
+(118, 'Martin Luther Posts the 95 Theses', 1517, NULL, 0, 0, 'certain', 'reform', 'major', 'Martin Luther challenged the sale of indulgences with ninety-five theses for academic debate, which he sent to Archbishop Albert of Mainz; that he also posted them on the Wittenberg castle church door is traditional. Printers spread them across Germany within weeks, and they became the opening of the Reformation.', '31 October 1517: Luther sent the Theses to Archbishop Albert of Mainz on this date, which is certain. Whether he also nailed them to the Castle Church door is traditional and doubted by some historians.', 2170),
+(119, 'Diet of Worms', 1521, NULL, 0, 0, 'certain', 'reform', 'major', 'Summoned before Emperor Charles V, Martin Luther refused to recant his writings, declaring his conscience captive to the Word of God. Outlawed by the Edict of Worms (May 1521), he was sheltered at Wartburg Castle, where he translated the New Testament into German from the Greek.', 'April 17-18, 1521.', 2180),
+(120, 'Tyndale''s New Testament Published', 1526, NULL, 0, 0, 'certain', 'scripture', 'moderate', 'William Tyndale published the first printed English New Testament, translated directly from Erasmus'' Greek text and smuggled into England in bales of cloth. Though Tyndale was later executed, his vivid phrasing endured, shaping much of the King James New Testament''s wording.', 'Printing began in Cologne in 1525 but was stopped by the authorities; the first complete printed English New Testament appeared at Worms in 1526. Tyndale was executed in 1536.', 2190),
+(121, 'Calvin Publishes Institutes of the Christian Religion', 1536, NULL, 0, 0, 'certain', 'teaching', 'moderate', 'John Calvin publishes the first edition of the Institutes in Basel at age 26, expanded in later editions to the definitive 1559 Latin text, which became a foundational statement of Reformed theology.', 'First edition 1536; expanded final edition 1559.', 2200),
+(122, 'Council of Trent', 1545, 1563, 0, 0, 'certain', 'council', 'major', 'Meeting in three periods between 1545 and 1563, the Council of Trent defined Catholic doctrine on Scripture, justification and the sacraments, and enacted reforms of clergy and discipline in response to Protestant challenges.', 'Council of Trent, 1545–1563 (three periods over 18 years).', 2210),
+(123, 'King James Version Published', 1611, NULL, 0, 0, 'certain', 'scripture', 'major', 'Commissioned by James I after the Hampton Court Conference (1604), about fifty scholars in six companies at Westminster, Oxford and Cambridge produced a new English Bible from the Hebrew and Greek. Building heavily on Tyndale, the King James Version became among the most influential books in the English language.', 'Published 1611.', 2220),
+(124, 'Westminster Confession of Faith', 1643, 1646, 0, 0, 'certain', 'council', 'moderate', 'The Westminster Assembly (1643-1653) produces a Reformed confession, completed in 1646, that became the standard of English-speaking Presbyterian churches and shaped Congregational and Baptist confessions.', 'The Assembly first met in 1643; the Confession was completed in 1646 and adopted by the Church of Scotland (1647); the English Parliament approved most of it in 1648.', 2230),
+(397, 'Fall of Constantinople', 1453, NULL, 0, 1, 'certain', 'war', 'moderate', 'On 29 May 1453 Ottoman forces under Mehmed II take Constantinople, ending the Byzantine Empire and placing the Ecumenical Patriarchate under Ottoman rule.', '29 May 1453.', 2150);
+
+-- Enlightenment & Missions
+INSERT INTO events (id, name, start_year, end_year, start_approx, end_approx, date_confidence, category, significance, description, date_notes, sort_order) VALUES
+(125, 'Peace of Westphalia', 1648, NULL, 0, 0, 'certain', 'kingdom', 'moderate', 'The treaties ending the Thirty Years'' War confirm the settlement of the Peace of Augsburg (1555) and extend its toleration to the Reformed church, ending a long period of European religious wars. The principle of cuius regio, eius religio dates from Augsburg, not 1648.', 'Treaties signed October 24, 1648.', 2240),
+(126, 'John Wesley''s Aldersgate Experience', 1738, NULL, 0, 0, 'certain', 'reform', 'moderate', 'Wesley feels his heart "strangely warmed" at a Moravian society meeting on Aldersgate Street, an experience he treated as a turning point in his own assurance of faith and that is often seen as the spiritual birth of the Methodist revival.', 'May 24, 1738.', 2260),
+(127, 'Jonathan Edwards and the First Great Awakening', 1734, 1743, 1, 1, 'probable', 'reform', 'major', 'Revival in Jonathan Edwards'' Northampton church (1734-35) and George Whitefield''s preaching tours from 1739 spread the First Great Awakening through the American colonies, alongside the Evangelical Revival in Britain. Edwards'' sermon "Sinners in the Hands of an Angry God" (1741) became its best-known sermon.', 'First Great Awakening, c. 1734–1743.', 2250),
+(128, 'William Carey Sails for India', 1793, NULL, 0, 0, 'certain', 'mission', 'moderate', 'The Baptist missionary William Carey sails from England on 13 June 1793 and reaches Calcutta in November, beginning a lifelong work of Bible translation, education and social reform; he is often called the "father of modern missions".', 'Carey departed June 13, 1793; established Serampore Mission.', 2270),
+(129, 'British and Foreign Bible Society Founded', 1804, NULL, 0, 0, 'certain', 'scripture', 'moderate', 'The British and Foreign Bible Society is founded in London to make the Scriptures available in every language, becoming the model for Bible societies around the world.', 'Founded March 7, 1804.', 2280),
+(130, 'American Bible Society Founded', 1816, NULL, 0, 0, 'certain', 'scripture', 'minor', 'Founded to distribute Bibles across the expanding American frontier.', 'Founded May 11, 1816 in New York.', 2290),
+(131, 'Charles Spurgeon Begins Preaching in London', 1854, NULL, 0, 0, 'certain', 'teaching', 'minor', 'Spurgeon, the "Prince of Preachers," begins pastoring at New Park Street Chapel at age 19; his later Metropolitan Tabernacle seats about 5,000.', 'Spurgeon preached to millions over 38 years (1854–1892).', 2300),
+(132, 'D.L. Moody''s Revival Campaigns', 1873, 1899, 0, 0, 'certain', 'reform', 'minor', 'Dwight L. Moody''s transatlantic revival campaigns in Britain and America bring millions to evangelistic meetings. He founds Moody Bible Institute (1886).', 'Major campaigns: Britain (1873–75), America (1875–99).', 2310);
+
+-- Modern Era
+INSERT INTO events (id, name, start_year, end_year, start_approx, end_approx, date_confidence, category, significance, description, date_notes, sort_order) VALUES
+(133, 'Azusa Street Revival', 1906, 1909, 0, 0, 'certain', 'reform', 'moderate', 'William Seymour leads a multiracial revival on Azusa Street in Los Angeles, a major catalyst of the global Pentecostal movement, which with the charismatic movements now numbers hundreds of millions.', 'Azusa Street Revival, 312 Azusa Street, April 1906 – c. 1909.', 2320),
+(134, 'Edinburgh Missionary Conference', 1910, NULL, 0, 0, 'certain', 'mission', 'moderate', 'The World Missionary Conference in Edinburgh brings together about 1,200 delegates, mostly from Protestant and Anglican societies, and is widely seen as a starting point of the modern ecumenical movement.', 'June 14–23, 1910.', 2330),
+(135, 'Barmen Declaration', 1934, NULL, 0, 0, 'certain', 'council', 'minor', 'Meeting at Barmen, the Confessing Church in Germany adopts a declaration, drafted chiefly by Karl Barth with the Lutheran Hans Asmussen and Thomas Breit, rejecting Nazi ideology''s claims over the church. Bonhoeffer and Martin Niemoller supported the Confessing movement but were not its authors.', 'Barmen Declaration, May 31, 1934.', 2340),
+(136, 'Discovery of the Dead Sea Scrolls', 1947, NULL, 0, 0, 'certain', 'scripture', 'major', 'A Bedouin shepherd''s find in a cave near Qumran in 1946-47 opened one of the greatest manuscript finds of modern times: some 900 scrolls from eleven caves, usually linked to a Jewish community at Qumran, often identified as Essene. Every Hebrew Bible book except Esther is represented, and the Great Isaiah Scroll predates the earlier known Hebrew manuscripts by about a thousand years.', 'First scrolls found in 1946-47; excavations continued through 1956.', 2350),
+(137, 'State of Israel Established', 1948, NULL, 0, 0, 'certain', 'kingdom', 'moderate', 'As the British Mandate ended, David Ben-Gurion proclaimed the State of Israel, the first sovereign Jewish state in the land since antiquity. The ingathering of Jewish exiles and the revival of Hebrew as a living national language gave the ancient biblical homeland renewed centrality in Jewish life and Christian reflection.', 'May 14, 1948.', 2360),
+(138, 'Second Vatican Council', 1962, 1965, 0, 0, 'certain', 'council', 'major', 'Pope John XXIII convenes Vatican II, transforming Catholic worship (Mass in the vernacular), affirming religious liberty, and opening dialogue with Protestants and other faiths.', 'Vatican II, October 11, 1962 – December 8, 1965.', 2380),
+(139, 'Billy Graham''s Global Crusades', 1949, 2005, 0, 1, 'certain', 'mission', 'moderate', 'Graham preached the gospel in person to an estimated 215 million people in more than 185 countries over a career of some five decades, according to the Billy Graham Evangelistic Association.', 'Los Angeles Crusade (1949) launched Graham''s global ministry.', 2370),
+(140, 'Lausanne Congress on World Evangelization', 1974, NULL, 0, 0, 'certain', 'mission', 'minor', 'Billy Graham convenes about 2,700 evangelical leaders and guests from some 150 nations; the resulting Lausanne Covenant, drafted under John Stott, shapes evangelical mission for a generation.', 'July 16–25, 1974, Lausanne, Switzerland.', 2390),
+(141, 'Fall of the Soviet Union', 1991, NULL, 0, 0, 'certain', 'other', 'minor', 'The dissolution of the USSR on 26 December 1991 ends some seven decades of official state atheism and opens the former Soviet republics to far greater religious freedom, with a revival of Orthodox and other churches.', 'December 26, 1991.', 2410),
+(142, 'Christianity Shifts to the Global South', 1980, 2000, 1, 1, 'possible', 'mission', 'moderate', 'Between about 1980 and 2000 the center of gravity of world Christianity moved: the majority of Christians came to live in Africa, Asia and Latin America rather than in Europe and North America.', 'Estimates of when the crossover occurred vary with the counting method; see Philip Jenkins, The Next Christendom (2002), and Pew Research Center data.', 2400);
+
+-- Intertestamental Period
+INSERT INTO events (id, name, start_year, end_year, start_approx, end_approx, date_confidence, category, significance, description, date_notes, sort_order) VALUES
+(341, 'Alexander Conquers the Persian Empire', -334, -323, 0, 0, 'certain', 'conquest', 'moderate', 'Alexander of Macedon defeats Persia at the Granicus, Issus and Gaugamela and rules an empire from Greece to India. Judea passes from Persian to Greek rule and, after his death in 323 BC, to the rival Ptolemies and Seleucids (1 Macc 1:1-9). Daniel''s vision of the he-goat is traditionally read of these events (Dan 8:5-8, 21-22; 11:3-4).', 'Campaign 334-323 BC; Alexander died at Babylon in June 323 BC. Reading the Daniel passages as Alexander is traditional.', 640),
+(342, 'Maccabean Revolt', -167, -160, 0, 0, 'certain', 'war', 'major', 'After Antiochus IV desecrates the temple and bans the Law, the priest Mattathias refuses to sacrifice at Modein and raises a revolt (1 Macc 2). His son Judas wins a string of victories, retakes Jerusalem and rededicates the temple in December 164 BC (1 Macc 4:36-59). Judas falls at Elasa in 160 BC.', 'Seleucid-era years: the temple was desecrated in 145 SE (167 BC, 1 Macc 1:54) and Judas died in 152 SE (160 BC, 1 Macc 9:3). 1-2 Maccabees are canonical for Catholics and Orthodox and among the Apocrypha for Protestants.', 650),
+(343, 'Rededication of the Temple', -164, NULL, 0, 1, 'certain', 'worship', 'moderate', 'On 25 Kislev, three years after its desecration, Judas Maccabeus cleanses the temple, builds a new altar and restores the daily offerings with eight days of celebration (1 Macc 4:36-59; 2 Macc 10:1-8). The feast of Dedication (Hanukkah) that remembers it is named in John 10:22.', '25 Kislev 148 SE = December 164 BC (1 Macc 4:52).', 660);
+
+-- ============================================================
+-- BOOKS OF THE BIBLE (66)
+-- ============================================================
+INSERT INTO biblical_books (id, name, abbreviation, testament, genre, approx_writing_year, period_covered_start, period_covered_end) VALUES
+(1, 'Genesis', 'Gen', 'OT', 'law', -1451, -4004, -1635),
+(2, 'Exodus', 'Exod', 'OT', 'law', -1451, -1571, -1490),
+(3, 'Leviticus', 'Lev', 'OT', 'law', -1490, -1490, -1490),
+(4, 'Numbers', 'Num', 'OT', 'law', -1451, -1490, -1451),
+(5, 'Deuteronomy', 'Deut', 'OT', 'law', -1451, -1451, -1451),
+(6, 'Joshua', 'Josh', 'OT', 'history', -1420, -1451, -1420),
+(7, 'Judges', 'Judg', 'OT', 'history', -1095, -1420, -1095),
+(8, 'Ruth', 'Ruth', 'OT', 'history', -1000, -1195, -1145),
+(9, '1 Samuel', '1 Sam', 'OT', 'history', -975, -1150, -1056),
+(10, '2 Samuel', '2 Sam', 'OT', 'history', -975, -1055, -1017),
+(11, '1 Kings', '1 Kgs', 'OT', 'history', -560, -1015, -896),
+(12, '2 Kings', '2 Kgs', 'OT', 'history', -560, -896, -562),
+(13, '1 Chronicles', '1 Chr', 'OT', 'history', -450, -4004, -1015),
+(14, '2 Chronicles', '2 Chr', 'OT', 'history', -450, -1015, -536),
+(15, 'Ezra', 'Ezra', 'OT', 'history', -440, -536, -457),
+(16, 'Nehemiah', 'Neh', 'OT', 'history', -430, -445, -433),
+(17, 'Esther', 'Esth', 'OT', 'history', -470, -483, -473),
+(18, 'Job', 'Job', 'OT', 'wisdom', -2000, -2000, -2000),
+(19, 'Psalms', 'Ps', 'OT', 'wisdom', -1015, -1451, -450),
+(20, 'Proverbs', 'Prov', 'OT', 'wisdom', -995, -1015, -700),
+(21, 'Ecclesiastes', 'Eccl', 'OT', 'wisdom', -985, -1015, -975),
+(22, 'Song of Solomon', 'Song', 'OT', 'wisdom', -1005, -1015, -975),
+(23, 'Isaiah', 'Isa', 'OT', 'prophecy', -700, -758, -700),
+(24, 'Jeremiah', 'Jer', 'OT', 'prophecy', -585, -629, -562),
+(25, 'Lamentations', 'Lam', 'OT', 'prophecy', -588, -588, -588),
+(26, 'Ezekiel', 'Ezek', 'OT', 'prophecy', -570, -595, -573),
+(27, 'Daniel', 'Dan', 'OT', 'prophecy', -530, -606, -534),
+(28, 'Hosea', 'Hos', 'OT', 'prophecy', -725, -755, -725),
+(29, 'Joel', 'Joel', 'OT', 'prophecy', -870, -870, -870),
+(30, 'Amos', 'Amos', 'OT', 'prophecy', -787, -787, -787),
+(31, 'Obadiah', 'Obad', 'OT', 'prophecy', -588, -588, -588),
+(32, 'Jonah', 'Jonah', 'OT', 'prophecy', -760, -785, -785),
+(33, 'Micah', 'Mic', 'OT', 'prophecy', -700, -735, -700),
+(34, 'Nahum', 'Nah', 'OT', 'prophecy', -660, -660, -660),
+(35, 'Habakkuk', 'Hab', 'OT', 'prophecy', -607, -607, -607),
+(36, 'Zephaniah', 'Zeph', 'OT', 'prophecy', -625, -625, -625),
+(37, 'Haggai', 'Hag', 'OT', 'prophecy', -520, -520, -520),
+(38, 'Zechariah', 'Zech', 'OT', 'prophecy', -518, -520, -518),
+(39, 'Malachi', 'Mal', 'OT', 'prophecy', -430, -430, -430),
+(40, 'Matthew', 'Matt', 'NT', 'gospel', 55, -5, 33),
+(41, 'Mark', 'Mark', 'NT', 'gospel', 55, 29, 33),
+(42, 'Luke', 'Luke', 'NT', 'gospel', 60, -6, 33),
+(43, 'John', 'John', 'NT', 'gospel', 85, 29, 33),
+(44, 'Acts', 'Acts', 'NT', 'history', 63, 33, 63),
+(45, 'Romans', 'Rom', 'NT', 'epistle', 57, 57, 57),
+(46, '1 Corinthians', '1 Cor', 'NT', 'epistle', 57, 57, 57),
+(47, '2 Corinthians', '2 Cor', 'NT', 'epistle', 57, 57, 57),
+(48, 'Galatians', 'Gal', 'NT', 'epistle', 49, 49, 49),
+(49, 'Ephesians', 'Eph', 'NT', 'epistle', 62, 62, 62),
+(50, 'Philippians', 'Phil', 'NT', 'epistle', 62, 62, 62),
+(51, 'Colossians', 'Col', 'NT', 'epistle', 62, 62, 62),
+(52, '1 Thessalonians', '1 Thess', 'NT', 'epistle', 51, 51, 51),
+(53, '2 Thessalonians', '2 Thess', 'NT', 'epistle', 51, 51, 51),
+(54, '1 Timothy', '1 Tim', 'NT', 'epistle', 64, 64, 64),
+(55, '2 Timothy', '2 Tim', 'NT', 'epistle', 67, 67, 67),
+(56, 'Titus', 'Titus', 'NT', 'epistle', 64, 64, 64),
+(57, 'Philemon', 'Phlm', 'NT', 'epistle', 62, 62, 62),
+(58, 'Hebrews', 'Heb', 'NT', 'epistle', 67, 67, 67),
+(59, 'James', 'Jas', 'NT', 'epistle', 49, 49, 49),
+(60, '1 Peter', '1 Pet', 'NT', 'epistle', 64, 64, 64),
+(61, '2 Peter', '2 Pet', 'NT', 'epistle', 67, 67, 67),
+(62, '1 John', '1 John', 'NT', 'epistle', 90, 90, 90),
+(63, '2 John', '2 John', 'NT', 'epistle', 90, 90, 90),
+(64, '3 John', '3 John', 'NT', 'epistle', 90, 90, 90),
+(65, 'Jude', 'Jude', 'NT', 'epistle', 65, 65, 65),
+(66, 'Revelation', 'Rev', 'NT', 'apocalyptic', 95, 95, 95);
+
+-- ============================================================
+-- SCRIPTURE REFERENCES (542)
+-- ============================================================
+INSERT INTO scripture_references (id, book_id, chapter_start, verse_start, chapter_end, verse_end, reference_text) VALUES
+(1, 1, 1, 1, 2, 25, 'Genesis 1:1–2:25'),
+(2, 1, 3, 1, 3, 24, 'Genesis 3:1-24'),
+(3, 1, 6, 1, 9, 17, 'Genesis 6:1–9:17'),
+(4, 1, 11, 1, 11, 9, 'Genesis 11:1-9'),
+(5, 1, 12, 1, 12, 9, 'Genesis 12:1-9'),
+(6, 1, 15, 1, 15, 21, 'Genesis 15:1-21'),
+(7, 1, 22, 1, 22, 19, 'Genesis 22:1-19'),
+(8, 1, 32, 22, 32, 32, 'Genesis 32:22-32'),
+(9, 1, 37, 12, 37, 36, 'Genesis 37:12-36'),
+(10, 1, 46, 1, 46, 34, 'Genesis 46:1-34'),
+(11, 2, 12, 1, 14, 31, 'Exodus 12:1–14:31'),
+(12, 2, 14, 1, 14, 31, 'Exodus 14:1-31'),
+(13, 2, 20, 1, 20, 17, 'Exodus 20:1-17'),
+(14, 4, 14, 1, 14, 45, 'Numbers 14:1-45'),
+(15, 6, 1, 1, 12, 24, 'Joshua 1:1–12:24'),
+(16, 6, 6, 1, 6, 27, 'Joshua 6:1-27'),
+(17, 7, 2, 6, 2, 23, 'Judges 2:6-23'),
+(18, 7, 4, 1, 5, 31, 'Judges 4:1–5:31'),
+(19, 7, 7, 1, 7, 25, 'Judges 7:1-25'),
+(20, 9, 10, 1, 10, 27, '1 Samuel 10:1-27'),
+(21, 10, 5, 1, 5, 5, '2 Samuel 5:1-5'),
+(22, 10, 5, 6, 5, 10, '2 Samuel 5:6-10'),
+(23, 10, 7, 1, 7, 29, '2 Samuel 7:1-29'),
+(24, 11, 6, 1, 6, 38, '1 Kings 6:1-38'),
+(25, 11, 12, 1, 12, 24, '1 Kings 12:1-24'),
+(26, 11, 18, 20, 18, 40, '1 Kings 18:20-40'),
+(27, 12, 17, 1, 17, 41, '2 Kings 17:1-41'),
+(28, 12, 19, 1, 19, 37, '2 Kings 19:1-37'),
+(29, 12, 22, 8, 23, 25, '2 Kings 22:8–23:25'),
+(30, 12, 25, 1, 25, 21, '2 Kings 25:1-21'),
+(31, 25, 1, 1, 5, 22, 'Lamentations 1:1–5:22'),
+(32, 15, 1, 1, 1, 11, 'Ezra 1:1-11'),
+(33, 15, 6, 14, 6, 22, 'Ezra 6:14-22'),
+(34, 15, 7, 1, 10, 44, 'Ezra 7:1–10:44'),
+(35, 16, 2, 11, 6, 19, 'Nehemiah 2:11–6:19'),
+(36, 17, 4, 1, 9, 32, 'Esther 4:1–9:32'),
+(37, 42, 2, 1, 2, 20, 'Luke 2:1-20'),
+(38, 40, 3, 13, 3, 17, 'Matthew 3:13-17'),
+(39, 40, 5, 1, 7, 29, 'Matthew 5:1–7:29'),
+(40, 40, 27, 32, 27, 56, 'Matthew 27:32-56'),
+(41, 40, 28, 1, 28, 10, 'Matthew 28:1-10'),
+(42, 44, 1, 9, 1, 11, 'Acts 1:9-11'),
+(43, 44, 2, 1, 2, 47, 'Acts 2:1-47'),
+(44, 44, 7, 54, 7, 60, 'Acts 7:54-60'),
+(45, 44, 9, 1, 9, 31, 'Acts 9:1-31'),
+(46, 44, 13, 1, 14, 28, 'Acts 13:1–14:28'),
+(47, 44, 15, 1, 15, 35, 'Acts 15:1-35'),
+(48, 44, 15, 36, 18, 22, 'Acts 15:36–18:22'),
+(49, 44, 18, 23, 21, 16, 'Acts 18:23–21:16'),
+(50, 42, 21, 5, 21, 36, 'Luke 21:5-36'),
+(51, 66, 1, 1, 1, 20, 'Revelation 1:1-20'),
+(52, 43, 21, 20, 21, 25, 'John 21:20-25'),
+(53, 1, 1, 26, 5, 5, 'Genesis 1:26–5:5'),
+(54, 1, 3, 20, 3, 20, 'Genesis 3:20'),
+(55, 1, 6, 8, 9, 29, 'Genesis 6:8–9:29'),
+(56, 1, 12, 1, 25, 11, 'Genesis 12:1–25:11'),
+(57, 1, 17, 15, 23, 19, 'Genesis 17:15–23:19'),
+(58, 1, 21, 1, 35, 29, 'Genesis 21:1–35:29'),
+(59, 1, 24, 1, 27, 46, 'Genesis 24:1–27:46'),
+(60, 1, 25, 19, 49, 33, 'Genesis 25:19–49:33'),
+(61, 1, 37, 1, 50, 26, 'Genesis 37:1–50:26'),
+(62, 5, 34, 1, 34, 12, 'Deuteronomy 34:1-12'),
+(63, 2, 4, 14, 4, 16, 'Exodus 4:14-16'),
+(64, 2, 15, 20, 15, 21, 'Exodus 15:20-21'),
+(65, 6, 1, 1, 24, 33, 'Joshua 1:1–24:33'),
+(66, 7, 4, 4, 5, 31, 'Judges 4:4–5:31'),
+(67, 7, 6, 11, 8, 35, 'Judges 6:11–8:35'),
+(68, 7, 13, 1, 16, 31, 'Judges 13:1–16:31'),
+(69, 8, 1, 1, 4, 22, 'Ruth 1:1–4:22'),
+(70, 9, 1, 1, 25, 1, '1 Samuel 1:1–25:1'),
+(71, 9, 9, 1, 31, 13, '1 Samuel 9:1–31:13'),
+(72, 9, 16, 1, 31, 13, '1 Samuel 16:1–31:13'),
+(73, 11, 1, 1, 11, 43, '1 Kings 1:1–11:43'),
+(74, 10, 12, 1, 12, 15, '2 Samuel 12:1-15'),
+(75, 11, 17, 1, 21, 29, '1 Kings 17:1–21:29'),
+(76, 12, 2, 1, 13, 21, '2 Kings 2:1–13:21'),
+(77, 23, 1, 1, 66, 24, 'Isaiah 1:1–66:24'),
+(78, 24, 1, 1, 52, 34, 'Jeremiah 1:1–52:34'),
+(79, 26, 1, 1, 48, 35, 'Ezekiel 1:1–48:35'),
+(80, 27, 1, 1, 12, 13, 'Daniel 1:1–12:13'),
+(81, 12, 18, 1, 20, 21, '2 Kings 18:1–20:21'),
+(82, 12, 22, 1, 23, 30, '2 Kings 22:1–23:30'),
+(83, 11, 12, 25, 14, 20, '1 Kings 12:25–14:20'),
+(84, 11, 16, 29, 22, 40, '1 Kings 16:29–22:40'),
+(86, 16, 1, 1, 13, 31, 'Nehemiah 1:1–13:31'),
+(87, 15, 2, 1, 5, 2, 'Ezra 2:1–5:2'),
+(88, 17, 1, 1, 10, 3, 'Esther 1:1–10:3'),
+(89, 42, 1, 26, 24, 53, 'Luke 1:26–24:53'),
+(90, 42, 1, 26, 2, 52, 'Luke 1:26–2:52'),
+(91, 42, 1, 5, 3, 20, 'Luke 1:5–3:20'),
+(92, 40, 4, 18, 16, 19, 'Matthew 4:18–16:19'),
+(93, 44, 9, 1, 28, 31, 'Acts 9:1–28:31'),
+(94, 43, 13, 23, 21, 25, 'John 13:23–21:25'),
+(95, 44, 12, 1, 12, 2, 'Acts 12:1-2'),
+(96, 44, 6, 5, 7, 60, 'Acts 6:5–7:60'),
+(97, 44, 4, 36, 15, 39, 'Acts 4:36–15:39'),
+(98, 44, 16, 1, 16, 5, 'Acts 16:1-5'),
+(99, 42, 1, 1, 1, 4, 'Luke 1:1-4'),
+(100, 43, 2, 1, 2, 11, 'John 2:1-11'),
+(101, 43, 4, 46, 4, 54, 'John 4:46-54');
+
+INSERT INTO scripture_references (id, book_id, chapter_start, verse_start, chapter_end, verse_end, reference_text) VALUES
+(102, 42, 5, 1, 5, 11, 'Luke 5:1-11'),
+(103, 41, 1, 21, 1, 28, 'Mark 1:21-28'),
+(104, 40, 8, 14, 8, 15, 'Matthew 8:14-15'),
+(105, 40, 8, 1, 8, 4, 'Matthew 8:1-4'),
+(106, 41, 2, 1, 2, 12, 'Mark 2:1-12'),
+(107, 43, 5, 1, 5, 17, 'John 5:1-17'),
+(108, 40, 12, 9, 12, 14, 'Matthew 12:9-14'),
+(109, 40, 8, 5, 8, 13, 'Matthew 8:5-13'),
+(110, 42, 7, 11, 7, 17, 'Luke 7:11-17'),
+(111, 41, 4, 35, 4, 41, 'Mark 4:35-41'),
+(112, 41, 5, 1, 5, 20, 'Mark 5:1-20'),
+(113, 41, 5, 25, 5, 34, 'Mark 5:25-34'),
+(114, 41, 5, 21, 5, 43, 'Mark 5:21-43'),
+(115, 40, 9, 27, 9, 31, 'Matthew 9:27-31'),
+(116, 40, 9, 32, 9, 34, 'Matthew 9:32-34'),
+(117, 43, 6, 1, 6, 15, 'John 6:1-15'),
+(118, 40, 14, 22, 14, 33, 'Matthew 14:22-33'),
+(119, 40, 15, 21, 15, 28, 'Matthew 15:21-28'),
+(120, 41, 7, 31, 7, 37, 'Mark 7:31-37'),
+(121, 40, 15, 32, 15, 39, 'Matthew 15:32-39'),
+(122, 41, 8, 22, 8, 26, 'Mark 8:22-26'),
+(123, 40, 17, 1, 17, 13, 'Matthew 17:1-13'),
+(124, 41, 9, 14, 9, 29, 'Mark 9:14-29'),
+(125, 43, 9, 1, 9, 41, 'John 9:1-41'),
+(126, 42, 13, 10, 13, 17, 'Luke 13:10-17'),
+(127, 42, 14, 1, 14, 6, 'Luke 14:1-6'),
+(128, 43, 11, 1, 11, 44, 'John 11:1-44'),
+(129, 42, 17, 11, 17, 19, 'Luke 17:11-19'),
+(130, 41, 10, 46, 10, 52, 'Mark 10:46-52'),
+(131, 40, 21, 18, 21, 22, 'Matthew 21:18-22'),
+(132, 42, 22, 49, 22, 51, 'Luke 22:49-51'),
+(133, 43, 21, 1, 21, 14, 'John 21:1-14'),
+(134, 40, 17, 24, 17, 27, 'Matthew 17:24-27'),
+(135, 40, 20, 29, 20, 34, 'Matthew 20:29-34'),
+(136, 12, 5, 1, 5, 27, '2 Kings 5:1-27'),
+(138, 1, 4, 25, 5, 8, 'Genesis 4:25–5:8'),
+(139, 1, 5, 18, 5, 24, 'Genesis 5:18-24'),
+(140, 1, 5, 25, 5, 27, 'Genesis 5:25-27'),
+(141, 1, 5, 28, 5, 31, 'Genesis 5:28-31'),
+(142, 1, 10, 21, 11, 26, 'Genesis 10:21–11:26'),
+(143, 1, 10, 6, 10, 20, 'Genesis 10:6-20'),
+(144, 1, 10, 2, 10, 5, 'Genesis 10:2-5'),
+(145, 1, 13, 1, 19, 38, 'Genesis 13:1–19:38'),
+(146, 1, 16, 1, 25, 18, 'Genesis 16:1–25:18'),
+(147, 1, 16, 1, 21, 21, 'Genesis 16:1–21:21'),
+(148, 1, 25, 19, 36, 43, 'Genesis 25:19–36:43'),
+(149, 1, 24, 29, 31, 55, 'Genesis 24:29–31:55'),
+(150, 1, 29, 16, 30, 21, 'Genesis 29:16–30:21'),
+(151, 1, 29, 6, 35, 20, 'Genesis 29:6–35:20'),
+(152, 1, 38, 1, 49, 12, 'Genesis 38:1–49:12'),
+(153, 1, 35, 16, 45, 14, 'Genesis 35:16–45:14'),
+(154, 1, 37, 21, 49, 4, 'Genesis 37:21–49:4'),
+(155, 2, 5, 1, 14, 31, 'Exodus 5:1–14:31'),
+(156, 4, 13, 6, 14, 38, 'Numbers 13:6–14:38'),
+(157, 4, 25, 6, 25, 13, 'Numbers 25:6-13'),
+(158, 2, 18, 1, 18, 27, 'Exodus 18:1-27'),
+(159, 2, 2, 21, 4, 26, 'Exodus 2:21–4:26'),
+(160, 7, 3, 7, 3, 11, 'Judges 3:7-11'),
+(161, 7, 3, 12, 3, 30, 'Judges 3:12-30'),
+(162, 7, 11, 1, 12, 7, 'Judges 11:1–12:7'),
+(163, 9, 1, 1, 4, 22, '1 Samuel 1:1–4:22'),
+(164, 9, 1, 1, 2, 21, '1 Samuel 1:1–2:21'),
+(165, 8, 2, 1, 4, 22, 'Ruth 2:1–4:22'),
+(166, 8, 1, 1, 4, 17, 'Ruth 1:1–4:17'),
+(167, 7, 9, 1, 9, 57, 'Judges 9:1-57'),
+(168, 9, 25, 2, 25, 42, '1 Samuel 25:2-42'),
+(169, 10, 11, 1, 12, 25, '2 Samuel 11:1–12:25'),
+(170, 10, 2, 13, 20, 23, '2 Samuel 2:13–20:23'),
+(171, 10, 13, 1, 18, 33, '2 Samuel 13:1–18:33'),
+(172, 9, 14, 1, 31, 2, '1 Samuel 14:1–31:2'),
+(173, 9, 18, 20, 19, 17, '1 Samuel 18:20–19:17'),
+(174, 11, 12, 1, 14, 31, '1 Kings 12:1–14:31'),
+(175, 11, 15, 9, 15, 24, '1 Kings 15:9-24'),
+(176, 11, 22, 41, 22, 50, '1 Kings 22:41-50'),
+(177, 12, 8, 16, 8, 24, '2 Kings 8:16-24'),
+(178, 12, 15, 1, 15, 7, '2 Kings 15:1-7'),
+(179, 12, 16, 1, 16, 20, '2 Kings 16:1-20'),
+(180, 12, 21, 1, 21, 18, '2 Kings 21:1-18'),
+(181, 12, 23, 34, 24, 6, '2 Kings 23:34–24:6'),
+(182, 12, 24, 17, 25, 7, '2 Kings 24:17–25:7'),
+(183, 12, 11, 1, 11, 20, '2 Kings 11:1-20'),
+(184, 12, 11, 21, 12, 21, '2 Kings 11:21–12:21'),
+(185, 12, 14, 1, 14, 20, '2 Kings 14:1-20'),
+(186, 12, 15, 32, 15, 38, '2 Kings 15:32-38'),
+(187, 11, 15, 25, 15, 32, '1 Kings 15:25-32'),
+(188, 11, 15, 33, 16, 7, '1 Kings 15:33–16:7'),
+(189, 11, 16, 21, 16, 28, '1 Kings 16:21-28'),
+(190, 11, 22, 51, 22, 53, '1 Kings 22:51-53'),
+(191, 12, 3, 1, 3, 27, '2 Kings 3:1-27'),
+(192, 12, 9, 1, 10, 36, '2 Kings 9:1–10:36'),
+(193, 12, 14, 23, 14, 29, '2 Kings 14:23-29'),
+(194, 12, 17, 1, 17, 6, '2 Kings 17:1-6'),
+(195, 11, 16, 9, 16, 20, '1 Kings 16:9-20'),
+(196, 11, 16, 31, 21, 25, '1 Kings 16:31–21:25'),
+(197, 28, 1, 1, 14, 9, 'Hosea 1:1–14:9'),
+(198, 29, 1, 1, 3, 21, 'Joel 1:1–3:21'),
+(199, 30, 1, 1, 9, 15, 'Amos 1:1–9:15'),
+(200, 31, 1, 1, 1, 21, 'Obadiah 1:1-21'),
+(201, 32, 1, 1, 4, 11, 'Jonah 1:1–4:11'),
+(202, 33, 1, 1, 7, 20, 'Micah 1:1–7:20');
+
+INSERT INTO scripture_references (id, book_id, chapter_start, verse_start, chapter_end, verse_end, reference_text) VALUES
+(203, 34, 1, 1, 3, 19, 'Nahum 1:1–3:19'),
+(204, 35, 1, 1, 3, 19, 'Habakkuk 1:1–3:19'),
+(205, 36, 1, 1, 3, 20, 'Zephaniah 1:1–3:20'),
+(206, 37, 1, 1, 2, 23, 'Haggai 1:1–2:23'),
+(207, 38, 1, 1, 14, 21, 'Zechariah 1:1–14:21'),
+(208, 39, 1, 1, 4, 6, 'Malachi 1:1–4:6'),
+(209, 17, 2, 5, 10, 3, 'Esther 2:5–10:3'),
+(210, 18, 1, 1, 42, 17, 'Job 1:1–42:17'),
+(211, 40, 1, 18, 2, 23, 'Matthew 1:18–2:23'),
+(212, 43, 11, 1, 12, 11, 'John 11:1–12:11'),
+(213, 42, 10, 38, 10, 42, 'Luke 10:38-42'),
+(214, 43, 20, 1, 20, 18, 'John 20:1-18'),
+(216, 40, 9, 9, 10, 3, 'Matthew 9:9–10:3'),
+(217, 43, 1, 35, 1, 42, 'John 1:35-42'),
+(219, 43, 1, 45, 1, 51, 'John 1:45-51'),
+(220, 43, 11, 16, 20, 29, 'John 11:16–20:29'),
+(221, 40, 10, 3, 10, 3, 'Matthew 10:3'),
+(222, 43, 14, 22, 14, 22, 'John 14:22'),
+(223, 42, 6, 15, 6, 15, 'Luke 6:15'),
+(224, 40, 26, 14, 27, 10, 'Matthew 26:14–27:10'),
+(225, 44, 1, 21, 1, 26, 'Acts 1:21-26'),
+(226, 44, 12, 12, 15, 39, 'Acts 12:12–15:39'),
+(227, 44, 15, 22, 17, 15, 'Acts 15:22–17:15'),
+(228, 56, 1, 4, 1, 5, 'Titus 1:4-5'),
+(229, 44, 18, 2, 18, 26, 'Acts 18:2-26'),
+(231, 44, 18, 24, 18, 28, 'Acts 18:24-28'),
+(232, 57, 1, 1, 1, 25, 'Philemon 1-25'),
+(233, 44, 15, 13, 15, 21, 'Acts 15:13-21'),
+(234, 40, 2, 1, 2, 19, 'Matthew 2:1-19'),
+(235, 40, 27, 11, 27, 26, 'Matthew 27:11-26'),
+(236, 42, 2, 36, 2, 38, 'Luke 2:36-38'),
+(238, 41, 1, 9, 1, 11, 'Mark 1:9-11'),
+(239, 42, 3, 21, 3, 22, 'Luke 3:21-22'),
+(240, 43, 1, 29, 1, 34, 'John 1:29-34'),
+(241, 42, 6, 17, 6, 49, 'Luke 6:17-49'),
+(242, 41, 15, 21, 15, 41, 'Mark 15:21-41'),
+(243, 42, 23, 26, 23, 49, 'Luke 23:26-49'),
+(244, 43, 19, 17, 19, 37, 'John 19:17-37'),
+(245, 41, 16, 1, 16, 8, 'Mark 16:1-8'),
+(246, 42, 24, 1, 24, 12, 'Luke 24:1-12'),
+(248, 42, 24, 50, 24, 53, 'Luke 24:50-53'),
+(249, 41, 16, 19, 16, 20, 'Mark 16:19-20'),
+(250, 42, 4, 31, 4, 37, 'Luke 4:31-37'),
+(251, 41, 1, 29, 1, 31, 'Mark 1:29-31'),
+(252, 42, 4, 38, 4, 39, 'Luke 4:38-39'),
+(253, 41, 1, 40, 1, 45, 'Mark 1:40-45'),
+(254, 42, 5, 12, 5, 16, 'Luke 5:12-16'),
+(255, 40, 9, 1, 9, 8, 'Matthew 9:1-8'),
+(256, 42, 5, 17, 5, 26, 'Luke 5:17-26'),
+(257, 41, 3, 1, 3, 6, 'Mark 3:1-6'),
+(258, 42, 6, 6, 6, 11, 'Luke 6:6-11'),
+(259, 42, 7, 1, 7, 10, 'Luke 7:1-10'),
+(260, 40, 8, 23, 8, 27, 'Matthew 8:23-27'),
+(261, 42, 8, 22, 8, 25, 'Luke 8:22-25'),
+(262, 40, 8, 28, 8, 34, 'Matthew 8:28-34'),
+(263, 42, 8, 26, 8, 39, 'Luke 8:26-39'),
+(264, 40, 9, 20, 9, 22, 'Matthew 9:20-22'),
+(265, 42, 8, 43, 8, 48, 'Luke 8:43-48'),
+(266, 40, 9, 18, 9, 26, 'Matthew 9:18-26'),
+(267, 42, 8, 40, 8, 56, 'Luke 8:40-56'),
+(268, 40, 14, 13, 14, 21, 'Matthew 14:13-21'),
+(269, 41, 6, 30, 6, 44, 'Mark 6:30-44'),
+(270, 42, 9, 10, 9, 17, 'Luke 9:10-17'),
+(271, 41, 6, 45, 6, 52, 'Mark 6:45-52'),
+(272, 43, 6, 16, 6, 21, 'John 6:16-21'),
+(273, 41, 7, 24, 7, 30, 'Mark 7:24-30'),
+(274, 41, 8, 1, 8, 10, 'Mark 8:1-10'),
+(275, 41, 9, 2, 9, 13, 'Mark 9:2-13'),
+(276, 42, 9, 28, 9, 36, 'Luke 9:28-36'),
+(277, 40, 17, 14, 17, 21, 'Matthew 17:14-21'),
+(278, 42, 9, 37, 9, 43, 'Luke 9:37-43'),
+(280, 42, 18, 35, 18, 43, 'Luke 18:35-43'),
+(281, 41, 11, 12, 11, 25, 'Mark 11:12-25'),
+(282, 43, 18, 10, 18, 11, 'John 18:10-11'),
+(283, 14, 36, 1, 36, 23, '2 Chronicles 36:1-23'),
+(284, 24, 52, 1, 52, 34, 'Jeremiah 52:1-34'),
+(285, 14, 32, 1, 32, 23, '2 Chronicles 32:1-23'),
+(286, 23, 36, 1, 37, 38, 'Isaiah 36:1–37:38'),
+(287, 14, 34, 1, 35, 27, '2 Chronicles 34:1–35:27'),
+(288, 13, 10, 1, 10, 14, '1 Chronicles 10:1-14'),
+(289, 13, 11, 1, 11, 9, '1 Chronicles 11:1-9'),
+(290, 13, 17, 1, 17, 27, '1 Chronicles 17:1-27'),
+(291, 14, 3, 1, 7, 22, '2 Chronicles 3:1–7:22'),
+(292, 14, 10, 1, 10, 19, '2 Chronicles 10:1-19'),
+(293, 1, 5, 6, 5, 11, 'Genesis 5:6-11'),
+(294, 1, 5, 9, 5, 14, 'Genesis 5:9-14'),
+(295, 1, 5, 12, 5, 17, 'Genesis 5:12-17'),
+(296, 1, 5, 15, 5, 20, 'Genesis 5:15-20'),
+(297, 1, 11, 10, 11, 13, 'Genesis 11:10-13'),
+(298, 1, 11, 12, 11, 15, 'Genesis 11:12-15'),
+(299, 1, 11, 14, 11, 17, 'Genesis 11:14-17'),
+(300, 1, 11, 16, 11, 19, 'Genesis 11:16-19'),
+(301, 1, 11, 18, 11, 21, 'Genesis 11:18-21'),
+(302, 1, 11, 20, 11, 23, 'Genesis 11:20-23'),
+(303, 1, 11, 22, 11, 25, 'Genesis 11:22-25'),
+(304, 1, 11, 24, 11, 32, 'Genesis 11:24-32'),
+(305, 1, 4, 1, 4, 16, 'Genesis 4:1-16'),
+(306, 1, 4, 8, 4, 8, 'Genesis 4:8'),
+(307, 1, 34, 1, 34, 31, 'Genesis 34:1-31'),
+(308, 1, 38, 1, 38, 30, 'Genesis 38:1-30');
+
+INSERT INTO scripture_references (id, book_id, chapter_start, verse_start, chapter_end, verse_end, reference_text) VALUES
+(309, 1, 48, 1, 48, 20, 'Genesis 48:1-20'),
+(310, 1, 14, 18, 14, 20, 'Genesis 14:18-20'),
+(311, 58, 7, 1, 7, 28, 'Hebrews 7:1-28'),
+(312, 1, 39, 1, 39, 20, 'Genesis 39:1-20'),
+(313, 1, 25, 1, 25, 4, 'Genesis 25:1-4'),
+(314, 4, 16, 1, 16, 35, 'Numbers 16:1-35'),
+(315, 4, 22, 1, 24, 25, 'Numbers 22:1–24:25'),
+(316, 6, 2, 1, 2, 24, 'Joshua 2:1-24'),
+(317, 58, 11, 31, 11, 31, 'Hebrews 11:31'),
+(318, 6, 7, 1, 7, 26, 'Joshua 7:1-26'),
+(319, 2, 17, 10, 17, 12, 'Exodus 17:10-12'),
+(320, 2, 31, 1, 31, 11, 'Exodus 31:1-11'),
+(321, 4, 20, 28, 20, 28, 'Numbers 20:28'),
+(322, 7, 4, 1, 4, 24, 'Judges 4:1-24'),
+(323, 7, 4, 17, 4, 22, 'Judges 4:17-22'),
+(324, 7, 13, 1, 13, 25, 'Judges 13:1-25'),
+(325, 7, 16, 4, 16, 21, 'Judges 16:4-21'),
+(326, 10, 2, 8, 2, 10, '2 Samuel 2:8-10'),
+(327, 10, 3, 27, 3, 27, '2 Samuel 3:27'),
+(328, 10, 9, 1, 9, 13, '2 Samuel 9:1-13'),
+(329, 10, 11, 1, 11, 27, '2 Samuel 11:1-27'),
+(330, 11, 5, 1, 5, 18, '1 Kings 5:1-18'),
+(331, 11, 1, 5, 1, 53, '1 Kings 1:5-53'),
+(332, 10, 16, 5, 16, 13, '2 Samuel 16:5-13'),
+(333, 10, 15, 32, 15, 37, '2 Samuel 15:32-37'),
+(334, 10, 17, 1, 17, 23, '2 Samuel 17:1-23'),
+(335, 10, 15, 24, 15, 29, '2 Samuel 15:24-29'),
+(336, 11, 17, 8, 17, 24, '1 Kings 17:8-24'),
+(337, 12, 5, 20, 5, 27, '2 Kings 5:20-27'),
+(338, 12, 4, 8, 4, 37, '2 Kings 4:8-37'),
+(339, 12, 8, 7, 8, 15, '2 Kings 8:7-15'),
+(340, 12, 18, 13, 19, 37, '2 Kings 18:13–19:37'),
+(341, 27, 1, 1, 1, 21, 'Daniel 1:1-21'),
+(342, 27, 3, 1, 3, 30, 'Daniel 3:1-30'),
+(343, 27, 5, 1, 5, 31, 'Daniel 5:1-31'),
+(344, 23, 44, 28, 45, 1, 'Isaiah 44:28–45:1'),
+(345, 14, 36, 22, 36, 23, '2 Chronicles 36:22-23'),
+(346, 27, 6, 1, 6, 28, 'Daniel 6:1-28'),
+(348, 12, 22, 14, 22, 20, '2 Kings 22:14-20'),
+(349, 12, 22, 8, 22, 14, '2 Kings 22:8-14'),
+(350, 16, 2, 10, 2, 20, 'Nehemiah 2:10-20'),
+(351, 17, 3, 1, 3, 15, 'Esther 3:1-15'),
+(352, 17, 1, 1, 1, 22, 'Esther 1:1-22'),
+(353, 42, 2, 25, 2, 35, 'Luke 2:25-35'),
+(354, 42, 1, 5, 1, 25, 'Luke 1:5-25'),
+(355, 42, 1, 39, 1, 45, 'Luke 1:39-45'),
+(356, 40, 14, 1, 14, 12, 'Matthew 14:1-12'),
+(357, 40, 14, 6, 14, 11, 'Matthew 14:6-11'),
+(358, 40, 26, 57, 26, 68, 'Matthew 26:57-68'),
+(359, 43, 18, 13, 18, 24, 'John 18:13-24'),
+(360, 40, 27, 15, 27, 26, 'Matthew 27:15-26'),
+(361, 40, 27, 57, 27, 60, 'Matthew 27:57-60'),
+(362, 40, 27, 32, 27, 32, 'Matthew 27:32'),
+(363, 42, 19, 1, 19, 10, 'Luke 19:1-10'),
+(364, 41, 5, 22, 5, 43, 'Mark 5:22-43'),
+(365, 42, 24, 13, 24, 35, 'Luke 24:13-35'),
+(366, 43, 12, 1, 12, 8, 'John 12:1-8'),
+(367, 44, 9, 10, 9, 19, 'Acts 9:10-19'),
+(368, 44, 10, 1, 10, 48, 'Acts 10:1-48'),
+(369, 44, 16, 14, 16, 15, 'Acts 16:14-15'),
+(370, 44, 5, 34, 5, 39, 'Acts 5:34-39'),
+(371, 44, 11, 27, 11, 28, 'Acts 11:27-28'),
+(372, 44, 9, 36, 9, 43, 'Acts 9:36-43'),
+(373, 44, 8, 4, 8, 40, 'Acts 8:4-40'),
+(374, 57, 1, 10, 1, 21, 'Philemon 10-21'),
+(375, 44, 12, 13, 12, 16, 'Acts 12:13-16'),
+(376, 44, 12, 1, 12, 23, 'Acts 12:1-23'),
+(377, 44, 25, 13, 26, 32, 'Acts 25:13–26:32'),
+(378, 44, 24, 1, 24, 27, 'Acts 24:1-27'),
+(379, 44, 25, 1, 25, 12, 'Acts 25:1-12'),
+(380, 44, 5, 1, 5, 11, 'Acts 5:1-11'),
+(381, 45, 16, 1, 16, 2, 'Romans 16:1-2'),
+(382, 1, 19, 1, 19, 29, 'Genesis 19:1-29'),
+(383, 1, 17, 1, 17, 27, 'Genesis 17:1-27'),
+(384, 1, 41, 37, 41, 57, 'Genesis 41:37-57'),
+(385, 2, 40, 1, 40, 38, 'Exodus 40:1-38'),
+(386, 9, 4, 1, 4, 11, '1 Samuel 4:1-11'),
+(387, 43, 20, 11, 20, 18, 'John 20:11-18'),
+(388, 41, 16, 9, 16, 11, 'Mark 16:9-11'),
+(390, 41, 16, 12, 16, 13, 'Mark 16:12-13'),
+(391, 43, 20, 19, 20, 25, 'John 20:19-25'),
+(392, 42, 24, 36, 24, 43, 'Luke 24:36-43'),
+(393, 43, 20, 26, 20, 29, 'John 20:26-29'),
+(394, 43, 21, 15, 21, 19, 'John 21:15-19'),
+(395, 40, 28, 16, 28, 20, 'Matthew 28:16-20'),
+(396, 41, 16, 15, 16, 18, 'Mark 16:15-18'),
+(397, 59, 1, 1, 1, 1, 'James 1:1'),
+(398, 48, 1, 1, 1, 5, 'Galatians 1:1-5'),
+(399, 52, 1, 1, 1, 1, '1 Thessalonians 1:1'),
+(400, 53, 1, 1, 1, 2, '2 Thessalonians 1:1-2'),
+(401, 46, 1, 1, 1, 3, '1 Corinthians 1:1-3'),
+(402, 40, 1, 1, 1, 1, 'Matthew 1:1'),
+(403, 41, 1, 1, 1, 1, 'Mark 1:1'),
+(404, 47, 1, 1, 1, 2, '2 Corinthians 1:1-2'),
+(405, 45, 1, 1, 1, 7, 'Romans 1:1-7'),
+(407, 49, 1, 1, 1, 2, 'Ephesians 1:1-2'),
+(408, 51, 1, 1, 1, 2, 'Colossians 1:1-2'),
+(409, 57, 1, 1, 1, 3, 'Philemon 1-3'),
+(410, 50, 1, 1, 1, 2, 'Philippians 1:1-2'),
+(411, 44, 1, 1, 1, 2, 'Acts 1:1-2');
+
+INSERT INTO scripture_references (id, book_id, chapter_start, verse_start, chapter_end, verse_end, reference_text) VALUES
+(412, 54, 1, 1, 1, 2, '1 Timothy 1:1-2'),
+(413, 56, 1, 1, 1, 4, 'Titus 1:1-4'),
+(414, 60, 1, 1, 1, 2, '1 Peter 1:1-2'),
+(415, 65, 1, 1, 1, 2, 'Jude 1-2'),
+(416, 58, 1, 1, 1, 4, 'Hebrews 1:1-4'),
+(417, 55, 1, 1, 1, 2, '2 Timothy 1:1-2'),
+(418, 61, 1, 1, 1, 2, '2 Peter 1:1-2'),
+(419, 43, 1, 1, 1, 5, 'John 1:1-5'),
+(420, 62, 1, 1, 1, 4, '1 John 1:1-4'),
+(421, 63, 1, 1, 1, 3, '2 John 1-3'),
+(422, 64, 1, 1, 1, 4, '3 John 1-4'),
+(500, 10, 1, 1, 24, 25, '2 Samuel 1:1–24:25'),
+(501, 11, 1, 1, 2, 11, '1 Kings 1:1–2:11'),
+(502, 12, 1, 1, 2, 11, '2 Kings 1:1–2:11'),
+(503, 44, 8, 4, 8, 25, 'Acts 8:4-25'),
+(504, 44, 8, 26, 8, 40, 'Acts 8:26-40'),
+(505, 44, 11, 19, 11, 30, 'Acts 11:19-30'),
+(506, 44, 13, 4, 13, 12, 'Acts 13:4-12'),
+(507, 44, 13, 14, 13, 52, 'Acts 13:14-52'),
+(508, 44, 14, 1, 14, 7, 'Acts 14:1-7'),
+(509, 44, 14, 8, 14, 20, 'Acts 14:8-20'),
+(510, 44, 14, 20, 14, 21, 'Acts 14:20-21'),
+(511, 44, 16, 8, 16, 10, 'Acts 16:8-10'),
+(512, 44, 16, 11, 16, 40, 'Acts 16:11-40'),
+(513, 44, 17, 1, 17, 9, 'Acts 17:1-9'),
+(514, 44, 17, 10, 17, 15, 'Acts 17:10-15'),
+(515, 44, 17, 16, 17, 34, 'Acts 17:16-34'),
+(516, 44, 18, 1, 18, 17, 'Acts 18:1-17'),
+(517, 44, 19, 1, 19, 41, 'Acts 19:1-41'),
+(518, 44, 20, 17, 20, 38, 'Acts 20:17-38'),
+(519, 44, 21, 27, 23, 10, 'Acts 21:27–23:10'),
+(520, 44, 23, 23, 26, 32, 'Acts 23:23–26:32'),
+(521, 44, 27, 7, 27, 44, 'Acts 27:7-44'),
+(522, 44, 27, 39, 28, 10, 'Acts 27:39–28:10'),
+(523, 44, 28, 13, 28, 14, 'Acts 28:13-14'),
+(524, 44, 28, 16, 28, 31, 'Acts 28:16-31'),
+(525, 9, 16, 1, 16, 13, '1 Samuel 16:1-13'),
+(527, 12, 24, 10, 24, 16, '2 Kings 24:10-16'),
+(528, 14, 36, 15, 36, 21, '2 Chronicles 36:15-21'),
+(529, 24, 29, 1, 29, 14, 'Jeremiah 29:1-14'),
+(530, 40, 24, 1, 24, 2, 'Matthew 24:1-2'),
+(531, 27, 1, 1, 4, 37, 'Daniel 1:1–4:37'),
+(532, 12, 24, 10, 24, 17, '2 Kings 24:10-17'),
+(533, 8, 4, 17, 4, 22, 'Ruth 4:17-22'),
+(534, 41, 6, 17, 6, 29, 'Mark 6:17-29'),
+(535, 1, 41, 45, 41, 50, 'Genesis 41:45-50'),
+(536, 4, 22, 1, 22, 6, 'Numbers 22:1-6'),
+(537, 7, 10, 1, 10, 2, 'Judges 10:1-2'),
+(538, 7, 10, 3, 10, 5, 'Judges 10:3-5'),
+(539, 7, 12, 8, 12, 10, 'Judges 12:8-10'),
+(540, 7, 12, 11, 12, 12, 'Judges 12:11-12'),
+(541, 7, 12, 13, 12, 15, 'Judges 12:13-15'),
+(542, 44, 22, 3, 22, 16, 'Acts 22:3-16'),
+(543, 44, 2, 14, 2, 41, 'Acts 2:14-41'),
+(544, 2, 2, 1, 4, 31, 'Exodus 2:1–4:31'),
+(545, 1, 9, 18, 9, 27, 'Genesis 9:18-27'),
+(546, 12, 14, 25, 14, 25, '2 Kings 14:25'),
+(547, 48, 1, 19, 1, 19, 'Galatians 1:19'),
+(548, 46, 15, 7, 15, 7, '1 Corinthians 15:7'),
+(549, 44, 12, 17, 12, 17, 'Acts 12:17'),
+(550, 44, 21, 18, 21, 18, 'Acts 21:18'),
+(551, 41, 3, 18, 3, 18, 'Mark 3:18'),
+(552, 42, 6, 16, 6, 16, 'Luke 6:16'),
+(553, 43, 3, 1, 3, 21, 'John 3:1-21'),
+(554, 43, 7, 50, 7, 52, 'John 7:50-52'),
+(555, 43, 19, 38, 19, 42, 'John 19:38-42'),
+(556, 43, 1, 43, 1, 51, 'John 1:43-51'),
+(557, 43, 6, 5, 6, 7, 'John 6:5-7'),
+(558, 43, 12, 20, 12, 22, 'John 12:20-22'),
+(559, 43, 14, 8, 14, 9, 'John 14:8-9'),
+(560, 1, 30, 5, 30, 6, 'Genesis 30:5-6'),
+(561, 1, 30, 7, 30, 8, 'Genesis 30:7-8'),
+(562, 1, 30, 10, 30, 11, 'Genesis 30:10-11'),
+(563, 1, 30, 12, 30, 13, 'Genesis 30:12-13'),
+(564, 1, 30, 17, 30, 18, 'Genesis 30:17-18'),
+(565, 1, 30, 19, 30, 20, 'Genesis 30:19-20'),
+(566, 40, 1, 3, 1, 6, 'Matthew 1:3-6'),
+(567, 12, 8, 25, 8, 29, '2 Kings 8:25-29'),
+(568, 12, 21, 19, 21, 26, '2 Kings 21:19-26'),
+(569, 12, 24, 8, 24, 16, '2 Kings 24:8-16'),
+(570, 12, 25, 27, 25, 30, '2 Kings 25:27-30'),
+(571, 11, 15, 1, 15, 8, '1 Kings 15:1-8'),
+(572, 40, 1, 12, 1, 16, 'Matthew 1:12-16'),
+(573, 42, 3, 23, 3, 38, 'Luke 3:23-38'),
+(574, 40, 13, 55, 13, 56, 'Matthew 13:55-56'),
+(700, 1, 16, 1, 16, 16, 'Genesis 16:1-16'),
+(701, 1, 21, 1, 21, 7, 'Genesis 21:1-7'),
+(702, 1, 23, 1, 23, 20, 'Genesis 23:1-20'),
+(703, 1, 24, 1, 24, 67, 'Genesis 24:1-67'),
+(704, 1, 27, 41, 28, 22, 'Genesis 27:41-28:22'),
+(705, 1, 29, 15, 29, 30, 'Genesis 29:15-30'),
+(706, 1, 41, 53, 41, 57, 'Genesis 41:53-57'),
+(707, 1, 45, 1, 45, 15, 'Genesis 45:1-15'),
+(731, 6, 3, 1, 4, 24, 'Joshua 3:1–4:24'),
+(732, 6, 24, 29, 24, 31, 'Joshua 24:29-31'),
+(733, 9, 31, 1, 31, 13, '1 Samuel 31:1-13'),
+(734, 10, 2, 1, 2, 11, '2 Samuel 2:1-11'),
+(735, 7, 16, 21, 16, 31, 'Judges 16:21-31'),
+(736, 9, 17, 1, 17, 58, '1 Samuel 17:1-58'),
+(737, 9, 7, 3, 7, 14, '1 Samuel 7:3-14');
+
+INSERT INTO scripture_references (id, book_id, chapter_start, verse_start, chapter_end, verse_end, reference_text) VALUES
+(738, 10, 6, 1, 6, 23, '2 Samuel 6:1-23'),
+(739, 7, 3, 31, 3, 31, 'Judges 3:31'),
+(760, 27, 8, 20, 8, 22, 'Daniel 8:20-22'),
+(761, 43, 10, 22, 10, 23, 'John 10:22-23'),
+(762, 12, 13, 1, 13, 25, '2 Kings 13:1-25'),
+(763, 12, 15, 8, 15, 31, '2 Kings 15:8-31'),
+(764, 11, 16, 8, 16, 14, '1 Kings 16:8-14'),
+(765, 12, 23, 30, 23, 34, '2 Kings 23:30-34'),
+(766, 15, 5, 1, 6, 15, 'Ezra 5:1–6:15'),
+(767, 16, 2, 1, 2, 8, 'Nehemiah 2:1-8'),
+(790, 42, 1, 26, 1, 38, 'Luke 1:26-38'),
+(791, 40, 1, 18, 1, 25, 'Matthew 1:18-25'),
+(792, 42, 1, 57, 1, 80, 'Luke 1:57-80'),
+(793, 40, 2, 1, 2, 23, 'Matthew 2:1-23'),
+(794, 42, 2, 22, 2, 40, 'Luke 2:22-40'),
+(795, 42, 2, 41, 2, 52, 'Luke 2:41-52'),
+(796, 40, 21, 1, 21, 11, 'Matthew 21:1-11'),
+(797, 41, 11, 1, 11, 11, 'Mark 11:1-11'),
+(798, 42, 19, 28, 19, 44, 'Luke 19:28-44'),
+(799, 43, 12, 12, 12, 19, 'John 12:12-19'),
+(800, 40, 26, 17, 26, 30, 'Matthew 26:17-30'),
+(801, 41, 14, 12, 14, 26, 'Mark 14:12-26'),
+(802, 42, 22, 7, 22, 23, 'Luke 22:7-23'),
+(803, 43, 13, 1, 13, 30, 'John 13:1-30'),
+(804, 46, 11, 23, 11, 26, '1 Corinthians 11:23-26'),
+(805, 40, 26, 36, 27, 26, 'Matthew 26:36–27:26'),
+(806, 41, 14, 32, 15, 15, 'Mark 14:32–15:15'),
+(807, 42, 22, 39, 23, 25, 'Luke 22:39–23:25'),
+(808, 43, 18, 1, 19, 16, 'John 18:1–19:16'),
+(809, 43, 21, 18, 21, 19, 'John 21:18-19'),
+(810, 55, 4, 6, 4, 8, '2 Timothy 4:6-8'),
+(811, 42, 2, 1, 2, 5, 'Luke 2:1-5'),
+(812, 42, 3, 1, 3, 2, 'Luke 3:1-2'),
+(813, 44, 11, 28, 11, 28, 'Acts 11:28'),
+(814, 44, 18, 2, 18, 2, 'Acts 18:2'),
+(815, 44, 25, 10, 25, 12, 'Acts 25:10-12'),
+(816, 2, 6, 16, 6, 20, 'Exodus 6:16-20'),
+(817, 4, 26, 59, 26, 59, 'Numbers 26:59'),
+(818, 2, 2, 22, 2, 22, 'Exodus 2:22'),
+(819, 2, 18, 3, 18, 4, 'Exodus 18:3-4'),
+(820, 4, 4, 1, 4, 20, 'Numbers 4:1-20'),
+(821, 2, 2, 1, 2, 10, 'Exodus 2:1-10');
+
+-- ============================================================
+-- LOCATIONS (97)
+-- ============================================================
+INSERT INTO locations (id, name, modern_name, latitude, longitude, region, description) VALUES
+(1, 'Eden', NULL, NULL, NULL, 'Unidentified', 'Garden where God placed Adam and Eve (Gen 2:8-14). Its location is unknown: Genesis names four rivers, including the Tigris and Euphrates, and proposals range from southern Mesopotamia to Armenia; the world before the Flood may no longer exist. No coordinates are given.'),
+(2, 'Ur', 'Tell el-Muqayyar', 30.96, 46.1, 'Mesopotamia', 'Home city of Abraham''s family, "Ur of the Chaldees" (Gen 11:28, 31; Acts 7:2-4), traditionally Tell el-Muqayyar in southern Iraq. Some scholars propose a northern Ur near Haran; the southern site is the majority identification.'),
+(3, 'Haran', 'Harran', 36.86, 39.03, 'Mesopotamia', 'Where Abraham''s family settled before Canaan.'),
+(4, 'Canaan', 'Israel/Palestine', 32.0, 35.2, 'Levant', 'The land west of the Jordan promised to Abraham (Gen 12:7; 17:8). The map pin marks the middle of the region, not a city.'),
+(5, 'Egypt', 'Egypt', 29.85, 31.25, 'North Africa', 'Where Israel settled under Joseph and was later enslaved. Scripture gives 430 years for the sojourn of Israel (Exod 12:40-41) and 400 years of affliction (Gen 15:13; Acts 7:6). On Ussher''s chronology the 430 years run from Abraham''s call in 1921 BC to the Exodus in 1491 BC, with about 215 years spent in Egypt (from 1706 BC). The pin is a centre-of-country marker.'),
+(6, 'Mount Sinai', 'Jebel Musa (traditional)', 28.54, 33.97, 'Sinai Peninsula', 'Where God gave Moses the Law (Exod 19-20). Jebel Musa in the southern Sinai is the traditional identification (from about the 4th century AD); other proposals include Jebel Sin Bisher, Har Karkom and Jebel al-Lawz in Arabia (Midian). The site is not certain.'),
+(7, 'Jerusalem', 'Jerusalem', 31.77, 35.23, 'Judah', 'City of David; location of the Temple.'),
+(8, 'Bethlehem', 'Bethlehem', 31.7, 35.21, 'Judah', 'Birthplace of David and Jesus.'),
+(9, 'Babylon', 'Hillah, Iraq', 32.54, 44.42, 'Mesopotamia', 'Capital of Babylonian Empire; place of exile.'),
+(10, 'Nazareth', 'Nazareth', 32.7, 35.3, 'Galilee', 'Hometown of Jesus.'),
+(11, 'Capernaum', 'Kfar Nahum', 32.8831, 35.5747, 'Galilee', 'Base of Jesus'' Galilean ministry.'),
+(12, 'Damascus', 'Damascus', 33.51, 36.29, 'Syria', 'Where Paul was converted.'),
+(13, 'Antioch', 'Antakya', 36.2, 36.16, 'Syria', 'Center of early Gentile Christianity.'),
+(14, 'Rome', 'Rome', 41.9, 12.5, 'Italy', 'Capital of the Roman Empire; center of early church.'),
+(15, 'Patmos', 'Patmos', 37.32, 26.55, 'Aegean Sea', 'Island where John wrote Revelation.'),
+(16, 'Cana', 'Kafr Kanna (traditional)', 32.75, 35.34, 'Galilee', 'Galilean village where Jesus turned water into wine (John 2:1-11). Kafr Kanna is the traditional site; Khirbet Qana, about 13 km north of Nazareth, is a leading alternative.'),
+(17, 'Sea of Galilee', 'Lake Tiberias', 32.83, 35.58, 'Galilee', 'Lake where Jesus calmed the storm and walked on water.'),
+(18, 'Bethsaida', 'Et-Tell', 32.91, 35.63, 'Galilee', 'Fishing village on the north shore of the Sea of Galilee; home of Peter, Andrew and Philip (John 1:44). Et-Tell is the usual identification; el-Araj is a proposed alternative.'),
+(19, 'Nain', 'Nein', 32.63, 35.35, 'Galilee', 'Village where Jesus raised the widow''s son.'),
+(20, 'Bethany', 'Al-Eizariya', 31.77, 35.26, 'Judea', 'Village near Jerusalem; home of Mary, Martha, and Lazarus.'),
+(21, 'Gadara', 'Umm Qais', 32.66, 35.68, 'Decapolis', 'Decapolis city whose territory Matthew places the healing of the demon-possessed man in (Matt 8:28). Mark 5:1 and Luke 8:26 read "Gerasenes" (Gerasa or Kursi) in many manuscripts, and some read "Gergesenes"; the exact site is uncertain.'),
+(22, 'Jericho', 'Jericho', 31.87, 35.44, 'Judea', 'Ancient city near the Jordan; site of Bartimaeus'' healing.'),
+(23, 'Tyre & Sidon', 'Tyre/Saida', 33.27, 35.2, 'Phoenicia', 'Coastal cities of Phoenicia where Jesus healed the Syrophoenician woman''s daughter (Matt 15:21-28). The map pin marks Tyre; Sidon lies about 35 km to the north.'),
+(24, 'Decapolis', NULL, 32.6, 35.8, 'Transjordan', 'League of ten Greco-Roman cities east of the Jordan.'),
+(25, 'Jordan River', NULL, 31.76, 35.56, 'Judea', 'River where Naaman was healed and Jesus was baptized.'),
+(26, 'Samaria', 'Sebastia', 32.28, 35.19, 'Samaria', 'Philip preached and performed miracles here (Acts 8).'),
+(27, 'Gaza Road', NULL, 31.5, 34.47, 'Judea', 'Desert road from Jerusalem to Gaza where Philip baptized the Ethiopian official (Acts 8:26). The map pin marks Gaza at the end of the road.'),
+(28, 'Joppa', 'Jaffa (Tel Aviv-Yafo)', 32.05, 34.75, 'Judea', 'Where Peter raised Tabitha and had the vision of the sheet (Acts 9-10).'),
+(29, 'Caesarea', 'Caesarea', 32.5, 34.89, 'Judea', 'Roman capital of Judea; house of Cornelius; Paul''s imprisonment (Acts 10, 23-26).'),
+(30, 'Cyprus', 'Cyprus', 34.92, 33.63, 'Mediterranean', 'Home of Barnabas; first stop on Paul''s first journey (Acts 13:4-12).'),
+(31, 'Pisidian Antioch', 'Yalvaç', 38.3, 31.18, 'Asia Minor', 'Paul preached in the synagogue; many believed (Acts 13:14-52).'),
+(32, 'Iconium', 'Konya', 37.87, 32.49, 'Asia Minor', 'Paul and Barnabas preached but were driven out (Acts 14:1-7).'),
+(33, 'Lystra', 'Hatunsaray', 37.57, 32.36, 'Asia Minor', 'Paul healed a lame man; later stoned (Acts 14:8-20).'),
+(34, 'Derbe', 'Kerti Höyük', 37.36, 33.35, 'Asia Minor', 'Lycaonian city where Paul and Barnabas made many disciples (Acts 14:20-21). Kerti Hoyuk is the usual identification; Devri Sehri is another proposal.'),
+(35, 'Troas', 'Dalyan', 39.76, 26.18, 'Asia Minor', 'Paul received the Macedonian vision (Acts 16:8-10).'),
+(36, 'Philippi', 'Kavala region', 41.01, 24.29, 'Macedonia', 'First European church; Lydia converted; Paul imprisoned (Acts 16:11-40).'),
+(37, 'Thessalonica', 'Thessaloniki', 40.63, 22.95, 'Macedonia', 'Paul preached in synagogue; accused of sedition (Acts 17:1-9).'),
+(38, 'Berea', 'Veria', 40.52, 22.2, 'Macedonia', 'Bereans examined Scriptures daily to verify Paul''s teaching (Acts 17:10-15).'),
+(39, 'Athens', 'Athens', 37.97, 23.73, 'Greece', 'Paul preached on the Areopagus about the Unknown God (Acts 17:16-34).'),
+(40, 'Corinth', 'Ancient Corinth', 37.91, 22.88, 'Greece', 'Paul stayed 18 months; Gallio tribunal (Acts 18:1-17).'),
+(41, 'Ephesus', 'Selçuk', 37.94, 27.34, 'Asia Minor', 'Paul taught 2 years; riot of Demetrius the silversmith (Acts 19).'),
+(42, 'Miletus', 'Balat', 37.53, 27.28, 'Asia Minor', 'Paul''s farewell to Ephesian elders (Acts 20:17-38).'),
+(43, 'Crete', 'Crete', 35.24, 24.9, 'Mediterranean', 'Mediterranean island where Paul''s ship put in at Fair Havens (Acts 27:7-12). The map pin marks the middle of the island.'),
+(44, 'Malta', 'Malta', 35.94, 14.38, 'Mediterranean', 'Paul shipwrecked; healed the sick (Acts 27:39–28:10).'),
+(45, 'Puteoli', 'Pozzuoli', 40.82, 14.12, 'Italy', 'Port where Paul landed in Italy (Acts 28:13).'),
+(46, 'Shechem', 'Nablus', 32.21, 35.28, 'Samaria', 'Abraham built an altar here; Jacob bought land. First stop in Canaan.'),
+(47, 'Hebron', 'Al-Khalil', 31.53, 35.1, 'Judah', 'Abraham settled at the oaks of Mamre; burial site of the patriarchs.'),
+(48, 'Beersheba', 'Be''er Sheva', 31.25, 34.79, 'Negev', 'Well of the oath between Abraham and Abimelech; Isaac and Jacob lived here.'),
+(49, 'Goshen', 'Wadi Tumilat', 30.55, 31.8, 'Egypt', 'Region in eastern Egypt where Israel settled (Gen 45-47).'),
+(50, 'Peniel', 'Tulul ed-Dhahab', 32.19, 35.66, 'Transjordan', 'Where Jacob wrestled with God and was renamed Israel (Gen 32:22-32).'),
+(51, 'Red Sea Crossing', 'Nuweiba (one proposal)', 29.95, 32.56, 'Sinai', 'Where Israel crossed the "sea" (Hebrew yam suph, "sea of reeds"; Exod 14). The exact place is unknown. Proposals include the head of the Gulf of Suez (the traditional area, shown here), the Bitter Lakes and Lake Timsah, Lake Sirbonis on the Mediterranean coast, and the Gulf of Aqaba.'),
+(52, 'Marah', 'Ain Hawarah', 29.18, 33.11, 'Sinai', 'Bitter waters made sweet by Moses (Exod 15:23-25). Ain Hawarah is the traditional identification and is uncertain.'),
+(53, 'Elim', 'Wadi Gharandel', 28.98, 33.1, 'Sinai', 'Oasis with twelve springs and seventy palm trees (Exod 15:27). Wadi Gharandel is the traditional identification and is uncertain.'),
+(54, 'Rephidim', 'Wadi Feiran', 28.7, 33.63, 'Sinai', 'Where God gave water from the rock and Israel fought Amalek (Exod 17). Wadi Feiran is the traditional identification; other sites are proposed.'),
+(55, 'Kadesh Barnea', 'Ein el-Qudeirat', 30.6, 34.4, 'Negev', 'Israel camped before entering Canaan; spies sent out (Num 13-14).'),
+(56, 'Nineveh', 'Mosul, Iraq', 36.36, 43.15, 'Mesopotamia', 'Capital of Assyria where Jonah preached repentance.'),
+(57, 'Emmaus', 'Emmaus Nicopolis', 31.84, 34.99, 'Judea', 'Village about 60 stadia (c. 11 km) from Jerusalem where the risen Jesus appeared to two disciples (Luke 24:13-35). Its site is disputed: Emmaus-Nicopolis (Latrun, shown here) fits the reading of 160 stadia found in some manuscripts; Qubeibeh, Abu Ghosh and Motza better fit the 60 stadia of most manuscripts.'),
+(58, 'Constantinople', 'Istanbul, Turkey', 41.01, 28.98, 'Asia Minor', 'Capital of the Eastern Roman Empire; seat of ecumenical patriarchate.'),
+(59, 'Carthage', 'Tunis, Tunisia', 36.86, 10.32, 'North Africa', 'Important early church centre; home of Tertullian and Cyprian, and where Augustine studied and taught before his conversion.'),
+(60, 'Hippo Regius', 'Annaba, Algeria', 36.9, 7.77, 'North Africa', 'Bishopric of Augustine of Hippo.'),
+(61, 'Nicaea', 'İznik, Turkey', 40.43, 29.72, 'Asia Minor', 'Site of the First Ecumenical Council (325 AD).'),
+(62, 'Chalcedon', 'Kadıköy, Istanbul', 40.98, 29.03, 'Asia Minor', 'Site of the Council of Chalcedon (451 AD).'),
+(63, 'Wittenberg', 'Wittenberg, Germany', 51.87, 12.65, 'Europe', 'Where Martin Luther posted the 95 Theses (1517).'),
+(64, 'Geneva', 'Geneva, Switzerland', 46.2, 6.15, 'Europe', 'Center of John Calvin''s Reformed tradition.'),
+(65, 'Mainz', 'Mainz, Germany', 50.0, 8.27, 'Europe', 'Gutenberg''s city; birthplace of the printing press.'),
+(66, 'Canterbury', 'Canterbury, England', 51.28, 1.08, 'Europe', 'Seat of the Archbishop of Canterbury; English Christianity.'),
+(67, 'Worms', 'Worms, Germany', 49.63, 8.37, 'Europe', 'Diet of Worms (1521); Luther''s "Here I stand."'),
+(68, 'Trent', 'Trento, Italy', 46.07, 11.12, 'Europe', 'Council of Trent (1545–1563); Catholic Counter-Reformation.'),
+(69, 'Aldersgate', 'London, England', 51.52, -0.1, 'Europe', 'Site of John Wesley''s evangelical conversion (1738).'),
+(70, 'Edinburgh', 'Edinburgh, Scotland', 55.95, -3.19, 'Europe', 'Edinburgh Missionary Conference (1910).'),
+(71, 'Azusa Street', 'Los Angeles, USA', 34.05, -118.25, 'Americas', 'Azusa Street Revival (1906); birth of Pentecostalism.'),
+(72, 'Serampore', 'Serampore, India', 22.75, 88.34, 'Asia', 'William Carey''s mission base; Bible translation center.'),
+(73, 'Qumran', 'Qumran, Israel', 31.74, 35.46, 'Judea', 'Site where the Dead Sea Scrolls were discovered (1947).'),
+(74, 'Northampton', 'Northampton, MA, USA', 42.33, -72.63, 'Americas', 'Jonathan Edwards and the First Great Awakening.'),
+(75, 'Assisi', 'Assisi, Italy', 43.07, 12.62, 'Europe', 'Home of Francis of Assisi.'),
+(76, 'Nuremberg', 'Nuremberg, Germany', 49.45, 11.08, 'Europe', 'Center of Reformation-era publishing and reform.'),
+(77, 'Whitby', 'Whitby, England', 54.49, -0.62, 'Europe', 'Synod of Whitby (664); Celtic vs. Roman church.'),
+(78, 'Clermont', 'Clermont-Ferrand, France', 45.78, 3.08, 'Europe', 'Council of Clermont (1095); Pope Urban II calls the First Crusade.'),
+(79, 'Wycliffe Country', 'Lutterworth, England', 52.46, -1.2, 'Europe', 'Home of John Wycliffe; Morning Star of the Reformation.'),
+(100, 'Bethel', 'Beitin', 31.94, 35.24, 'Ephraim/Benjamin', 'Where Abraham built an altar and where Jacob dreamed of a ladder to heaven (Gen 12:8; 28:10-22). The identification with Beitin is widely accepted.'),
+(101, 'Dothan', 'Tel Dothan', 32.42, 35.28, 'Samaria', 'Where Joseph found his brothers and was sold to the Ishmaelite traders (Gen 37:17-28); Elisha was later here (2 Kgs 6:13).'),
+(102, 'Mount Ararat', 'Agri Dagi, Turkey', 39.7, 44.3, 'Armenia', '"The mountains of Ararat" (Gen 8:4) where the ark came to rest; the region is Urartu. Scripture names no single peak. Agri Dagi is the traditional modern identification; others propose Cudi Dagi.'),
+(103, 'Mediterranean Sea', 'Mediterranean Sea', 33.0, 34.0, 'Mediterranean', 'The "great sea" west of Israel (Num 34:6); Jonah''s ship sailed from Joppa toward Tarshish on it (Jonah 1:3-4). The pin is a point at sea off the coast.'),
+(104, 'Gath-hepher', 'Khirbet ez-Zurra / Mashhad', 32.72, 35.33, 'Galilee', 'Hometown of the prophet Jonah in Zebulun (2 Kgs 14:25; Josh 19:13). Identification with Khirbet ez-Zurra or Mashhad is probable.'),
+(105, 'Mount of Olives', 'Jebel et-Tur', 31.78, 35.245, 'Judea', 'Ridge east of Jerusalem: site of Jesus'' Olivet discourse and of Gethsemane, and where the disciples returned from after the Ascension (Acts 1:12). Bethany lies on its eastern slope (Luke 24:50).'),
+(106, 'Susa', 'Shush, Iran', 32.19, 48.26, 'Persia', 'Winter capital of the Persian kings where Esther, Mordecai and Haman lived (Esth 1:2) and where Nehemiah served (Neh 1:1).'),
+(107, 'Caesarea Philippi', 'Banias', 33.25, 35.69, 'Golan / Hermon foothills', 'Where Peter confessed Jesus as the Christ (Matt 16:13-20). The Transfiguration followed about a week later on a "high mountain" that the Gospels do not name.'),
+(108, 'Mount Carmel', 'Mount Carmel, Israel', 32.72, 35.05, 'Carmel ridge', 'Where Elijah confronted the prophets of Baal (1 Kgs 18:19-40). Muhraka, at the south-east end of the ridge, is the traditional site.'),
+(109, 'Smyrna', 'Izmir, Turkey', 38.42, 27.14, 'Asia Minor', 'City of the church addressed in Rev 2:8-11 and the see of Polycarp.'),
+(110, 'Tel Aviv', 'Tel Aviv, Israel', 32.08, 34.78, 'Coastal plain', 'Where the State of Israel was proclaimed on 14 May 1948.'),
+(111, 'Sodom', 'Bab edh-Dhra / Tall el-Hammam (proposed)', 31.25, 35.53, 'Dead Sea region', 'One of the cities of the plain destroyed by God (Gen 18-19). Its site is disputed: Bab edh-Dhra at the south-east of the Dead Sea (pinned here) and Tall el-Hammam in the northern Jordan plain are the leading proposals.'),
+(112, 'Alexandria', 'Alexandria, Egypt', 31.2, 29.92, 'North Africa', 'Great Hellenistic city and early Christian centre: home of Apollos (Acts 18:24), Origen and Athanasius.'),
+(113, 'Milan', 'Milan, Italy', 45.46, 9.19, 'Europe', 'Imperial city where the Edict of Milan was issued (AD 313) and where Ambrose was bishop.'),
+(114, 'Constance', 'Konstanz, Germany', 47.66, 9.17, 'Europe', 'Site of the Council of Constance (1414-1418), where Jan Hus was condemned and burned (1415).'),
+(115, 'Fair Havens', 'Kaloi Limenes, Crete', 34.93, 24.08, 'Mediterranean', 'Harbour on the south coast of Crete where Paul''s ship put in and Paul advised against sailing on (Acts 27:8-12).'),
+(116, 'Basel', 'Basel, Switzerland', 47.56, 7.59, 'Europe', 'Rhine city and printing centre where the first edition of Calvin''s Institutes was published in 1536.'),
+(117, 'Mount Tabor', 'Har Tavor, Israel', 32.687, 35.39, 'Galilee', 'Isolated mountain in lower Galilee, scene of Barak''s muster (Judg 4:6). Since at least the fourth century it has been the traditional site of the Transfiguration; the Gospels name only "a high mountain" (Matt 17:1), and Mount Hermon is the main alternative.');
+
+-- ============================================================
+-- WHO TOOK PART IN WHAT (404)
+-- ============================================================
 INSERT INTO person_events (person_id, event_id, role_in_event) VALUES
--- Ignatius → Martyrdom of Ignatius (95)
+(1, 1, 'participant'),
+(2, 1, 'participant'),
+(1, 2, 'participant'),
+(2, 2, 'participant'),
+(3, 3, 'protagonist'),
+(155, 4, 'born in this year (Gen 10:25)'),
+(4, 5, 'protagonist'),
+(5, 5, 'participant'),
+(56, 5, 'participant'),
+(159, 5, 'participant'),
+(4, 6, 'participant'),
+(4, 7, 'protagonist'),
+(6, 7, 'protagonist'),
+(8, 10, 'protagonist'),
+(59, 10, 'participant'),
+(9, 11, 'protagonist'),
+(65, 11, 'participant'),
+(9, 12, 'catalyst'),
+(8, 13, 'protagonist'),
+(9, 13, 'participant'),
+(63, 13, 'participant'),
+(64, 13, 'participant'),
+(162, 13, 'participant'),
+(163, 13, 'participant'),
+(164, 13, 'participant'),
+(10, 14, 'protagonist'),
+(11, 14, 'participant'),
+(66, 14, 'antagonist'),
+(185, 14, 'participant'),
+(10, 15, 'leader'),
+(66, 15, 'antagonist'),
+(10, 16, 'recipient'),
+(11, 16, 'participant'),
+(10, 17, 'leader'),
+(67, 17, 'participant'),
+(184, 17, 'participant'),
+(13, 19, 'protagonist'),
+(67, 19, 'participant'),
+(182, 19, 'participant'),
+(183, 19, 'participant'),
+(184, 19, 'participant'),
+(13, 20, 'leader'),
+(71, 21, 'protagonist'),
+(72, 21, 'protagonist'),
+(73, 21, 'protagonist'),
+(74, 21, 'participant'),
+(76, 21, 'participant'),
+(78, 21, 'participant'),
+(194, 21, 'judge'),
+(195, 21, 'judge'),
+(196, 21, 'judge'),
+(197, 21, 'judge'),
+(198, 21, 'judge'),
+(420, 21, 'judge'),
+(14, 22, 'protagonist'),
+(189, 22, 'participant'),
+(190, 22, 'participant'),
+(191, 22, 'antagonist'),
+(15, 23, 'protagonist'),
+(74, 24, 'died at the news'),
+(18, 25, 'protagonist'),
+(19, 25, 'participant'),
+(83, 25, 'participant'),
+(18, 26, 'anointer'),
+(20, 26, 'protagonist'),
+(266, 26, 'participant'),
+(20, 27, 'protagonist'),
+(81, 27, 'participant'),
+(20, 28, 'recipient'),
+(22, 28, 'prophet'),
+(21, 29, 'protagonist'),
+(203, 29, 'supplier of cedar and craftsmen'),
+(31, 30, 'protagonist'),
+(85, 30, 'protagonist'),
+(23, 31, 'protagonist'),
+(32, 31, 'antagonist'),
+(107, 31, 'antagonist'),
+(105, 32, 'participant'),
+(25, 33, 'participant'),
+(29, 33, 'protagonist'),
+(213, 33, 'antagonist'),
+(30, 34, 'protagonist'),
+(222, 34, 'participant'),
+(223, 34, 'participant'),
+(26, 35, 'witness'),
+(93, 35, 'protagonist'),
+(214, 35, 'antagonist'),
+(27, 36, 'participant'),
+(28, 36, 'participant'),
+(214, 36, 'protagonist'),
+(218, 36, 'participant'),
+(219, 36, 'participant'),
+(220, 36, 'participant'),
+(269, 36, 'participant'),
+(216, 37, 'protagonist'),
+(35, 38, 'protagonist'),
+(117, 38, 'participant'),
+(118, 38, 'participant'),
+(450, 38, 'participant'),
+(33, 39, 'protagonist');
+
+INSERT INTO person_events (person_id, event_id, role_in_event) VALUES
+(451, 39, 'participant'),
+(34, 40, 'protagonist'),
+(224, 40, 'antagonist'),
+(225, 40, 'antagonist'),
+(451, 40, 'participant'),
+(36, 41, 'protagonist'),
+(120, 41, 'participant'),
+(226, 41, 'antagonist'),
+(228, 41, 'participant'),
+(37, 42, 'protagonist'),
+(38, 42, 'participant'),
+(122, 42, 'participant'),
+(145, 42, 'antagonist'),
+(37, 43, 'protagonist'),
+(39, 43, 'officiant'),
+(37, 44, 'teacher'),
+(37, 45, 'protagonist'),
+(126, 45, 'participant'),
+(135, 45, 'participant'),
+(146, 45, 'protagonist'),
+(235, 45, 'antagonist'),
+(236, 45, 'participant'),
+(237, 45, 'participant'),
+(238, 45, 'participant'),
+(239, 45, 'participant'),
+(37, 46, 'protagonist'),
+(125, 46, 'witness'),
+(37, 47, 'protagonist'),
+(40, 47, 'witness'),
+(42, 47, 'witness'),
+(40, 48, 'preacher'),
+(136, 48, 'participant'),
+(41, 49, 'witness'),
+(44, 49, 'protagonist'),
+(41, 50, 'protagonist'),
+(244, 50, 'participant'),
+(41, 51, 'protagonist'),
+(45, 51, 'protagonist'),
+(137, 51, 'participant'),
+(40, 52, 'participant'),
+(41, 52, 'participant'),
+(45, 52, 'participant'),
+(144, 52, 'participant'),
+(41, 53, 'protagonist'),
+(46, 53, 'participant'),
+(138, 53, 'participant'),
+(41, 54, 'protagonist'),
+(42, 56, 'author'),
+(42, 57, 'protagonist'),
+(37, 58, 'protagonist'),
+(37, 59, 'protagonist'),
+(37, 60, 'protagonist'),
+(40, 60, 'participant'),
+(42, 60, 'participant'),
+(43, 60, 'participant'),
+(37, 61, 'protagonist'),
+(37, 62, 'protagonist'),
+(40, 62, 'participant'),
+(37, 63, 'protagonist'),
+(37, 64, 'protagonist'),
+(37, 65, 'protagonist'),
+(37, 66, 'protagonist'),
+(37, 67, 'protagonist'),
+(37, 68, 'protagonist'),
+(37, 69, 'protagonist'),
+(37, 70, 'protagonist'),
+(37, 71, 'protagonist'),
+(37, 72, 'protagonist'),
+(241, 72, 'participant'),
+(37, 73, 'protagonist'),
+(37, 74, 'protagonist'),
+(37, 75, 'protagonist'),
+(37, 76, 'protagonist'),
+(40, 76, 'participant'),
+(37, 77, 'protagonist'),
+(37, 78, 'protagonist'),
+(37, 79, 'protagonist'),
+(37, 80, 'protagonist'),
+(37, 81, 'protagonist'),
+(40, 81, 'witness'),
+(42, 81, 'witness'),
+(43, 81, 'witness'),
+(37, 82, 'protagonist'),
+(37, 83, 'protagonist'),
+(40, 83, 'participant'),
+(37, 84, 'protagonist'),
+(37, 85, 'protagonist'),
+(37, 86, 'protagonist'),
+(37, 87, 'protagonist'),
+(123, 87, 'recipient'),
+(124, 87, 'participant'),
+(243, 87, 'participant'),
+(37, 88, 'protagonist'),
+(37, 89, 'protagonist'),
+(37, 91, 'protagonist'),
+(37, 92, 'protagonist'),
+(37, 93, 'protagonist'),
+(40, 93, 'participant'),
+(24, 94, 'protagonist'),
+(48, 94, 'protagonist');
+
+INSERT INTO person_events (person_id, event_id, role_in_event) VALUES
+(210, 94, 'participant'),
 (323, 95, 'Martyr'),
--- Polycarp → Martyrdom of Polycarp (96)
 (324, 96, 'Martyr'),
--- Irenaeus → Writes Against Heresies (97)
 (325, 97, 'Author'),
--- Origen → Opens Catechetical School (98)
 (326, 98, 'Teacher'),
--- Athanasius → Lists NT Books (102)
+(490, 100, 'Co-author'),
+(490, 101, 'Convener'),
 (328, 102, 'Author'),
--- Jerome → Completes the Vulgate (104)
-(329, 104, 'Translator'),
--- Augustine → Council of Carthage (103)
 (330, 103, 'Bishop present'),
--- Benedict → Writes His Rule (107)
+(329, 104, 'Translator'),
 (331, 107, 'Author'),
--- Francis → Founds Franciscans (113)
 (333, 113, 'Founder'),
--- Aquinas → Summa (114)
 (334, 114, 'Author'),
--- Wycliffe → English Bible (115)
 (335, 115, 'Translator'),
--- Hus → Martyred (116)
 (336, 116, 'Martyr'),
--- Gutenberg → Prints Bible (117)
 (337, 117, 'Printer'),
--- Luther → 95 Theses (118)
 (338, 118, 'Author'),
--- Luther → Diet of Worms (119)
 (338, 119, 'Defendant'),
--- Tyndale → NT Published (120)
 (339, 120, 'Translator'),
--- Calvin → Institutes (121)
 (340, 121, 'Author'),
--- Wesley → Aldersgate (126)
 (342, 126, 'Subject'),
--- Edwards → Great Awakening (127)
 (343, 127, 'Preacher'),
--- Carey → Sails for India (128)
+(495, 127, 'Preacher'),
 (344, 128, 'Missionary'),
--- Bonhoeffer → Barmen Declaration (135)
 (347, 135, 'Co-author'),
--- Graham → Global Crusades (139)
 (349, 139, 'Evangelist'),
--- Graham → Lausanne Congress (140)
 (349, 140, 'Convener'),
--- Jude brother of Jesus → Jude Written (person 321 created above)
-(321, 167, 'author');
-INSERT INTO journeys (name, description, book_id) VALUES
-('Book of Acts', 'The spread of the early church from Jerusalem to Rome, following the narrative of Acts.', 44);
+(37, 143, 'protagonist'),
+(125, 143, 'witness'),
+(37, 144, 'protagonist'),
+(242, 144, 'participant'),
+(37, 145, 'protagonist'),
+(40, 145, 'participant'),
+(42, 145, 'participant'),
+(37, 146, 'protagonist'),
+(40, 146, 'participant'),
+(131, 146, 'protagonist'),
+(37, 147, 'protagonist'),
+(40, 147, 'protagonist'),
+(42, 147, 'participant'),
+(37, 148, 'protagonist'),
+(40, 148, 'participant'),
+(42, 148, 'participant'),
+(144, 149, 'author'),
+(41, 150, 'author'),
+(41, 151, 'author'),
+(41, 152, 'author'),
+(41, 153, 'author'),
+(127, 154, 'author'),
+(137, 155, 'author'),
+(41, 156, 'author'),
+(41, 157, 'author'),
+(47, 158, 'author'),
+(41, 159, 'author'),
+(41, 160, 'author'),
+(41, 161, 'author'),
+(41, 162, 'author'),
+(47, 163, 'author'),
+(41, 164, 'author'),
+(41, 165, 'author'),
+(40, 166, 'author'),
+(321, 167, 'author'),
+(41, 169, 'author'),
+(40, 170, 'author'),
+(42, 171, 'author'),
+(42, 172, 'author'),
+(42, 173, 'author'),
+(42, 174, 'author'),
+(250, 175, 'protagonist'),
+(250, 176, 'protagonist'),
+(251, 176, 'recipient'),
+(40, 177, 'protagonist'),
+(249, 177, 'recipient'),
+(40, 178, 'protagonist'),
+(245, 178, 'recipient'),
+(41, 179, 'protagonist'),
+(45, 179, 'protagonist'),
+(41, 180, 'protagonist'),
+(45, 180, 'protagonist'),
+(41, 181, 'protagonist'),
+(45, 181, 'participant'),
+(41, 182, 'protagonist'),
+(45, 182, 'participant'),
+(41, 183, 'protagonist'),
+(45, 183, 'participant'),
+(41, 184, 'protagonist'),
+(45, 184, 'participant'),
+(41, 185, 'protagonist'),
+(41, 186, 'protagonist'),
+(138, 186, 'participant'),
+(246, 186, 'recipient'),
+(41, 187, 'protagonist'),
+(138, 187, 'participant'),
+(41, 188, 'protagonist'),
+(138, 188, 'participant'),
+(41, 189, 'protagonist'),
+(41, 190, 'protagonist'),
+(140, 190, 'participant'),
+(141, 190, 'participant'),
+(41, 191, 'protagonist');
 
--- Acts journey stops (journey_id=1, location IDs match the locations table)
--- Locations: 7=Jerusalem, 12=Damascus, 13=Antioch, 14=Rome, 26=Samaria, 27=Gaza Road,
--- 28=Joppa, 29=Caesarea, 30=Cyprus, 31=Pisidian Antioch, 32=Iconium, 33=Lystra,
--- 34=Derbe, 35=Troas, 36=Philippi, 37=Thessalonica, 38=Berea, 39=Athens,
--- 40=Corinth, 41=Ephesus, 42=Miletus, 43=Crete, 44=Malta, 45=Puteoli
-INSERT INTO journey_stops (journey_id, sort_order, location_id, event_id, label, description, year, chapter) VALUES
--- Acts 1-2: Birth of the Church
-(1, 10, 7, 48, 'Pentecost in Jerusalem', 'The Holy Spirit descends on the apostles; Peter preaches and 3,000 are baptized.', 33, 'Acts 2:1-47'),
--- Acts 6-7: First Martyr
-(1, 20, 7, 49, 'Stoning of Stephen', 'Stephen is stoned; persecution scatters believers beyond Jerusalem.', 35, 'Acts 6:8–7:60'),
--- Acts 8: Philip's Ministry
-(1, 30, 26, NULL, 'Philip Preaches in Samaria', 'Philip performs miracles in Samaria; Simon the sorcerer believes.', 35, 'Acts 8:4-25'),
-(1, 40, 27, NULL, 'Ethiopian Eunuch Baptized', 'Philip meets an Ethiopian official on the Gaza road and baptizes him.', 35, 'Acts 8:26-40'),
--- Acts 9: Saul's Conversion
-(1, 50, 12, 50, 'Conversion of Saul', 'Saul encounters Christ on the Damascus road; Ananias restores his sight.', 35, 'Acts 9:1-19'),
--- Acts 9: Peter's Coastal Ministry
-(1, 60, 28, NULL, 'Peter Raises Tabitha in Joppa', 'Peter raises the disciple Tabitha (Dorcas) from the dead.', 37, 'Acts 9:36-43'),
--- Acts 10: Gentile Inclusion
-(1, 70, 29, NULL, 'Peter and Cornelius in Caesarea', 'Peter receives a vision; the first Gentiles receive the Holy Spirit.', 40, 'Acts 10:1-48'),
--- Acts 11-12: Antioch Church
-(1, 80, 13, NULL, 'Church Established in Antioch', 'Believers first called "Christians" in Antioch; Barnabas and Saul teach.', 43, 'Acts 11:19-30'),
--- Acts 13-14: First Missionary Journey
-(1, 90, 30, NULL, 'Barnabas and Saul in Cyprus', 'Paul blinds the sorcerer Bar-Jesus; proconsul Sergius Paulus believes.', 47, 'Acts 13:4-12'),
-(1, 100, 31, NULL, 'Paul Preaches in Pisidian Antioch', 'Paul''s sermon in the synagogue; many believe but Jews stir up opposition.', 47, 'Acts 13:14-52'),
-(1, 110, 32, NULL, 'Iconium — Belief and Opposition', 'Paul and Barnabas preach; the city divides; they flee before stoning.', 48, 'Acts 14:1-7'),
-(1, 120, 33, NULL, 'Lystra — Healing and Stoning', 'Paul heals a lame man; mistaken for gods; then stoned and left for dead.', 48, 'Acts 14:8-20'),
-(1, 130, 34, NULL, 'Derbe — Many Disciples', 'Paul and Barnabas make many disciples and begin the return journey.', 48, 'Acts 14:20-21'),
--- Acts 15: Council
-(1, 140, 7, 52, 'Council of Jerusalem', 'Church leaders decide Gentiles need not be circumcised.', 49, 'Acts 15:1-35'),
--- Acts 16-18: Second Missionary Journey
-(1, 150, 35, NULL, 'Macedonian Vision at Troas', 'Paul receives a vision: "Come over to Macedonia and help us."', 50, 'Acts 16:8-10'),
-(1, 160, 36, NULL, 'Lydia Converted in Philippi', 'Lydia believes; Paul and Silas imprisoned; jailer converted.', 50, 'Acts 16:11-40'),
-(1, 170, 37, NULL, 'Paul in Thessalonica', 'Paul reasons in the synagogue; accused of "turning the world upside down."', 50, 'Acts 17:1-9'),
-(1, 180, 38, NULL, 'Noble-Minded Bereans', 'The Bereans examine the Scriptures daily to verify Paul''s message.', 50, 'Acts 17:10-15'),
-(1, 190, 39, NULL, 'Paul on the Areopagus in Athens', 'Paul preaches about the "Unknown God" on Mars Hill.', 51, 'Acts 17:16-34'),
-(1, 200, 40, NULL, 'Paul in Corinth — 18 Months', 'Paul stays with Aquila and Priscilla; Gallio dismisses charges.', 51, 'Acts 18:1-17'),
--- Acts 19-20: Third Missionary Journey
-(1, 210, 41, NULL, 'Paul in Ephesus — 2 Years', 'Extraordinary miracles; burning of occult scrolls; riot of Demetrius.', 54, 'Acts 19:1-41'),
-(1, 220, 42, NULL, 'Farewell to Ephesian Elders at Miletus', 'Paul''s emotional farewell: "I have not coveted anyone''s silver or gold."', 57, 'Acts 20:17-38'),
--- Acts 21-26: Arrest and Trials
-(1, 230, 7, NULL, 'Paul Arrested in Jerusalem', 'Paul seized in the temple; transferred to Roman custody.', 57, 'Acts 21:27–23:10'),
-(1, 240, 29, NULL, 'Paul''s Trial before Felix and Festus', 'Paul held in Caesarea for two years; appeals to Caesar.', 58, 'Acts 23:23–26:32'),
--- Acts 27-28: Journey to Rome
-(1, 250, 43, NULL, 'Storm and Fair Havens of Crete', 'Paul warns against sailing; a violent storm batters the ship 14 days.', 60, 'Acts 27:7-44'),
-(1, 260, 44, NULL, 'Shipwreck on Malta', 'All 276 aboard survive; Paul bitten by a viper but unharmed; heals the sick.', 60, 'Acts 27:39–28:10'),
-(1, 270, 45, NULL, 'Landing at Puteoli', 'Paul welcomed by believers at the Italian port.', 61, 'Acts 28:13-14'),
-(1, 280, 14, NULL, 'Paul Arrives in Rome', 'Paul preaches the kingdom of God under house arrest for two years.', 61, 'Acts 28:16-31');
-
--- ── Acts journey: backfill event links + person/location relationships ──
--- The Acts stops above were originally seeded with event_id = NULL, so the person-journey
--- query (which joins person_events → events → event_locations) skipped them entirely.
--- The Acts Journey Detail Events block (event IDs 175–198) promotes each stop to a
--- first-class event so it appears on every person's map, on the timeline, and in search.
-
--- Event → Location links for the new Acts events
-INSERT INTO event_locations (event_id, location_id) VALUES
-(175, 26),  -- Philip Preaches in Samaria → Samaria
-(176, 27),  -- Ethiopian Eunuch Baptized → Gaza Road
-(177, 28),  -- Peter Raises Tabitha in Joppa → Joppa
-(178, 29),  -- Peter and Cornelius in Caesarea → Caesarea
-(179, 13),  -- Church Established in Antioch → Antioch
-(180, 30),  -- Barnabas and Saul in Cyprus → Cyprus
-(181, 31),  -- Paul Preaches in Pisidian Antioch → Pisidian Antioch
-(182, 32),  -- Iconium → Iconium
-(183, 33),  -- Lystra → Lystra
-(184, 34),  -- Derbe → Derbe
-(185, 35),  -- Macedonian Vision at Troas → Troas
-(186, 36),  -- Lydia Converted in Philippi → Philippi
-(187, 37),  -- Paul in Thessalonica → Thessalonica
-(188, 38),  -- Noble-Minded Bereans → Berea
-(189, 39),  -- Paul on the Areopagus in Athens → Athens
-(190, 40),  -- Paul in Corinth → Corinth
-(191, 41),  -- Paul in Ephesus → Ephesus
-(192, 42),  -- Farewell at Miletus → Miletus
-(193, 7),   -- Paul Arrested in Jerusalem → Jerusalem
-(194, 29),  -- Paul's Trial before Felix and Festus → Caesarea
-(195, 43),  -- Storm and Fair Havens of Crete → Crete
-(196, 44),  -- Shipwreck on Malta → Malta
-(197, 45),  -- Landing at Puteoli → Puteoli
-(198, 14);  -- Paul Arrives in Rome → Rome
-
--- Person → Event links for the new Acts events
--- People IDs: Peter=40, Paul=41, Barnabas=45, Silas=138, Priscilla=140, Aquila=141,
---             Cornelius=245, Lydia=246, Dorcas=249, Philip the Evangelist=250,
---             Ethiopian Eunuch=251, Felix=256, Festus=257
 INSERT INTO person_events (person_id, event_id, role_in_event) VALUES
-(250, 175, 'protagonist'),                                          -- Philip → Samaria
-(250, 176, 'protagonist'), (251, 176, 'recipient'),                 -- Philip + Ethiopian eunuch
-(40,  177, 'protagonist'), (249, 177, 'recipient'),                 -- Peter raises Tabitha
-(40,  178, 'protagonist'), (245, 178, 'recipient'),                 -- Peter + Cornelius
-(45,  179, 'protagonist'), (41,  179, 'protagonist'),               -- Barnabas + Paul in Antioch
-(41,  180, 'protagonist'), (45,  180, 'protagonist'),               -- Cyprus
-(41,  181, 'protagonist'), (45,  181, 'participant'),               -- Pisidian Antioch
-(41,  182, 'protagonist'), (45,  182, 'participant'),               -- Iconium
-(41,  183, 'protagonist'), (45,  183, 'participant'),               -- Lystra
-(41,  184, 'protagonist'), (45,  184, 'participant'),               -- Derbe
-(41,  185, 'protagonist'),                                          -- Macedonian vision
-(41,  186, 'protagonist'), (138, 186, 'participant'), (246, 186, 'recipient'),  -- Philippi
-(41,  187, 'protagonist'), (138, 187, 'participant'),               -- Thessalonica
-(41,  188, 'protagonist'), (138, 188, 'participant'),               -- Berea
-(41,  189, 'protagonist'),                                          -- Athens
-(41,  190, 'protagonist'), (140, 190, 'participant'), (141, 190, 'participant'),  -- Corinth
-(41,  191, 'protagonist'),                                          -- Ephesus
-(41,  192, 'protagonist'),                                          -- Miletus
-(41,  193, 'protagonist'),                                          -- Arrested in Jerusalem
-(41,  194, 'protagonist'), (256, 194, 'antagonist'), (257, 194, 'antagonist'),   -- Trial
-(41,  195, 'protagonist'),                                          -- Storm at Crete
-(41,  196, 'protagonist'),                                          -- Shipwreck on Malta
-(41,  197, 'protagonist'),                                          -- Puteoli
-(41,  198, 'protagonist');                                          -- Rome
+(41, 192, 'protagonist'),
+(41, 193, 'protagonist'),
+(41, 194, 'protagonist'),
+(255, 194, 'participant'),
+(256, 194, 'antagonist'),
+(257, 194, 'antagonist'),
+(41, 195, 'protagonist'),
+(41, 196, 'protagonist'),
+(41, 197, 'protagonist'),
+(41, 198, 'protagonist'),
+(1, 300, 'participant'),
+(2, 300, 'participant'),
+(160, 300, 'protagonist'),
+(161, 300, 'protagonist'),
+(50, 301, 'protagonist'),
+(4, 302, 'participant'),
+(5, 302, 'participant'),
+(57, 302, 'protagonist'),
+(58, 302, 'participant'),
+(4, 303, 'participant'),
+(5, 303, 'participant'),
+(6, 303, 'protagonist'),
+(4, 304, 'participant'),
+(5, 304, 'protagonist'),
+(6, 305, 'protagonist'),
+(7, 305, 'protagonist'),
+(7, 306, 'participant'),
+(8, 306, 'protagonist'),
+(59, 306, 'participant'),
+(8, 307, 'protagonist'),
+(60, 307, 'participant'),
+(61, 307, 'participant'),
+(62, 307, 'participant'),
+(8, 308, 'participant'),
+(9, 308, 'protagonist'),
+(10, 320, 'protagonist'),
+(13, 320, 'successor'),
+(13, 321, 'leader'),
+(13, 322, 'protagonist'),
+(19, 323, 'protagonist'),
+(83, 323, 'killed in battle'),
+(20, 324, 'protagonist'),
+(81, 324, 'participant'),
+(199, 324, 'rival king'),
+(200, 324, 'rival commander'),
+(20, 325, 'protagonist'),
+(73, 326, 'protagonist'),
+(16, 327, 'protagonist'),
+(193, 327, 'betrayer'),
+(19, 328, 'participant'),
+(20, 328, 'protagonist'),
+(18, 329, 'protagonist'),
+(20, 330, 'protagonist'),
+(84, 330, 'participant'),
+(28, 340, 'participant'),
+(215, 340, 'antagonist'),
+(216, 340, 'protagonist'),
+(217, 340, 'participant'),
+(452, 341, 'protagonist'),
+(453, 342, 'antagonist'),
+(454, 342, 'protagonist'),
+(454, 343, 'protagonist'),
+(38, 360, 'recipient'),
+(122, 360, 'participant'),
+(231, 360, 'participant'),
+(39, 361, 'protagonist'),
+(230, 361, 'participant'),
+(231, 361, 'participant'),
+(37, 362, 'protagonist'),
+(38, 362, 'participant'),
+(122, 362, 'participant'),
+(145, 362, 'antagonist'),
+(37, 363, 'protagonist'),
+(38, 363, 'participant'),
+(122, 363, 'participant'),
+(147, 363, 'witness'),
+(229, 363, 'witness'),
+(37, 364, 'protagonist'),
+(38, 364, 'participant'),
+(122, 364, 'participant'),
+(37, 365, 'protagonist'),
+(37, 366, 'protagonist'),
+(40, 366, 'participant'),
+(42, 366, 'participant'),
+(135, 366, 'participant'),
+(37, 367, 'protagonist'),
+(40, 367, 'participant'),
+(135, 367, 'antagonist'),
+(146, 367, 'participant'),
+(232, 367, 'participant'),
+(235, 367, 'antagonist'),
+(236, 367, 'antagonist'),
+(237, 367, 'participant'),
+(40, 368, 'participant'),
+(43, 368, 'protagonist'),
+(137, 368, 'participant'),
+(253, 368, 'participant'),
+(254, 368, 'antagonist'),
+(144, 369, 'protagonist'),
+(473, 370, 'antagonist');
 
--- Backfill the event_id column on the existing journey_stops rows so the Acts journey
--- now drills down to the same canonical events.
-UPDATE journey_stops SET event_id = 175 WHERE journey_id = 1 AND sort_order = 30;
-UPDATE journey_stops SET event_id = 176 WHERE journey_id = 1 AND sort_order = 40;
-UPDATE journey_stops SET event_id = 177 WHERE journey_id = 1 AND sort_order = 60;
-UPDATE journey_stops SET event_id = 178 WHERE journey_id = 1 AND sort_order = 70;
-UPDATE journey_stops SET event_id = 179 WHERE journey_id = 1 AND sort_order = 80;
-UPDATE journey_stops SET event_id = 180 WHERE journey_id = 1 AND sort_order = 90;
-UPDATE journey_stops SET event_id = 181 WHERE journey_id = 1 AND sort_order = 100;
-UPDATE journey_stops SET event_id = 182 WHERE journey_id = 1 AND sort_order = 110;
-UPDATE journey_stops SET event_id = 183 WHERE journey_id = 1 AND sort_order = 120;
-UPDATE journey_stops SET event_id = 184 WHERE journey_id = 1 AND sort_order = 130;
-UPDATE journey_stops SET event_id = 185 WHERE journey_id = 1 AND sort_order = 150;
-UPDATE journey_stops SET event_id = 186 WHERE journey_id = 1 AND sort_order = 160;
-UPDATE journey_stops SET event_id = 187 WHERE journey_id = 1 AND sort_order = 170;
-UPDATE journey_stops SET event_id = 188 WHERE journey_id = 1 AND sort_order = 180;
-UPDATE journey_stops SET event_id = 189 WHERE journey_id = 1 AND sort_order = 190;
-UPDATE journey_stops SET event_id = 190 WHERE journey_id = 1 AND sort_order = 200;
-UPDATE journey_stops SET event_id = 191 WHERE journey_id = 1 AND sort_order = 210;
-UPDATE journey_stops SET event_id = 192 WHERE journey_id = 1 AND sort_order = 220;
-UPDATE journey_stops SET event_id = 193 WHERE journey_id = 1 AND sort_order = 230;
-UPDATE journey_stops SET event_id = 194 WHERE journey_id = 1 AND sort_order = 240;
-UPDATE journey_stops SET event_id = 195 WHERE journey_id = 1 AND sort_order = 250;
-UPDATE journey_stops SET event_id = 196 WHERE journey_id = 1 AND sort_order = 260;
-UPDATE journey_stops SET event_id = 197 WHERE journey_id = 1 AND sort_order = 270;
-UPDATE journey_stops SET event_id = 198 WHERE journey_id = 1 AND sort_order = 280;
+INSERT INTO person_events (person_id, event_id, role_in_event) VALUES
+(40, 371, 'protagonist'),
+(41, 371, 'protagonist'),
+(473, 371, 'antagonist'),
+(328, 391, 'Consecrated Frumentius');
 
--- ── Journey ↔ Person associations (Option 2) ──
--- Lets the person-journey query surface every stop in a journey the person belongs to,
--- even when no individual person_events row links the person to that stop's event.
--- People IDs: Peter=40, Paul=41, John=42, Stephen=44, Barnabas=45, Luke=47,
---             Mark=137, Silas=138, Priscilla=140, Aquila=141,
---             Cornelius=245, Lydia=246, Dorcas=249, Philip the Evangelist=250,
---             Ethiopian Eunuch=251, Felix=256, Festus=257
+-- ============================================================
+-- SCRIPTURE FOR PEOPLE (393)
+-- ============================================================
+INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
+(1, 53, NULL),
+(2, 54, NULL),
+(3, 55, NULL),
+(4, 56, NULL),
+(5, 57, NULL),
+(6, 58, NULL),
+(7, 59, NULL),
+(8, 60, NULL),
+(9, 61, NULL),
+(10, 62, NULL),
+(10, 544, NULL),
+(11, 63, NULL),
+(12, 64, NULL),
+(13, 65, NULL),
+(14, 66, NULL),
+(15, 67, NULL),
+(16, 68, NULL),
+(17, 69, NULL),
+(18, 70, NULL),
+(19, 71, NULL),
+(19, 288, 'Saul''s death at Gilboa'),
+(20, 72, NULL),
+(20, 500, NULL),
+(20, 501, NULL),
+(21, 73, NULL),
+(22, 74, NULL),
+(23, 75, NULL),
+(23, 502, NULL),
+(24, 76, NULL),
+(25, 77, NULL),
+(26, 78, NULL),
+(27, 79, NULL),
+(28, 80, NULL),
+(29, 81, NULL),
+(30, 82, NULL),
+(31, 83, NULL),
+(32, 84, NULL),
+(33, 34, NULL),
+(34, 86, NULL),
+(35, 87, NULL),
+(36, 88, NULL),
+(37, 89, NULL),
+(38, 90, NULL),
+(39, 91, NULL),
+(40, 92, NULL),
+(40, 368, NULL),
+(40, 394, NULL),
+(40, 543, NULL),
+(41, 93, NULL),
+(41, 542, NULL),
+(42, 94, NULL),
+(43, 95, NULL),
+(44, 96, NULL),
+(45, 97, NULL),
+(46, 98, NULL),
+(47, 99, NULL),
+(48, 136, NULL),
+(49, 138, NULL),
+(50, 139, NULL),
+(51, 140, NULL),
+(52, 141, NULL),
+(53, 142, NULL),
+(54, 143, NULL),
+(54, 545, NULL),
+(55, 144, NULL),
+(56, 145, NULL),
+(57, 146, NULL),
+(58, 147, NULL),
+(59, 148, NULL),
+(60, 149, NULL),
+(61, 150, NULL),
+(62, 151, NULL),
+(63, 152, NULL),
+(64, 153, NULL),
+(65, 154, NULL),
+(66, 155, NULL),
+(67, 156, NULL),
+(68, 157, NULL),
+(69, 158, NULL),
+(70, 159, NULL),
+(71, 160, NULL),
+(72, 161, NULL),
+(73, 162, NULL),
+(74, 163, NULL),
+(75, 164, NULL),
+(76, 165, NULL),
+(77, 166, NULL),
+(78, 167, NULL),
+(79, 168, NULL),
+(80, 169, NULL),
+(81, 170, NULL),
+(82, 171, NULL),
+(83, 172, NULL),
+(84, 173, NULL),
+(85, 174, NULL),
+(86, 175, NULL),
+(87, 176, NULL),
+(88, 177, NULL),
+(89, 178, NULL),
+(90, 179, NULL);
+
+INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
+(91, 180, NULL),
+(92, 181, NULL),
+(93, 182, NULL),
+(94, 183, NULL),
+(95, 184, NULL),
+(96, 185, NULL),
+(97, 186, NULL),
+(98, 187, NULL),
+(99, 188, NULL),
+(100, 189, NULL),
+(101, 190, NULL),
+(102, 191, NULL),
+(103, 192, NULL),
+(104, 193, NULL),
+(105, 194, NULL),
+(106, 195, NULL),
+(107, 196, NULL),
+(108, 197, NULL),
+(109, 198, NULL),
+(110, 199, NULL),
+(111, 200, NULL),
+(112, 201, NULL),
+(112, 546, NULL),
+(113, 202, NULL),
+(114, 203, NULL),
+(115, 204, NULL),
+(116, 205, NULL),
+(117, 206, NULL),
+(118, 207, NULL),
+(119, 208, NULL),
+(120, 209, NULL),
+(121, 210, NULL),
+(122, 211, NULL),
+(123, 212, NULL),
+(124, 213, NULL),
+(125, 214, NULL),
+(126, 553, NULL),
+(126, 554, NULL),
+(126, 555, NULL),
+(127, 216, NULL),
+(128, 217, NULL),
+(129, 556, NULL),
+(129, 557, NULL),
+(129, 558, NULL),
+(129, 559, NULL),
+(130, 219, 'Tradition identifies Bartholomew with Nathanael; John does not name him as such'),
+(130, 221, 'Named in the lists of the Twelve (also Mark 3:18; Luke 6:14; Acts 1:13)'),
+(131, 220, NULL),
+(132, 221, NULL),
+(133, 221, 'Thaddaeus is named in the lists of the Twelve'),
+(133, 222, 'Judas (not Iscariot), identified with Thaddaeus by inference'),
+(133, 551, 'Thaddaeus named here'),
+(133, 552, 'Luke lists Judas son of James in this place, commonly identified with Thaddaeus'),
+(134, 223, NULL),
+(135, 224, NULL),
+(136, 225, NULL),
+(137, 226, NULL),
+(138, 227, NULL),
+(139, 228, NULL),
+(140, 229, NULL),
+(141, 229, NULL),
+(142, 231, NULL),
+(143, 232, NULL),
+(144, 233, NULL),
+(144, 547, NULL),
+(144, 548, NULL),
+(144, 549, NULL),
+(144, 550, NULL),
+(145, 234, NULL),
+(146, 235, NULL),
+(147, 236, NULL),
+(148, 293, NULL),
+(149, 294, NULL),
+(150, 295, NULL),
+(151, 296, NULL),
+(152, 297, NULL),
+(153, 298, NULL),
+(154, 299, NULL),
+(155, 300, NULL),
+(156, 301, NULL),
+(157, 302, NULL),
+(158, 303, NULL),
+(159, 304, NULL),
+(160, 305, NULL),
+(161, 305, NULL),
+(161, 306, NULL),
+(162, 307, NULL),
+(163, 307, NULL),
+(164, 307, NULL),
+(165, 560, 'Birth'),
+(166, 561, 'Birth'),
+(167, 562, 'Birth'),
+(168, 563, 'Birth'),
+(169, 564, 'Birth'),
+(170, 565, 'Birth'),
+(171, 309, NULL),
+(172, 309, NULL),
+(173, 308, NULL),
+(174, 308, NULL),
+(175, 313, NULL);
+
+INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
+(176, 310, NULL),
+(176, 311, NULL),
+(177, 312, NULL),
+(178, 535, NULL),
+(179, 314, NULL),
+(180, 315, NULL),
+(181, 536, NULL),
+(182, 316, NULL),
+(182, 317, NULL),
+(183, 318, NULL),
+(184, 321, NULL),
+(185, 319, NULL),
+(186, 320, NULL),
+(187, 314, NULL),
+(188, 314, NULL),
+(189, 322, NULL),
+(190, 323, NULL),
+(191, 323, NULL),
+(192, 324, NULL),
+(193, 325, NULL),
+(194, 537, NULL),
+(195, 538, NULL),
+(196, 539, NULL),
+(197, 540, NULL),
+(198, 541, NULL),
+(199, 326, NULL),
+(200, 327, NULL),
+(201, 328, NULL),
+(202, 329, NULL),
+(203, 330, NULL),
+(204, 331, NULL),
+(205, 332, NULL),
+(206, 333, NULL),
+(207, 334, NULL),
+(208, 335, NULL),
+(209, 336, NULL),
+(210, 337, NULL),
+(211, 338, NULL),
+(212, 339, NULL),
+(213, 340, NULL),
+(214, 531, NULL),
+(214, 532, NULL),
+(215, 343, NULL),
+(216, 344, NULL),
+(216, 345, NULL),
+(217, 346, NULL),
+(218, 341, NULL),
+(218, 342, NULL),
+(219, 341, NULL),
+(219, 342, NULL),
+(220, 341, NULL),
+(220, 342, NULL),
+(221, 168, NULL),
+(222, 348, NULL),
+(223, 349, NULL),
+(224, 350, NULL),
+(225, 350, NULL),
+(226, 351, NULL),
+(227, 352, NULL),
+(228, 352, NULL),
+(229, 353, NULL),
+(230, 354, NULL),
+(231, 355, NULL),
+(232, 356, NULL),
+(233, 534, NULL),
+(234, 357, NULL),
+(235, 358, NULL),
+(236, 359, NULL),
+(237, 360, NULL),
+(238, 361, NULL),
+(239, 362, NULL),
+(240, 363, NULL),
+(241, 364, NULL),
+(242, 365, NULL),
+(243, 366, NULL),
+(244, 367, NULL),
+(245, 368, NULL),
+(246, 369, NULL),
+(247, 370, NULL),
+(248, 371, NULL),
+(249, 372, NULL),
+(250, 373, NULL),
+(251, 504, NULL),
+(252, 374, NULL),
+(253, 375, NULL),
+(254, 376, NULL),
+(255, 377, NULL),
+(256, 378, NULL),
+(257, 379, NULL),
+(258, 380, NULL),
+(259, 381, NULL),
+(260, 533, 'Line of Perez to David'),
+(260, 566, 'Genealogy of Jesus (Matthew)'),
+(261, 533, 'Line of Perez to David'),
+(261, 566, 'Genealogy of Jesus (Matthew)'),
+(262, 533, 'Line of Perez to David'),
+(262, 566, 'Genealogy of Jesus (Matthew)'),
+(263, 533, 'Line of Perez to David'),
+(263, 566, 'Genealogy of Jesus (Matthew)'),
+(264, 533, 'Line of Perez to David');
+
+INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
+(264, 566, 'Genealogy of Jesus (Matthew)'),
+(265, 533, 'Line of Perez to David'),
+(265, 566, 'Genealogy of Jesus (Matthew)'),
+(266, 525, NULL),
+(266, 533, NULL),
+(266, 566, 'Genealogy of Jesus (Matthew)'),
+(267, 567, NULL),
+(268, 568, NULL),
+(269, 569, NULL),
+(269, 570, NULL),
+(270, 571, NULL),
+(271, 572, 'Genealogy of Jesus (Matthew)'),
+(271, 573, 'Genealogy of Jesus (Luke)'),
+(272, 572, 'Genealogy of Jesus (Matthew)'),
+(273, 572, 'Genealogy of Jesus (Matthew)'),
+(274, 572, 'Genealogy of Jesus (Matthew)'),
+(275, 572, 'Genealogy of Jesus (Matthew)'),
+(276, 572, 'Genealogy of Jesus (Matthew)'),
+(277, 572, 'Genealogy of Jesus (Matthew)'),
+(278, 572, 'Genealogy of Jesus (Matthew)'),
+(279, 572, 'Genealogy of Jesus (Matthew)'),
+(280, 572, 'Genealogy of Jesus (Matthew)'),
+(281, 573, 'Genealogy of Jesus (Luke)'),
+(282, 573, 'Genealogy of Jesus (Luke)'),
+(283, 573, 'Genealogy of Jesus (Luke)'),
+(284, 573, 'Genealogy of Jesus (Luke)'),
+(285, 573, 'Genealogy of Jesus (Luke)'),
+(286, 573, 'Genealogy of Jesus (Luke)'),
+(287, 573, 'Genealogy of Jesus (Luke)'),
+(288, 573, 'Genealogy of Jesus (Luke)'),
+(289, 573, 'Genealogy of Jesus (Luke)'),
+(290, 573, 'Genealogy of Jesus (Luke)'),
+(291, 573, 'Genealogy of Jesus (Luke)'),
+(292, 573, 'Genealogy of Jesus (Luke)'),
+(293, 573, 'Genealogy of Jesus (Luke)'),
+(294, 573, 'Genealogy of Jesus (Luke)'),
+(295, 573, 'Genealogy of Jesus (Luke)'),
+(296, 573, 'Genealogy of Jesus (Luke)'),
+(297, 573, 'Genealogy of Jesus (Luke)'),
+(298, 573, 'Genealogy of Jesus (Luke)'),
+(299, 573, 'Genealogy of Jesus (Luke)'),
+(300, 573, 'Genealogy of Jesus (Luke)'),
+(301, 573, 'Genealogy of Jesus (Luke)'),
+(302, 573, 'Genealogy of Jesus (Luke)'),
+(303, 573, 'Genealogy of Jesus (Luke)'),
+(304, 573, 'Genealogy of Jesus (Luke)'),
+(305, 573, 'Genealogy of Jesus (Luke)'),
+(306, 573, 'Genealogy of Jesus (Luke)'),
+(307, 573, 'Genealogy of Jesus (Luke)'),
+(308, 573, 'Genealogy of Jesus (Luke)'),
+(309, 573, 'Genealogy of Jesus (Luke)'),
+(310, 573, 'Genealogy of Jesus (Luke)'),
+(311, 573, 'Genealogy of Jesus (Luke)'),
+(312, 573, 'Genealogy of Jesus (Luke)'),
+(313, 573, 'Genealogy of Jesus (Luke)'),
+(314, 573, 'Genealogy of Jesus (Luke)'),
+(315, 573, 'Genealogy of Jesus (Luke)'),
+(316, 573, 'Genealogy of Jesus (Luke)'),
+(317, 573, 'Genealogy of Jesus (Luke)'),
+(318, 573, 'Genealogy of Jesus (Luke)'),
+(319, 574, 'Named among the brothers of Jesus'),
+(320, 574, 'Named among the brothers of Jesus'),
+(321, 574, 'Named among the brothers of Jesus'),
+(420, 739, 'Shamgar delivers Israel with an ox goad'),
+(440, 762, NULL),
+(441, 762, NULL),
+(442, 764, NULL),
+(443, 763, NULL),
+(444, 763, NULL),
+(445, 763, NULL),
+(446, 763, NULL),
+(447, 763, NULL),
+(448, 765, NULL),
+(449, 179, NULL),
+(450, 766, NULL),
+(451, 34, NULL),
+(451, 767, NULL),
+(452, 760, NULL),
+(470, 811, 'Decree of the census'),
+(471, 812, 'Fifteenth year of Tiberius'),
+(472, 813, 'Famine in the days of Claudius'),
+(472, 814, 'Jews expelled from Rome'),
+(473, 815, 'Paul appeals to Caesar'),
+(497, 816, 'Son of Levi; lived 133 years'),
+(497, 820, 'The Kohathites'' charge over the holy things'),
+(498, 816, 'Married Jochebed; father of Aaron and Moses'),
+(498, 817, 'Father of Aaron, Moses and Miriam'),
+(499, 816, 'Wife of Amram'),
+(499, 817, 'Daughter of Levi, mother of Aaron, Moses and Miriam'),
+(499, 821, 'Hides the infant Moses and nurses him'),
+(500, 818, 'Born in Midian'),
+(500, 819, 'Named for Moses''s years as a stranger'),
+(501, 819, 'Named for God''s deliverance');
+
+-- ============================================================
+-- SCRIPTURE FOR EVENTS (266)
+-- ============================================================
+INSERT INTO event_scripture (event_id, scripture_id) VALUES
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5),
+(6, 6),
+(7, 7),
+(8, 382),
+(9, 383),
+(10, 8),
+(11, 9),
+(12, 384),
+(13, 10),
+(14, 11),
+(15, 12),
+(16, 13),
+(17, 14),
+(18, 385),
+(19, 15),
+(20, 16),
+(21, 17),
+(22, 18),
+(23, 19),
+(24, 386),
+(25, 20),
+(26, 525),
+(27, 22),
+(28, 23),
+(28, 290),
+(29, 24),
+(29, 291),
+(30, 25),
+(30, 292),
+(31, 26),
+(32, 27),
+(33, 28),
+(33, 285),
+(33, 286),
+(34, 29),
+(34, 287),
+(35, 30),
+(35, 283),
+(35, 284),
+(36, 31),
+(36, 527),
+(36, 528),
+(36, 529),
+(37, 32),
+(37, 345),
+(38, 33),
+(39, 34),
+(40, 35),
+(41, 36),
+(42, 37),
+(42, 211),
+(43, 38),
+(43, 238),
+(43, 239),
+(43, 240),
+(44, 39),
+(44, 241),
+(45, 40),
+(45, 242),
+(45, 243),
+(45, 244),
+(46, 41),
+(46, 214),
+(46, 245),
+(46, 246),
+(47, 42),
+(47, 248),
+(47, 249),
+(48, 43),
+(49, 44),
+(50, 45),
+(51, 46),
+(52, 47),
+(53, 48),
+(54, 49),
+(55, 50),
+(55, 530),
+(56, 51),
+(57, 52),
+(58, 100),
+(59, 101),
+(60, 102),
+(61, 103),
+(61, 250),
+(62, 104),
+(62, 251),
+(62, 252),
+(63, 105),
+(63, 253),
+(63, 254),
+(64, 106),
+(64, 255),
+(64, 256),
+(65, 107),
+(66, 108),
+(66, 257);
+
+INSERT INTO event_scripture (event_id, scripture_id) VALUES
+(66, 258),
+(67, 109),
+(67, 259),
+(68, 110),
+(69, 111),
+(69, 260),
+(69, 261),
+(70, 112),
+(70, 262),
+(70, 263),
+(71, 113),
+(71, 264),
+(71, 265),
+(72, 114),
+(72, 266),
+(72, 267),
+(73, 115),
+(74, 116),
+(75, 117),
+(75, 268),
+(75, 269),
+(75, 270),
+(76, 118),
+(76, 271),
+(76, 272),
+(77, 119),
+(77, 273),
+(78, 120),
+(79, 121),
+(79, 274),
+(80, 122),
+(81, 123),
+(81, 275),
+(81, 276),
+(82, 124),
+(82, 277),
+(82, 278),
+(83, 134),
+(84, 125),
+(85, 126),
+(86, 127),
+(87, 128),
+(88, 129),
+(89, 130),
+(89, 135),
+(89, 280),
+(91, 131),
+(91, 281),
+(92, 132),
+(92, 282),
+(93, 133),
+(94, 136),
+(143, 387),
+(143, 388),
+(144, 365),
+(144, 390),
+(145, 391),
+(145, 392),
+(146, 393),
+(147, 394),
+(148, 395),
+(148, 396),
+(149, 397),
+(150, 398),
+(151, 399),
+(152, 400),
+(153, 401),
+(154, 402),
+(155, 403),
+(156, 404),
+(157, 405),
+(158, 99),
+(159, 407),
+(160, 408),
+(161, 409),
+(162, 410),
+(163, 411),
+(164, 412),
+(165, 413),
+(166, 414),
+(167, 415),
+(168, 416),
+(169, 417),
+(170, 418),
+(171, 419),
+(172, 420),
+(173, 421),
+(174, 422),
+(175, 503),
+(176, 504),
+(177, 372),
+(178, 368),
+(179, 505),
+(180, 506),
+(181, 507),
+(182, 508),
+(183, 509),
+(184, 510),
+(185, 511),
+(186, 512);
+
+INSERT INTO event_scripture (event_id, scripture_id) VALUES
+(187, 513),
+(188, 514),
+(189, 515),
+(190, 516),
+(191, 517),
+(192, 518),
+(193, 519),
+(194, 520),
+(195, 521),
+(196, 522),
+(197, 523),
+(198, 524),
+(300, 305),
+(300, 306),
+(301, 139),
+(302, 700),
+(303, 701),
+(304, 702),
+(305, 703),
+(306, 704),
+(307, 705),
+(308, 706),
+(308, 707),
+(320, 62),
+(321, 731),
+(322, 732),
+(323, 288),
+(323, 733),
+(324, 734),
+(325, 21),
+(325, 289),
+(326, 162),
+(327, 325),
+(327, 735),
+(328, 736),
+(329, 737),
+(330, 738),
+(340, 343),
+(341, 760),
+(343, 761),
+(360, 355),
+(360, 790),
+(360, 791),
+(361, 354),
+(361, 792),
+(362, 793),
+(363, 236),
+(363, 353),
+(363, 794),
+(364, 795),
+(365, 796),
+(365, 797),
+(365, 798),
+(365, 799),
+(366, 800),
+(366, 801),
+(366, 802),
+(366, 803),
+(366, 804),
+(367, 805),
+(367, 806),
+(367, 807),
+(367, 808),
+(368, 376),
+(371, 809),
+(371, 810);
+
+-- ============================================================
+-- RELATIONSHIPS (parentage lives in people.father_id / mother_id) (165)
+-- ============================================================
+INSERT INTO person_relationships (person_id_1, person_id_2, relationship_type) VALUES
+(5, 58, 'contemporary'),
+(17, 77, 'contemporary'),
+(20, 83, 'contemporary'),
+(41, 137, 'contemporary'),
+(41, 138, 'contemporary'),
+(10, 13, 'mentor'),
+(18, 19, 'mentor'),
+(18, 20, 'mentor'),
+(23, 24, 'mentor'),
+(41, 46, 'mentor'),
+(41, 139, 'mentor'),
+(45, 41, 'mentor'),
+(74, 18, 'mentor'),
+(120, 36, 'mentor'),
+(140, 142, 'mentor'),
+(141, 142, 'mentor'),
+(247, 41, 'mentor'),
+(324, 325, 'mentor'),
+(300, 271, 'parent'),
+(318, 122, 'parent'),
+(6, 57, 'sibling'),
+(7, 60, 'sibling'),
+(8, 59, 'sibling'),
+(9, 63, 'sibling'),
+(9, 64, 'sibling'),
+(9, 65, 'sibling'),
+(9, 162, 'sibling'),
+(9, 163, 'sibling'),
+(9, 164, 'sibling'),
+(9, 165, 'sibling'),
+(9, 166, 'sibling'),
+(9, 167, 'sibling'),
+(9, 168, 'sibling'),
+(9, 169, 'sibling'),
+(9, 170, 'sibling'),
+(10, 11, 'sibling'),
+(10, 12, 'sibling'),
+(11, 12, 'sibling'),
+(21, 82, 'sibling'),
+(21, 204, 'sibling'),
+(21, 281, 'sibling'),
+(37, 144, 'sibling'),
+(37, 319, 'sibling'),
+(37, 320, 'sibling'),
+(37, 321, 'sibling'),
+(40, 128, 'sibling'),
+(42, 43, 'sibling'),
+(49, 160, 'sibling'),
+(49, 161, 'sibling'),
+(53, 54, 'sibling'),
+(53, 55, 'sibling'),
+(54, 55, 'sibling'),
+(61, 62, 'sibling'),
+(63, 64, 'sibling'),
+(63, 65, 'sibling'),
+(63, 162, 'sibling'),
+(63, 163, 'sibling'),
+(63, 164, 'sibling'),
+(63, 165, 'sibling'),
+(63, 166, 'sibling'),
+(63, 167, 'sibling'),
+(63, 168, 'sibling'),
+(63, 169, 'sibling'),
+(63, 170, 'sibling'),
+(64, 65, 'sibling'),
+(64, 162, 'sibling'),
+(64, 163, 'sibling'),
+(64, 164, 'sibling'),
+(64, 165, 'sibling'),
+(64, 166, 'sibling'),
+(64, 167, 'sibling'),
+(64, 168, 'sibling'),
+(64, 169, 'sibling'),
+(64, 170, 'sibling'),
+(65, 162, 'sibling'),
+(65, 163, 'sibling'),
+(65, 164, 'sibling'),
+(65, 165, 'sibling'),
+(65, 166, 'sibling'),
+(65, 167, 'sibling'),
+(65, 168, 'sibling'),
+(65, 169, 'sibling'),
+(65, 170, 'sibling'),
+(82, 204, 'sibling'),
+(82, 281, 'sibling'),
+(83, 84, 'sibling'),
+(83, 199, 'sibling'),
+(84, 199, 'sibling'),
+(92, 93, 'sibling'),
+(101, 102, 'sibling'),
+(123, 124, 'sibling'),
+(123, 243, 'sibling'),
+(124, 243, 'sibling'),
+(144, 319, 'sibling'),
+(144, 320, 'sibling'),
+(144, 321, 'sibling'),
+(160, 161, 'sibling'),
+(162, 163, 'sibling'),
+(162, 164, 'sibling'),
+(162, 165, 'sibling');
+
+INSERT INTO person_relationships (person_id_1, person_id_2, relationship_type) VALUES
+(162, 166, 'sibling'),
+(162, 167, 'sibling'),
+(162, 168, 'sibling'),
+(162, 169, 'sibling'),
+(162, 170, 'sibling'),
+(163, 164, 'sibling'),
+(163, 165, 'sibling'),
+(163, 166, 'sibling'),
+(163, 167, 'sibling'),
+(163, 168, 'sibling'),
+(163, 169, 'sibling'),
+(163, 170, 'sibling'),
+(164, 165, 'sibling'),
+(164, 166, 'sibling'),
+(164, 167, 'sibling'),
+(164, 168, 'sibling'),
+(164, 169, 'sibling'),
+(164, 170, 'sibling'),
+(165, 166, 'sibling'),
+(165, 167, 'sibling'),
+(165, 168, 'sibling'),
+(165, 169, 'sibling'),
+(165, 170, 'sibling'),
+(166, 167, 'sibling'),
+(166, 168, 'sibling'),
+(166, 169, 'sibling'),
+(166, 170, 'sibling'),
+(167, 168, 'sibling'),
+(167, 169, 'sibling'),
+(167, 170, 'sibling'),
+(168, 169, 'sibling'),
+(168, 170, 'sibling'),
+(169, 170, 'sibling'),
+(171, 172, 'sibling'),
+(204, 281, 'sibling'),
+(319, 320, 'sibling'),
+(319, 321, 'sibling'),
+(320, 321, 'sibling'),
+(1, 2, 'spouse'),
+(4, 5, 'spouse'),
+(4, 58, 'spouse'),
+(4, 175, 'spouse'),
+(6, 7, 'spouse'),
+(8, 61, 'spouse'),
+(8, 62, 'spouse'),
+(9, 178, 'spouse'),
+(10, 70, 'spouse'),
+(17, 76, 'spouse'),
+(20, 79, 'spouse'),
+(20, 80, 'spouse'),
+(20, 84, 'spouse'),
+(32, 107, 'spouse'),
+(36, 228, 'spouse'),
+(38, 122, 'spouse'),
+(79, 221, 'spouse'),
+(80, 202, 'spouse'),
+(88, 94, 'spouse'),
+(140, 141, 'spouse'),
+(182, 264, 'spouse'),
+(227, 228, 'spouse'),
+(230, 231, 'spouse'),
+(232, 233, 'spouse'),
+(498, 499, 'spouse'),
+(13, 10, 'successor'),
+(24, 23, 'successor');
+
+-- ============================================================
+-- WHERE EVENTS HAPPENED (191)
+-- ============================================================
+INSERT INTO event_locations (event_id, location_id) VALUES
+(1, 1),
+(2, 1),
+(3, 102),
+(4, 9),
+(5, 2),
+(5, 3),
+(6, 47),
+(7, 7),
+(8, 47),
+(8, 111),
+(9, 47),
+(10, 50),
+(11, 101),
+(12, 5),
+(13, 5),
+(13, 49),
+(14, 5),
+(15, 51),
+(16, 6),
+(17, 55),
+(18, 6),
+(19, 4),
+(20, 22),
+(26, 8),
+(27, 7),
+(28, 7),
+(29, 7),
+(30, 46),
+(31, 108),
+(32, 26),
+(33, 7),
+(34, 7),
+(35, 7),
+(36, 9),
+(38, 7),
+(39, 7),
+(40, 7),
+(41, 106),
+(42, 8),
+(43, 25),
+(45, 7),
+(46, 7),
+(47, 20),
+(47, 105),
+(48, 7),
+(49, 7),
+(50, 12),
+(52, 7),
+(55, 7),
+(56, 15),
+(58, 16),
+(59, 11),
+(60, 17),
+(61, 11),
+(62, 11),
+(64, 11),
+(65, 7),
+(67, 11),
+(68, 19),
+(69, 17),
+(70, 21),
+(72, 11),
+(75, 18),
+(76, 17),
+(77, 23),
+(78, 24),
+(80, 18),
+(81, 117),
+(83, 11),
+(83, 17),
+(84, 7),
+(87, 20),
+(89, 22),
+(91, 7),
+(92, 7),
+(93, 17),
+(94, 25),
+(95, 14),
+(96, 109),
+(98, 112),
+(100, 113),
+(101, 61),
+(102, 112),
+(103, 59),
+(104, 8),
+(105, 62),
+(108, 77),
+(111, 58),
+(112, 78),
+(113, 75),
+(115, 79),
+(116, 114),
+(117, 65),
+(118, 63),
+(119, 67),
+(120, 67),
+(121, 116),
+(122, 68),
+(126, 69),
+(127, 74);
+
+INSERT INTO event_locations (event_id, location_id) VALUES
+(128, 72),
+(133, 71),
+(134, 70),
+(136, 73),
+(137, 110),
+(143, 7),
+(144, 57),
+(145, 7),
+(146, 7),
+(147, 17),
+(149, 7),
+(150, 13),
+(151, 40),
+(152, 40),
+(153, 41),
+(154, 13),
+(155, 14),
+(156, 36),
+(157, 40),
+(158, 29),
+(159, 14),
+(160, 14),
+(161, 14),
+(162, 14),
+(163, 14),
+(164, 36),
+(165, 36),
+(166, 14),
+(167, 7),
+(168, 14),
+(169, 14),
+(170, 14),
+(171, 41),
+(172, 41),
+(173, 41),
+(174, 41),
+(175, 26),
+(176, 27),
+(177, 28),
+(178, 29),
+(179, 13),
+(180, 30),
+(181, 31),
+(182, 32),
+(183, 33),
+(184, 34),
+(185, 35),
+(186, 36),
+(187, 37),
+(188, 38),
+(189, 39),
+(190, 40),
+(191, 41),
+(192, 42),
+(193, 7),
+(194, 29),
+(195, 43),
+(196, 44),
+(197, 45),
+(198, 14),
+(304, 47),
+(305, 48),
+(306, 3),
+(307, 3),
+(308, 5),
+(321, 25),
+(324, 47),
+(325, 47),
+(330, 7),
+(340, 9),
+(341, 9),
+(342, 7),
+(343, 7),
+(360, 10),
+(362, 5),
+(362, 7),
+(362, 8),
+(363, 7),
+(364, 7),
+(365, 7),
+(366, 7),
+(367, 7),
+(368, 7),
+(368, 29),
+(369, 7),
+(370, 14),
+(371, 14),
+(392, 58),
+(393, 41),
+(395, 61),
+(397, 58);
+
+-- ============================================================
+-- JOURNEYS (5)
+-- ============================================================
+INSERT INTO journeys (id, name, description, book_id) VALUES
+(1, 'Book of Acts', 'The spread of the early church from Jerusalem to Rome, following the narrative of Acts.', 44),
+(2, 'Book of Genesis', 'From Creation through the patriarchs — Abraham, Isaac, Jacob, and Joseph — ending with Israel in Egypt.', 1),
+(3, 'Book of Exodus', 'The deliverance of Israel from Egypt, through the wilderness to Mount Sinai and the building of the Tabernacle, then on to Kadesh Barnea and the Jordan.', 2),
+(4, 'Gospel of Luke', 'The life of Jesus from birth through resurrection, following Luke''s orderly account.', 42),
+(5, 'Book of Jonah', 'The prophet Jonah flees from God, is swallowed by a great fish, and ultimately preaches repentance to Nineveh.', 32);
+
+-- ============================================================
+-- JOURNEY STOPS (89)
+-- ============================================================
+INSERT INTO journey_stops (id, journey_id, sort_order, location_id, event_id, label, description, year, chapter) VALUES
+(1, 1, 10, 7, 48, 'Pentecost in Jerusalem', 'The Holy Spirit descends on the apostles; Peter preaches and 3,000 are baptized.', 33, 'Acts 2:1-47'),
+(2, 1, 20, 7, 49, 'Stoning of Stephen', 'Stephen is stoned; persecution scatters believers beyond Jerusalem.', 35, 'Acts 6:8–7:60'),
+(3, 1, 30, 26, 175, 'Philip Preaches in Samaria', 'Philip performs miracles in Samaria; Simon the sorcerer believes.', 35, 'Acts 8:4-25'),
+(4, 1, 40, 27, 176, 'Ethiopian Eunuch Baptized', 'Philip meets an Ethiopian official on the Gaza road and baptizes him.', 35, 'Acts 8:26-40'),
+(5, 1, 50, 12, 50, 'Conversion of Saul', 'Saul encounters Christ on the Damascus road; Ananias restores his sight.', 35, 'Acts 9:1-19'),
+(6, 1, 60, 28, 177, 'Peter Raises Tabitha in Joppa', 'Peter raises the disciple Tabitha (Dorcas) from the dead.', 37, 'Acts 9:36-43'),
+(7, 1, 70, 29, 178, 'Peter and Cornelius in Caesarea', 'Peter receives a vision; the first Gentiles receive the Holy Spirit.', 40, 'Acts 10:1-48'),
+(8, 1, 80, 13, 179, 'Church Established in Antioch', 'Believers first called "Christians" in Antioch; Barnabas and Saul teach.', 43, 'Acts 11:19-30'),
+(9, 1, 90, 30, 180, 'Barnabas and Saul in Cyprus', 'Paul blinds the sorcerer Bar-Jesus; proconsul Sergius Paulus believes.', 47, 'Acts 13:4-12'),
+(10, 1, 100, 31, 181, 'Paul Preaches in Pisidian Antioch', 'Paul''s sermon in the synagogue; many believe but Jews stir up opposition.', 47, 'Acts 13:14-52'),
+(11, 1, 110, 32, 182, 'Iconium — Belief and Opposition', 'Paul and Barnabas preach; the city divides; they flee before stoning.', 48, 'Acts 14:1-7'),
+(12, 1, 120, 33, 183, 'Lystra — Healing and Stoning', 'Paul heals a lame man; mistaken for gods; then stoned and left for dead.', 48, 'Acts 14:8-20'),
+(13, 1, 130, 34, 184, 'Derbe — Many Disciples', 'Paul and Barnabas make many disciples and begin the return journey.', 48, 'Acts 14:20-21'),
+(14, 1, 140, 7, 52, 'Council of Jerusalem', 'Church leaders decide Gentiles need not be circumcised.', 49, 'Acts 15:1-35'),
+(15, 1, 150, 35, 185, 'Macedonian Vision at Troas', 'Paul receives a vision: "Come over to Macedonia and help us."', 50, 'Acts 16:8-10'),
+(16, 1, 160, 36, 186, 'Lydia Converted in Philippi', 'Lydia believes; Paul and Silas imprisoned; jailer converted.', 50, 'Acts 16:11-40'),
+(17, 1, 170, 37, 187, 'Paul in Thessalonica', 'Paul reasons in the synagogue; accused of "turning the world upside down."', 50, 'Acts 17:1-9'),
+(18, 1, 180, 38, 188, 'Noble-Minded Bereans', 'The Bereans examine the Scriptures daily to verify Paul''s message.', 50, 'Acts 17:10-15'),
+(19, 1, 190, 39, 189, 'Paul on the Areopagus in Athens', 'Paul preaches about the "Unknown God" on Mars Hill.', 51, 'Acts 17:16-34'),
+(20, 1, 200, 40, 190, 'Paul in Corinth — 18 Months', 'Paul stays with Aquila and Priscilla; Gallio dismisses charges.', 51, 'Acts 18:1-17'),
+(21, 1, 210, 41, 191, 'Paul in Ephesus — 2 Years', 'Extraordinary miracles; burning of occult scrolls; riot of Demetrius.', 54, 'Acts 19:1-41'),
+(22, 1, 220, 42, 192, 'Farewell to Ephesian Elders at Miletus', 'Paul''s emotional farewell: "I have not coveted anyone''s silver or gold."', 58, 'Acts 20:17-38'),
+(23, 1, 230, 7, 193, 'Paul Arrested in Jerusalem', 'Paul seized in the temple; transferred to Roman custody.', 58, 'Acts 21:27–23:10'),
+(24, 1, 240, 29, 194, 'Paul''s Trial before Felix and Festus', 'Paul held in Caesarea for two years; appeals to Caesar.', 58, 'Acts 23:23–26:32'),
+(25, 1, 250, 115, 195, 'Storm and Fair Havens of Crete', 'Paul warns against sailing; a violent storm batters the ship 14 days.', 60, 'Acts 27:7-44'),
+(26, 1, 260, 44, 196, 'Shipwreck on Malta', 'All 276 aboard survive; Paul bitten by a viper but unharmed; heals the sick.', 60, 'Acts 27:39–28:10'),
+(27, 1, 270, 45, 197, 'Landing at Puteoli', 'Paul welcomed by believers at the Italian port.', 61, 'Acts 28:13-14'),
+(28, 1, 280, 14, 198, 'Paul Arrives in Rome', 'Paul preaches the kingdom of God under house arrest for two years.', 61, 'Acts 28:16-31'),
+(29, 2, 10, 1, 1, 'Creation', 'God creates the heavens, the earth, and mankind in His image.', -4004, 'Genesis 1:1–2:25'),
+(30, 2, 20, 1, 2, 'The Fall', 'Adam and Eve disobey God and are expelled from the Garden of Eden.', -4004, 'Genesis 3:1-24'),
+(31, 2, 30, 102, 3, 'The Flood', 'God judges the earth with a flood; Noah and his family are saved on the ark.', -2349, 'Genesis 6:1–9:29'),
+(32, 2, 40, 9, 4, 'Tower of Babel', 'Humanity is scattered when God confuses their language at the tower.', -2247, 'Genesis 11:1-9'),
+(33, 2, 50, 2, 5, 'Call of Abraham', 'God appears to Abram in Mesopotamia before he settles in Haran (Acts 7:2-4) and tells him to leave for a land He will show him (Gen 12:1-3). Ussher dates his departure from Haran to 1921 BC.', -1921, 'Genesis 11:31–12:3; Acts 7:2-4'),
+(34, 2, 60, 3, NULL, 'Abraham in Haran', 'Abram settles in Haran with Terah; after Terah''s death, he departs for Canaan.', -1921, 'Genesis 11:31–12:4'),
+(35, 2, 70, 46, NULL, 'Abraham at Shechem', 'Abram arrives in Canaan; God promises the land. Abraham builds an altar.', -1920, 'Genesis 12:6-7'),
+(37, 2, 80, 5, NULL, 'Abram in Egypt', 'Famine drives Abram to Egypt; Pharaoh takes Sarai but is plagued.', -1919, 'Genesis 12:10-20'),
+(36, 2, 90, 47, 6, 'Abrahamic Covenant at Hebron', 'God makes a covenant with Abraham at the oaks of Mamre, promising countless descendants.', -1913, 'Genesis 13:18; 15:1-21'),
+(39, 2, 100, 47, 9, 'Covenant of Circumcision', 'God establishes circumcision as the sign of His covenant with Abraham.', -1897, 'Genesis 17:1-27'),
+(40, 2, 110, 47, 8, 'Destruction of Sodom and Gomorrah', 'Abraham intercedes; God destroys the cities but Lot escapes.', -1897, 'Genesis 18:1–19:38'),
+(38, 2, 120, 48, NULL, 'Hagar and Ishmael at Beersheba', 'Hagar and Ishmael sent away; God provides a well in the wilderness.', -1892, 'Genesis 21:8-21'),
+(41, 2, 130, 7, 7, 'Binding of Isaac on Mount Moriah', 'Abraham''s faith tested; God provides a ram as a substitute.', -1872, 'Genesis 22:1-19'),
+(42, 2, 140, 48, NULL, 'Isaac Settles at Beersheba', 'Driven by famine and strife from Gerar, Isaac settles at Beersheba, where God renews the covenant and Abimelech makes peace with him. Jacob and Esau had been born twenty years after his marriage (Gen 25:19-26).', -1804, 'Genesis 26:23-33'),
+(100, 2, 150, 100, NULL, 'Jacob''s Dream at Bethel', 'Fleeing Esau, Jacob dreams of a ladder reaching to heaven and God renews to him the promise made to Abraham.', -1760, 'Genesis 28:10-22'),
+(43, 2, 160, 3, NULL, 'Jacob Flees to Haran', 'Jacob leaves home, reaches Haran and serves Laban for twenty years, marrying Leah and Rachel (Gen 29-31).', -1760, 'Genesis 27:1–31:55'),
+(44, 2, 170, 50, 10, 'Jacob Wrestles God at Peniel', 'Jacob wrestles with God and is renamed Israel.', -1739, 'Genesis 32:22-32'),
+(45, 2, 180, 46, NULL, 'Jacob Returns to Shechem', 'Jacob returns to Canaan and buys land at Shechem; Dinah incident.', -1738, 'Genesis 33:18–34:31'),
+(46, 2, 190, 47, NULL, 'Jacob Returns to Hebron', 'Jacob comes to his father Isaac at Mamre (Hebron); Rachel has died near Bethlehem on the way (Gen 35:16-20). Isaac dies at 180 and is buried by his sons (Gen 35:28-29).', -1732, 'Genesis 35:16-29'),
+(47, 2, 200, 101, 11, 'Joseph Sold into Slavery', 'Joseph''s brothers sell him to traders headed for Egypt.', -1728, 'Genesis 37:1-36'),
+(48, 2, 210, 5, 12, 'Joseph Made Ruler of Egypt', 'After interpreting Pharaoh''s dreams, Joseph becomes second-in-command.', -1715, 'Genesis 41:1-57'),
+(49, 2, 220, 49, 13, 'Israel Enters Goshen', 'Jacob''s family (70 people) settles in Goshen at Pharaoh''s invitation.', -1706, 'Genesis 46:1–47:31'),
+(50, 3, 10, 49, NULL, 'Israel Enslaved in Goshen', 'A new Pharaoh arises who does not know Joseph; Israel is enslaved and multiplies.', -1571, 'Exodus 1:1-22'),
+(51, 3, 20, 5, 14, 'The Ten Plagues', 'Moses confronts Pharaoh; God sends ten plagues upon Egypt, ending with the death of every firstborn.', -1491, 'Exodus 7:1–12:36'),
+(52, 3, 30, 49, NULL, 'The Passover and Departure', 'Israel keeps the first Passover and sets out from Rameses with great wealth.', -1491, 'Exodus 12:1-42'),
+(53, 3, 40, 51, 15, 'Crossing the Red Sea', 'God parts the sea; Israel passes through on dry ground; Pharaoh''s army is destroyed.', -1491, 'Exodus 14:1-31'),
+(54, 3, 50, 52, NULL, 'Bitter Waters of Marah', 'Israel''s first crisis: bitter water is made sweet by a tree God shows Moses.', -1491, 'Exodus 15:22-25'),
+(55, 3, 60, 53, NULL, 'Rest at Elim', 'Israel camps at an oasis with twelve springs and seventy palm trees.', -1491, 'Exodus 15:27'),
+(56, 3, 70, 54, NULL, 'Water from the Rock at Rephidim', 'God provides water from a rock; Israel defeats Amalek while Moses'' hands are raised.', -1491, 'Exodus 17:1-16'),
+(57, 3, 80, 6, 16, 'Giving of the Law at Sinai', 'God descends on Mount Sinai in fire and thunder; gives the Ten Commandments and the Law.', -1491, 'Exodus 19:1–24:18'),
+(58, 3, 90, 6, NULL, 'The Golden Calf', 'While Moses is on the mountain, Aaron makes a golden calf; God''s anger and Moses'' intercession.', -1491, 'Exodus 32:1-35'),
+(59, 3, 100, 6, 18, 'The Tabernacle Completed', 'Israel builds the Tabernacle according to God''s pattern; the glory of the Lord fills it.', -1490, 'Exodus 35:1–40:38'),
+(60, 3, 110, 55, 17, 'Wilderness Wandering — Kadesh Barnea', 'The twelve spies return; ten give a bad report. Israel is condemned to wander 40 years.', -1490, 'Numbers 13:1–14:45'),
+(61, 3, 120, 25, NULL, 'Arrival at the Jordan', 'After 40 years, the new generation reaches the Jordan River opposite the Promised Land.', -1451, 'Deuteronomy 34:1-12; Joshua 1:1-18'),
+(62, 4, 10, 7, NULL, 'Zechariah in the Temple', 'The angel Gabriel announces the birth of John the Baptist to the priest Zechariah.', -6, 'Luke 1:5-25'),
+(63, 4, 20, 10, 360, 'Annunciation in Nazareth', 'Gabriel tells the virgin Mary she will bear the Son of God.', -5, 'Luke 1:26-38'),
+(64, 4, 30, 8, 42, 'Birth of Jesus in Bethlehem', 'Jesus is born in a manger; angels announce the birth to shepherds.', -5, 'Luke 2:1-20'),
+(65, 4, 40, 7, 363, 'Presentation at the Temple', 'Mary and Joseph present Jesus at the Temple; Simeon and Anna prophesy.', -5, 'Luke 2:22-40'),
+(66, 4, 50, 10, 364, 'The Boy Jesus in Nazareth', 'Jesus grows up in Nazareth; at age 12 astounds the teachers in the Temple.', 8, 'Luke 2:39-52'),
+(67, 4, 60, 25, 43, 'Baptism of Jesus at the Jordan', 'Jesus is baptized by John; the Holy Spirit descends; the Father speaks.', 29, 'Luke 3:21-22'),
+(68, 4, 70, 10, NULL, 'Rejected at Nazareth', 'Jesus reads Isaiah in the synagogue; his hometown tries to throw him off a cliff.', 31, 'Luke 4:16-30'),
+(69, 4, 80, 11, 61, 'Ministry Begins in Capernaum', 'Jesus drives out a demon in the synagogue and heals Peter''s mother-in-law.', 31, 'Luke 4:31-41'),
+(70, 4, 90, 17, 60, 'Great Catch of Fish', 'Jesus calls Simon Peter, James, and John after a miraculous catch of fish.', 31, 'Luke 5:1-11'),
+(71, 4, 100, 19, 68, 'Raising the Widow''s Son at Nain', 'Jesus raises a widow''s only son from the dead; "God has visited His people."', 31, 'Luke 7:11-17'),
+(72, 4, 110, 17, 69, 'Calming the Storm', 'Jesus rebukes the wind and waves; the disciples ask, "Who is this?"', 31, 'Luke 8:22-25'),
+(73, 4, 120, 21, 70, 'Healing of the Gerasene Demoniac', 'Jesus casts Legion out of a man among the tombs on the eastern shore; Matthew places it at Gadara, Mark and Luke at the country of the Gerasenes.', 31, 'Luke 8:26-39'),
+(74, 4, 130, 18, 75, 'Feeding of the 5,000 near Bethsaida', 'Jesus feeds 5,000 men with five loaves and two fish.', 32, 'Luke 9:10-17'),
+(75, 4, 140, 22, NULL, 'The Good Samaritan — Road to Jericho', 'Jesus tells the parable of the Good Samaritan to a lawyer''s question.', 32, 'Luke 10:25-37'),
+(76, 4, 150, 20, NULL, 'Mary and Martha in Bethany', 'Martha serves while Mary sits at Jesus'' feet; "Mary has chosen the good portion."', 32, 'Luke 10:38-42'),
+(77, 4, 160, 22, 89, 'Healing of Blind Bartimaeus', 'Jesus heals a blind man near Jericho; Zacchaeus believes.', 33, 'Luke 18:35–19:10'),
+(78, 4, 170, 7, 45, 'Crucifixion in Jerusalem', 'Jesus is crucified at Golgotha; "Father, forgive them, for they know not what they do."', 33, 'Luke 23:1-56'),
+(79, 4, 180, 7, 46, 'The Empty Tomb', 'Women find the tomb empty; angels declare, "He is not here; He has risen!"', 33, 'Luke 24:1-12'),
+(80, 4, 190, 57, NULL, 'Road to Emmaus', 'The risen Jesus walks with two disciples; revealed in the breaking of bread.', 33, 'Luke 24:13-35'),
+(81, 4, 200, 20, 47, 'Ascension near Jerusalem', 'Jesus blesses the disciples and is taken up into heaven near Bethany.', 33, 'Luke 24:50-53'),
+(82, 5, 10, 104, NULL, 'God''s Call to Jonah', 'The word of the Lord comes to Jonah (the text names no place; his home was Gath-hepher): "Go to Nineveh, that great city, and cry out against it."', -785, 'Jonah 1:1-2'),
+(83, 5, 20, 28, NULL, 'Jonah Flees to Joppa', 'Instead of obeying, Jonah goes down to Joppa and boards a ship bound for Tarshish — away from God.', -785, 'Jonah 1:3'),
+(84, 5, 30, 103, NULL, 'The Great Storm at Sea', 'God hurls a great wind; the sailors cast lots; Jonah confesses and is thrown overboard.', -785, 'Jonah 1:4-16'),
+(85, 5, 40, 103, NULL, 'Swallowed by the Great Fish', 'God appoints a great fish to swallow Jonah. He prays from its belly for three days and nights.', -785, 'Jonah 1:17–2:10'),
+(86, 5, 50, 56, NULL, 'Jonah Preaches in Nineveh', 'Jonah walks through the great city crying, "Yet forty days, and Nineveh shall be overthrown!"', -785, 'Jonah 3:1-4'),
+(87, 5, 60, 56, NULL, 'Nineveh Repents', 'The king and all the people repent in sackcloth and ashes; God relents from disaster.', -785, 'Jonah 3:5-10'),
+(88, 5, 70, 56, NULL, 'Jonah''s Anger and the Vine', 'Jonah is angry that God showed mercy. God teaches him compassion through a vine and a worm.', -785, 'Jonah 4:1-11');
+
+-- ============================================================
+-- WHO TRAVELLED (45)
+-- ============================================================
 INSERT INTO journey_people (journey_id, person_id) VALUES
--- Acts journey (id=1): all major figures who travel through it
-(1, 40), (1, 41), (1, 44), (1, 45), (1, 47), (1, 137), (1, 138),
-(1, 140), (1, 141), (1, 245), (1, 246), (1, 249), (1, 250), (1, 251),
-(1, 256), (1, 257);
-
--- ── Genesis Journey ──────────────────────────────────────────
-INSERT INTO journeys (name, description, book_id) VALUES
-('Book of Genesis', 'From Creation through the patriarchs — Abraham, Isaac, Jacob, and Joseph — ending with Israel in Egypt.', 1);
-
-INSERT INTO journey_stops (journey_id, sort_order, location_id, event_id, label, description, year, chapter) VALUES
--- Creation & Early Humanity
-(2, 10, 2, 1, 'Creation', 'God creates the heavens, the earth, and mankind in His image.', -4004, 'Genesis 1:1–2:25'),
-(2, 20, 2, 2, 'The Fall', 'Adam and Eve disobey God and are expelled from the Garden of Eden.', -4004, 'Genesis 3:1-24'),
-(2, 30, 2, 3, 'The Flood', 'God judges the earth with a flood; Noah and his family are saved on the ark.', -2349, 'Genesis 6:1–9:29'),
-(2, 40, 2, 4, 'Tower of Babel', 'Humanity is scattered when God confuses their language at the tower.', -2247, 'Genesis 11:1-9'),
--- Abraham Cycle
-(2, 50, 2, 5, 'Call of Abraham in Ur', 'God calls Abram to leave Ur and go to a land He will show him.', -1921, 'Genesis 12:1-3'),
-(2, 60, 3, NULL, 'Abraham in Haran', 'Abram settles in Haran with Terah; after Terah''s death, he departs for Canaan.', -1921, 'Genesis 11:31–12:4'),
-(2, 70, 46, NULL, 'Abraham at Shechem', 'Abram arrives in Canaan; God promises the land. Abraham builds an altar.', -1920, 'Genesis 12:6-7'),
-(2, 80, 47, 6, 'Abrahamic Covenant at Hebron', 'God makes a covenant with Abraham at the oaks of Mamre, promising countless descendants.', -1913, 'Genesis 13:18; 15:1-21'),
-(2, 90, 5, NULL, 'Abram in Egypt', 'Famine drives Abram to Egypt; Pharaoh takes Sarai but is plagued.', -1919, 'Genesis 12:10-20'),
-(2, 100, 48, NULL, 'Hagar and Ishmael at Beersheba', 'Hagar and Ishmael sent away; God provides a well in the wilderness.', -1907, 'Genesis 21:8-21'),
-(2, 110, 8, 9, 'Covenant of Circumcision', 'God establishes circumcision as the sign of His covenant with Abraham.', -1897, 'Genesis 17:1-27'),
-(2, 120, 47, 8, 'Destruction of Sodom and Gomorrah', 'Abraham intercedes; God destroys the cities but Lot escapes.', -1897, 'Genesis 18:1–19:38'),
-(2, 130, 7, 7, 'Binding of Isaac on Mount Moriah', 'Abraham''s faith tested; God provides a ram as a substitute.', -1872, 'Genesis 22:1-19'),
--- Jacob Cycle
-(2, 140, 48, NULL, 'Isaac and Rebekah at Beersheba', 'Isaac settles at Beersheba; Jacob and Esau are born.', -1837, 'Genesis 25:19-26; 26:23-33'),
-(2, 150, 3, NULL, 'Jacob Flees to Haran', 'Jacob flees Esau''s anger; dreams of a ladder to heaven at Bethel; serves Laban 20 years.', -1760, 'Genesis 27:1–31:55'),
-(2, 160, 50, 10, 'Jacob Wrestles God at Peniel', 'Jacob wrestles with God and is renamed Israel.', -1739, 'Genesis 32:22-32'),
-(2, 170, 46, NULL, 'Jacob Returns to Shechem', 'Jacob returns to Canaan and buys land at Shechem; Dinah incident.', -1738, 'Genesis 33:18–34:31'),
-(2, 180, 47, NULL, 'Jacob Settles in Hebron', 'Jacob returns to Mamre/Hebron; Rachel dies near Bethlehem; Isaac dies.', -1716, 'Genesis 35:27-29'),
--- Joseph Cycle
-(2, 190, 47, 11, 'Joseph Sold into Slavery', 'Joseph''s brothers sell him to traders headed for Egypt.', -1728, 'Genesis 37:1-36'),
-(2, 200, 5, 12, 'Joseph Made Ruler of Egypt', 'After interpreting Pharaoh''s dreams, Joseph becomes second-in-command.', -1715, 'Genesis 41:1-57'),
-(2, 210, 49, 13, 'Israel Enters Goshen', 'Jacob''s family (70 people) settles in Goshen at Pharaoh''s invitation.', -1706, 'Genesis 46:1–47:31');
-
--- ── Exodus Journey ───────────────────────────────────────────
-INSERT INTO journeys (name, description, book_id) VALUES
-('Book of Exodus', 'The deliverance of Israel from Egypt through the wilderness to Mount Sinai and the building of the Tabernacle.', 2);
-
-INSERT INTO journey_stops (journey_id, sort_order, location_id, event_id, label, description, year, chapter) VALUES
-(3, 10, 49, NULL, 'Israel Enslaved in Goshen', 'A new Pharaoh arises who does not know Joseph; Israel is enslaved and multiplies.', -1571, 'Exodus 1:1-22'),
-(3, 20, 5, 14, 'The Ten Plagues', 'Moses confronts Pharaoh; God sends ten plagues upon Egypt, ending with the death of every firstborn.', -1491, 'Exodus 7:1–12:36'),
-(3, 30, 49, NULL, 'The Passover and Departure', 'Israel celebrates the first Passover and departs Egypt with great wealth.', -1491, 'Exodus 12:1-42'),
-(3, 40, 51, 15, 'Crossing the Red Sea', 'God parts the sea; Israel passes through on dry ground; Pharaoh''s army is destroyed.', -1491, 'Exodus 14:1-31'),
-(3, 50, 52, NULL, 'Bitter Waters of Marah', 'Israel''s first crisis: bitter water is made sweet by a tree God shows Moses.', -1491, 'Exodus 15:22-25'),
-(3, 60, 53, NULL, 'Rest at Elim', 'Israel camps at an oasis with twelve springs and seventy palm trees.', -1491, 'Exodus 15:27'),
-(3, 70, 54, NULL, 'Water from the Rock at Rephidim', 'God provides water from a rock; Israel defeats Amalek while Moses'' hands are raised.', -1491, 'Exodus 17:1-16'),
-(3, 80, 6, 16, 'Giving of the Law at Sinai', 'God descends on Mount Sinai in fire and thunder; gives the Ten Commandments and the Law.', -1491, 'Exodus 19:1–24:18'),
-(3, 90, 6, NULL, 'The Golden Calf', 'While Moses is on the mountain, Aaron makes a golden calf; God''s anger and Moses'' intercession.', -1491, 'Exodus 32:1-35'),
-(3, 100, 6, 18, 'The Tabernacle Completed', 'Israel builds the Tabernacle according to God''s pattern; the glory of the Lord fills it.', -1490, 'Exodus 35:1–40:38'),
-(3, 110, 55, 17, 'Wilderness Wandering — Kadesh Barnea', 'The twelve spies return; ten give a bad report. Israel is condemned to wander 40 years.', -1490, 'Numbers 13:1–14:45'),
-(3, 120, 25, NULL, 'Arrival at the Jordan', 'After 40 years, the new generation reaches the Jordan River opposite the Promised Land.', -1451, 'Deuteronomy 34:1-12; Joshua 1:1-18');
-
--- ── Gospel of Luke Journey ───────────────────────────────────
-INSERT INTO journeys (name, description, book_id) VALUES
-('Gospel of Luke', 'The life of Jesus from birth through resurrection, following Luke''s orderly account.', 42);
-
-INSERT INTO journey_stops (journey_id, sort_order, location_id, event_id, label, description, year, chapter) VALUES
-(4, 10, 7, NULL, 'Zechariah in the Temple', 'The angel Gabriel announces the birth of John the Baptist to the priest Zechariah.', -6, 'Luke 1:5-25'),
-(4, 20, 10, NULL, 'Annunciation in Nazareth', 'Gabriel tells the virgin Mary she will bear the Son of God.', -5, 'Luke 1:26-38'),
-(4, 30, 8, 42, 'Birth of Jesus in Bethlehem', 'Jesus is born in a manger; angels announce the birth to shepherds.', -5, 'Luke 2:1-20'),
-(4, 40, 7, NULL, 'Presentation at the Temple', 'Mary and Joseph present Jesus at the Temple; Simeon and Anna prophesy.', -5, 'Luke 2:22-40'),
-(4, 50, 10, NULL, 'The Boy Jesus in Nazareth', 'Jesus grows up in Nazareth; at age 12 astounds the teachers in the Temple.', 8, 'Luke 2:39-52'),
-(4, 60, 25, 43, 'Baptism of Jesus at the Jordan', 'Jesus is baptized by John; the Holy Spirit descends; the Father speaks.', 26, 'Luke 3:21-22'),
-(4, 70, 10, NULL, 'Rejected at Nazareth', 'Jesus reads Isaiah in the synagogue; his hometown tries to throw him off a cliff.', 27, 'Luke 4:16-30'),
-(4, 80, 11, 61, 'Ministry Begins in Capernaum', 'Jesus drives out a demon in the synagogue and heals Peter''s mother-in-law.', 27, 'Luke 4:31-41'),
-(4, 90, 17, 60, 'Great Catch of Fish', 'Jesus calls Simon Peter, James, and John after a miraculous catch of fish.', 27, 'Luke 5:1-11'),
-(4, 100, 19, 68, 'Raising the Widow''s Son at Nain', 'Jesus raises a widow''s only son from the dead; "God has visited His people."', 28, 'Luke 7:11-17'),
-(4, 110, 17, 69, 'Calming the Storm', 'Jesus rebukes the wind and waves; the disciples ask, "Who is this?"', 28, 'Luke 8:22-25'),
-(4, 120, 21, 70, 'Healing of the Gerasene Demoniac', 'Jesus casts Legion out of a man among the tombs on the eastern shore.', 28, 'Luke 8:26-39'),
-(4, 130, 18, 75, 'Feeding of the 5,000 near Bethsaida', 'Jesus feeds 5,000 men with five loaves and two fish.', 29, 'Luke 9:10-17'),
-(4, 140, 26, NULL, 'The Good Samaritan — Road to Jericho', 'Jesus tells the parable of the Good Samaritan to a lawyer''s question.', 30, 'Luke 10:25-37'),
-(4, 150, 20, NULL, 'Mary and Martha in Bethany', 'Martha serves while Mary sits at Jesus'' feet; "Mary has chosen the good portion."', 30, 'Luke 10:38-42'),
-(4, 160, 22, 89, 'Healing of Blind Bartimaeus', 'Jesus heals a blind man near Jericho; Zacchaeus believes.', 33, 'Luke 18:35–19:10'),
-(4, 170, 7, 45, 'Crucifixion in Jerusalem', 'Jesus is crucified at Golgotha; "Father, forgive them, for they know not what they do."', 33, 'Luke 23:1-56'),
-(4, 180, 7, 46, 'The Empty Tomb', 'Women find the tomb empty; angels declare, "He is not here; He has risen!"', 33, 'Luke 24:1-12'),
-(4, 190, 57, NULL, 'Road to Emmaus', 'The risen Jesus walks with two disciples; revealed in the breaking of bread.', 33, 'Luke 24:13-35'),
-(4, 200, 7, 47, 'Ascension near Jerusalem', 'Jesus blesses the disciples and is taken up into heaven near Bethany.', 33, 'Luke 24:50-53');
-
--- ── Book of Jonah Journey ────────────────────────────────────
-INSERT INTO journeys (name, description, book_id) VALUES
-('Book of Jonah', 'The prophet Jonah flees from God, is swallowed by a great fish, and ultimately preaches repentance to Nineveh.', 32);
-
-INSERT INTO journey_stops (journey_id, sort_order, location_id, event_id, label, description, year, chapter) VALUES
-(5, 10, 7, NULL, 'God''s Call to Jonah', 'The word of the Lord comes to Jonah: "Go to Nineveh, that great city, and cry out against it."', -785, 'Jonah 1:1-2'),
-(5, 20, 28, NULL, 'Jonah Flees to Joppa', 'Instead of obeying, Jonah goes down to Joppa and boards a ship bound for Tarshish — away from God.', -785, 'Jonah 1:3'),
-(5, 30, 17, NULL, 'The Great Storm at Sea', 'God hurls a great wind; the sailors cast lots; Jonah confesses and is thrown overboard.', -785, 'Jonah 1:4-16'),
-(5, 40, 17, NULL, 'Swallowed by the Great Fish', 'God appoints a great fish to swallow Jonah. He prays from its belly for three days and nights.', -785, 'Jonah 1:17–2:10'),
-(5, 50, 56, NULL, 'Jonah Preaches in Nineveh', 'Jonah walks through the great city crying, "Yet forty days, and Nineveh shall be overthrown!"', -785, 'Jonah 3:1-4'),
-(5, 60, 56, NULL, 'Nineveh Repents', 'The king and all the people repent in sackcloth and ashes; God relents from disaster.', -785, 'Jonah 3:5-10'),
-(5, 70, 56, NULL, 'Jonah''s Anger and the Vine', 'Jonah is angry that God showed mercy. God teaches him compassion through a vine and a worm.', -785, 'Jonah 4:1-11');
-
--- ── Journey membership for the remaining book journeys ─────────────
--- journey_people makes every stop of a journey visible on a person's map
--- view. Only Acts (journey 1) was populated originally, which left Moses
--- with two lonely pins. Journey IDs: 2=Genesis, 3=Exodus, 4=Luke, 5=Jonah.
--- People: Abraham=4, Isaac=6, Jacob=8, Joseph=9, Moses=10, Aaron=11,
---         Joshua=13, Jesus=37, Mary=38, Jonah=112.
-INSERT INTO journey_people (journey_id, person_id) VALUES
-(2, 4), (2, 6), (2, 8), (2, 9),
-(3, 10), (3, 11), (3, 13),
-(4, 37), (4, 38),
+(1, 40),
+(1, 41),
+(1, 44),
+(1, 45),
+(1, 46),
+(1, 47),
+(1, 137),
+(1, 138),
+(1, 140),
+(1, 141),
+(1, 142),
+(1, 244),
+(1, 245),
+(1, 246),
+(1, 248),
+(1, 249),
+(1, 250),
+(1, 251),
+(1, 255),
+(1, 256),
+(1, 257),
+(2, 1),
+(2, 3),
+(2, 4),
+(2, 5),
+(2, 6),
+(2, 8),
+(2, 9),
+(3, 10),
+(3, 11),
+(3, 12),
+(3, 13),
+(4, 37),
+(4, 38),
+(4, 39),
+(4, 122),
+(4, 124),
+(4, 147),
+(4, 229),
+(4, 230),
+(4, 231),
+(4, 240),
+(4, 242),
+(4, 243),
 (5, 112);
+
+COMMIT;

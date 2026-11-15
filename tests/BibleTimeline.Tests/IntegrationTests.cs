@@ -478,7 +478,7 @@ public class LineageEndpointsTests : IClassFixture<WebApplicationFactory<Program
         Assert.NotNull(lineage);
         Assert.Equal("Jesus", lineage.Subject.Name);
         Assert.Contains(lineage.Ancestors, a => a.Name == "Joseph of Nazareth");
-        Assert.Contains(lineage.Ancestors, a => a.Name == "Mary");
+        Assert.Contains(lineage.Ancestors, a => a.Name == "Mary, mother of Jesus");
     }
 
     // ── Multi-generation ancestors ────────────────────────────
@@ -517,12 +517,28 @@ public class LineageEndpointsTests : IClassFixture<WebApplicationFactory<Program
     [Fact]
     public async Task GetLineage_Jesus_HasBrotherJames()
     {
-        // Jesus (id=37) and James brother of Jesus (id=144) share father_id=122 and mother_id=38
+        // The brothers of Jesus (Mark 6:3) are linked to him by 'sibling' rows in
+        // person_relationships, not by shared father_id/mother_id: traditions differ on
+        // whether they are full brothers, half-brothers or cousins. The lineage endpoint
+        // must still surface them as siblings.
         var lineage = await _client.GetFromJsonAsync<LineageDto>("/api/lineage/37");
 
         Assert.NotNull(lineage);
         Assert.NotEmpty(lineage.Siblings);
-        Assert.Contains(lineage.Siblings, s => s.Name == "James brother of Jesus");
+        var james = lineage.Siblings.FirstOrDefault(s => s.Name == "James, brother of Jesus");
+        Assert.NotNull(james);
+        Assert.Null(james.FatherId);
+        Assert.Null(james.MotherId);
+    }
+
+    [Fact]
+    public async Task GetLineage_BrotherOfJesus_HasJesusAsSibling()
+    {
+        // Sibling rows are stored once (Jesus -> brother) but the relationship is symmetric.
+        var lineage = await _client.GetFromJsonAsync<LineageDto>("/api/lineage/144");
+
+        Assert.NotNull(lineage);
+        Assert.Contains(lineage.Siblings, s => s.Id == 37 && s.Name == "Jesus");
     }
 
     [Fact]
@@ -601,10 +617,15 @@ public class LineageEndpointsTests : IClassFixture<WebApplicationFactory<Program
         var lineage = await _client.GetFromJsonAsync<LineageDto>("/api/lineage/37");
 
         Assert.NotNull(lineage);
-        Assert.Contains(lineage.Siblings, s => s.Name == "James brother of Jesus");
-        Assert.Contains(lineage.Siblings, s => s.Name == "Joses");
-        Assert.Contains(lineage.Siblings, s => s.Name == "Simon");
-        Assert.Contains(lineage.Siblings, s => s.Name == "Judas");
+        // Reachable as siblings through person_relationships; none has a recorded father or mother.
+        var expected = new[] { "James, brother of Jesus", "Joses, brother of Jesus", "Simon, brother of Jesus", "Jude, brother of Jesus" };
+        foreach (var name in expected)
+        {
+            var brother = lineage.Siblings.FirstOrDefault(s => s.Name == name);
+            Assert.True(brother != null, $"{name} should be a sibling of Jesus");
+            Assert.Null(brother!.FatherId);
+            Assert.Null(brother.MotherId);
+        }
         Assert.Equal(4, lineage.Siblings.Count);
     }
 
@@ -724,7 +745,7 @@ public class LineageEndpointsTests : IClassFixture<WebApplicationFactory<Program
         var lineage = await _client.GetFromJsonAsync<LineageDto>("/api/lineage/37");
 
         Assert.NotNull(lineage);
-        var mary = lineage.Ancestors.FirstOrDefault(a => a.Name == "Mary");
+        var mary = lineage.Ancestors.FirstOrDefault(a => a.Name == "Mary, mother of Jesus");
         Assert.NotNull(mary);
         Assert.Equal(38, mary.Id);
         Assert.Null(mary.FatherId);  // Mary has no parents

@@ -4,7 +4,7 @@ using BibleTimeline.Web.Models;
 
 namespace BibleTimeline.Web.Data;
 
-public class BibleTimelineDb
+public partial class BibleTimelineDb
 {
     private readonly string _connectionString;
 
@@ -414,12 +414,18 @@ public class BibleTimelineDb
             FROM people WHERE id IN (SELECT id FROM desc_ids)
             """, new { Id = id })).ToList();
 
-        // Siblings: people who share at least one parent with the subject
+        // Siblings: people who share at least one parent with the subject, plus anyone linked by a
+        // 'sibling' row in person_relationships (either direction). The rows exist for cases where
+        // traditions disagree about parentage, such as the brothers of Jesus (Mark 6:3).
         var siblings = (await conn.QueryAsync<LineagePersonDto>("""
             SELECT id, name, birth_year, death_year, birth_approx, death_approx, role, father_id, mother_id
             FROM people
             WHERE id != @Id
               AND (
+                id IN (SELECT person_id_2 FROM person_relationships WHERE person_id_1 = @Id AND relationship_type = 'sibling')
+                OR
+                id IN (SELECT person_id_1 FROM person_relationships WHERE person_id_2 = @Id AND relationship_type = 'sibling')
+                OR
                 (father_id IS NOT NULL AND father_id IN (
                     SELECT father_id FROM people WHERE id = @Id AND father_id IS NOT NULL
                 ))
