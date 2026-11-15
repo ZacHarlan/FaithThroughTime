@@ -144,11 +144,11 @@ current view). The table lives in the header comment of `js/app.js`.
 | `events` | 352 | `name`, `start_year`, `end_year`, `category`, `significance`, `date_confidence`, `sort_order` |
 | `time_periods` | 18 | Contiguous eras, Creation to Modern Era |
 | `biblical_books` | 66 | testament, genre, period covered |
-| `locations` | 148 | latitude/longitude, region |
+| `locations` | 178 | latitude/longitude, region |
 | `scripture_references` | 781 | `book_id`, chapter/verse start and end, `reference_text` |
 | `person_events` | 844 | who took part in what |
 | `person_relationships` | 108 | `spouse`, `sibling`, `mentor`, `successor`, `contemporary` (parent/child live in `father_id`/`mother_id`) |
-| `journeys` / `journey_stops` / `journey_people` | 5 / 89 / — | Map journeys |
+| `journeys` / `journey_stops` / `journey_people` | 12 / 193 / — | Map journeys |
 | `person_scripture`, `event_scripture`, `event_locations` | — | Junctions |
 | `people_fts`, `events_fts` | — | FTS5 indexes kept in sync by triggers |
 

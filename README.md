@@ -12,7 +12,7 @@ frontend with no build step.
 - **Did they meet?** Pick two people and see whether their lifetimes overlapped; a gallery of curated pairs.
 - **Family.** The line of descent from Adam to Jesus (following Matthew or Luke where the data has both) and a family tree
   for any person.
-- **Map.** 95 places and 5 journeys on a Leaflet map.
+- **Map.** 178 places and 12 journeys on a Leaflet map, from Genesis to Peter, each played stop by stop with its passage.
 - **Read.** The 66 books from local text, with links from verses back to people and events.
 - **Search.** A command palette (press `/` or Cmd/Ctrl-K) for people, events, places, books, eras, scripture references
   ("john 3:16") and name pairs ("noah and abraham").
