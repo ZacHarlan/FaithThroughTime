@@ -140,14 +140,14 @@ current view). The table lives in the header comment of `js/app.js`.
 
 | Table | Rows | Purpose |
 |-------|------|---------|
-| `people` | 581 | `name` (unique), `alt_names`, `birth_year`, `death_year`, `role`, `significance`, `date_confidence`, `father_id`, `mother_id`, `date_notes` |
-| `events` | 241 | `name`, `start_year`, `end_year`, `category`, `significance`, `date_confidence`, `sort_order` |
+| `people` | 593 | `name` (unique), `alt_names`, `birth_year`, `death_year`, `role`, `significance`, `date_confidence`, `father_id`, `mother_id`, `date_notes` |
+| `events` | 352 | `name`, `start_year`, `end_year`, `category`, `significance`, `date_confidence`, `sort_order` |
 | `time_periods` | 18 | Contiguous eras, Creation to Modern Era |
 | `biblical_books` | 66 | testament, genre, period covered |
-| `locations` | 125 | latitude/longitude, region |
-| `scripture_references` | 691 | `book_id`, chapter/verse start and end, `reference_text` |
-| `person_events` | 548 | who took part in what |
-| `person_relationships` | 213 | `spouse`, `sibling`, `mentor`, `successor`, `contemporary` (parent/child live in `father_id`/`mother_id`) |
+| `locations` | 148 | latitude/longitude, region |
+| `scripture_references` | 776 | `book_id`, chapter/verse start and end, `reference_text` |
+| `person_events` | 840 | who took part in what |
+| `person_relationships` | 108 | `spouse`, `sibling`, `mentor`, `successor`, `contemporary` (parent/child live in `father_id`/`mother_id`) |
 | `journeys` / `journey_stops` / `journey_people` | 5 / 89 / — | Map journeys |
 | `person_scripture`, `event_scripture`, `event_locations` | — | Junctions |
 | `people_fts`, `events_fts` | — | FTS5 indexes kept in sync by triggers |
@@ -159,8 +159,8 @@ Counts are of the current seed; `agent-status.sh` prints live ones.
 - **Chronology policy.** Old Testament dates follow James Ussher (*Annals of the World*, 1650). Foreign rulers and church
   history use standard historical dates. Where scholarship differs, the row's `date_notes` says so. There is one
   chronology; do not mix systems. There is no year 0 (1 BC is `-1`, AD 1 is `1`).
-- **Explicit, stable ids.** Every seed row has an explicit id. Add rows with new ids (people currently go up to 789,
-  events to 397); never renumber or reuse an id. The seed is one transaction with foreign keys deferred to commit, so a
+- **Explicit, stable ids.** Every seed row has an explicit id. Add rows with new ids (people currently go up to 822,
+  events to 532); never renumber or reuse an id. The seed is one transaction with foreign keys deferred to commit, so a
   row may refer to a higher id.
 - **Vocabularies.**
   - `people.role`: patriarch, matriarch, ancestor, prophet, king, queen, ruler, judge, priest, apostle, disciple,

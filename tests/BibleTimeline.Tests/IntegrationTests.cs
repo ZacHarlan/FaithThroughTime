@@ -1170,8 +1170,9 @@ public class JesusEventScriptureTests : IClassFixture<WebApplicationFactory<Prog
     [Fact]
     public async Task BaptismOfJesus_HasAllGospelParallels()
     {
+        // The four accounts, plus Luke 3:1-2, which dates the start of John's ministry (and so the baptism).
         await AssertEventScriptures(43, "Baptism of Jesus",
-            "Matthew 3:13-17", "Mark 1:9-11", "Luke 3:21-22", "John 1:29-34");
+            "Matthew 3:13-17", "Mark 1:9-11", "Luke 3:1-2", "Luke 3:21-22", "John 1:29-34");
     }
 
     [Fact]
