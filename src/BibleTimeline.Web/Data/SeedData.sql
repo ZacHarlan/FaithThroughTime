@@ -38,7 +38,7 @@ INSERT INTO time_periods (id, name, start_year, end_year, color, sort_order, des
 (18, 'Modern Era', 1900, 2026, '#90b1bc', 18, 'Global Christianity; ecumenical movement; digital age');
 
 -- ============================================================
--- PEOPLE (2978)
+-- PEOPLE (2975)
 -- ============================================================
 -- Creation & Primeval History
 INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
@@ -135,7 +135,7 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (182, 'Rahab', NULL, -1475, -1400, 1, 1, 'possible', 'matriarch', 'moderate', NULL, NULL, NULL, 'A woman of Jericho who hid Israel''s spies and confessed their God as Lord of heaven and earth, securing her family''s rescue by a scarlet cord. Grafted into Israel, she appears in Matthew''s genealogy of Jesus and is praised for her faith in both Hebrews and James.', 'Josh 2; 6:22-25; Matt 1:5; Heb 11:31. Life dates estimated; an adult at the fall of Jericho in 1451 BC.'),
 (183, 'Achan', NULL, -1490, -1451, 1, 0, 'traditional', 'other', 'moderate', 'Judah', 528, NULL, 'Israelite who took forbidden plunder from Jericho; caused defeat at Ai.', 'Josh 7:1-26. Ussher, Annals §313: 1451 BC (AM 2553c).'),
 (184, 'Eleazar son of Aaron', 'Eleazar', -1530, -1415, 1, 1, 'possible', 'priest', 'moderate', 'Levi', 11, 522, 'Son of Aaron; succeeded him as high priest. Served during the conquest.', 'Exod 6:23; Num 20:28; Josh 24:33. Life dates estimated; he succeeded Aaron in 1452 BC and outlived Joshua (Josh 24:33).'),
-(185, 'Hur', NULL, -1590, -1480, 1, 1, 'possible', 'other', 'minor', 'Judah', NULL, NULL, 'Held up Moses'' arms during the battle with Amalek alongside Aaron.', 'Exod 17:10-12; 24:14. Life dates estimated: grandfather of Bezalel (Exod 31:2; 1 Chr 2:19-20) and a leader at Sinai in 1491 BC; last mentioned at Exod 24:14.'),
+(185, 'Hur', NULL, -1590, -1480, 1, 1, 'possible', 'other', 'minor', 'Judah', 3209, 3212, 'Held up Moses'' arms during the battle with Amalek alongside Aaron.', 'Exod 17:10-12; 24:14. Life dates estimated: grandfather of Bezalel (Exod 31:2; 1 Chr 2:19-20) and a leader at Sinai in 1491 BC; last mentioned at Exod 24:14.'),
 (186, 'Bezalel', NULL, -1520, -1440, 1, 1, 'possible', 'sage', 'moderate', 'Judah', 527, NULL, 'Master craftsman filled with the Spirit of God; built the Tabernacle.', 'Exod 31:1-11; 35:30-35. Filled with the Spirit for Tabernacle construction. Death unrecorded; est. c. 1440 BC (active during wilderness period).'),
 (187, 'Dathan', NULL, -1530, -1490, 1, 1, 'traditional', 'other', 'minor', 'Reuben', 530, NULL, 'Reubenite who joined Korah''s rebellion against Moses; swallowed by the earth.', 'Num 16:1-35.'),
 (188, 'Abiram', NULL, -1530, -1490, 1, 1, 'traditional', 'other', 'minor', 'Reuben', 530, NULL, 'Reubenite who joined Korah''s rebellion against Moses; swallowed by the earth.', 'Num 16:1-35.'),
@@ -148,7 +148,7 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (499, 'Jochebed', NULL, -1620, NULL, 1, 1, 'possible', 'matriarch', 'minor', 'Levi', 164, NULL, 'Mother of Miriam, Aaron and Moses, who hid her infant son from Pharaoh''s decree and was then paid to nurse him for Pharaoh''s daughter.', 'Estimate. Called a daughter of Levi born in Egypt (Num 26:59) and Amram''s father''s sister (Exod 6:20), so born after 1706 BC and before Levi''s death (c. 1613 BC); placed at about 1620 BC. Her death is not recorded.'),
 (500, 'Gershom', NULL, -1530, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', 10, 70, 'Elder son of Moses and Zipporah, born in Midian. His name recalls Moses''s words, "I have been a stranger in a strange land."', 'Estimate. Born in Midian after Moses married Zipporah, about 1531 BC (Exod 2:21-22). His death is not recorded.'),
 (501, 'Eliezer, son of Moses', NULL, -1525, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', 10, 70, 'Younger son of Moses and Zipporah. His name means "my God is help," for God had delivered Moses from Pharaoh''s sword.', 'Estimate. Born in Midian, after Gershom and before Moses returned to Egypt in 1491 BC (Exod 4:20; 18:3-4). His death is not recorded.'),
-(518, 'Nun', 'Non', -1570, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Ephraim', 2809, NULL, 'Father of Joshua, Moses'' successor. He is named only as "the father of Joshua" and in the genealogy of Ephraim.', 'Estimate. Born about thirty-four years before Joshua (born 1536 BC). Scripture gives no dates for him.'),
+(518, 'Nun', 'Non', -1570, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Ephraim', 7761, NULL, 'Father of Joshua, Moses'' successor. He is named only as "the father of Joshua" and in the genealogy of Ephraim.', 'Estimate. Born about thirty-four years before Joshua (born 1536 BC). Scripture gives no dates for him.'),
 (519, 'Jephunneh', NULL, -1565, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Judah', NULL, NULL, 'Father of Caleb, one of the two faithful spies. He is called a Kenezite, a name linking his family to the clan of Kenaz.', 'Estimate. Born about thirty-five years before Caleb (born 1530 BC). Scripture gives no dates for him.'),
 (520, 'Kenaz, father of Othniel', NULL, -1515, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Judah', NULL, NULL, 'Father of Othniel, the first judge of Israel. The texts call Othniel "the son of Kenaz, Caleb''s younger brother," and the Hebrew does not make clear whether the "younger brother" is Othniel or Kenaz.', 'Estimate. Born about forty-five years before Othniel (born 1470 BC). Caleb is the son of Jephunneh (Num 13:6), so the relationship of Kenaz to Caleb is uncertain: the phrase may mean that Kenaz was Caleb''s brother, or that Othniel was a kinsman counted as his brother. No sibling link is recorded here for that reason.'),
 (521, 'Achsah', NULL, -1472, NULL, 1, 1, 'possible', 'other', 'minor', 'Judah', 67, NULL, 'Daughter of Caleb, offered in marriage to whoever would take Kirjath-sepher. Othniel took the city and married her, and she then asked her father for springs of water to go with her southern land.', 'Estimate. Married when Caleb was about eighty-five (Josh 14:10; 15:16-19), so born in the 1470s BC. Scripture gives no dates for her.'),
@@ -297,7 +297,6 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (3370, 'Ozem, son of Jesse', NULL, -1093, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Judah', 266, NULL, 'Sixth son of Jesse and brother of David (1 Chr 2:14-15).', 'Estimate. Sixth of Jesse''s seven sons in Chronicles, between Shammah (born 1114 BC) and David (1085 BC); no dates recorded.'),
 (3602, 'Shephatiah, son of David', NULL, -1050, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Judah', 20, 3600, 'Fifth son of David, born at Hebron to Abital.', 'Estimate: born between the sons of Adonijah and Ithream, during Davids years at Hebron (about 1050 BC).'),
 (3603, 'Ithream, son of David', NULL, -1049, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Judah', 20, 3601, 'Sixth son of David, born at Hebron to his wife Eglah.', 'Estimate: last son born at Hebron (about 1049 BC).'),
-(4057, 'Mahli, son of Mushi', NULL, -1060, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', 2416, NULL, 'Merarite Levite in the genealogies of 1 Chronicles 6. In the genealogy of Ethan (Jeduthun).', 'No dates recorded; placed by generation.'),
 (5200, 'Jashobeam, son of Zabdiel', 'Adino the Eznite, Josheb-basshebeth the Tachmonite, Jashobeam the Hachmonite', -1070, NULL, 1, 1, 'possible', 'warrior', 'minor', 'Judah', 5201, NULL, 'Chief of David''s three mightiest men, who struck down three hundred with his spear at one time; also captain of the first monthly course.', 'Estimate from David''s reign. 2 Sam 23:8 and 1 Chr 11:11 are read as two spellings of one man (Adino the Eznite is often held to be a copyist''s variant); 1 Chr 27:2 names the same chief of the first course.'),
 (5203, 'Eleazar, son of Dodo', 'Eleazar the Ahohite', -1070, NULL, 1, 1, 'possible', 'warrior', 'minor', NULL, 5202, NULL, 'One of David''s three mightiest men, who fought the Philistines until his hand clave to his sword.', 'Estimate. Served in David''s reign; no birth year is recorded.'),
 (5205, 'Shammah, son of Agee', 'Shammah the Hararite', -1070, NULL, 1, 1, 'possible', 'warrior', 'minor', NULL, 5204, NULL, 'One of David''s three mightiest men, who held a field of lentils against the Philistines.', 'Estimate. Served in David''s reign; no birth year is recorded.'),
@@ -348,11 +347,11 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (5265, 'Obed (1 Chr 11:47)', NULL, -1070, NULL, 1, 1, 'possible', 'warrior', 'minor', NULL, NULL, NULL, 'Warrior named in the closing lines of the list of 1 Chronicles 11.', 'Estimate. Served in David''s reign; no birth year is recorded.'),
 (5266, 'Jasiel the Mesobaite', NULL, -1070, NULL, 1, 1, 'possible', 'warrior', 'minor', NULL, NULL, NULL, 'Warrior named in the closing lines of the list of 1 Chronicles 11.', 'Estimate. Served in David''s reign; no birth year is recorded.'),
 (5268, 'Ahiezer, son of Shemaah', NULL, -1070, NULL, 1, 1, 'possible', 'warrior', 'minor', 'Benjamin', 5267, NULL, 'Chief of the archers of Benjamin who joined David at Ziklag.', 'Estimate. Served in David''s reign; no birth year is recorded.'),
-(5269, 'Joash, son of Shemaah', NULL, -1070, NULL, 1, 1, 'possible', 'warrior', 'minor', 'Benjamin', 5267, NULL, 'Benjamite archer who joined David at Ziklag.', 'Estimate. Served in David''s reign; no birth year is recorded.');
+(5269, 'Joash, son of Shemaah', NULL, -1070, NULL, 1, 1, 'possible', 'warrior', 'minor', 'Benjamin', 5267, NULL, 'Benjamite archer who joined David at Ziklag.', 'Estimate. Served in David''s reign; no birth year is recorded.'),
+(5271, 'Jeziel, son of Azmaveth', NULL, -1070, NULL, 1, 1, 'possible', 'warrior', 'minor', 'Benjamin', 5270, NULL, 'Benjamite archer who joined David at Ziklag.', 'Estimate. Served in David''s reign; no birth year is recorded.');
 
 -- United Kingdom (continued)
 INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
-(5271, 'Jeziel, son of Azmaveth', NULL, -1070, NULL, 1, 1, 'possible', 'warrior', 'minor', 'Benjamin', 5270, NULL, 'Benjamite archer who joined David at Ziklag.', 'Estimate. Served in David''s reign; no birth year is recorded.'),
 (5272, 'Pelet, son of Azmaveth', NULL, -1070, NULL, 1, 1, 'possible', 'warrior', 'minor', 'Benjamin', 5270, NULL, 'Benjamite archer who joined David at Ziklag.', 'Estimate. Served in David''s reign; no birth year is recorded.'),
 (5273, 'Berachah', NULL, -1070, NULL, 1, 1, 'possible', 'warrior', 'minor', 'Benjamin', NULL, NULL, 'Benjamite archer who joined David at Ziklag.', 'Estimate. Served in David''s reign; no birth year is recorded.'),
 (5274, 'Jehu the Antothite', NULL, -1070, NULL, 1, 1, 'possible', 'warrior', 'minor', 'Benjamin', NULL, NULL, 'Benjamite of Anathoth who joined David at Ziklag.', 'Estimate. Served in David''s reign; no birth year is recorded.'),
@@ -429,17 +428,17 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (5369, 'Azariah, son of Nathan', NULL, -1045, NULL, 1, 1, 'possible', 'ruler', 'minor', NULL, NULL, NULL, 'Head of Solomon''s district officers; his father Nathan is not further identified.', 'Estimate. Served in Solomon''s reign; no birth year is recorded.'),
 (5370, 'Zabud, son of Nathan', NULL, -1045, NULL, 1, 1, 'possible', 'ruler', 'minor', NULL, NULL, NULL, 'Solomon''s principal officer and friend; his father Nathan is not further identified.', 'Estimate. Served in Solomon''s reign; no birth year is recorded.'),
 (5371, 'Ahishar', NULL, -1045, NULL, 1, 1, 'possible', 'ruler', 'minor', NULL, NULL, NULL, 'Steward over the royal household of Solomon.', 'Estimate. Served in Solomon''s reign; no birth year is recorded.'),
-(5373, 'Ben-Hur', 'the son of Hur', -1045, NULL, 1, 1, 'possible', 'ruler', 'minor', 'Ephraim', 5372, NULL, 'One of Solomon''s twelve district officers, who supplied the royal household for a month each year; his district was Mount Ephraim.', 'Estimate from Solomon''s reign. The text names him only as "the son of ..."; the Ben- name is a convention.'),
+(5373, 'Ben-Hur', 'the son of Hur', -1045, NULL, 1, 1, 'possible', 'ruler', 'minor', NULL, 5372, NULL, 'One of Solomon''s twelve district officers, who supplied the royal household for a month each year; his district was Mount Ephraim.', 'Estimate from Solomon''s reign. The text names him only as "the son of ..."; the Ben- name is a convention.'),
 (5375, 'Ben-Dekar', 'the son of Dekar', -1045, NULL, 1, 1, 'possible', 'ruler', 'minor', NULL, 5374, NULL, 'One of Solomon''s twelve district officers, who supplied the royal household for a month each year; his district was Makaz, Shaalbim, Beth-shemesh and Elon-beth-hanan.', 'Estimate from Solomon''s reign. The text names him only as "the son of ..."; the Ben- name is a convention.'),
 (5377, 'Ben-Hesed', 'the son of Hesed', -1045, NULL, 1, 1, 'possible', 'ruler', 'minor', NULL, 5376, NULL, 'One of Solomon''s twelve district officers, who supplied the royal household for a month each year; his district was Aruboth, Sochoh and the land of Hepher.', 'Estimate from Solomon''s reign. The text names him only as "the son of ..."; the Ben- name is a convention.'),
 (5379, 'Ben-Abinadab', 'the son of Abinadab', -1045, NULL, 1, 1, 'possible', 'ruler', 'minor', NULL, 5378, NULL, 'One of Solomon''s twelve district officers, who supplied the royal household for a month each year; his district was the region of Dor.', 'Estimate from Solomon''s reign. The text names him only as "the son of ..."; the Ben- name is a convention.'),
 (5380, 'Baana, son of Ahilud', NULL, -1045, NULL, 1, 1, 'possible', 'ruler', 'minor', NULL, 5359, NULL, 'One of Solomon''s twelve district officers, who supplied the royal household for a month each year; his district was Taanach, Megiddo and Beth-shean.', 'Estimate. Served in Solomon''s reign; no birth year is recorded.'),
 (5382, 'Ben-Geber', 'the son of Geber', -1045, NULL, 1, 1, 'possible', 'ruler', 'minor', NULL, 5381, NULL, 'One of Solomon''s twelve district officers, who supplied the royal household for a month each year; his district was Ramoth-gilead and the region of Argob.', 'Estimate from Solomon''s reign. The text names him only as "the son of Geber".'),
 (5384, 'Ahinadab, son of Iddo', NULL, -1045, NULL, 1, 1, 'possible', 'ruler', 'minor', NULL, 5383, NULL, 'One of Solomon''s twelve district officers, who supplied the royal household for a month each year; his district was Mahanaim.', 'Estimate. Served in Solomon''s reign; no birth year is recorded.'),
-(5385, 'Ahimaaz, officer of Naphtali', NULL, -1045, NULL, 1, 1, 'possible', 'ruler', 'minor', 'Naphtali', NULL, NULL, 'One of Solomon''s twelve district officers, who supplied the royal household for a month each year; his district was Naphtali. He may be Ahimaaz son of Zadok, though the text does not say so.', 'Estimate. Served in Solomon''s reign; no birth year is recorded.'),
-(5386, 'Baanah, son of Hushai', NULL, -1045, NULL, 1, 1, 'possible', 'ruler', 'minor', 'Asher', NULL, NULL, 'One of Solomon''s twelve district officers, who supplied the royal household for a month each year; his district was Asher and Aloth. His father Hushai is not further identified; he may be David''s friend Hushai the Archite.', 'Estimate. Served in Solomon''s reign; no birth year is recorded.'),
-(5388, 'Jehoshaphat, son of Paruah', NULL, -1045, NULL, 1, 1, 'possible', 'ruler', 'minor', 'Issachar', 5387, NULL, 'One of Solomon''s twelve district officers, who supplied the royal household for a month each year; his district was Issachar.', 'Estimate. Served in Solomon''s reign; no birth year is recorded.'),
-(5390, 'Shimei, son of Elah', NULL, -1045, NULL, 1, 1, 'possible', 'ruler', 'minor', 'Benjamin', 5389, NULL, 'One of Solomon''s twelve district officers, who supplied the royal household for a month each year; his district was Benjamin.', 'Estimate. Served in Solomon''s reign; no birth year is recorded.'),
+(5385, 'Ahimaaz, officer of Naphtali', NULL, -1045, NULL, 1, 1, 'possible', 'ruler', 'minor', NULL, NULL, NULL, 'One of Solomon''s twelve district officers, who supplied the royal household for a month each year; his district was Naphtali. He may be Ahimaaz son of Zadok, though the text does not say so.', 'Estimate. Served in Solomon''s reign; no birth year is recorded.'),
+(5386, 'Baanah, son of Hushai', NULL, -1045, NULL, 1, 1, 'possible', 'ruler', 'minor', NULL, NULL, NULL, 'One of Solomon''s twelve district officers, who supplied the royal household for a month each year; his district was Asher and Aloth. His father Hushai is not further identified; he may be David''s friend Hushai the Archite.', 'Estimate. Served in Solomon''s reign; no birth year is recorded.'),
+(5388, 'Jehoshaphat, son of Paruah', NULL, -1045, NULL, 1, 1, 'possible', 'ruler', 'minor', NULL, 5387, NULL, 'One of Solomon''s twelve district officers, who supplied the royal household for a month each year; his district was Issachar.', 'Estimate. Served in Solomon''s reign; no birth year is recorded.'),
+(5390, 'Shimei, son of Elah', NULL, -1045, NULL, 1, 1, 'possible', 'ruler', 'minor', NULL, 5389, NULL, 'One of Solomon''s twelve district officers, who supplied the royal household for a month each year; his district was Benjamin.', 'Estimate. Served in Solomon''s reign; no birth year is recorded.'),
 (5392, 'Geber, son of Uri', NULL, -1045, NULL, 1, 1, 'possible', 'ruler', 'minor', NULL, 5391, NULL, 'One of Solomon''s twelve district officers, who supplied the royal household for a month each year; his district was Gilead, the former land of Sihon and Og.', 'Estimate from Solomon''s reign. He may be the same man as Ben-Geber (1 Kgs 4:13), though the text does not say so.'),
 (5604, 'Uriel, chief of the Kohathites', NULL, -1075, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', NULL, NULL, 'Chief of 120 Kohathite Levites who sanctified themselves to bring up the ark.', 'Date approximate: the ark was brought up in David''s reign.'),
 (5605, 'Asaiah, chief of the Merarites', NULL, -1075, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', NULL, NULL, 'Chief of 220 Merarite Levites who brought up the ark.', 'Date approximate: the ark was brought up in David''s reign.'),
@@ -451,11 +450,11 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (5611, 'Ben, singer (1 Chr 15:18)', NULL, -1075, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', NULL, NULL, 'Levite of the second rank named in the list of musicians (the name is omitted in 15:20).', 'Date approximate: musician when the ark was brought up.'),
 (5612, 'Jaaziel, singer (Aziel)', NULL, -1075, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', NULL, NULL, 'Levite musician, called Jaaziel in 15:18 and Aziel in 15:20.', 'Date approximate: musician when the ark was brought up.'),
 (5613, 'Shemiramoth, singer', NULL, -1075, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', NULL, NULL, 'Levite musician who played the psalteries on Alamoth and served before the ark.', 'Date approximate: musician when the ark was brought up.'),
-(5614, 'Jehiel, singer (1 Chr 15:18)', NULL, -1075, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', NULL, NULL, 'Levite musician who played the psalteries and served before the ark.', 'Date approximate: musician when the ark was brought up.');
+(5614, 'Jehiel, singer (1 Chr 15:18)', NULL, -1075, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', NULL, NULL, 'Levite musician who played the psalteries and served before the ark.', 'Date approximate: musician when the ark was brought up.'),
+(5615, 'Unni, singer', NULL, -1075, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', NULL, NULL, 'Levite musician who played the psalteries on Alamoth.', 'Date approximate: musician when the ark was brought up.');
 
 -- United Kingdom (continued)
 INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
-(5615, 'Unni, singer', NULL, -1075, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', NULL, NULL, 'Levite musician who played the psalteries on Alamoth.', 'Date approximate: musician when the ark was brought up.'),
 (5616, 'Eliab, singer (1 Chr 15:18)', NULL, -1075, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', NULL, NULL, 'Levite musician who played the psalteries and served before the ark.', 'Date approximate: musician when the ark was brought up.'),
 (5617, 'Benaiah, singer (1 Chr 15:18)', NULL, -1075, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', NULL, NULL, 'Levite musician who played the psalteries and served before the ark; distinct from the priest who blew the trumpet.', 'Date approximate: musician when the ark was brought up.'),
 (5618, 'Maaseiah, singer (1 Chr 15:18)', NULL, -1075, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', NULL, NULL, 'Levite musician who played the psalteries on Alamoth.', 'Date approximate: musician when the ark was brought up.'),
@@ -477,9 +476,9 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (5634, 'Jehiah, doorkeeper for the ark', NULL, -1075, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', NULL, NULL, 'Levite doorkeeper for the ark when it was brought up.', 'Date approximate: doorkeeper when the ark was brought up.'),
 (5635, 'Jahaziel, priest (1 Chr 16:6)', NULL, -1075, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', NULL, NULL, 'Priest who blew the trumpet continually before the ark.', 'Date approximate: priest when the ark was brought up.'),
 (5636, 'Hosah the Merarite', NULL, -1075, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', NULL, NULL, 'Merarite gatekeeper; his sons were assigned the west gate.', 'Date approximate: gatekeeper in David''s reign.'),
-(5639, 'Jehiel, son of Laadan', NULL, -1060, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', 5637, NULL, 'Chief of the sons of Laadan; he is the Jehieli of 26:21.', 'Date approximate: a chief Levite counted in David''s last years.'),
-(5640, 'Zetham, son of Laadan', NULL, -1060, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', 5637, NULL, 'Son of Laadan; with his brother Joel over the treasuries of the house of the LORD (26:22).', 'Date approximate: counted in David''s last years.'),
-(5641, 'Joel, son of Laadan', NULL, -1060, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', 5637, NULL, 'Son of Laadan; with his brother Zetham over the treasuries of the house of the LORD (26:22).', 'Date approximate: counted in David''s last years.'),
+(5639, 'Jehiel, son of Laadan', NULL, -1060, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', 2411, NULL, 'Chief of the sons of Laadan; he is the Jehieli of 26:21.', 'Date approximate: a chief Levite counted in David''s last years.'),
+(5640, 'Zetham, son of Laadan', NULL, -1060, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', 2411, NULL, 'Son of Laadan; with his brother Joel over the treasuries of the house of the LORD (26:22).', 'Date approximate: counted in David''s last years.'),
+(5641, 'Joel, son of Laadan', NULL, -1060, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', 2411, NULL, 'Son of Laadan; with his brother Zetham over the treasuries of the house of the LORD (26:22).', 'Date approximate: counted in David''s last years.'),
 (5642, 'Shimei, of the house of Laadan (1 Chr 23:9)', NULL, -1060, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', NULL, NULL, 'Father of Shelomith, Haziel and Haran, chief fathers of Laadan''s house; may be distinct from Gershon''s son Shimei.', 'Date approximate: counted in David''s last years.'),
 (5652, 'Shebuel, son of Gershom, son of Moses', NULL, -1060, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', 500, NULL, 'Chief of the sons of Gershom and ruler of the treasuries (26:24); also called Shubael in 24:20.', 'Compressed genealogy: Moses''s grandson in name, a chief Levite in David''s day.'),
 (5653, 'Rehabiah, son of Eliezer', NULL, -1090, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', 501, NULL, 'Only son of Eliezer son of Moses; his sons were very many.', 'Compressed genealogy: placed before his descendants of David''s day.'),
@@ -538,9 +537,12 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (6015, 'Hezion, father of Tabrimon', NULL, -1000, NULL, 1, 1, 'possible', 'other', 'minor', 'Aram', NULL, NULL, 'Grandfather of Ben-hadad, king of Syria in Asa''s day.', 'Estimate from the period of the text; no birth year recorded.'),
 (6020, 'Ginath, father of Tibni', NULL, -990, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Father of Tibni, rival of Omri for the throne.', 'Estimate from the period of the text; no birth year recorded.'),
 (6032, 'Shilhi, father of Azubah', NULL, -1000, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Father of Azubah, mother of King Jehoshaphat.', 'Estimate from the period of the text; no birth year recorded.'),
-(6083, 'Uriel of Gibeah', NULL, -1050, NULL, 1, 1, 'possible', 'other', 'minor', 'Benjamin', NULL, NULL, 'Named as father of Michaiah (Maachah), mother of King Abijah.', 'Estimate from the period of the text; no birth year recorded.'),
+(6083, 'Uriel of Gibeah', NULL, -1050, NULL, 1, 1, 'possible', 'other', 'minor', 'Benjamin', NULL, NULL, 'Named in 2 Chronicles 13:2 as the father of Michaiah (Maachah), mother of King Abijah; 2 Chronicles 11:20 gives her father as Absalom. Not recorded as her parent, because the text names two fathers.', 'Estimate from the period of the text; no birth year recorded.'),
 (6109, 'Mattaniah, ancestor of Jahaziel', NULL, -1010, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', NULL, NULL, 'Levite of Asaph''s sons, ancestor of Jahaziel.', 'Estimate from the period of the text; no birth year recorded.'),
-(6110, 'Jeiel, ancestor of Jahaziel', NULL, -980, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', 6109, NULL, 'Levite of Asaph''s line, father of Benaiah.', 'Estimate from the period of the text; no birth year recorded.');
+(6110, 'Jeiel, ancestor of Jahaziel', NULL, -980, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', 6109, NULL, 'Levite of Asaph''s line, father of Benaiah.', 'Estimate from the period of the text; no birth year recorded.'),
+(7780, 'Hepher the Mecherathite', NULL, -1070, NULL, 1, 1, 'possible', 'warrior', 'minor', NULL, NULL, NULL, 'Valiant man of David''s armies named in 1 Chronicles 11:36; the parallel list in 2 Samuel 23 has no name here.', 'Estimate. Served in David''s reign; no birth year is recorded.'),
+(7781, 'Ahijah the Pelonite', NULL, -1070, NULL, 1, 1, 'possible', 'warrior', 'minor', NULL, NULL, NULL, 'Valiant man of David''s armies named in 1 Chronicles 11:36.', 'Estimate. Served in David''s reign; no birth year is recorded.'),
+(7782, 'Hanan, son of Maachah', NULL, -1070, NULL, 1, 1, 'possible', 'warrior', 'minor', NULL, NULL, NULL, 'Valiant man of David''s armies named in 1 Chronicles 11:43, beside Joshaphat the Mithnite.', 'Estimate. Served in David''s reign; no birth year is recorded.');
 
 -- Divided Kingdom
 INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
@@ -676,12 +678,13 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (3727, 'Jeremiah, head of half-tribe of Manasseh', NULL, -770, NULL, 1, 1, 'possible', 'warrior', 'minor', 'Manasseh', NULL, NULL, 'Mighty man of valor and head of a fathers house in the half-tribe of Manasseh east of the Jordan, carried into exile by Tiglath-pileser.', 'Estimate: heads of houses before the Assyrian exile (about 740 BC), so born about 770 BC.'),
 (3728, 'Hodaviah, head of half-tribe of Manasseh', NULL, -770, NULL, 1, 1, 'possible', 'warrior', 'minor', 'Manasseh', NULL, NULL, 'Mighty man of valor and head of a fathers house in the half-tribe of Manasseh east of the Jordan, carried into exile by Tiglath-pileser.', 'Estimate: heads of houses before the Assyrian exile (about 740 BC), so born about 770 BC.'),
 (3729, 'Jahdiel, head of half-tribe of Manasseh', NULL, -770, NULL, 1, 1, 'possible', 'warrior', 'minor', 'Manasseh', NULL, NULL, 'Mighty man of valor and head of a fathers house in the half-tribe of Manasseh east of the Jordan, carried into exile by Tiglath-pileser.', 'Estimate: heads of houses before the Assyrian exile (about 740 BC), so born about 770 BC.'),
-(4015, 'Jehozadak', 'Jehozadak, Josedech', -600, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', 604, NULL, 'Last priest of the line in 1 Chronicles 6; he went into captivity when the LORD carried Judah and Jerusalem away by Nebuchadnezzar.', 'No dates recorded; placed by generation.'),
+(4015, 'Jehozadak', 'Jozadak, Josedech', -600, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', 604, NULL, 'Last priest of the line in 1 Chronicles 6; he went into captivity when the LORD carried Judah and Jerusalem away by Nebuchadnezzar.', 'No dates recorded; placed by generation.'),
 (4070, 'Ahitub, ancestor of Azariah (1 Chr 9:11)', NULL, -625, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', NULL, NULL, 'Priest, the earliest-named ancestor of Azariah, ruler of the house of God (1 Chronicles 9:11); may be one of the Ahitubs of 1 Chronicles 6.', 'No dates recorded; the list follows the return from exile.'),
 (4071, 'Meraioth, son of Ahitub (1 Chr 9:11)', NULL, -595, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', 4070, NULL, 'Priest in the line of Azariah, ruler of the house of God (1 Chronicles 9:11).', 'No dates recorded; the list follows the return from exile.'),
-(4093, 'Zichri, son of Asaph', 'Zaccur, Zichri', -625, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', 942, NULL, 'Levite descended from Asaph, father of Micah (1 Chronicles 9:15).', 'No dates recorded; the list follows the return from exile.'),
+(4093, 'Zichri (Zabdi), of the sons of Asaph', 'Zaccur, Zichri', -625, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', NULL, NULL, 'Levite of the house of Asaph, father of Micah (Micha) and grandfather of Mattaniah, who led the thanksgiving after the return (1 Chr 9:15; Neh 11:17; 12:35, where he is called Zaccur). "Son of Asaph" here names his family, not his father.', 'No dates recorded; the list follows the return from exile.'),
+(4094, 'Micah, son of Zichri', 'Micha, Michaiah', -595, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', 4093, NULL, 'Levite descended from Asaph, father of Mattaniah (1 Chronicles 9:15).', 'No dates recorded; the list follows the return from exile.'),
 (6014, 'Abijah, son of Jeroboam', NULL, -975, NULL, 1, 1, 'possible', 'other', 'minor', 'Ephraim', 31, NULL, 'Young son of Jeroboam who fell sick; the prophet Ahijah foretold his death and his burial as the only one of the house to be mourned.', 'Estimate from the period of the text; no birth year recorded.'),
-(6017, 'Hanani the seer', NULL, -974, NULL, 1, 1, 'possible', 'prophet', 'minor', NULL, NULL, NULL, 'Prophet who rebuked Asa for relying on the king of Syria and was put in the stocks.', 'Estimate from the period of the text; no birth year recorded.'),
+(6017, 'Hanani the seer', NULL, -974, NULL, 1, 1, 'possible', 'prophet', 'minor', NULL, NULL, NULL, 'Prophet who rebuked Asa for relying on the king of Syria and was put in a prison house.', 'Estimate from the period of the text; no birth year recorded.'),
 (6019, 'Arza, steward of Elah', NULL, -964, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Steward of King Elah''s house in Tirzah, in whose house Elah was drunk when Zimri killed him.', 'Estimate from the period of the text; no birth year recorded.'),
 (6022, 'Shemer, owner of the hill of Samaria', NULL, -960, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Sold the hill to Omri for two talents of silver; Omri named Samaria after him.', 'Estimate from the period of the text; no birth year recorded.'),
 (6023, 'Hiel the Bethelite', NULL, -955, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Rebuilt Jericho in Ahab''s days and lost his firstborn and youngest sons, as Joshua had foretold.', 'Estimate from the period of the text; no birth year recorded.'),
@@ -745,11 +748,11 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (6102, 'Zichri, father of Amasiah', NULL, -970, NULL, 1, 1, 'possible', 'other', 'minor', 'Judah', NULL, NULL, 'Father of Amasiah, one of Jehoshaphat''s captains.', 'Estimate from the period of the text; no birth year recorded.'),
 (6104, 'Eliada, captain of Benjamin', NULL, -940, NULL, 1, 1, 'possible', 'warrior', 'minor', 'Benjamin', NULL, NULL, 'Benjamite mighty man commanding archers under Jehoshaphat.', 'Estimate from the period of the text; no birth year recorded.'),
 (6105, 'Jehozabad, captain of Benjamin', NULL, -940, NULL, 1, 1, 'possible', 'warrior', 'minor', 'Benjamin', NULL, NULL, 'Benjamite captain commanding men ready for war under Jehoshaphat.', 'Estimate from the period of the text; no birth year recorded.'),
-(6106, 'Amariah, chief priest under Jehoshaphat', NULL, -945, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', NULL, NULL, 'Chief priest over all matters of the LORD in Jehoshaphat''s judicial reform.', 'Estimate from the period of the text; no birth year recorded.'),
-(6107, 'Ishmael, father of Zebadiah', NULL, -975, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Father of Zebadiah, governor of Judah under Jehoshaphat.', 'Estimate from the period of the text; no birth year recorded.');
+(6106, 'Amariah, chief priest under Jehoshaphat', NULL, -945, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', NULL, NULL, 'Chief priest over all matters of the LORD in Jehoshaphat''s judicial reform.', 'Estimate from the period of the text; no birth year recorded.');
 
 -- Divided Kingdom (continued)
 INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
+(6107, 'Ishmael, father of Zebadiah', NULL, -975, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Father of Zebadiah, governor of Judah under Jehoshaphat.', 'Estimate from the period of the text; no birth year recorded.'),
 (6111, 'Benaiah, ancestor of Jahaziel', NULL, -950, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', 6110, NULL, 'Levite of Asaph''s line, father of Zechariah.', 'Estimate from the period of the text; no birth year recorded.'),
 (6112, 'Zechariah, father of Jahaziel', NULL, -935, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', 6111, NULL, 'Levite of Asaph''s line, father of Jahaziel.', 'Estimate from the period of the text; no birth year recorded.'),
 (6114, 'Dodavah of Mareshah', NULL, -930, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Father of the prophet Eliezer, from Mareshah.', 'Estimate from the period of the text; no birth year recorded.'),
@@ -848,18 +851,17 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (6255, 'Gedaliah, son of Pashur', NULL, -624, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Prince who heard Jeremiah''s words and asked the king to put him to death.', 'His father Pashur is not identified; no father link is recorded. Estimate from the period of the text; no birth year recorded.'),
 (6257, 'Nergal-sharezer the Rab-mag', NULL, -623, NULL, 1, 1, 'possible', 'other', 'minor', 'Babylon', NULL, NULL, 'Babylonian chief officer who sat in the middle gate at the fall of Jerusalem and released Jeremiah.', 'Often identified with Neriglissar, later king of Babylon (about 560 BC). Estimate from the period of the text; no birth year recorded.'),
 (6258, 'Samgar-nebo', NULL, -623, NULL, 1, 1, 'possible', 'other', 'minor', 'Babylon', NULL, NULL, 'Babylonian prince who sat in the middle gate at the fall of Jerusalem.', 'Estimate from the period of the text; no birth year recorded.'),
-(6259, 'Sarsechim the Rab-saris', NULL, -623, NULL, 1, 1, 'possible', 'other', 'minor', 'Babylon', NULL, NULL, 'Babylonian chief officer who sat in the middle gate at the fall of Jerusalem.', 'Estimate from the period of the text; no birth year recorded.'),
-(6260, 'Nebushasban the Rab-saris', NULL, -623, NULL, 1, 1, 'possible', 'other', 'minor', 'Babylon', NULL, NULL, 'Babylonian chief officer sent with Nebuzar-adan to take Jeremiah out of the prison court.', 'May be the same man as Sarsechim. Estimate from the period of the text; no birth year recorded.');
+(6259, 'Sarsechim the Rab-saris', NULL, -623, NULL, 1, 1, 'possible', 'other', 'minor', 'Babylon', NULL, NULL, 'Babylonian chief officer who sat in the middle gate at the fall of Jerusalem.', 'Estimate from the period of the text; no birth year recorded.');
 
 -- Divided Kingdom (continued)
 INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
+(6260, 'Nebushasban the Rab-saris', NULL, -623, NULL, 1, 1, 'possible', 'other', 'minor', 'Babylon', NULL, NULL, 'Babylonian chief officer sent with Nebuzar-adan to take Jeremiah out of the prison court.', 'May be the same man as Sarsechim. Estimate from the period of the text; no birth year recorded.'),
 (6261, 'Ephai the Netophathite', NULL, -655, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Netophathite whose sons came to Gedaliah at Mizpah as army captains.', 'Estimate from the period of the text; no birth year recorded.'),
 (6262, 'Baalis, king of the Ammonites', NULL, -623, NULL, 1, 1, 'possible', 'ruler', 'minor', 'Ammon', NULL, NULL, 'King of Ammon who sent Ishmael to murder Gedaliah.', 'Estimate from the period of the text; no birth year recorded.'),
 (6263, 'Hoshaiah, father of Jezaniah and Azariah', NULL, -655, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Father of Jezaniah and Azariah, leaders of the remnant.', 'Estimate from the period of the text; no birth year recorded.'),
 (6266, 'Pharaoh Hophra', 'Pharaoh-hophra,Apries', -620, NULL, 1, 1, 'possible', 'ruler', 'minor', 'Egypt', NULL, NULL, 'King of Egypt whom Jeremiah said would be given to his enemies; the Apries of Greek sources.', 'Estimate from the period of the text; no birth year recorded.'),
 (6268, 'Azur, father of Jaazaniah', NULL, -660, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Father of Jaazaniah, a prince of the people in Ezekiel''s vision.', 'Not identified with Azur, father of the prophet Hananiah. Estimate from the period of the text; no birth year recorded.'),
 (6270, 'Benaiah, father of Pelatiah', NULL, -660, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Father of Pelatiah, a prince in Ezekiel''s vision.', 'Estimate from the period of the text; no birth year recorded.'),
-(6844, 'Micha (Michaiah), father of Mattaniah the Levite', 'Michaiah', -595, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', 4093, NULL, 'Levite singer, father of Mattaniah; called Michaiah in Nehemiah 12:35.', 'Estimate by generation.'),
 (6928, 'Mahalaleel, ancestor of Athaiah (Neh 11:4)', NULL, -625, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Judah', NULL, NULL, 'Ancestor in the line of Athaiah, named in the genealogy of Nehemiah 11:4.', 'Estimate by generation from Athaiah, who lived in 445 BC; genealogies may skip generations. '),
 (6929, 'Shephatiah, ancestor of Athaiah (Neh 11:4)', NULL, -595, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Judah', 6928, NULL, 'Ancestor in the line of Athaiah, named in the genealogy of Nehemiah 11:4.', 'Estimate by generation from Athaiah, who lived in 445 BC; genealogies may skip generations. '),
 (6934, 'Shiloni, ancestor of Maaseiah (Neh 11:5)', NULL, -685, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Judah', NULL, NULL, 'Ancestor in the line of Maaseiah, named in the genealogy of Nehemiah 11:5.', 'Estimate by generation from Maaseiah, who lived in 445 BC; genealogies may skip generations. '),
@@ -900,10 +902,18 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (998, 'Hathach the chamberlain', 'Hatach', -515, NULL, 1, 1, 'possible', 'other', 'minor', 'Persian', NULL, NULL, 'The king''s chamberlain appointed to attend Esther. He carried messages between Esther and Mordecai when Haman''s decree against the Jews became known.', 'Estimate. Active in the twelfth year of Xerxes, 474-473 BC (Esth 4:5-10). Death not recorded.'),
 (999, 'Bigthan', 'Bigthana', -510, -478, 1, 1, 'possible', 'other', 'minor', 'Persian', NULL, NULL, 'One of two door-keeping chamberlains who conspired against King Ahasuerus. Mordecai learned of it and told Esther, who told the king; both men were hanged.', 'Estimate. The plot came soon after Esther was made queen in the seventh year (Esth 2:16, 21-23). Death date approximate. The record of it is read to the king years later (Esth 6:2).'),
 (1000, 'Teresh', NULL, -510, -478, 1, 1, 'possible', 'other', 'minor', 'Persian', NULL, NULL, 'The second door-keeping chamberlain in the plot against King Ahasuerus that Mordecai exposed. Both conspirators were hanged.', 'Estimate, as for Bigthan (Esth 2:21-23; 6:2).'),
+(4069, 'Jachin, priest (1 Chr 9:10)', NULL, -475, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', NULL, NULL, 'Priest in the list of those who lived in Jerusalem after the exile (1 Chronicles 9:10-13).', 'No dates recorded; the list follows the return from exile.'),
 (4073, 'Meshullam, son of Zadok (1 Chr 9:11)', NULL, -535, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', 4072, NULL, 'Priest in the line of Azariah; he may be the Shallum of 1 Chronicles 6:12.', 'No dates recorded; the list follows the return from exile.'),
 (4074, 'Hilkiah, son of Meshullam (1 Chr 9:11)', NULL, -505, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', 4073, NULL, 'Priest in the line of Azariah, ruler of the house of God (1 Chronicles 9:11).', 'No dates recorded; the list follows the return from exile.'),
 (4075, 'Azariah, ruler of the house of God (1 Chr 9:11)', NULL, -475, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', 4074, NULL, 'Priest who lived in Jerusalem, called ruler of the house of God (1 Chronicles 9:11). Nehemiah 11:11 gives the same line and office under the name Seraiah.', 'No dates recorded; the list follows the return from exile.'),
-(4092, 'Galal, son of Jeduthun', NULL, -535, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', 944, NULL, 'Levite who lived in Jerusalem (1 Chronicles 9:14-16). Named in 9:15 and as the son of Jeduthun in 9:16; taken to be one man.', 'No dates recorded; the list follows the return from exile.'),
+(4087, 'Azrikam, son of Hashabiah', NULL, -535, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', 4086, NULL, 'Merarite Levite, ancestor of Shemaiah (1 Chronicles 9:14).', 'No dates recorded; the list follows the return from exile.'),
+(4088, 'Hasshub, son of Azrikam', NULL, -505, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', 4087, NULL, 'Merarite Levite, father of Shemaiah (1 Chronicles 9:14).', 'No dates recorded; the list follows the return from exile.'),
+(4089, 'Shemaiah, son of Hasshub', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', 4088, NULL, 'Levite who lived in Jerusalem (1 Chronicles 9:14-16).', 'No dates recorded; the list follows the return from exile.'),
+(4092, 'Galal, of the sons of Jeduthun', NULL, -535, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', NULL, NULL, 'Levite of the house of Jeduthun, ancestor of Obadiah (Abda) among those who lived in Jerusalem after the return (1 Chr 9:16; Neh 11:17). "Son of Jeduthun" here names his family, not his father.', 'No dates recorded; the list follows the return from exile.'),
+(4096, 'Shemaiah, son of Galal', 'Shammua', -505, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', 4092, NULL, 'Levite, father of Obadiah (1 Chronicles 9:16).', 'No dates recorded; the list follows the return from exile.'),
+(4097, 'Obadiah, son of Shemaiah (1 Chr 9:16)', 'Abda', -475, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', 4096, NULL, 'Levite who lived in Jerusalem (1 Chronicles 9:14-16).', 'No dates recorded; the list follows the return from exile.'),
+(4101, 'Akkub, porter (1 Chr 9:17)', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', NULL, NULL, 'Porter (gatekeeper) of the house of the LORD in 1 Chronicles 9:17-19.', 'No dates recorded; the list follows the return from exile.'),
+(4102, 'Talmon, porter (1 Chr 9:17)', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', NULL, NULL, 'Porter (gatekeeper) of the house of the LORD in 1 Chronicles 9:17-19.', 'No dates recorded; the list follows the return from exile.'),
 (6503, 'Gershom, head of the house of Phinehas (Ezra 8:2)', NULL, -490, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', NULL, NULL, 'Chief of the family of Phinehas who went up with Ezra.', 'Went up with Ezra in 458 BC (Ezra 7:7; Ussher 457); birth estimated.'),
 (6504, 'Daniel, of the sons of Ithamar (Ezra 8:2)', NULL, -490, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', NULL, NULL, 'Chief of the priestly family of Ithamar who went up with Ezra; not the prophet.', 'Went up with Ezra in 458 BC (Ezra 7:7; Ussher 457); birth estimated.'),
 (6505, 'Hattush, of the sons of David (Ezra 8:2)', NULL, -490, NULL, 1, 1, 'possible', 'other', 'minor', 'Judah', NULL, NULL, 'Chief of the house of David who went up with Ezra; possibly the Hattush of 1 Chronicles 3:22.', 'Went up with Ezra in 458 BC (Ezra 7:7; Ussher 457); birth estimated.'),
@@ -939,10 +949,10 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (6547, 'Eleazar, son of Phinehas (Ezra 8:33)', NULL, -490, NULL, 1, 1, 'possible', 'other', 'minor', NULL, 6546, NULL, 'Present with Meremoth when the Temple treasure was weighed.', 'Went up with Ezra in 458 BC (Ezra 7:7; Ussher 457); birth estimated.'),
 (6549, 'Jozabad, son of Jeshua (Ezra 8:33)', NULL, -490, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', 6548, NULL, 'Levite present when the Temple treasure was weighed.', 'Went up with Ezra in 458 BC (Ezra 7:7; Ussher 457); birth estimated.'),
 (6551, 'Noadiah, son of Binnui (Ezra 8:33)', NULL, -490, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', 6550, NULL, 'Levite present when the Temple treasure was weighed.', 'Went up with Ezra in 458 BC (Ezra 7:7; Ussher 457); birth estimated.'),
-(6552, 'Maaseiah, of the sons of Jeshua the high priest (Ezra 10:18)', NULL, -485, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', 820, NULL, 'Named among those who had married foreign wives in Ezra''s day, of the sons of Jeshua the high priest.', 'Named in 457 BC (Ezra 10; Ussher); birth estimated.'),
-(6553, 'Eliezer, of the sons of Jeshua the high priest (Ezra 10:18)', NULL, -485, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', 820, NULL, 'Named among those who had married foreign wives in Ezra''s day, of the sons of Jeshua the high priest.', 'Named in 457 BC (Ezra 10; Ussher); birth estimated.'),
-(6554, 'Jarib, of the sons of Jeshua the high priest (Ezra 10:18)', NULL, -485, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', 820, NULL, 'Named among those who had married foreign wives in Ezra''s day, of the sons of Jeshua the high priest.', 'Named in 457 BC (Ezra 10; Ussher); birth estimated.'),
-(6555, 'Gedaliah, of the sons of Jeshua the high priest (Ezra 10:18)', NULL, -485, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', 820, NULL, 'Named among those who had married foreign wives in Ezra''s day, of the sons of Jeshua the high priest.', 'Named in 457 BC (Ezra 10; Ussher); birth estimated.'),
+(6552, 'Maaseiah, of the sons of Jeshua the high priest (Ezra 10:18)', NULL, -485, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', NULL, NULL, 'Named among those who had married foreign wives in Ezra''s day, of the sons (house) of Jeshua the son of Jozadak (Ezra 10:18); not stated to be the high priest''s own sons, since his house is meant.', 'Named in 457 BC (Ezra 10; Ussher); birth estimated.'),
+(6553, 'Eliezer, of the sons of Jeshua the high priest (Ezra 10:18)', NULL, -485, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', NULL, NULL, 'Named among those who had married foreign wives in Ezra''s day, of the sons (house) of Jeshua the son of Jozadak (Ezra 10:18); not stated to be the high priest''s own sons, since his house is meant.', 'Named in 457 BC (Ezra 10; Ussher); birth estimated.'),
+(6554, 'Jarib, of the sons of Jeshua the high priest (Ezra 10:18)', NULL, -485, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', NULL, NULL, 'Named among those who had married foreign wives in Ezra''s day, of the sons (house) of Jeshua the son of Jozadak (Ezra 10:18); not stated to be the high priest''s own sons, since his house is meant.', 'Named in 457 BC (Ezra 10; Ussher); birth estimated.'),
+(6555, 'Gedaliah, of the sons of Jeshua the high priest (Ezra 10:18)', NULL, -485, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', NULL, NULL, 'Named among those who had married foreign wives in Ezra''s day, of the sons (house) of Jeshua the son of Jozadak (Ezra 10:18); not stated to be the high priest''s own sons, since his house is meant.', 'Named in 457 BC (Ezra 10; Ussher); birth estimated.'),
 (6556, 'Hanani, of the priests, sons of Immer (Ezra 10:20)', NULL, -485, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', NULL, NULL, 'Named among those who had married foreign wives in Ezra''s day, of the priests, sons of Immer.', 'Named in 457 BC (Ezra 10; Ussher); birth estimated.'),
 (6557, 'Zebadiah, of the priests, sons of Immer (Ezra 10:20)', NULL, -485, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', NULL, NULL, 'Named among those who had married foreign wives in Ezra''s day, of the priests, sons of Immer.', 'Named in 457 BC (Ezra 10; Ussher); birth estimated.'),
 (6558, 'Maaseiah, of the priests, sons of Harim (Ezra 10:21)', NULL, -485, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', NULL, NULL, 'Named among those who had married foreign wives in Ezra''s day, of the priests, sons of Harim.', 'Named in 457 BC (Ezra 10; Ussher); birth estimated.'),
@@ -969,7 +979,10 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (6579, 'Ramiah, of the sons of Parosh (Ezra 10:25)', NULL, -485, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Named among those who had married foreign wives in Ezra''s day, of the sons of Parosh.', 'Named in 457 BC (Ezra 10; Ussher); birth estimated.'),
 (6580, 'Jeziah, of the sons of Parosh (Ezra 10:25)', NULL, -485, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Named among those who had married foreign wives in Ezra''s day, of the sons of Parosh.', 'Named in 457 BC (Ezra 10; Ussher); birth estimated.'),
 (6581, 'Malchiah, of the sons of Parosh (Ezra 10:25)', NULL, -485, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Named among those who had married foreign wives in Ezra''s day, of the sons of Parosh.', 'Named in 457 BC (Ezra 10; Ussher); birth estimated.'),
-(6582, 'Miamin, of the sons of Parosh (Ezra 10:25)', NULL, -485, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Named among those who had married foreign wives in Ezra''s day, of the sons of Parosh.', 'Named in 457 BC (Ezra 10; Ussher); birth estimated.'),
+(6582, 'Miamin, of the sons of Parosh (Ezra 10:25)', NULL, -485, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Named among those who had married foreign wives in Ezra''s day, of the sons of Parosh.', 'Named in 457 BC (Ezra 10; Ussher); birth estimated.');
+
+-- Return & Restoration (continued)
+INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
 (6583, 'Eleazar, of the sons of Parosh (Ezra 10:25)', NULL, -485, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Named among those who had married foreign wives in Ezra''s day, of the sons of Parosh.', 'Named in 457 BC (Ezra 10; Ussher); birth estimated.'),
 (6584, 'Malchijah, of the sons of Parosh (Ezra 10:25)', NULL, -485, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Named among those who had married foreign wives in Ezra''s day, of the sons of Parosh.', 'Named in 457 BC (Ezra 10; Ussher); birth estimated.'),
 (6585, 'Benaiah, of the sons of Parosh (Ezra 10:25)', NULL, -485, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Named among those who had married foreign wives in Ezra''s day, of the sons of Parosh.', 'Named in 457 BC (Ezra 10; Ussher); birth estimated.'),
@@ -977,10 +990,7 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (6587, 'Zechariah, of the sons of Elam (Ezra 10:26)', NULL, -485, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Named among those who had married foreign wives in Ezra''s day, of the sons of Elam.', 'Named in 457 BC (Ezra 10; Ussher); birth estimated.'),
 (6588, 'Jehiel, of the sons of Elam (Ezra 10:26)', NULL, -485, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Named among those who had married foreign wives in Ezra''s day, of the sons of Elam.', 'Named in 457 BC (Ezra 10; Ussher); birth estimated.'),
 (6589, 'Abdi, of the sons of Elam (Ezra 10:26)', NULL, -485, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Named among those who had married foreign wives in Ezra''s day, of the sons of Elam.', 'Named in 457 BC (Ezra 10; Ussher); birth estimated.'),
-(6590, 'Jeremoth, of the sons of Elam (Ezra 10:26)', NULL, -485, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Named among those who had married foreign wives in Ezra''s day, of the sons of Elam.', 'Named in 457 BC (Ezra 10; Ussher); birth estimated.');
-
--- Return & Restoration (continued)
-INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
+(6590, 'Jeremoth, of the sons of Elam (Ezra 10:26)', NULL, -485, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Named among those who had married foreign wives in Ezra''s day, of the sons of Elam.', 'Named in 457 BC (Ezra 10; Ussher); birth estimated.'),
 (6591, 'Eliah, of the sons of Elam (Ezra 10:26)', NULL, -485, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Named among those who had married foreign wives in Ezra''s day, of the sons of Elam.', 'Named in 457 BC (Ezra 10; Ussher); birth estimated.'),
 (6592, 'Elioenai, of the sons of Zattu (Ezra 10:27)', NULL, -485, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Named among those who had married foreign wives in Ezra''s day, of the sons of Zattu.', 'Named in 457 BC (Ezra 10; Ussher); birth estimated.'),
 (6593, 'Eliashib, of the sons of Zattu (Ezra 10:27)', NULL, -485, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Named among those who had married foreign wives in Ezra''s day, of the sons of Zattu.', 'Named in 457 BC (Ezra 10; Ussher); birth estimated.'),
@@ -1072,7 +1082,10 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (6692, 'Shallum, son of Halohesh', NULL, -475, NULL, 1, 1, 'possible', 'ruler', 'minor', NULL, 6691, NULL, 'Ruler of half of Jerusalem who repaired with his daughters (Nehemiah 3:12).', 'Worked on the wall in 445 BC (Nehemiah 3; Ussher); birth estimated.'),
 (6693, 'Hanun, of Zanoah', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Repaired the Valley Gate with the people of Zanoah (Nehemiah 3:13); not the king of Ammon.', 'Worked on the wall in 445 BC (Nehemiah 3; Ussher); birth estimated.'),
 (6695, 'Malchiah, son of Rechab', NULL, -475, NULL, 1, 1, 'possible', 'ruler', 'minor', NULL, 6694, NULL, 'Ruler of part of Beth-haccerem who rebuilt the Dung Gate (Nehemiah 3:14).', 'Worked on the wall in 445 BC (Nehemiah 3; Ussher); birth estimated.'),
-(6697, 'Shallun, son of Col-hozeh', NULL, -475, NULL, 1, 1, 'possible', 'ruler', 'minor', NULL, 6696, NULL, 'Ruler of part of Mizpah who rebuilt the Fountain Gate (Nehemiah 3:15).', 'Worked on the wall in 445 BC (Nehemiah 3; Ussher); birth estimated.'),
+(6697, 'Shallun, son of Col-hozeh', NULL, -475, NULL, 1, 1, 'possible', 'ruler', 'minor', NULL, 6696, NULL, 'Ruler of part of Mizpah who rebuilt the Fountain Gate (Nehemiah 3:15).', 'Worked on the wall in 445 BC (Nehemiah 3; Ussher); birth estimated.');
+
+-- Return & Restoration (continued)
+INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
 (6699, 'Nehemiah, son of Azbuk', NULL, -475, NULL, 1, 1, 'possible', 'ruler', 'minor', NULL, 6698, NULL, 'Ruler of half of Beth-zur who repaired the wall (Nehemiah 3:16); not the governor.', 'Worked on the wall in 445 BC (Nehemiah 3; Ussher); birth estimated.'),
 (6701, 'Rehum, son of Bani', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', 6700, NULL, 'Levite who repaired a section of the wall (Nehemiah 3:17); not the chancellor.', 'Worked on the wall in 445 BC (Nehemiah 3; Ussher); birth estimated.'),
 (6702, 'Hashabiah, ruler of half of Keilah (Nehemiah 3:17)', NULL, -475, NULL, 1, 1, 'possible', 'ruler', 'minor', NULL, NULL, NULL, 'Ruler of half of Keilah who repaired a section of the wall in his district.', 'Worked on the wall in 445 BC (Nehemiah 3; Ussher); birth estimated.'),
@@ -1080,10 +1093,7 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (6706, 'Ezer, son of Jeshua', NULL, -475, NULL, 1, 1, 'possible', 'ruler', 'minor', NULL, 6705, NULL, 'Ruler of Mizpah who repaired a section opposite the armory (Nehemiah 3:19).', 'Worked on the wall in 445 BC (Nehemiah 3; Ussher); birth estimated.'),
 (6708, 'Baruch, son of Zabbai', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', NULL, 6707, NULL, 'Earnestly repaired a section of the wall up to the house of Eliashib (Nehemiah 3:20); not Jeremiah''s scribe.', 'Worked on the wall in 445 BC (Nehemiah 3; Ussher); birth estimated.'),
 (6709, 'Benjamin, wall builder (Nehemiah 3:23)', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Repaired the wall opposite his house with Hashub.', 'Worked on the wall in 445 BC (Nehemiah 3; Ussher); birth estimated.'),
-(6710, 'Hashub, wall builder with Benjamin', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Repaired the wall opposite his house with Benjamin (Nehemiah 3:23).', 'Worked on the wall in 445 BC (Nehemiah 3; Ussher); birth estimated.');
-
--- Return & Restoration (continued)
-INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
+(6710, 'Hashub, wall builder with Benjamin', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Repaired the wall opposite his house with Benjamin (Nehemiah 3:23).', 'Worked on the wall in 445 BC (Nehemiah 3; Ussher); birth estimated.'),
 (6713, 'Azariah, son of Maaseiah', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', NULL, 6712, NULL, 'Repaired the wall by his house (Nehemiah 3:23).', 'Worked on the wall in 445 BC (Nehemiah 3; Ussher); birth estimated.'),
 (6714, 'Binnui, son of Henadad', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', NULL, 6703, NULL, 'Repaired a section of the wall from the house of Azariah to the corner (Nehemiah 3:24).', 'Worked on the wall in 445 BC (Nehemiah 3; Ussher); birth estimated.'),
 (6716, 'Palal, son of Uzai', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', NULL, 6715, NULL, 'Repaired the wall opposite the turning, by the tower of the king''s house (Nehemiah 3:25).', 'Worked on the wall in 445 BC (Nehemiah 3; Ussher); birth estimated.'),
@@ -1124,7 +1134,6 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (6828, 'Bunni, Levite (Neh 9:4)', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', NULL, NULL, 'Levite who stood on the stairs and cried to the LORD.', 'Estimate: an adult in 445 BC; the same name may denote more than one man.'),
 (6829, 'Pethahiah, Levite (Neh 9:5)', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', NULL, NULL, 'Levite who called the people to stand and bless the LORD.', 'Estimate: an adult in 445 BC; the same name may denote more than one man.'),
 (6830, 'Jamin, Levite (Neh 8:7)', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', NULL, NULL, 'Levite who helped the people understand the Law.', 'Estimate: an adult in 445 BC; the same name may denote more than one man.'),
-(6831, 'Akkub, Levite and gatekeeper', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', NULL, NULL, 'Levite who helped explain the Law and a gatekeeper of Jerusalem''s gates.', 'Estimate: an adult in 445 BC; the same name may denote more than one man.'),
 (6832, 'Shabbethai, Levite', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', NULL, NULL, 'Levite who helped explain the Law and was a chief of the Levites over the outward business of the house of God.', 'Estimate: an adult in 445 BC; the same name may denote more than one man.'),
 (6833, 'Maaseiah, Levite (Neh 8:7)', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', NULL, NULL, 'Levite who helped the people understand the Law.', 'Estimate: an adult in 445 BC; the same name may denote more than one man.'),
 (6834, 'Azariah, Levite (Neh 8:7)', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', NULL, NULL, 'Levite who helped the people understand the Law.', 'Estimate: an adult in 445 BC; the same name may denote more than one man.'),
@@ -1133,15 +1142,12 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (6837, 'Rehob, Levite (Neh 10:11)', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', NULL, NULL, 'Levite who sealed the covenant.', 'Estimate: an adult in 445 BC; the same name may denote more than one man.'),
 (6838, 'Zaccur, Levite (Neh 10:12)', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', NULL, NULL, 'Levite who sealed the covenant.', 'Estimate: an adult in 445 BC; the same name may denote more than one man.'),
 (6839, 'Beninu, Levite (Neh 10:13)', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', NULL, NULL, 'Levite who sealed the covenant.', 'Estimate: an adult in 445 BC; the same name may denote more than one man.'),
-(6846, 'Hashabiah, father of Bani and ancestor of Uzzi (Neh 11:22)', NULL, -535, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', 6845, NULL, 'Levite singer, son of Mattaniah, grandfather of Uzzi.', 'Estimate by generation.'),
+(6846, 'Hashabiah, father of Bani and ancestor of Uzzi (Neh 11:22)', NULL, -535, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', 4095, NULL, 'Levite singer, son of Mattaniah, grandfather of Uzzi.', 'Estimate by generation.'),
 (6847, 'Bani, father of Uzzi (Neh 11:22)', NULL, -505, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', 6846, NULL, 'Levite singer, son of Hashabiah, father of Uzzi.', 'Estimate by generation.'),
 (6848, 'Uzzi, son of Bani (Neh 11:22)', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', 6847, NULL, 'Overseer of the Levites at Jerusalem, of the sons of Asaph.', 'Estimate: an adult in 445 BC.'),
-(6849, 'Shemaiah, ancestor of Zechariah (Neh 12:35)', NULL, -535, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', 6845, NULL, 'Levite, son of Mattaniah, grandfather of the trumpeter Zechariah.', 'Estimate by generation.'),
+(6849, 'Shemaiah, ancestor of Zechariah (Neh 12:35)', NULL, -535, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', 4095, NULL, 'Levite, son of Mattaniah, grandfather of the trumpeter Zechariah.', 'Estimate by generation.'),
 (6850, 'Jonathan, father of Zechariah (Neh 12:35)', NULL, -505, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', 6849, NULL, 'Levite, son of Shemaiah, father of the Zechariah who led a company at the dedication.', 'Estimate by generation.'),
 (6851, 'Zechariah, son of Jonathan (Neh 12:35)', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', 6850, NULL, 'Descendant of Asaph who walked with trumpets at the dedication of the wall.', 'Estimate: an adult in 445 BC.'),
-(6853, 'Shammua, father of Abda (Neh 11:17)', NULL, -505, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', 4092, NULL, 'Levite, son of Galal, father of Abda.', 'Estimate by generation.'),
-(6854, 'Abda, son of Shammua (Neh 11:17)', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', 6853, NULL, 'Levite of the family of Jeduthun who lived in Jerusalem.', 'Estimate: an adult in 445 BC.'),
-(6855, 'Talmon, Levite gatekeeper', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', NULL, NULL, 'Gatekeeper of Jerusalem who lived in the city.', 'Estimate: an adult in 445 BC; the same name may denote more than one man.'),
 (6856, 'Ziha, overseer of the Nethinim (Neh 11:21)', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Overseer, with Gispa, of the temple servants who lived on Ophel.', 'Estimate: an adult in 445 BC; the same name may denote more than one man.'),
 (6857, 'Gispa, overseer of the Nethinim (Neh 11:21)', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Overseer, with Ziha, of the temple servants who lived on Ophel.', 'Estimate: an adult in 445 BC; the same name may denote more than one man.'),
 (6858, 'Obadiah, Levite gatekeeper (Neh 12:25)', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', NULL, NULL, 'Gatekeeper at the thresholds of the gates in the days of Nehemiah.', 'Estimate: an adult in 445 BC; the same name may denote more than one man.'),
@@ -1179,23 +1185,23 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (6890, 'Azgad, chief of the people (Neh 10:15)', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Chief of the people who sealed the covenant; the name is also that of a family in Ezra 2 and Nehemiah 7.', 'Estimate: an adult in 445 BC; the name may denote a family or its head.'),
 (6891, 'Bebai, chief of the people (Neh 10:15)', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Chief of the people who sealed the covenant; the name is also that of a family in Ezra 2 and Nehemiah 7.', 'Estimate: an adult in 445 BC; the name may denote a family or its head.'),
 (6892, 'Adonijah, chief of the people (Neh 10:16)', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Chief of the people who sealed the covenant; the name is also that of a family in Ezra 2 and Nehemiah 7.', 'Estimate: an adult in 445 BC; the name may denote a family or its head.'),
-(6893, 'Bigvai, chief of the people (Neh 10:16)', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Chief of the people who sealed the covenant; the name is also that of a family in Ezra 2 and Nehemiah 7.', 'Estimate: an adult in 445 BC; the name may denote a family or its head.'),
-(6894, 'Adin, chief of the people (Neh 10:16)', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Chief of the people who sealed the covenant; the name is also that of a family in Ezra 2 and Nehemiah 7.', 'Estimate: an adult in 445 BC; the name may denote a family or its head.'),
-(6895, 'Ater, chief of the people (Neh 10:17)', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Chief of the people who sealed the covenant; the name is also that of a family in Ezra 2 and Nehemiah 7.', 'Estimate: an adult in 445 BC; the name may denote a family or its head.'),
-(6896, 'Hizkijah, chief of the people (Neh 10:17)', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Chief of the people who sealed the covenant; the name is also that of a family in Ezra 2 and Nehemiah 7.', 'Estimate: an adult in 445 BC; the name may denote a family or its head.'),
-(6897, 'Azzur, chief of the people (Neh 10:17)', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Chief of the people who sealed the covenant; the name is also that of a family in Ezra 2 and Nehemiah 7.', 'Estimate: an adult in 445 BC; the name may denote a family or its head.');
+(6893, 'Bigvai, chief of the people (Neh 10:16)', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Chief of the people who sealed the covenant; the name is also that of a family in Ezra 2 and Nehemiah 7.', 'Estimate: an adult in 445 BC; the name may denote a family or its head.');
 
 -- Return & Restoration (continued)
 INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
-(6898, 'Hodijah, chief of the people (Neh 10:18)', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Chief of the people who sealed the covenant; the name is also that of a family in Ezra 2 and Nehemiah 7.', 'Estimate: an adult in 445 BC; the name may denote a family or its head.'),
+(6894, 'Adin, chief of the people (Neh 10:16)', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Chief of the people who sealed the covenant; the name is also that of a family in Ezra 2 and Nehemiah 7.', 'Estimate: an adult in 445 BC; the name may denote a family or its head.'),
+(6895, 'Ater, chief of the people (Neh 10:17)', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Chief of the people who sealed the covenant; the name is also that of a family in Ezra 2 and Nehemiah 7.', 'Estimate: an adult in 445 BC; the name may denote a family or its head.'),
+(6896, 'Hizkijah, chief of the people (Neh 10:17)', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Chief of the people who sealed the covenant (Nehemiah 10:17); possibly the same name as Hezekiah in the family of Ater "of Hezekiah" (Ezra 2:16).', 'Estimate: an adult in 445 BC; the name may denote a family or its head.'),
+(6897, 'Azzur, chief of the people (Neh 10:17)', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Chief of the people who sealed the covenant.', 'Estimate: an adult in 445 BC; the name may denote a family or its head.'),
+(6898, 'Hodijah, chief of the people (Neh 10:18)', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Chief of the people who sealed the covenant.', 'Estimate: an adult in 445 BC; the name may denote a family or its head.'),
 (6899, 'Hashum, chief of the people (Neh 10:18)', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Chief of the people who sealed the covenant; the name is also that of a family in Ezra 2 and Nehemiah 7.', 'Estimate: an adult in 445 BC; the name may denote a family or its head.'),
 (6900, 'Bezai, chief of the people (Neh 10:18)', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Chief of the people who sealed the covenant; the name is also that of a family in Ezra 2 and Nehemiah 7.', 'Estimate: an adult in 445 BC; the name may denote a family or its head.'),
 (6901, 'Hariph, chief of the people (Neh 10:19)', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Chief of the people who sealed the covenant; the name is also that of a family in Ezra 2 and Nehemiah 7.', 'Estimate: an adult in 445 BC; the name may denote a family or its head.'),
-(6902, 'Anathoth, chief of the people (Neh 10:19)', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Chief of the people who sealed the covenant; the name is also that of a family in Ezra 2 and Nehemiah 7.', 'Estimate: an adult in 445 BC; the name may denote a family or its head.'),
+(6902, 'Anathoth, chief of the people (Neh 10:19)', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Chief of the people who sealed the covenant (Nehemiah 10:19); the name may denote a place or clan, since Anathoth is also a town of Benjamin (Ezra 2:23).', 'Estimate: an adult in 445 BC; the name may denote a family or its head.'),
 (6903, 'Nebai, chief of the people (Neh 10:19)', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Chief of the people who sealed the covenant; the name is also that of a family in Ezra 2 and Nehemiah 7.', 'Estimate: an adult in 445 BC; the name may denote a family or its head.'),
 (6904, 'Magpiash, chief of the people (Neh 10:20)', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Chief of the people who sealed the covenant; the name is also that of a family in Ezra 2 and Nehemiah 7.', 'Estimate: an adult in 445 BC; the name may denote a family or its head.'),
 (6905, 'Meshullam, chief of the people (Neh 10:20)', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Chief of the people who sealed the covenant.', 'Estimate: an adult in 445 BC; the name may denote a family or its head.'),
-(6906, 'Hezir, chief of the people (Neh 10:20)', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Chief of the people who sealed the covenant; the name is also that of a family in Ezra 2 and Nehemiah 7.', 'Estimate: an adult in 445 BC; the name may denote a family or its head.'),
+(6906, 'Hezir, chief of the people (Neh 10:20)', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Chief of the people who sealed the covenant.', 'Estimate: an adult in 445 BC; the name may denote a family or its head.'),
 (6907, 'Meshezabeel, chief of the people (Neh 10:21)', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Chief of the people who sealed the covenant.', 'Estimate: an adult in 445 BC; the name may denote a family or its head.'),
 (6908, 'Zadok, chief of the people (Neh 10:21)', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Chief of the people who sealed the covenant.', 'Estimate: an adult in 445 BC; the name may denote a family or its head.'),
 (6909, 'Jaddua, chief of the people (Neh 10:21)', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Chief of the people who sealed the covenant.', 'Estimate: an adult in 445 BC; the name may denote a family or its head.'),
@@ -1234,7 +1240,6 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (6955, 'Judah, son of Senuah', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', 'Benjamin', 6954, NULL, 'Second over Jerusalem under the overseer Joel.', 'Estimate: an adult in 445 BC.'),
 (6956, 'Joiarib, father of Jedaiah (Neh 11:10)', NULL, -505, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', NULL, NULL, 'Priest, father of Jedaiah.', 'Estimate by generation.'),
 (6957, 'Jedaiah, son of Joiarib', NULL, -475, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', 6956, NULL, 'Priest who lived in Jerusalem.', 'Estimate: an adult in 445 BC.'),
-(6958, 'Jachin, priest (Neh 11:10)', NULL, -475, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', NULL, NULL, 'Priest who lived in Jerusalem.', 'Estimate: an adult in 445 BC. No dates recorded.'),
 (6969, 'Pelaliah, ancestor of Adaiah (Neh 11:12)', NULL, -535, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', 6968, NULL, 'Ancestor in the line of Adaiah, named in the genealogy of Nehemiah 11:12.', 'Estimate by generation from Adaiah, who lived in 445 BC; genealogies may skip generations. '),
 (6970, 'Jeroham, father of Adaiah (Neh 11:12)', NULL, -505, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', 6969, NULL, 'Father in the line of Adaiah, named in the genealogy of Nehemiah 11:12.', 'Estimate by generation from Adaiah, who lived in 445 BC; genealogies may skip generations. '),
 (6971, 'Adaiah, son of Jeroham (Neh 11:12)', NULL, -475, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', 6970, NULL, 'Priest who worked in the house of God with his brethren.', 'Estimate by generation from Adaiah, who lived in 445 BC; genealogies may skip generations. '),
@@ -1242,9 +1247,6 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (6975, 'Azareel, father of Amashai (Neh 11:13)', NULL, -505, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', 6974, NULL, 'Father in the line of Amashai, named in the genealogy of Nehemiah 11:13.', 'Estimate by generation from Amashai, who lived in 445 BC; genealogies may skip generations. '),
 (6976, 'Amashai, son of Azareel (Neh 11:13)', NULL, -475, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', 6975, NULL, 'Priest, chief of the fathers, with a number of his brethren.', 'Estimate by generation from Amashai, who lived in 445 BC; genealogies may skip generations. '),
 (6977, 'Zabdiel, overseer of the mighty priests (Neh 11:14)', NULL, -475, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', NULL, NULL, 'Son of one of the great men and overseer of 128 mighty men of valor among the priests.', 'Estimate: an adult in 445 BC. No dates recorded.'),
-(6980, 'Azrikam, ancestor of Shemaiah (Neh 11:15)', NULL, -535, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', 6979, NULL, 'Ancestor in the line of Shemaiah, named in the genealogy of Nehemiah 11:15.', 'Estimate by generation from Shemaiah, who lived in 445 BC; genealogies may skip generations. '),
-(6981, 'Hashub, father of Shemaiah (Neh 11:15)', NULL, -505, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', 6980, NULL, 'Father in the line of Shemaiah, named in the genealogy of Nehemiah 11:15.', 'Estimate by generation from Shemaiah, who lived in 445 BC; genealogies may skip generations. '),
-(6982, 'Shemaiah, son of Hashub (Neh 11:15)', NULL, -475, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', 6981, NULL, 'Levite who lived in Jerusalem.', 'Estimate by generation from Shemaiah, who lived in 445 BC; genealogies may skip generations. '),
 (7007, 'Joiada, high priest', NULL, -460, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', 994, NULL, 'High priest, son of Eliashib and father of Jonathan; his son married a daughter of Sanballat (Neh 13:28).', 'Estimate by generation from Eliashib (b. about 490 BC).'),
 (7008, 'Jonathan (Johanan), high priest', 'Johanan, Jehohanan', -430, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', 7007, NULL, 'High priest, son of Joiada and father of Jaddua; called Johanan the son of Eliashib in Nehemiah 12:23, probably as a grandson.', 'Estimate by generation from Joiada. Nehemiah 12:11 and 12:23 may compress the line.'),
 (7010, 'Meraiah, head of the priestly house of Seraiah (Neh 12:12)', NULL, -520, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', NULL, NULL, 'Priest, chief of the house of Seraiah in the days of the high priest Joiakim.', 'Estimate: an adult in the days of Joiakim, about 520 to 490 BC.'),
@@ -1319,6 +1321,8 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (990, 'Tattenai, governor beyond the River', 'Tatnai', -560, NULL, 1, 1, 'possible', 'ruler', 'minor', 'Persian', NULL, NULL, 'Persian governor of the province beyond the Euphrates. In 520 BC he questioned the Jews about their authority to rebuild the Temple and wrote to Darius, who confirmed Cyrus''s decree and ordered him to help.', 'Estimate. Governor in the second year of Darius I (520 BC; Ezra 5:3-6, 6:6-13); born about 560 BC so as to be an established governor then. His death is not recorded.'),
 (991, 'Shethar-boznai', NULL, -560, NULL, 1, 1, 'possible', 'ruler', 'minor', 'Persian', NULL, NULL, 'Persian official who served with Tattenai and joined him in questioning the Jews and in writing to Darius about the Temple. He and Tattenai carried out the king''s order to the letter.', 'Estimate. Active in 520 BC (Ezra 5:3, 6:13). Born about 560 BC; his death is not recorded.'),
 (4072, 'Zadok, son of Meraioth (1 Chr 9:11)', NULL, -565, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', 4071, NULL, 'Priest in the line of Azariah, ruler of the house of God (1 Chronicles 9:11).', 'No dates recorded; the list follows the return from exile.'),
+(4086, 'Hashabiah, Merarite (1 Chr 9:14)', NULL, -565, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', 6978, NULL, 'Merarite Levite, ancestor of Shemaiah (1 Chronicles 9:14).', 'No dates recorded; the list follows the return from exile.'),
+(4095, 'Mattaniah, son of Micah', NULL, -565, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', 4094, NULL, 'Levite who lived in Jerusalem (1 Chronicles 9:14-16). A descendant of Asaph.', 'No dates recorded; the list follows the return from exile.'),
 (6409, 'Seraiah, leader with Zerubbabel', 'Azariah', -575, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'One of the leaders who came back from Babylon with Zerubbabel (Ezra 2:2; Nehemiah 7:7).', 'Led the return of 538 BC (Ussher 536); birth estimated.'),
 (6410, 'Reelaiah, leader with Zerubbabel', 'Raamiah', -575, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'One of the leaders who came back from Babylon with Zerubbabel (Ezra 2:2; Nehemiah 7:7).', 'Led the return of 538 BC (Ussher 536); birth estimated.'),
 (6411, 'Mizpar, leader with Zerubbabel', 'Mispereth', -575, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'One of the leaders who came back from Babylon with Zerubbabel (Ezra 2:2; Nehemiah 7:7).', 'Led the return of 538 BC (Ussher 536); birth estimated.'),
@@ -1332,13 +1336,11 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (6840, 'Judah, Levite (Neh 12:8)', NULL, -570, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', NULL, NULL, 'Levite who returned with Zerubbabel and Jeshua.', 'Estimate: an adult in 537 BC.'),
 (6841, 'Unni, Levite (Neh 12:9)', NULL, -570, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', NULL, NULL, 'Levite who, with Bakbukiah, kept watch opposite the others.', 'Estimate: an adult in 537 BC.'),
 (6842, 'Bakbukiah, Levite', NULL, -540, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', NULL, NULL, 'Levite, second among his brethren in the thanksgiving prayer and a gatekeeper.', 'Estimate; named in lists from Zerubbabel''s day to Nehemiah''s, so the name may denote more than one man.'),
-(6845, 'Mattaniah, Levite singer', NULL, -565, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', 6844, NULL, 'Levite of the sons of Asaph who led the thanksgiving prayer; also a gatekeeper and forefather of Zechariah and of Uzzi.', 'Estimate by generation from Zechariah (Neh 12:35) and Uzzi (Neh 11:22); the lists may refer to more than one Mattaniah.'),
 (6930, 'Amariah, ancestor of Athaiah (Neh 11:4)', NULL, -565, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Judah', 6929, NULL, 'Ancestor in the line of Athaiah, named in the genealogy of Nehemiah 11:4.', 'Estimate by generation from Athaiah, who lived in 445 BC; genealogies may skip generations. '),
 (6938, 'Hazaiah, ancestor of Maaseiah (Neh 11:5)', NULL, -565, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Judah', 6937, NULL, 'Ancestor in the line of Maaseiah, named in the genealogy of Nehemiah 11:5.', 'Estimate by generation from Maaseiah, who lived in 445 BC; genealogies may skip generations. '),
 (6946, 'Pedaiah, ancestor of Sallu (Neh 11:7)', NULL, -565, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 6945, NULL, 'Ancestor in the line of Sallu, named in the genealogy of Nehemiah 11:7.', 'Estimate by generation from Sallu, who lived in 445 BC; genealogies may skip generations. '),
 (6968, 'Amzi, ancestor of Adaiah (Neh 11:12)', NULL, -565, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', 6967, NULL, 'Ancestor in the line of Adaiah, named in the genealogy of Nehemiah 11:12.', 'Estimate by generation from Adaiah, who lived in 445 BC; genealogies may skip generations. '),
 (6973, 'Meshillemoth, ancestor of Amashai (Neh 11:13)', NULL, -565, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', 6972, NULL, 'Ancestor in the line of Amashai, named in the genealogy of Nehemiah 11:13.', 'Estimate by generation from Amashai, who lived in 445 BC; genealogies may skip generations. '),
-(6979, 'Hashabiah, ancestor of Shemaiah (Neh 11:15)', NULL, -565, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', 6978, NULL, 'Ancestor in the line of Shemaiah, named in the genealogy of Nehemiah 11:15.', 'Estimate by generation from Shemaiah, who lived in 445 BC; genealogies may skip generations. '),
 (6983, 'Seraiah, priest with Zerubbabel (Neh 12:1)', NULL, -570, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', NULL, NULL, 'Chief of the priests who went up from exile with Zerubbabel and Jeshua; the name may denote a priestly house.', 'Estimate: an adult in 537 BC, the return under Zerubbabel; the name may denote a house.'),
 (6984, 'Jeremiah, priest with Zerubbabel (Neh 12:1)', NULL, -570, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', NULL, NULL, 'Chief of the priests who went up from exile with Zerubbabel and Jeshua; the name may denote a priestly house.', 'Estimate: an adult in 537 BC, the return under Zerubbabel; the name may denote a house.'),
 (6985, 'Ezra, priest with Zerubbabel (Neh 12:1)', NULL, -570, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', NULL, NULL, 'Chief of the priests who went up from exile with Zerubbabel and Jeshua; the name may denote a priestly house. He may be of the house of Ezra the scribe but is not said to be the scribe himself.', 'Estimate: an adult in 537 BC, the return under Zerubbabel; the name may denote a house.'),
@@ -1543,7 +1545,7 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (314, 'Jannai', 'Janna', NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 313, NULL, 'Son of Joseph, ancestor of Jesus in Luke 3:24.', 'Known only from Luke''s genealogy.'),
 (315, 'Melchi, son of Jannai', 'Melchi', NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 314, NULL, 'Son of Jannai, ancestor of Jesus in Luke 3:24. Post-exilic Melchi, distinct from the pre-exilic Melchi.', 'Known only from Luke''s genealogy. Luke 3:24.'),
 (316, 'Levi, son of Melchi', 'Levi', NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 315, NULL, 'Son of Melchi, ancestor of Jesus in Luke 3:24. Not the patriarch Levi son of Jacob.', 'Known only from Luke''s genealogy.'),
-(570, 'Maacah, wife of Rehoboam', NULL, NULL, NULL, 1, 1, 'possible', 'queen', 'minor', NULL, 6083, NULL, 'Wife of King Rehoboam and mother of King Abijah of Judah. Scripture calls her Maachah or Michaiah and gives her father as Absalom (or Abishalom) in 1 Kings 15:2 and 2 Chronicles 11:20, but as Uriel of Gibeah in 2 Chronicles 13:2. Readers commonly explain this by "daughter" meaning granddaughter: Uriel her father, Absalom her grandfather through Tamar. The same name is later given to the "mother" of King Asa, whom Asa removed from being queen for making an idol; many take this to be Asa''s grandmother.', 'Birth and death are not recorded. Rehoboam''s wife and Abijah''s mother (2 Chr 11:20). Because her father is given differently in the sources, her father is not recorded in the table, and Asa''s mother_id is left empty for the same reason.'),
+(570, 'Maacah, wife of Rehoboam', NULL, NULL, NULL, 1, 1, 'possible', 'queen', 'minor', NULL, NULL, NULL, 'Wife of King Rehoboam and mother of King Abijah of Judah. Scripture calls her Maachah or Michaiah and gives her father as Absalom (or Abishalom) in 1 Kings 15:2 and 2 Chronicles 11:20, but as Uriel of Gibeah in 2 Chronicles 13:2. Readers commonly explain this by "daughter" meaning granddaughter: Uriel her father, Absalom her grandfather through Tamar. The same name is later given to the "mother" of King Asa, whom Asa removed from being queen for making an idol; many take this to be Asa''s grandmother.', 'Birth and death are not recorded. Rehoboam''s wife and Abijah''s mother (2 Chr 11:20). Because her father is given differently in the sources, her father is not recorded in the table, and Asa''s mother_id is left empty for the same reason.'),
 (571, 'Azubah, mother of Jehoshaphat', NULL, NULL, NULL, 1, 1, 'possible', 'queen', 'minor', NULL, 6032, NULL, 'Daughter of Shilhi and mother of King Jehoshaphat of Judah.', 'Birth and death are not recorded. Wife of Asa (Jehoshaphat''s father) and mother of Jehoshaphat, who was 35 when he began to reign (1 Kgs 22:42).'),
 (572, 'Zibiah of Beer-sheba', NULL, NULL, NULL, 1, 1, 'possible', 'queen', 'minor', NULL, NULL, NULL, 'Queen mother of Judah, mother of King Joash (Jehoash) of Judah. She came from Beer-sheba.', 'Birth and death are not recorded. Mother of Joash, who began to reign in the seventh year of Jehu (2 Kgs 12:1); her husband was Ahaziah of Judah.'),
 (573, 'Jehoaddan of Jerusalem', NULL, NULL, NULL, 1, 1, 'possible', 'queen', 'minor', NULL, NULL, NULL, 'Queen mother of Judah, mother of King Amaziah. She came from Jerusalem.', 'Birth and death are not recorded. Mother of Amaziah, who began to reign at 25 (2 Kgs 14:2); her husband was Joash of Judah.'),
@@ -1775,7 +1777,7 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (2101, 'Adah, wife of Esau', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, 2100, NULL, 'Hittite wife of Esau, mother of Eliphaz, named in Genesis 36:1-19.', 'No dates recorded; placed by generation. Genesis 26:34 calls Esau''s Hittite wife Bashemath, daughter of Elon; the names differ between passages.'),
 (2102, 'Eliphaz, son of Esau', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, 59, 2101, 'Firstborn son of Esau by Adah, named in Genesis 36:1-19.', 'No dates recorded; placed by generation.'),
 (2103, 'Reuel, son of Esau', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, 59, 2099, 'Son of Esau by Bashemath, named in Genesis 36:1-19.', 'No dates recorded; placed by generation.'),
-(2104, 'Teman, son of Eliphaz', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, 2102, NULL, 'Son of Eliphaz and duke of Edom, named in Genesis 36:1-19.', 'No dates recorded; placed by generation.'),
+(2104, 'Teman, son of Eliphaz', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, 2102, NULL, 'Son of Eliphaz and duke of Edom, named in Genesis 36:1-19. The name is also that of a place, so it may denote a clan or place as well as a person.', 'No dates recorded; placed by generation.'),
 (2105, 'Omar', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, 2102, NULL, 'Son of Eliphaz and duke of Edom, named in Genesis 36:1-19.', 'No dates recorded; placed by generation.'),
 (2106, 'Zepho', 'Zephi', NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, 2102, NULL, 'Son of Eliphaz and duke of Edom, named in Genesis 36:1-19.', 'No dates recorded; placed by generation.'),
 (2107, 'Gatam', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, 2102, NULL, 'Son of Eliphaz and duke of Edom, named in Genesis 36:1-19.', 'No dates recorded; placed by generation.'),
@@ -1855,7 +1857,7 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (2408, 'Jachin, son of Simeon', 'Jarib', NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Simeon', 163, NULL, 'Son of Simeon and founder of the Jachinites.', 'No dates recorded; placed by generation.'),
 (2409, 'Zohar, son of Simeon', 'Zerah, Zarah', NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Simeon', 163, NULL, 'Son of Simeon, called Zerah in Numbers 26, founder of the Zarhites of Simeon.', 'No dates recorded; placed by generation.'),
 (2410, 'Shaul, son of Simeon', 'Saul', NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Simeon', 163, NULL, 'Son of Simeon by a Canaanite woman; founder of the Shaulites.', 'No dates recorded; placed by generation.'),
-(2411, 'Libni, son of Gershon', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', 903, NULL, 'Son of Gershon; founder of the Libnite family of Levites.', 'No dates recorded; placed by generation.'),
+(2411, 'Libni, son of Gershon', 'Laadan', NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', 903, NULL, 'Son of Gershon; founder of the Libnite family of Levites. Called Laadan in 1 Chronicles 23:7-9 and 26:21, where he is again the brother of Shimei.', 'No dates recorded; placed by generation.'),
 (2412, 'Shimi, son of Gershon', 'Shimei', NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', 903, NULL, 'Son of Gershon, named in the heads of the Levite houses.', 'No dates recorded; placed by generation.'),
 (2413, 'Hebron, son of Kohath', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', 497, NULL, 'Son of Kohath; founder of the Hebronite family of Levites.', 'No dates recorded; placed by generation.'),
 (2414, 'Uzziel, son of Kohath', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', 497, NULL, 'Youngest son of Kohath and uncle of Moses and Aaron.', 'No dates recorded; placed by generation.'),
@@ -1903,7 +1905,7 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (2457, 'Rosh, son of Benjamin', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 64, NULL, 'Son of Benjamin named in Genesis 46; not listed in Numbers 26.', 'No dates recorded; placed by generation.'),
 (2458, 'Muppim, son of Benjamin', 'Shupham, Shuppim, Shephupham', NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 64, NULL, 'Son of Benjamin, possibly the Shupham of Numbers 26, founder of the Shuphamites.', 'No dates recorded; placed by generation.'),
 (2459, 'Huppim, son of Benjamin', 'Hupham', NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 64, NULL, 'Son of Benjamin, called Hupham in Numbers 26; founder of the Huphamites.', 'No dates recorded; placed by generation.'),
-(2460, 'Ard, son of Bela', 'Addar', NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 2452, NULL, 'Grandson of Benjamin through Bela and founder of the Ardites; Genesis 46 lists him with Benjamin''s sons.', 'No dates recorded; placed by generation. Genesis 46:21 lists him among Benjamin''s sons; Numbers 26:40 makes him Benjamin''s grandson.'),
+(2460, 'Ard, son of Bela', 'Addar', NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 2452, NULL, 'Grandson of Benjamin through Bela and founder of the Ardites; Genesis 46 lists him with Benjamin''s sons.', 'No dates recorded; placed by generation. Genesis 46:21 lists him among Benjamin''s sons; Numbers 26:40 makes him Benjamin''s grandson. Called Addar in 1 Chronicles 8:3.'),
 (2461, 'Naaman, son of Bela', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 2452, NULL, 'Grandson of Benjamin through Bela and founder of the Naamites; not the Syrian commander.', 'No dates recorded; placed by generation. Genesis 46:21 lists him among Benjamin''s sons; Numbers 26:40 makes him Benjamin''s grandson.'),
 (2462, 'Hushim, son of Dan', 'Shuham', NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Dan', 165, NULL, 'Son of Dan, called Shuham in Numbers 26; founder of the Shuhamites.', 'No dates recorded; placed by generation.'),
 (2463, 'Jahzeel, son of Naphtali', 'Jahziel', NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Naphtali', 166, NULL, 'Son of Naphtali and founder of the Jahzeelites.', 'No dates recorded; placed by generation.'),
@@ -1932,7 +1934,7 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (2805, 'Nethaneel, son of Zuar', NULL, NULL, NULL, 1, 1, 'possible', 'ruler', 'minor', 'Issachar', 2804, NULL, 'Prince of the tribe of Issachar who stood with Moses at the census, led his tribe''s host and brought its offering at the dedication of the altar.', 'No dates recorded; an adult at Sinai (Num 1:3), so placed there.'),
 (2806, 'Helon, father of Eliab', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Zebulun', NULL, NULL, 'Father of Eliab, prince of Zebulun, named in Numbers 1.', 'No dates recorded; placed by generation.'),
 (2807, 'Eliab, son of Helon', NULL, NULL, NULL, 1, 1, 'possible', 'ruler', 'minor', 'Zebulun', 2806, NULL, 'Prince of the tribe of Zebulun who stood with Moses at the census, led his tribe''s host and brought its offering at the dedication of the altar.', 'No dates recorded; an adult at Sinai (Num 1:3), so placed there.'),
-(2809, 'Elishama, son of Ammihud', NULL, NULL, NULL, 1, 1, 'possible', 'ruler', 'minor', 'Ephraim', 4481, NULL, 'Prince of the tribe of Ephraim who stood with Moses at the census, led his tribe''s host and brought its offering at the dedication of the altar.', 'No dates recorded; an adult at Sinai (Num 1:3), so placed there.'),
+(2809, 'Elishama, son of Ammihud', NULL, NULL, NULL, 1, 1, 'possible', 'ruler', 'minor', 'Ephraim', 7603, NULL, 'Prince of the tribe of Ephraim who stood with Moses at the census, led his tribe''s host and brought its offering at the dedication of the altar. His name and his father''s name match those of Joshua''s grandfather in 1 Chronicles 7:26, but the texts do not say they are the same man.', 'No dates recorded; an adult at Sinai (Num 1:3), so placed there.'),
 (2810, 'Pedahzur, father of Gamaliel', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Manasseh', NULL, NULL, 'Father of Gamaliel, prince of Manasseh, named in Numbers 1.', 'No dates recorded; placed by generation.'),
 (2811, 'Gamaliel, son of Pedahzur', NULL, NULL, NULL, 1, 1, 'possible', 'ruler', 'minor', 'Manasseh', 2810, NULL, 'Prince of the tribe of Manasseh who stood with Moses at the census, led his tribe''s host and brought its offering at the dedication of the altar.', 'No dates recorded; an adult at Sinai (Num 1:3), so placed there.'),
 (2812, 'Gideoni, father of Abidan', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', NULL, NULL, 'Father of Abidan, prince of Benjamin, named in Numbers 1.', 'No dates recorded; placed by generation.'),
@@ -1994,17 +1996,17 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (2871, 'Puah, father of Tola', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Issachar', 2870, NULL, 'Father of the judge Tola, son of Dodo (Judg 10:1).', 'No dates recorded; placed by generation.'),
 (2872, 'Hillel, father of Abdon', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Ephraim', NULL, NULL, 'Pirathonite, father of the judge Abdon (Judg 12:13).', 'No dates recorded; placed by generation.'),
 (2873, 'Cushan-rishathaim', 'Chushan-rishathaim', NULL, NULL, 1, 1, 'possible', 'king', 'minor', NULL, NULL, NULL, 'King of Mesopotamia who oppressed Israel eight years until Othniel delivered them (Judg 3:8-10).', 'No dates recorded; early in the period of the judges.'),
-(2874, 'Lapidoth', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', 'Ephraim', NULL, NULL, 'Husband of the prophetess and judge Deborah (Judg 4:4); the text says no more of him.', 'No dates recorded; placed with Deborah.'),
-(2875, 'Purah', 'Phurah', NULL, NULL, 1, 1, 'possible', 'other', 'minor', 'Manasseh', NULL, NULL, 'Gideon''s servant who went with him to listen at the Midianite camp (Judg 7:10-11).', 'No dates recorded; placed with Gideon.'),
+(2874, 'Lapidoth', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Husband of the prophetess and judge Deborah (Judg 4:4); the text says no more of him.', 'No dates recorded; placed with Deborah.'),
+(2875, 'Purah', 'Phurah', NULL, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Gideon''s servant who went with him to listen at the Midianite camp (Judg 7:10-11).', 'No dates recorded; placed with Gideon.'),
 (2876, 'Jether, son of Gideon', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', 'Manasseh', 15, NULL, 'Gideon''s firstborn, told to kill the kings Zebah and Zalmunna but too frightened as a youth (Judg 8:20).', 'No dates recorded; a youth in the time of Gideon.'),
-(2877, 'Zebul, ruler of Shechem', NULL, NULL, NULL, 1, 1, 'possible', 'ruler', 'minor', 'Manasseh', NULL, NULL, 'Abimelech''s officer and ruler of Shechem, who warned him of Gaal''s revolt (Judg 9:28-41).', 'No dates recorded; placed in Abimelech''s reign.'),
+(2877, 'Zebul, ruler of Shechem', NULL, NULL, NULL, 1, 1, 'possible', 'ruler', 'minor', NULL, NULL, NULL, 'Abimelech''s officer and ruler of Shechem, who warned him of Gaal''s revolt (Judg 9:28-41).', 'No dates recorded; placed in Abimelech''s reign.'),
 (2878, 'Adoni-bezek', NULL, NULL, NULL, 1, 1, 'possible', 'king', 'minor', NULL, NULL, NULL, 'Canaanite king of Bezek who, by his own account, had mutilated seventy kings; Judah did the same to him (Judg 1:5-7).', 'No dates recorded; placed with the conquest.'),
 (2879, 'Anak', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, NULL, NULL, 'Ancestor of the Anakites of Hebron; may denote a clan as well as a man (Judg 1:20).', 'No dates recorded; placed by generation. May denote a clan.'),
 (2880, 'Sheshai', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', NULL, 2879, NULL, 'Anakite of Hebron slain when Judah took the city (Judg 1:10).', 'No dates recorded; placed with the conquest of Hebron. May denote a clan.'),
 (2881, 'Ahiman', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', NULL, 2879, NULL, 'Anakite of Hebron slain when Judah took the city (Judg 1:10).', 'No dates recorded; placed with the conquest of Hebron. May denote a clan.'),
 (2882, 'Talmai, son of Anak', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', NULL, 2879, NULL, 'Anakite of Hebron slain when Judah took the city (Judg 1:10).', 'No dates recorded; placed with the conquest of Hebron. May denote a clan.'),
 (2883, 'Hobab, father-in-law of Moses', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Midianite or Kenite called Moses'' father-in-law (Judg 4:11); Numbers 10:29 calls him son of Raguel, so he may be Jethro''s son or another name for Jethro. Ancestor of the Kenite Heber.', 'No dates recorded; placed in the wilderness.'),
-(2884, 'Micah of Ephraim', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', 'Ephraim', NULL, NULL, 'Man of Mount Ephraim who made an idol and hired a Levite as priest; the Danites took both (Judg 17-18).', 'No dates recorded; late in the period of the judges.'),
+(2884, 'Micah of Ephraim', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Man of Mount Ephraim who made an idol and hired a Levite as priest; the Danites took both (Judg 17-18).', 'No dates recorded; late in the period of the judges.'),
 (2885, 'Jonathan, son of Gershom', NULL, NULL, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', NULL, NULL, 'Young Levite of Bethlehem hired by Micah, then priest to the tribe of Dan (Judg 17:7-13; 18:30). KJV reads Gershom son of Manasseh; the Hebrew has a raised letter that tradition reads as Moses, so he may descend from Moses'' son Gershom.', 'No dates recorded; relationship to Moses'' Gershom is uncertain, so no parent is linked.'),
 (3202, 'Zimri, son of Zerah', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 2429, NULL, 'Son of Zerah of Judah, named in 1 Chronicles 2:6.', 'No dates recorded; placed by generation.'),
 (3203, 'Ethan, son of Zerah', 'Ethan the Ezrahite', NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 2429, NULL, 'Son of Zerah of Judah, named in 1 Chronicles 2:6. Ethan and Heman the Ezrahite are noted for wisdom in 1 Kings 4:31; whether they are the same men is not stated here.', 'No dates recorded; placed by generation.'),
@@ -2099,21 +2101,21 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (3293, 'Jahath, son of Reaiah', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 3292, NULL, 'Son of Reaiah and father of Ahumai and Lahad, of the families of the Zorathites (1 Chr 4:2).', 'No dates recorded; placed by generation.'),
 (3294, 'Ahumai, son of Jahath', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 3293, NULL, 'Son of Jahath, of the Zorathites (1 Chr 4:2).', 'No dates recorded; placed by generation.'),
 (3295, 'Lahad, son of Jahath', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 3293, NULL, 'Son of Jahath, of the Zorathites (1 Chr 4:2).', 'No dates recorded; placed by generation.'),
-(3296, 'Jezreel, son of Hur', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 185, NULL, 'Named among the sons of Hur, of the line of Etam (1 Chr 4:3-4).', 'No dates recorded; placed by generation. The verse speaks of "the father of Etam"; Etam is also a town.'),
-(3297, 'Ishma, son of Hur', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 185, NULL, 'Named among the sons of Hur, of the line of Etam (1 Chr 4:3-4).', 'No dates recorded; placed by generation. The verse speaks of "the father of Etam"; Etam is also a town.'),
-(3298, 'Idbash, son of Hur', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 185, NULL, 'Named among the sons of Hur, of the line of Etam (1 Chr 4:3-4).', 'No dates recorded; placed by generation. The verse speaks of "the father of Etam"; Etam is also a town.'),
-(3299, 'Hazelelponi, sister of Jezreel', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 185, NULL, 'Sister of Jezreel, Ishma and Idbash (1 Chr 4:3).', 'No dates recorded; placed by generation. Listed among the sons of Hur in 1 Chr 4:4.'),
+(3296, 'Jezreel, son of Hur', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', NULL, NULL, 'Named among those "of the father of Etam" (1 Chronicles 4:3); the text does not name their father. Verse 4 closes the passage with "These are the sons of Hur", which may or may not include them.', 'No dates recorded; placed by generation. The verse speaks of "the father of Etam"; Etam is also a town.'),
+(3297, 'Ishma, son of Hur', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', NULL, NULL, 'Named among those "of the father of Etam" (1 Chronicles 4:3); the text does not name their father. Verse 4 closes the passage with "These are the sons of Hur", which may or may not include them.', 'No dates recorded; placed by generation. The verse speaks of "the father of Etam"; Etam is also a town.'),
+(3298, 'Idbash, son of Hur', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', NULL, NULL, 'Named among those "of the father of Etam" (1 Chronicles 4:3); the text does not name their father. Verse 4 closes the passage with "These are the sons of Hur", which may or may not include them.', 'No dates recorded; placed by generation. The verse speaks of "the father of Etam"; Etam is also a town.'),
+(3299, 'Hazelelponi, sister of Jezreel', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', NULL, NULL, 'Sister of Jezreel, Ishma and Idbash, who are "of the father of Etam" (1 Chr 4:3); the text does not name her father.', 'No dates recorded; placed by generation. Listed among the sons of Hur in 1 Chr 4:4.'),
 (3300, 'Penuel, son of Hur', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 185, NULL, 'Son of Hur, called the father of Gedor (1 Chr 4:4). May denote a clan or town rather than an individual.', 'No dates recorded; placed by generation.'),
 (3301, 'Ezer, son of Hur', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 185, NULL, 'Son of Hur, called the father of Hushah (1 Chr 4:4). May denote a clan or town rather than an individual.', 'No dates recorded; placed by generation.'),
 (3302, 'Helah, wife of Ashhur', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', NULL, NULL, 'One of Ashhur''s two wives; mother of Zereth, Jezoar and Ethnan (1 Chr 4:5, 7).', 'No dates recorded; placed by generation.'),
 (3303, 'Naarah, wife of Ashhur', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', NULL, NULL, 'One of Ashhur''s two wives; mother of Ahuzam, Hepher, Temeni and Haahashtari (1 Chr 4:5-6).', 'No dates recorded; placed by generation.'),
-(3304, 'Ahuzam, son of Ashhur', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 3219, 3303, 'Son of Ashhur, father of Tekoa (1 Chr 4:6-7).', 'No dates recorded; placed by generation.'),
-(3305, 'Hepher, son of Ashhur', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 3219, 3303, 'Son of Ashhur, father of Tekoa (1 Chr 4:6-7).', 'No dates recorded; placed by generation.'),
-(3306, 'Temeni, son of Ashhur', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 3219, 3303, 'Son of Ashhur, father of Tekoa (1 Chr 4:6-7).', 'No dates recorded; placed by generation.'),
-(3307, 'Haahashtari, son of Ashhur', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 3219, 3303, 'Son of Ashhur, father of Tekoa (1 Chr 4:6-7).', 'No dates recorded; placed by generation.'),
-(3308, 'Zereth, son of Ashhur', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 3219, 3302, 'Son of Ashhur, father of Tekoa (1 Chr 4:6-7).', 'No dates recorded; placed by generation.'),
-(3309, 'Jezoar, son of Ashhur', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 3219, 3302, 'Son of Ashhur, father of Tekoa (1 Chr 4:6-7).', 'No dates recorded; placed by generation.'),
-(3310, 'Ethnan, son of Ashhur', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 3219, 3302, 'Son of Ashhur, father of Tekoa (1 Chr 4:6-7).', 'No dates recorded; placed by generation.'),
+(3304, 'Ahuzam, son of Ashhur', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 3219, 3303, 'Son of Ashhur the father of Tekoa, by Naarah (1 Chr 4:5-6).', 'No dates recorded; placed by generation.'),
+(3305, 'Hepher, son of Ashhur', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 3219, 3303, 'Son of Ashhur the father of Tekoa, by Naarah (1 Chr 4:5-6).', 'No dates recorded; placed by generation.'),
+(3306, 'Temeni, son of Ashhur', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 3219, 3303, 'Son of Ashhur the father of Tekoa, by Naarah (1 Chr 4:5-6).', 'No dates recorded; placed by generation.'),
+(3307, 'Haahashtari, son of Ashhur', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 3219, 3303, 'Son of Ashhur the father of Tekoa, by Naarah (1 Chr 4:5-6).', 'No dates recorded; placed by generation.'),
+(3308, 'Zereth, son of Ashhur', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 3219, 3302, 'Son of Ashhur the father of Tekoa, by Helah (1 Chr 4:5, 7).', 'No dates recorded; placed by generation.'),
+(3309, 'Jezoar, son of Ashhur', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 3219, 3302, 'Son of Ashhur the father of Tekoa, by Helah (1 Chr 4:5, 7).', 'No dates recorded; placed by generation.'),
+(3310, 'Ethnan, son of Ashhur', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 3219, 3302, 'Son of Ashhur the father of Tekoa, by Helah (1 Chr 4:5, 7).', 'No dates recorded; placed by generation.'),
 (3311, 'Coz', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', NULL, NULL, 'Man of Judah who fathered Anub and Zobebah (1 Chr 4:8); his own parents are not given.', 'No dates recorded; placed by generation.'),
 (3312, 'Anub, son of Coz', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 3311, NULL, 'Son of Coz (1 Chr 4:8).', 'No dates recorded; placed by generation.'),
 (3313, 'Zobebah, son of Coz', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Judah', 3311, NULL, 'Child of Coz (1 Chr 4:8).', 'No dates recorded; placed by generation.'),
@@ -2209,7 +2211,7 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (3634, 'Rephaiah, descendant of Zerubbabel', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Judah', NULL, NULL, 'Descendant in the line of Zerubbabel; 1 Chronicles 3:21 says only "the sons of" the name, so how he joins the line of Hananiah is not stated.', 'No dates recorded; placed by generation.'),
 (3635, 'Arnan', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Judah', NULL, NULL, 'Descendant in the line of Zerubbabel; 1 Chronicles 3:21 says only "the sons of" the name, so how he joins the line of Hananiah is not stated.', 'No dates recorded; placed by generation.'),
 (3636, 'Obadiah, descendant of Zerubbabel', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Judah', NULL, NULL, 'Descendant in the line of Zerubbabel; 1 Chronicles 3:21 says only "the sons of" the name, so how he joins the line of Hananiah is not stated.', 'No dates recorded; placed by generation.'),
-(3637, 'Shechaniah, son of Obadiah', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Judah', NULL, NULL, 'Ancestor of Shemaiah and Hattush in 1 Chronicles 3:21-22; how he joins the line of Hananiah is not stated.', 'No dates recorded; placed by generation.'),
+(3637, 'Shechaniah, descendant of Zerubbabel', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Judah', NULL, NULL, 'Ancestor of Shemaiah and Hattush in 1 Chronicles 3:21-22; how he joins the line of Hananiah is not stated.', 'No dates recorded; placed by generation.'),
 (3638, 'Shemaiah, son of Shechaniah', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Judah', 3637, NULL, 'Son of Shechaniah and father of Hattush and four brothers.', 'No dates recorded; placed by generation.'),
 (3639, 'Hattush, son of Shemaiah', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Judah', 3638, NULL, 'Son of Shemaiah, in the descendants of Zerubbabel.', 'No dates recorded; placed by generation.'),
 (3640, 'Igeal', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Judah', 3638, NULL, 'Son of Shemaiah, in the descendants of Zerubbabel.', 'No dates recorded; placed by generation.'),
@@ -2231,7 +2233,7 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
 (3654, 'Shallum, son of Shaul of Simeon', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Simeon', 2410, NULL, 'Simeonite, son of Shaul son of Simeon (1 Chronicles 4:24-25).', 'No dates recorded; placed by generation.'),
 (3655, 'Mibsam, son of Shallum', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Simeon', 3654, NULL, 'Simeonite, son of Shallum.', 'No dates recorded; placed by generation.'),
-(3656, 'Mishma, son of Mibsam', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Simeon', 3655, NULL, 'Simeonite, son of Mibsam and father of Hamuel, Zacchur and Shimei.', 'No dates recorded; placed by generation.'),
+(3656, 'Mishma, son of Mibsam', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Simeon', 3655, NULL, 'Simeonite, son of Mibsam (1 Chronicles 4:25); his line is continued in 1 Chronicles 4:26 with Hamuel, Zacchur and Shimei.', 'No dates recorded; placed by generation.'),
 (3657, 'Hamuel', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Simeon', 3656, NULL, 'Simeonite, son of Mishma.', 'No dates recorded; placed by generation.'),
 (3658, 'Zacchur, son of Hamuel', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Simeon', 3657, NULL, 'Simeonite, son of Hamuel.', 'No dates recorded; placed by generation.'),
 (3659, 'Shimei, son of Zacchur, of Simeon', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Simeon', 3658, NULL, 'Simeonite with sixteen sons and six daughters, whose family outnumbered his brothers (1 Chronicles 4:26-27).', 'No dates recorded; placed by generation.'),
@@ -2317,6 +2319,7 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (4054, 'Shimea, son of Uzza', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', 4053, NULL, 'Merarite Levite in the genealogies of 1 Chronicles 6.', 'No dates recorded; placed by generation.'),
 (4055, 'Haggiah, son of Shimea', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', 4054, NULL, 'Merarite Levite in the genealogies of 1 Chronicles 6.', 'No dates recorded; placed by generation.'),
 (4056, 'Asaiah, son of Haggiah', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', 4055, NULL, 'Merarite Levite in the genealogies of 1 Chronicles 6.', 'No dates recorded; placed by generation.'),
+(4057, 'Mahli, son of Mushi', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', 2416, NULL, 'Merarite Levite in the genealogies of 1 Chronicles 6. In the genealogy of Ethan (Jeduthun).', 'No dates recorded. He is ten generations before Ethan (1 Chr 6:44-47), so he lived well before David''s day; the Levite lists of 1 Chronicles 23-24 name the same house.'),
 (4058, 'Shamer, son of Mahli', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', 4057, NULL, 'Merarite Levite in the genealogies of 1 Chronicles 6. In the genealogy of Ethan (Jeduthun).', 'No dates recorded; placed by generation.'),
 (4059, 'Bani, son of Shamer', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', 4058, NULL, 'Merarite Levite in the genealogies of 1 Chronicles 6. In the genealogy of Ethan (Jeduthun).', 'No dates recorded; placed by generation.'),
 (4060, 'Amzi, son of Bani', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', 4059, NULL, 'Merarite Levite in the genealogies of 1 Chronicles 6. In the genealogy of Ethan (Jeduthun).', 'No dates recorded; placed by generation.'),
@@ -2327,8 +2330,7 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (4065, 'Abdi, son of Malluch', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', 4064, NULL, 'Merarite Levite in the genealogies of 1 Chronicles 6. In the genealogy of Ethan (Jeduthun).', 'No dates recorded; placed by generation.'),
 (4066, 'Kishi, son of Abdi', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', 4065, NULL, 'Merarite Levite, father of the singer Ethan (Jeduthun), in 1 Chronicles 6:44.', 'No dates recorded; placed by generation.'),
 (4067, 'Jedaiah, priest (1 Chr 9:10)', NULL, NULL, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', NULL, NULL, 'Priest in the list of those who lived in Jerusalem after the exile (1 Chronicles 9:10-13).', 'No dates recorded; the list follows the return from exile.'),
-(4068, 'Jehoiarib, priest (1 Chr 9:10)', NULL, NULL, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', NULL, NULL, 'Priest in the list of those who lived in Jerusalem after the exile (1 Chronicles 9:10-13).', 'No dates recorded; the list follows the return from exile.'),
-(4069, 'Jachin, priest (1 Chr 9:10)', NULL, NULL, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', NULL, NULL, 'Priest in the list of those who lived in Jerusalem after the exile (1 Chronicles 9:10-13).', 'No dates recorded; the list follows the return from exile.');
+(4068, 'Jehoiarib, priest (1 Chr 9:10)', NULL, NULL, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', NULL, NULL, 'Priest in the list of those who lived in Jerusalem after the exile (1 Chronicles 9:10-13).', 'No dates recorded; the list follows the return from exile.');
 
 -- Undated (known from genealogies) (continued)
 INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
@@ -2342,21 +2344,11 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (4083, 'Jahzerah, son of Meshullam', NULL, NULL, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', 4082, NULL, 'Priest, ancestor of Maasiai (1 Chronicles 9:12).', 'No dates recorded; the list follows the return from exile.'),
 (4084, 'Adiel, son of Jahzerah', NULL, NULL, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', 4083, NULL, 'Priest, father of Maasiai (1 Chronicles 9:12).', 'No dates recorded; the list follows the return from exile.'),
 (4085, 'Maasiai, son of Adiel', NULL, NULL, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', 4084, NULL, 'Priest who lived in Jerusalem (1 Chronicles 9:12).', 'No dates recorded; the list follows the return from exile.'),
-(4086, 'Hashabiah, Merarite (1 Chr 9:14)', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', NULL, NULL, 'Merarite Levite, ancestor of Shemaiah (1 Chronicles 9:14).', 'No dates recorded; the list follows the return from exile.'),
-(4087, 'Azrikam, son of Hashabiah', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', 4086, NULL, 'Merarite Levite, ancestor of Shemaiah (1 Chronicles 9:14).', 'No dates recorded; the list follows the return from exile.'),
-(4088, 'Hasshub, son of Azrikam', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', 4087, NULL, 'Merarite Levite, father of Shemaiah (1 Chronicles 9:14).', 'No dates recorded; the list follows the return from exile.'),
-(4089, 'Shemaiah, son of Hasshub', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', 4088, NULL, 'Levite who lived in Jerusalem (1 Chronicles 9:14-16).', 'No dates recorded; the list follows the return from exile.'),
 (4090, 'Bakbakkar, Levite (1 Chr 9:15)', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', NULL, NULL, 'Levite who lived in Jerusalem (1 Chronicles 9:14-16).', 'No dates recorded; the list follows the return from exile.'),
 (4091, 'Heresh, Levite (1 Chr 9:15)', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', NULL, NULL, 'Levite who lived in Jerusalem (1 Chronicles 9:14-16).', 'No dates recorded; the list follows the return from exile.'),
-(4094, 'Micah, son of Zichri', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', 4093, NULL, 'Levite descended from Asaph, father of Mattaniah (1 Chronicles 9:15).', 'No dates recorded; the list follows the return from exile.'),
-(4095, 'Mattaniah, son of Micah', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', 4094, NULL, 'Levite who lived in Jerusalem (1 Chronicles 9:14-16). A descendant of Asaph.', 'No dates recorded; the list follows the return from exile.'),
-(4096, 'Shemaiah, son of Galal', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', 4092, NULL, 'Levite, father of Obadiah (1 Chronicles 9:16).', 'No dates recorded; the list follows the return from exile.'),
-(4097, 'Obadiah, son of Shemaiah (1 Chr 9:16)', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', 4096, NULL, 'Levite who lived in Jerusalem (1 Chronicles 9:14-16).', 'No dates recorded; the list follows the return from exile.'),
 (4098, 'Elkanah, father of Asa (1 Chr 9:16)', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', NULL, NULL, 'Levite, grandfather of Berechiah (1 Chronicles 9:16).', 'No dates recorded; the list follows the return from exile.'),
 (4099, 'Asa, son of Elkanah (Levite)', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', 4098, NULL, 'Levite, father of Berechiah (1 Chronicles 9:16).', 'No dates recorded; the list follows the return from exile.'),
 (4100, 'Berechiah, son of Asa', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', 4099, NULL, 'Levite who lived in the villages of the Netophathites (1 Chronicles 9:16).', 'No dates recorded; the list follows the return from exile.'),
-(4101, 'Akkub, porter (1 Chr 9:17)', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', NULL, NULL, 'Porter (gatekeeper) of the house of the LORD in 1 Chronicles 9:17-19.', 'No dates recorded; the list follows the return from exile.'),
-(4102, 'Talmon, porter (1 Chr 9:17)', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', NULL, NULL, 'Porter (gatekeeper) of the house of the LORD in 1 Chronicles 9:17-19.', 'No dates recorded; the list follows the return from exile.'),
 (4103, 'Ahiman, porter (1 Chr 9:17)', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', NULL, NULL, 'Porter (gatekeeper) of the house of the LORD in 1 Chronicles 9:17-19.', 'No dates recorded; the list follows the return from exile.'),
 (4104, 'Kore, son of Ebiasaph', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Levi', 2424, NULL, 'Korahite Levite, father of the chief porter Shallum (1 Chronicles 9:19).', 'No dates recorded; the list follows the return from exile.'),
 (4105, 'Shallum, son of Kore', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', 4104, NULL, 'Korahite and chief of the porters (1 Chronicles 9:17-19); the two verses are taken to name one man.', 'No dates recorded; the list follows the return from exile.'),
@@ -2395,8 +2387,8 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (4437, 'Zethan, son of Bilhan', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 4432, NULL, 'Son of Bilhan of Benjamin (1 Chronicles 7:10).', 'No dates recorded; placed by generation.'),
 (4438, 'Tharshish, son of Bilhan', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 4432, NULL, 'Son of Bilhan of Benjamin (1 Chronicles 7:10).', 'No dates recorded; placed by generation.'),
 (4439, 'Ahishahar, son of Bilhan', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 4432, NULL, 'Son of Bilhan of Benjamin (1 Chronicles 7:10).', 'No dates recorded; placed by generation.'),
-(4440, 'Shuppim, son of Ir', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 4422, NULL, 'Child of Ir (probably Iri of verse 7) of Benjamin; brother of Maachah, wife of Machir (1 Chronicles 7:12, 15).', 'No dates recorded; placed by generation.'),
-(4441, 'Huppim, son of Ir', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 4422, NULL, 'Child of Ir (probably Iri of verse 7) of Benjamin; brother of Maachah, wife of Machir (1 Chronicles 7:12, 15).', 'No dates recorded; placed by generation.'),
+(4440, 'Shuppim, son of Ir', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', NULL, NULL, 'Child of Ir, of the Benjamin section of 1 Chronicles 7 (verse 12); brother of Maachah, wife of Machir (verse 15). Ir may be the Iri of verse 7, but the text does not say so.', 'No dates recorded; placed by generation.'),
+(4441, 'Huppim, son of Ir', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', NULL, NULL, 'Child of Ir, of the Benjamin section of 1 Chronicles 7 (verse 12); brother of Maachah, wife of Machir (verse 15). Ir may be the Iri of verse 7, but the text does not say so.', 'No dates recorded; placed by generation.'),
 (4442, 'Aher, father of Hushim', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', NULL, NULL, 'Father of Hushim, named once in the genealogy of Benjamin.', 'No dates recorded; placed by generation.'),
 (4443, 'Hushim, son of Aher', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 4442, NULL, 'Son of Aher in the genealogy of Benjamin; compare Hushim, a son of Dan (Gen 46:23).', 'No dates recorded; placed by generation.'),
 (4448, 'Ashriel, son of Manasseh', 'Asriel', NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Manasseh', 171, NULL, 'Son of Manasseh, borne by his wife; called Asriel in Numbers 26:31.', 'No dates recorded; placed by generation.'),
@@ -2408,7 +2400,7 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (4455, 'Bedan, son of Ulam', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Manasseh', 4453, NULL, 'Son of Ulam of Manasseh, counted among the sons of Gilead; a Bedan is also named in 1 Samuel 12:11.', 'No dates recorded; placed by generation.'),
 (4456, 'Hammoleketh', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', 'Manasseh', 905, NULL, 'Sister of Gilead and mother of Ishod, Abiezer and Mahalah.', 'No dates recorded; placed by generation.'),
 (4457, 'Ishod, son of Hammoleketh', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Manasseh', NULL, 4456, 'Son of Hammoleketh of Manasseh.', 'No dates recorded; placed by generation.'),
-(4458, 'Abiezer, son of Hammoleketh', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Manasseh', NULL, 4456, 'Son of Hammoleketh of Manasseh; the Abiezrites, Gideons clan, are probably his descendants.', 'No dates recorded; placed by generation.'),
+(4458, 'Abiezer, son of Hammoleketh', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Manasseh', NULL, 4456, 'Son of Hammoleketh of Manasseh; the Abiezrites, Gideon''s clan, are probably his descendants.', 'No dates recorded; placed by generation.'),
 (4459, 'Mahalah, daughter of Hammoleketh', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', 'Manasseh', NULL, 4456, 'Daughter of Hammoleketh of Manasseh.', 'No dates recorded; placed by generation.'),
 (4460, 'Shemidah', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Manasseh', NULL, NULL, 'Manassite whose sons are listed in 1 Chronicles 7:19; Numbers 26:32 counts the Shemidaites among the families of Gilead.', 'No dates recorded; placed by generation.'),
 (4461, 'Ahian, son of Shemidah', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Manasseh', 4460, NULL, 'Son of Shemidah of Manasseh.', 'No dates recorded; placed by generation.'),
@@ -2431,10 +2423,7 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (4479, 'Tahan, son of Telah', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Ephraim', 4478, NULL, 'Descendant of Ephraim in the line to Joshua.', 'No dates recorded; placed by generation.'),
 (4480, 'Laadan, son of Tahan', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Ephraim', 4479, NULL, 'Descendant of Ephraim in the line to Joshua.', 'No dates recorded; placed by generation.'),
 (4481, 'Ammihud, son of Laadan', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Ephraim', 4480, NULL, 'Descendant of Ephraim in the line to Joshua.', 'No dates recorded; placed by generation.'),
-(4483, 'Imnah, son of Asher', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Asher', 168, NULL, 'Son of Asher, named in 1 Chronicles 7:30.', 'No dates recorded; placed by generation.');
-
--- Undated (known from genealogies) (continued)
-INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
+(4483, 'Imnah, son of Asher', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Asher', 168, NULL, 'Son of Asher, named in 1 Chronicles 7:30.', 'No dates recorded; placed by generation.'),
 (4485, 'Ishuai, son of Asher', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Asher', 168, NULL, 'Son of Asher, named in 1 Chronicles 7:30.', 'No dates recorded; placed by generation.'),
 (4490, 'Birzavith, son of Malchiel', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Asher', 2451, NULL, 'Named as the one Malchiel fathered; the name may denote a clan or place.', 'No dates recorded; placed by generation.'),
 (4491, 'Japhlet, son of Heber', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Asher', 2450, NULL, 'Son of Heber of Asher and father of Pasach, Bimhal and Ashvath.', 'No dates recorded; placed by generation.'),
@@ -2444,7 +2433,10 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (4495, 'Pasach, son of Japhlet', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Asher', 4491, NULL, 'Son of Japhlet of Asher.', 'No dates recorded; placed by generation.'),
 (4496, 'Bimhal, son of Japhlet', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Asher', 4491, NULL, 'Son of Japhlet of Asher.', 'No dates recorded; placed by generation.'),
 (4497, 'Ashvath, son of Japhlet', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Asher', 4491, NULL, 'Son of Japhlet of Asher.', 'No dates recorded; placed by generation.'),
-(4498, 'Ahi, son of Shomer', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Asher', 4492, NULL, 'Son of Shomer (Shamer) of Asher.', 'No dates recorded; placed by generation.'),
+(4498, 'Ahi, son of Shomer', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Asher', 4492, NULL, 'Son of Shomer (Shamer) of Asher.', 'No dates recorded; placed by generation.');
+
+-- Undated (known from genealogies) (continued)
+INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
 (4499, 'Rohgah, son of Shomer', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Asher', 4492, NULL, 'Son of Shomer (Shamer) of Asher.', 'No dates recorded; placed by generation.'),
 (4500, 'Jehubbah, son of Shomer', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Asher', 4492, NULL, 'Son of Shomer (Shamer) of Asher.', 'No dates recorded; placed by generation.'),
 (4501, 'Aram, son of Shomer', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Asher', 4492, NULL, 'Son of Shomer (Shamer) of Asher.', 'No dates recorded; placed by generation.'),
@@ -2464,7 +2456,7 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (4515, 'Ithran, son of Zophah', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Asher', 4502, NULL, 'Son of Zophah of Asher (1 Chronicles 7:36-37).', 'No dates recorded; placed by generation.'),
 (4516, 'Beera, son of Zophah', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Asher', 4502, NULL, 'Son of Zophah of Asher (1 Chronicles 7:36-37).', 'No dates recorded; placed by generation.'),
 (4517, 'Jether, of Asher', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Asher', NULL, NULL, 'Man of Asher whose sons are listed in 1 Chronicles 7:38; possibly the Ithran of verse 37.', 'No dates recorded; placed by generation.'),
-(4518, 'Jephunneh, son of Jether', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Asher', 4517, NULL, 'Son of Jether of Asher; not Calebs father.', 'No dates recorded; placed by generation.'),
+(4518, 'Jephunneh, son of Jether', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Asher', 4517, NULL, 'Son of Jether of Asher; not Caleb''s father.', 'No dates recorded; placed by generation.'),
 (4519, 'Pispah, son of Jether', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Asher', 4517, NULL, 'Son of Jether of Asher.', 'No dates recorded; placed by generation.'),
 (4520, 'Ara, son of Jether', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Asher', 4517, NULL, 'Son of Jether of Asher.', 'No dates recorded; placed by generation.'),
 (4521, 'Ulla, of Asher', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Asher', NULL, NULL, 'Man of Asher whose sons are listed in 1 Chronicles 7:39.', 'No dates recorded; placed by generation.'),
@@ -2474,7 +2466,6 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (4802, 'Aharah, son of Benjamin', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 64, NULL, 'Aharah, a son of Benjamin, named in the Benjamite genealogy of 1 Chronicles 8.', 'No dates recorded; placed by generation. Also listed among Benjamin''s sons in Genesis 46:21 and Numbers 26 under variant names or in a different list.'),
 (4803, 'Nohah, son of Benjamin', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 64, NULL, 'Nohah, a son of Benjamin, named in the Benjamite genealogy of 1 Chronicles 8.', 'No dates recorded; placed by generation. Also listed among Benjamin''s sons in Genesis 46:21 and Numbers 26 under variant names or in a different list.'),
 (4804, 'Rapha, son of Benjamin', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 64, NULL, 'Rapha, a son of Benjamin, named in the Benjamite genealogy of 1 Chronicles 8.', 'No dates recorded; placed by generation. Also listed among Benjamin''s sons in Genesis 46:21 and Numbers 26 under variant names or in a different list.'),
-(4805, 'Addar, son of Bela', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 2452, NULL, 'Addar, a son of Bela, named in 1 Chronicles 8:3-5.', 'No dates recorded; placed by generation.'),
 (4806, 'Gera, son of Bela', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 2452, NULL, 'Gera, a son of Bela; the Gera who fathered the judge Ehud (Judges 3:15) is a Benjamite of the same name and may be the same man.', 'No dates recorded; placed by generation.'),
 (4807, 'Abihud, son of Bela', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 2452, NULL, 'Abihud, a son of Bela, named in 1 Chronicles 8:3; the name may be a variant form of Ehud (verse 6).', 'No dates recorded; placed by generation.'),
 (4808, 'Abishua, son of Bela', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 2452, NULL, 'Abishua, a son of Bela, named in 1 Chronicles 8:3-5.', 'No dates recorded; placed by generation.'),
@@ -2482,9 +2473,9 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (4811, 'Gera, son of Bela (second of that name)', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 2452, NULL, 'A second Gera among the sons of Bela in 1 Chronicles 8:5; the list may repeat the first Gera.', 'No dates recorded; placed by generation. 8:3 and 8:5 both name a Gera.'),
 (4812, 'Shephuphan, son of Bela', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 2452, NULL, 'Shephuphan, a son of Bela, named in 1 Chronicles 8:3-5.', 'No dates recorded; placed by generation.'),
 (4813, 'Huram, son of Bela', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 2452, NULL, 'Huram, a son of Bela, named in 1 Chronicles 8:3-5.', 'No dates recorded; placed by generation.'),
-(4814, 'Naaman, son of Ehud', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 72, NULL, 'Naaman, a son of Ehud and a head of the fathers of Geba, removed to Manahath (1 Chronicles 8:6-7).', 'No dates recorded; placed by generation. Link to the judge Ehud follows the Chronicler''s Ehud and is a common but not certain identification.'),
-(4815, 'Ahiah, son of Ehud', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 72, NULL, 'Ahiah, a son of Ehud and a head of the fathers of Geba, removed to Manahath (1 Chronicles 8:6-7).', 'No dates recorded; placed by generation. Link to the judge Ehud follows the Chronicler''s Ehud and is a common but not certain identification.'),
-(4816, 'Gera, son of Ehud', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 72, NULL, 'Son of Ehud who removed the heads of the fathers of Geba to Manahath, and father of Uzza and Ahihud (1 Chronicles 8:6-7).', 'No dates recorded; placed by generation. Link to the judge Ehud follows the Chronicler''s Ehud and is a common but not certain identification.'),
+(4814, 'Naaman, son of Ehud', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 7760, NULL, 'Naaman, a son of Ehud and a head of the fathers of Geba, removed to Manahath (1 Chronicles 8:6-7).', 'No dates recorded; placed by generation. Link to the judge Ehud follows the Chronicler''s Ehud and is a common but not certain identification.'),
+(4815, 'Ahiah, son of Ehud', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 7760, NULL, 'Ahiah, a son of Ehud and a head of the fathers of Geba, removed to Manahath (1 Chronicles 8:6-7).', 'No dates recorded; placed by generation. Link to the judge Ehud follows the Chronicler''s Ehud and is a common but not certain identification.'),
+(4816, 'Gera, son of Ehud', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 7760, NULL, 'Son of Ehud who removed the heads of the fathers of Geba to Manahath, and father of Uzza and Ahihud (1 Chronicles 8:6-7).', 'No dates recorded; placed by generation. Link to the judge Ehud follows the Chronicler''s Ehud and is a common but not certain identification.'),
 (4817, 'Uzza, son of Gera', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 4816, NULL, 'Son of Gera, head of a Benjamite house of Geba, named in 1 Chronicles 8:7.', 'No dates recorded; placed by generation.'),
 (4818, 'Ahihud, son of Gera', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 4816, NULL, 'Son of Gera, head of a Benjamite house of Geba, named in 1 Chronicles 8:7.', 'No dates recorded; placed by generation.'),
 (4819, 'Shaharaim', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', NULL, NULL, 'Benjamite who fathered children in the country of Moab after sending away two of his wives (1 Chronicles 8:8).', 'No dates recorded; placed by generation.'),
@@ -2534,10 +2525,7 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (4863, 'Ishpan, son of Shashak', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 4838, NULL, 'Ishpan, a son of Shashak, named in 1 Chronicles 8:22-25.', 'No dates recorded; placed by generation.'),
 (4864, 'Heber, son of Shashak', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 4838, NULL, 'Heber, a son of Shashak, named in 1 Chronicles 8:22-25.', 'No dates recorded; placed by generation.'),
 (4865, 'Eliel, son of Shashak', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 4838, NULL, 'Eliel, a son of Shashak, named in 1 Chronicles 8:22-25.', 'No dates recorded; placed by generation.'),
-(4866, 'Abdon, son of Shashak', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 4838, NULL, 'Abdon, a son of Shashak, named in 1 Chronicles 8:22-25.', 'No dates recorded; placed by generation.');
-
--- Undated (known from genealogies) (continued)
-INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
+(4866, 'Abdon, son of Shashak', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 4838, NULL, 'Abdon, a son of Shashak, named in 1 Chronicles 8:22-25.', 'No dates recorded; placed by generation.'),
 (4867, 'Zichri, son of Shashak', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 4838, NULL, 'Zichri, a son of Shashak, named in 1 Chronicles 8:22-25.', 'No dates recorded; placed by generation.'),
 (4868, 'Hanan, son of Shashak', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 4838, NULL, 'Hanan, a son of Shashak, named in 1 Chronicles 8:22-25.', 'No dates recorded; placed by generation.'),
 (4869, 'Hananiah, son of Shashak', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 4838, NULL, 'Hananiah, a son of Shashak, named in 1 Chronicles 8:22-25.', 'No dates recorded; placed by generation.'),
@@ -2548,7 +2536,10 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (4874, 'Jeroham, father of Shamsherai', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', NULL, NULL, 'Benjamite, father of six sons who were heads of fathers'' houses in Jerusalem (1 Chronicles 8:26-28).', 'No dates recorded; his own father is not stated.'),
 (4875, 'Shamsherai, son of Jeroham', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 4874, NULL, 'Shamsherai, a son of Jeroham, named in 1 Chronicles 8:26-27.', 'No dates recorded; placed by generation.'),
 (4876, 'Shehariah, son of Jeroham', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 4874, NULL, 'Shehariah, a son of Jeroham, named in 1 Chronicles 8:26-27.', 'No dates recorded; placed by generation.'),
-(4877, 'Athaliah, son of Jeroham', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 4874, NULL, 'A man, a son of Jeroham, named in 1 Chronicles 8:26 (not the queen of Judah).', 'No dates recorded; placed by generation.'),
+(4877, 'Athaliah, son of Jeroham', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 4874, NULL, 'A man, a son of Jeroham, named in 1 Chronicles 8:26 (not the queen of Judah).', 'No dates recorded; placed by generation.');
+
+-- Undated (known from genealogies) (continued)
+INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
 (4878, 'Jaresiah, son of Jeroham', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 4874, NULL, 'Jaresiah, a son of Jeroham, named in 1 Chronicles 8:26-27.', 'No dates recorded; placed by generation.'),
 (4879, 'Eliah, son of Jeroham', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 4874, NULL, 'Eliah, a son of Jeroham, named in 1 Chronicles 8:26-27.', 'No dates recorded; placed by generation.'),
 (4880, 'Zichri, son of Jeroham', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', 4874, NULL, 'Zichri, a son of Jeroham, named in 1 Chronicles 8:26-27.', 'No dates recorded; placed by generation.'),
@@ -2637,10 +2628,7 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (5323, 'Michael, father of Omri', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Issachar', NULL, NULL, 'Father of Omri, named in the lists of David''s officers.', 'No dates recorded; placed by generation.'),
 (5325, 'Obadiah, father of Ishmaiah', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Zebulun', NULL, NULL, 'Father of Ishmaiah, named in the lists of David''s officers.', 'No dates recorded; placed by generation.'),
 (5327, 'Azriel, father of Jerimoth', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Naphtali', NULL, NULL, 'Father of Jerimoth, named in the lists of David''s officers.', 'No dates recorded; placed by generation.'),
-(5329, 'Azaziah, father of Hoshea', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Ephraim', NULL, NULL, 'Father of Hoshea, named in the lists of David''s officers.', 'No dates recorded; placed by generation.');
-
--- Undated (known from genealogies) (continued)
-INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
+(5329, 'Azaziah, father of Hoshea', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Ephraim', NULL, NULL, 'Father of Hoshea, named in the lists of David''s officers.', 'No dates recorded; placed by generation.'),
 (5331, 'Pedaiah, father of Joel', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Manasseh', NULL, NULL, 'Father of Joel, named in the lists of David''s officers.', 'No dates recorded; placed by generation.'),
 (5333, 'Zechariah, father of Iddo', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Manasseh', NULL, NULL, 'Father of Iddo, named in the lists of David''s officers.', 'No dates recorded; placed by generation.'),
 (5336, 'Jeroham, father of Azareel', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Dan', NULL, NULL, 'Father of Azareel, named in the lists of David''s officers.', 'No dates recorded; placed by generation.'),
@@ -2651,22 +2639,24 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (5356, 'Hachmoni', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, NULL, NULL, 'Father of Jehiel, named in the lists of David''s officers.', 'No dates recorded; placed by generation.'),
 (5358, 'Jehoiada, son of Benaiah', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', NULL, 937, NULL, 'Son of Benaiah; counselor to David after Ahithophel.', 'No dates recorded; placed by generation.'),
 (5359, 'Ahilud', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, NULL, NULL, 'Father of Jehoshaphat the recorder and Baana, named in the lists of David''s officers.', 'No dates recorded; placed by generation.'),
-(5362, 'Abda, father of Adoniram', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, NULL, NULL, 'Father of Adoniram, named in the lists of David''s officers.', 'No dates recorded; placed by generation.'),
+(5362, 'Abda, father of Adoniram', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, NULL, NULL, 'Father of Adoniram, named in the lists of David''s officers.', 'No dates recorded; placed by generation.');
+
+-- Undated (known from genealogies) (continued)
+INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
 (5366, 'Shisha, father of Elihoreph and Ahiah', 'Shavsha', NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, NULL, NULL, 'Father of Elihoreph and Ahiah, Solomon''s scribes; he may be the same man as David''s scribe Seraiah, though the text does not say so.', 'No dates recorded; placed by generation.'),
-(5372, 'Hur, father of Ben-Hur', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, NULL, NULL, 'Father of Ben-Hur, named in the lists of David''s officers.', 'No dates recorded; placed by generation.'),
-(5374, 'Dekar, father of Ben-Dekar', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, NULL, NULL, 'Father of Ben-Dekar, named in the lists of David''s officers.', 'No dates recorded; placed by generation.'),
-(5376, 'Hesed, father of Ben-Hesed', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, NULL, NULL, 'Father of Ben-Hesed, named in the lists of David''s officers.', 'No dates recorded; placed by generation.'),
-(5378, 'Abinadab, father of Ben-Abinadab', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, NULL, NULL, 'Father of Ben-Abinadab, named in the lists of David''s officers.', 'No dates recorded; placed by generation.'),
-(5381, 'Geber, father of Ben-Geber', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, NULL, NULL, 'Father of Ben-Geber, named in the lists of David''s officers.', 'No dates recorded; placed by generation.'),
-(5383, 'Iddo, father of Ahinadab', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, NULL, NULL, 'Father of Ahinadab, named in the lists of David''s officers.', 'No dates recorded; placed by generation.'),
-(5387, 'Paruah, father of Jehoshaphat', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, NULL, NULL, 'Father of Jehoshaphat, named in the lists of David''s officers.', 'No dates recorded; placed by generation.'),
-(5389, 'Elah, father of Shimei', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, NULL, NULL, 'Father of Shimei, named in the lists of David''s officers.', 'No dates recorded; placed by generation.'),
-(5391, 'Uri, father of Geber', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, NULL, NULL, 'Father of Geber, named in the lists of David''s officers.', 'No dates recorded; placed by generation.'),
+(5372, 'Hur, father of Ben-Hur', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, NULL, NULL, 'Father of Ben-Hur, named in the list of Solomon''s district officers (1 Kgs 4:7-19).', 'No dates recorded; placed by generation.'),
+(5374, 'Dekar, father of Ben-Dekar', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, NULL, NULL, 'Father of Ben-Dekar, named in the list of Solomon''s district officers (1 Kgs 4:7-19).', 'No dates recorded; placed by generation.'),
+(5376, 'Hesed, father of Ben-Hesed', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, NULL, NULL, 'Father of Ben-Hesed, named in the list of Solomon''s district officers (1 Kgs 4:7-19).', 'No dates recorded; placed by generation.'),
+(5378, 'Abinadab, father of Ben-Abinadab', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, NULL, NULL, 'Father of Ben-Abinadab, named in the list of Solomon''s district officers (1 Kgs 4:7-19).', 'No dates recorded; placed by generation.'),
+(5381, 'Geber, father of Ben-Geber', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, NULL, NULL, 'Father of Ben-Geber, named in the list of Solomon''s district officers (1 Kgs 4:7-19).', 'No dates recorded; placed by generation.'),
+(5383, 'Iddo, father of Ahinadab', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, NULL, NULL, 'Father of Ahinadab, named in the list of Solomon''s district officers (1 Kgs 4:7-19).', 'No dates recorded; placed by generation.'),
+(5387, 'Paruah, father of Jehoshaphat', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, NULL, NULL, 'Father of Jehoshaphat, named in the list of Solomon''s district officers (1 Kgs 4:7-19).', 'No dates recorded; placed by generation.'),
+(5389, 'Elah, father of Shimei', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, NULL, NULL, 'Father of Shimei, named in the list of Solomon''s district officers (1 Kgs 4:7-19).', 'No dates recorded; placed by generation.'),
+(5391, 'Uri, father of Geber', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, NULL, NULL, 'Father of Geber, named in the list of Solomon''s district officers (1 Kgs 4:7-19).', 'No dates recorded; placed by generation.'),
 (5393, 'Taphath, daughter of Solomon', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', NULL, 21, NULL, 'Daughter of Solomon, married to his district officer Ben-Abinadab.', 'No dates recorded; placed by generation.'),
 (5394, 'Basmath, daughter of Solomon', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', NULL, 21, NULL, 'Daughter of Solomon, married to his district officer Ahimaaz of Naphtali.', 'No dates recorded; placed by generation.'),
 (5602, 'Kushaiah', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Levi', NULL, NULL, 'Father of Ethan the Merarite singer.', 'No dates recorded; placed by generation.'),
 (5603, 'Ethan, son of Kushaiah', NULL, NULL, NULL, 1, 1, 'traditional', 'other', 'minor', 'Levi', 5602, NULL, 'Merarite singer who sounded the bronze cymbals; some readers identify him with Jeduthun.', 'Placed by generation from his father; may be the same man as Jeduthun.'),
-(5637, 'Laadan, son of Gershon (1 Chr 23)', NULL, NULL, NULL, 1, 1, 'traditional', 'other', 'minor', 'Levi', 903, NULL, 'Gershonite head of a father''s house; also called Libni elsewhere.', 'Placed by generation from his father.'),
 (5643, 'Shelomith, son of Shimei (1 Chr 23:9)', NULL, NULL, NULL, 1, 1, 'traditional', 'other', 'minor', 'Levi', 5642, NULL, 'Chief of a father''s house of Laadan.', 'Placed by generation from his father.'),
 (5644, 'Haziel, son of Shimei', NULL, NULL, NULL, 1, 1, 'traditional', 'other', 'minor', 'Levi', 5642, NULL, 'Chief of a father''s house of Laadan.', 'Placed by generation from his father.'),
 (5645, 'Haran, son of Shimei', NULL, NULL, NULL, 1, 1, 'traditional', 'other', 'minor', 'Levi', 5642, NULL, 'Chief of a father''s house of Laadan.', 'Placed by generation from his father.'),
@@ -2740,10 +2730,7 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (5761, 'Shelomith, son of Zichri the treasurer', NULL, NULL, NULL, 1, 1, 'traditional', 'other', 'minor', 'Levi', 5760, NULL, 'Descendant of Eliezer who with his brethren was over all the dedicated treasuries; may be the same as Shelomith the Izharite.', 'Placed by generation from his father.'),
 (6002, 'Jonathan, son of Abiathar', NULL, NULL, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', 933, NULL, 'Son of the priest Abiathar who brought Adonijah the news that Solomon had been anointed.', 'No dates recorded; placed by generation.'),
 (6004, 'Achish, king of Gath in Solomon''s day', NULL, NULL, NULL, 1, 1, 'possible', 'ruler', 'minor', 'Philistine', 6003, NULL, 'King of Gath to whom two of Shimei''s servants fled; not necessarily the Achish of David''s day.', 'No dates recorded; placed by generation.'),
-(6010, 'Rezon, son of Eliadah', NULL, NULL, NULL, 1, 1, 'possible', 'ruler', 'minor', 'Aram', 6009, NULL, 'Fled from Hadadezer of Zobah, became a raider chief, and reigned in Damascus as an adversary of Israel all of Solomon''s days.', 'No dates recorded; placed by generation.');
-
--- Undated (known from genealogies) (continued)
-INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
+(6010, 'Rezon, son of Eliadah', NULL, NULL, NULL, 1, 1, 'possible', 'ruler', 'minor', 'Aram', 6009, NULL, 'Fled from Hadadezer of Zobah, became a raider chief, and reigned in Damascus as an adversary of Israel all of Solomon''s days.', 'No dates recorded; placed by generation.'),
 (6016, 'Tabrimon, father of Ben-hadad', NULL, NULL, NULL, 1, 1, 'possible', 'ruler', 'minor', 'Aram', 6015, NULL, 'Son of Hezion and father of the Ben-hadad whom Asa hired against Baasha.', 'No dates recorded; placed by generation.'),
 (6018, 'Jehu, son of Hanani the seer', NULL, NULL, NULL, 1, 1, 'possible', 'prophet', 'minor', NULL, 6017, NULL, 'Prophet who denounced Baasha and later rebuked Jehoshaphat for helping Ahab; he also wrote Jehoshaphat''s chronicle.', 'No dates recorded; placed by generation.'),
 (6021, 'Tibni, son of Ginath', NULL, NULL, NULL, 1, 1, 'possible', 'ruler', 'minor', NULL, 6020, NULL, 'Half the people of Israel followed him as king against Omri, but Omri prevailed and Tibni died.', 'No dates recorded; placed by generation.'),
@@ -2755,11 +2742,14 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (6048, 'Sharezer, son of Sennacherib', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', 'Assyria', 213, NULL, 'Son of Sennacherib who joined Adrammelech in killing their father.', 'No dates recorded; placed by generation.'),
 (6050, 'Merodach-baladan, king of Babylon', 'Berodach-baladan', NULL, NULL, 1, 1, 'possible', 'king', 'minor', 'Babylon', 6049, NULL, 'King of Babylon who sent letters and a gift to Hezekiah after his illness; called Berodach-baladan in Kings.', 'No dates recorded; placed by generation.'),
 (6054, 'Achbor, son of Michaiah', 'Abdon', NULL, NULL, 1, 1, 'possible', 'other', 'minor', NULL, 6053, NULL, 'Officer of Josiah sent to Huldah; father of Elnathan. Chronicles calls him Abdon son of Micah.', 'No dates recorded; placed by generation.'),
-(6061, 'Seraiah, son of Tanhumeth', NULL, NULL, NULL, 1, 1, 'possible', 'warrior', 'minor', NULL, 6060, NULL, 'Army captain who came to Gedaliah at Mizpah after Jerusalem fell.', 'No dates recorded; placed by generation.'),
+(6061, 'Seraiah, son of Tanhumeth', NULL, NULL, NULL, 1, 1, 'possible', 'warrior', 'minor', NULL, 6060, NULL, 'Army captain who came to Gedaliah at Mizpah after Jerusalem fell.', 'No dates recorded; placed by generation.');
+
+-- Undated (known from genealogies) (continued)
+INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
 (6066, 'Jonathan, son of Kareah', NULL, NULL, NULL, 1, 1, 'possible', 'warrior', 'minor', NULL, 6065, NULL, 'Army captain who came to Gedaliah at Mizpah with his brother Johanan.', 'No dates recorded; placed by generation.'),
 (6074, 'Jerimoth, son of David', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', 'Judah', 20, NULL, 'Son of David and father of Mahalath, a wife of Rehoboam.', 'No dates recorded; placed by generation.'),
 (6075, 'Mahalath, wife of Rehoboam', NULL, NULL, NULL, 1, 1, 'possible', 'queen', 'minor', 'Judah', 6074, NULL, 'Daughter of Jerimoth, son of David, and Rehoboam''s first named wife.', 'No dates recorded; placed by generation.'),
-(6076, 'Abihail, daughter of Eliab', NULL, NULL, NULL, 1, 1, 'possible', 'queen', 'minor', 'Judah', 552, NULL, 'Daughter of Eliab, son of Jesse, and wife of Rehoboam.', '"Daughter" may mean descendant of Eliab.'),
+(6076, 'Abihail, daughter of Eliab', NULL, NULL, NULL, 1, 1, 'possible', 'queen', 'minor', 'Judah', 552, NULL, 'Daughter of Eliab, son of Jesse; the KJV makes her a wife of Rehoboam (2 Chr 11:18), though the Hebrew can also be read as naming her the mother of Mahalath.', '"Daughter" may mean descendant of Eliab.'),
 (6077, 'Jeush, son of Rehoboam', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', 'Judah', 85, NULL, 'Son of Rehoboam born to Mahalath or Abihail.', 'No dates recorded; placed by generation.'),
 (6078, 'Shemariah, son of Rehoboam', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', 'Judah', 85, NULL, 'Son of Rehoboam born to Mahalath or Abihail.', 'No dates recorded; placed by generation.'),
 (6079, 'Zaham, son of Rehoboam', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', 'Judah', 85, NULL, 'Son of Rehoboam born to Mahalath or Abihail.', 'No dates recorded; placed by generation.'),
@@ -2794,7 +2784,7 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (6158, 'Eden, son of Joah (Gershonite)', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', 6157, NULL, 'Gershonite Levite who rose to cleanse the temple under Hezekiah.', 'No dates recorded; placed by generation.'),
 (6181, 'Kore, son of Imnah', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', 6180, NULL, 'Levite porter at the east gate, over the freewill offerings.', 'No dates recorded; placed by generation.'),
 (6189, 'Joah, son of Joahaz the recorder', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', NULL, 6188, NULL, 'Josiah''s recorder, sent with Shaphan to repair the temple.', 'No dates recorded; placed by generation.'),
-(6205, 'Pashur, son of Melchiah', NULL, NULL, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', 6204, NULL, 'Priest sent by Zedekiah to Jeremiah, and one of the princes who asked for Jeremiah''s death.', 'No dates recorded; placed by generation.'),
+(6205, 'Pashur, son of Melchiah', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', 6204, NULL, 'Sent by Zedekiah to Jeremiah (Jer 21:1) and, as Pashur the son of Malchiah, one of the princes who asked for Jeremiah''s death (Jer 38:1); Scripture does not call him a priest here.', 'No dates recorded; placed by generation.'),
 (6207, 'Zephaniah, son of Maaseiah the priest', NULL, NULL, NULL, 1, 1, 'possible', 'priest', 'minor', 'Levi', 6206, NULL, 'Second priest sent by Zedekiah to ask Jeremiah''s prayers; taken and killed by Babylon at Riblah.', 'No dates recorded; placed by generation.'),
 (6209, 'Urijah, son of Shemaiah', NULL, NULL, NULL, 1, 1, 'possible', 'prophet', 'minor', NULL, 6208, NULL, 'Prophet of Kirjath-jearim who prophesied as Jeremiah did; he fled to Egypt but Jehoiakim had him brought back and killed.', 'No dates recorded; placed by generation.'),
 (6210, 'Elnathan, son of Achbor', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', NULL, 6054, NULL, 'Prince who fetched Urijah from Egypt, then urged Jehoiakim not to burn Jeremiah''s scroll.', 'No dates recorded; placed by generation.'),
@@ -2820,7 +2810,7 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (6256, 'Malchiah, son of Hammelech', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', NULL, 6241, NULL, 'Owner of the dungeon in the court of the prison where Jeremiah was lowered.', 'No dates recorded; placed by generation.'),
 (6264, 'Jezaniah, son of Hoshaiah', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', NULL, 6263, NULL, 'Leader of the remnant who asked Jeremiah''s guidance and then rejected it.', 'May be the same man as Azariah son of Hoshaiah; the ancient texts differ.'),
 (6265, 'Azariah, son of Hoshaiah', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', NULL, 6263, NULL, 'Proud man who told Jeremiah he spoke falsely and led the people to Egypt.', 'No dates recorded; placed by generation.'),
-(6267, 'Jaazaniah, son of Shaphan', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', NULL, 967, NULL, 'Leader of seventy elders whom Ezekiel saw offering incense to idols in the temple.', 'No dates recorded; placed by generation.'),
+(6267, 'Jaazaniah, son of Shaphan', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Leader of seventy elders whom Ezekiel saw offering incense to idols in the temple (Ezek 8:11). The text does not say whether his father Shaphan is Shaphan the scribe.', 'No dates recorded; placed by generation.'),
 (6269, 'Jaazaniah, son of Azur', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', NULL, 6268, NULL, 'Prince of the people at the east gate whom Ezekiel was told to prophesy against.', 'No dates recorded; placed by generation.'),
 (6271, 'Pelatiah, son of Benaiah', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', NULL, 6270, NULL, 'Prince of the people who died while Ezekiel prophesied against the city.', 'No dates recorded; placed by generation.'),
 (6272, 'Gog, prince of Meshech and Tubal', NULL, NULL, NULL, 1, 1, 'possible', 'ruler', 'minor', 'Magog', NULL, NULL, 'Chief prince of the land of Magog who in Ezekiel''s prophecy comes against Israel in the latter days.', 'A prophetic figure; no historical date, and the name may stand for a nation or ruler type.'),
@@ -2843,10 +2833,7 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (6435, 'Jorah, head of a returning family', 'Hariph', NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', NULL, NULL, NULL, 'Ancestor and head of a returning family that returned from exile with Zerubbabel.', 'No dates recorded; named as a family name in the return lists.'),
 (6436, 'Gibbar, head of a returning family', 'Gibeon', NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', NULL, NULL, NULL, 'Ancestor and head of a returning family that returned from exile with Zerubbabel. Nehemiah 7:25 has "Gibeon", so this may denote a place.', 'No dates recorded; named as a family name in the return lists.'),
 (6437, 'Magbish, head of a returning family', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', NULL, NULL, NULL, 'Ancestor and head of a returning family that returned from exile with Zerubbabel. The name may denote a place.', 'No dates recorded; named as a family name in the return lists.'),
-(6438, 'Elam, head of the second family of Elam', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', NULL, NULL, NULL, 'Ancestor and head of a returning family that returned from exile with Zerubbabel. Scripture calls it "the other Elam".', 'No dates recorded; named as a family name in the return lists.');
-
--- Undated (known from genealogies) (continued)
-INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
+(6438, 'Elam, head of the second family of Elam', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', NULL, NULL, NULL, 'Ancestor and head of a returning family that returned from exile with Zerubbabel. Scripture calls it "the other Elam".', 'No dates recorded; named as a family name in the return lists.'),
 (6439, 'Harim, head of a returning family', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', NULL, NULL, NULL, 'Ancestor and head of a returning family that returned from exile with Zerubbabel.', 'No dates recorded; named as a family name in the return lists.'),
 (6440, 'Jeshua, of the house of Pahath-moab', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', NULL, NULL, NULL, 'Named with Joab as one of the houses of the family of Pahath-moab (Ezra 2:6; Nehemiah 7:11); not the high priest.', 'No dates recorded; named as a family name.'),
 (6441, 'Joab, of the house of Pahath-moab', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', NULL, NULL, NULL, 'Named with Jeshua as one of the houses of the family of Pahath-moab (Ezra 2:6; Nehemiah 7:11), and again in Ezra 8:9.', 'No dates recorded; named as a family name.'),
@@ -2858,7 +2845,10 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (6447, 'Kadmiel', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Levi', NULL, NULL, 'Ancestor and head of a Levite family that returned from exile with Zerubbabel (Ezra 2:40; Nehemiah 7:43).', 'No dates recorded; named as a family name.'),
 (6448, 'Hodaviah', 'Hodevah', NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Levi', NULL, NULL, 'Ancestor and head of a Levite family that returned from exile with Zerubbabel (Ezra 2:40; Nehemiah 7:43).', 'No dates recorded; named as a family name.'),
 (6449, 'Shallum, head of a porters'' family', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Levi', NULL, NULL, 'Ancestor and head of a family of temple porters that returned from exile (Ezra 2:42; Nehemiah 7:45).', 'No dates recorded; named as a family name.'),
-(6450, 'Ater, head of a porters'' family', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Levi', NULL, NULL, 'Ancestor and head of a family of temple porters that returned from exile (Ezra 2:42; Nehemiah 7:45).', 'No dates recorded; named as a family name.'),
+(6450, 'Ater, head of a porters'' family', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Levi', NULL, NULL, 'Ancestor and head of a family of temple porters that returned from exile (Ezra 2:42; Nehemiah 7:45).', 'No dates recorded; named as a family name.');
+
+-- Undated (known from genealogies) (continued)
+INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
 (6451, 'Talmon', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Levi', NULL, NULL, 'Ancestor and head of a family of temple porters that returned from exile (Ezra 2:42; Nehemiah 7:45).', 'No dates recorded; named as a family name.'),
 (6452, 'Akkub, head of a porters'' family', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Levi', NULL, NULL, 'Ancestor and head of a family of temple porters that returned from exile (Ezra 2:42; Nehemiah 7:45).', 'No dates recorded; named as a family name.'),
 (6453, 'Hatita', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', 'Levi', NULL, NULL, 'Ancestor and head of a family of temple porters that returned from exile (Ezra 2:42; Nehemiah 7:45).', 'No dates recorded; named as a family name.'),
@@ -2928,7 +2918,7 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (6665, 'Imri, father of Zaccur', NULL, NULL, NULL, 1, 1, 'traditional', 'other', 'minor', NULL, NULL, NULL, 'Father of Zaccur, who repaired beside the men of Jericho (Nehemiah 3:2).', 'No dates recorded; placed by generation.'),
 (6667, 'Hassenaah, father of the Fish Gate builders', NULL, NULL, NULL, 1, 1, 'traditional', 'ancestor', 'minor', NULL, NULL, NULL, 'Named as father of the sons of Hassenaah who built the Fish Gate (Nehemiah 3:3).', 'No dates recorded; named as a family name.'),
 (6668, 'Meshezabeel, grandfather of Meshullam', NULL, NULL, NULL, 1, 1, 'traditional', 'other', 'minor', NULL, NULL, NULL, 'Father of Berechiah and grandfather of Meshullam, who repaired the wall (Nehemiah 3:4).', 'No dates recorded; placed by generation.'),
-(6669, 'Berechiah, son of Meshezabeel', NULL, NULL, NULL, 1, 1, 'traditional', 'other', 'minor', NULL, NULL, NULL, 'Father of Meshullam, who repaired the wall twice (Nehemiah 3:4, 30).', 'No dates recorded; placed by generation.'),
+(6669, 'Berechiah, son of Meshezabeel', NULL, NULL, NULL, 1, 1, 'traditional', 'other', 'minor', NULL, 6668, NULL, 'Father of Meshullam, who repaired the wall twice (Nehemiah 3:4, 30).', 'No dates recorded; placed by generation.'),
 (6671, 'Baana, father of Zadok', NULL, NULL, NULL, 1, 1, 'traditional', 'other', 'minor', NULL, NULL, NULL, 'Father of Zadok, who repaired the wall (Nehemiah 3:4).', 'No dates recorded; placed by generation.'),
 (6673, 'Paseah, father of Jehoiada', NULL, NULL, NULL, 1, 1, 'traditional', 'other', 'minor', NULL, NULL, NULL, 'Father of Jehoiada, who repaired the Old Gate (Nehemiah 3:6).', 'No dates recorded; placed by generation.'),
 (6675, 'Besodeiah, father of Meshullam', NULL, NULL, NULL, 1, 1, 'traditional', 'other', 'minor', NULL, NULL, NULL, 'Father of Meshullam, who repaired the Old Gate (Nehemiah 3:6).', 'No dates recorded; placed by generation.'),
@@ -2946,10 +2936,7 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (6705, 'Jeshua, father of Ezer (Nehemiah 3:19)', NULL, NULL, NULL, 1, 1, 'traditional', 'other', 'minor', NULL, NULL, NULL, 'Father of Ezer, ruler of Mizpah.', 'No dates recorded; placed by generation.'),
 (6707, 'Zabbai, father of Baruch', NULL, NULL, NULL, 1, 1, 'traditional', 'other', 'minor', NULL, NULL, NULL, 'Father of Baruch, who earnestly repaired a section of the wall (Nehemiah 3:20).', 'No dates recorded; placed by generation.'),
 (6711, 'Ananiah, grandfather of Azariah', NULL, NULL, NULL, 1, 1, 'traditional', 'other', 'minor', NULL, NULL, NULL, 'Father of Maaseiah and grandfather of Azariah, who repaired by his house (Nehemiah 3:23).', 'No dates recorded; placed by generation.'),
-(6712, 'Maaseiah, son of Ananiah', NULL, NULL, NULL, 1, 1, 'traditional', 'other', 'minor', NULL, NULL, NULL, 'Father of Azariah, who repaired by his house (Nehemiah 3:23).', 'No dates recorded; placed by generation.');
-
--- Undated (known from genealogies) (continued)
-INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
+(6712, 'Maaseiah, son of Ananiah', NULL, NULL, NULL, 1, 1, 'traditional', 'other', 'minor', NULL, 6711, NULL, 'Father of Azariah, who repaired by his house (Nehemiah 3:23).', 'No dates recorded; placed by generation.'),
 (6715, 'Uzai, father of Palal', NULL, NULL, NULL, 1, 1, 'traditional', 'other', 'minor', NULL, NULL, NULL, 'Father of Palal, who repaired opposite the turning of the wall (Nehemiah 3:25).', 'No dates recorded; placed by generation.'),
 (6719, 'Shechaniah, father of Shemaiah (Nehemiah 3:29)', NULL, NULL, NULL, 1, 1, 'traditional', 'other', 'minor', NULL, NULL, NULL, 'Father of Shemaiah, keeper of the East Gate.', 'No dates recorded; placed by generation.'),
 (6721, 'Shelemiah, father of Hananiah (Nehemiah 3:30)', NULL, NULL, NULL, 1, 1, 'traditional', 'other', 'minor', NULL, NULL, NULL, 'Father of Hananiah, who repaired a second section of the wall.', 'No dates recorded; placed by generation.'),
@@ -2961,7 +2948,10 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (7204, 'Nicolas, proselyte of Antioch', NULL, NULL, NULL, 1, 1, 'possible', 'church-leader', 'minor', NULL, NULL, NULL, 'A convert to Judaism from Antioch, one of the seven chosen to serve the Jerusalem church (Acts 6:5).', 'Date not given; chosen shortly before Stephen''s death.'),
 (7205, 'Simeon called Niger', NULL, NULL, NULL, 1, 1, 'possible', 'church-leader', 'minor', NULL, NULL, NULL, 'A prophet and teacher in the church at Antioch when Barnabas and Saul were sent out (Acts 13:1).', 'No dates recorded; placed by the event or letter that names them.'),
 (7206, 'Lucius of Cyrene', NULL, NULL, NULL, 1, 1, 'possible', 'church-leader', 'minor', NULL, NULL, NULL, 'A prophet and teacher in the church at Antioch (Acts 13:1).', 'No dates recorded; placed by the event or letter that names them.'),
-(7207, 'Manaen', NULL, NULL, NULL, 1, 1, 'possible', 'church-leader', 'minor', NULL, NULL, NULL, 'A prophet and teacher at Antioch who had been brought up with Herod the tetrarch (Acts 13:1).', 'No dates recorded; placed by the event or letter that names them.'),
+(7207, 'Manaen', NULL, NULL, NULL, 1, 1, 'possible', 'church-leader', 'minor', NULL, NULL, NULL, 'A prophet and teacher at Antioch who had been brought up with Herod the tetrarch (Acts 13:1).', 'No dates recorded; placed by the event or letter that names them.');
+
+-- Undated (known from genealogies) (continued)
+INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
 (7208, 'Sopater of Berea', NULL, NULL, NULL, 1, 1, 'possible', 'disciple', 'minor', NULL, NULL, NULL, 'A man of Berea who accompanied Paul into Asia (Acts 20:4). Possibly the Sosipater of Romans 16:21.', 'No dates recorded; placed by the event or letter that names them.'),
 (7209, 'Secundus of Thessalonica', NULL, NULL, NULL, 1, 1, 'possible', 'disciple', 'minor', NULL, NULL, NULL, 'A Thessalonian who accompanied Paul into Asia (Acts 20:4).', 'No dates recorded; placed by the event or letter that names them.'),
 (7210, 'Blastus', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Chamberlain of Herod Agrippa I, won over by the people of Tyre and Sidon (Acts 12:20).', 'Dated by Agrippa''s last year, about AD 44.'),
@@ -3020,7 +3010,14 @@ INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, d
 (7270, 'Cainan, son of Arphaxad', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', NULL, 152, NULL, 'Named in Luke 3:36 between Arphaxad and Sala; the Hebrew text of Genesis 11 has no Cainan, but Luke follows the Septuagint.', 'No dates recorded; placed by generation.'),
 (7271, 'Gabriel the angel', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'An angel named in Scripture who explained Daniel''s visions (Daniel 8:16; 9:21) and announced the births of John the Baptist and Jesus (Luke 1:19, 26).', 'An angel: no birth or death. Placed by the announcements.'),
 (7272, 'Michael the archangel', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'An angel named in Scripture as a chief prince who helps Daniel''s people (Daniel 10:13, 21; 12:1), the archangel who contended with the devil over Moses'' body (Jude 9) and who fought the dragon (Revelation 12:7).', 'An angel: no birth or death. Placed by John''s vision.'),
-(7600, 'Eliam, son of Ahithophel', NULL, NULL, NULL, 1, 1, 'possible', 'warrior', 'minor', 'Judah', 207, NULL, 'One of David''s thirty mighty men, son of Ahithophel the Gilonite (2 Sam 23:34). Some identify him with Eliam the father of Bathsheba (2 Sam 11:3), but the text does not say so.', 'No dates recorded; placed by generation from Ahithophel.');
+(7600, 'Eliam, son of Ahithophel', NULL, NULL, NULL, 1, 1, 'possible', 'warrior', 'minor', NULL, 207, NULL, 'One of David''s thirty mighty men, son of Ahithophel the Gilonite (2 Sam 23:34). Some identify him with Eliam the father of Bathsheba (2 Sam 11:3), but the text does not say so.', 'No dates recorded; placed by generation from Ahithophel.'),
+(7601, 'Judith, wife of Esau', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', NULL, 7602, NULL, 'Daughter of Beeri the Hittite, married to Esau when he was forty; she and Bashemath "were a grief of mind unto Isaac and to Rebekah" (Gen 26:34-35). She is not named in the list of Esau''s wives in Genesis 36.', 'Married in 1796 BC, when Esau was forty (Gen 26:34); her birth is not recorded.'),
+(7602, 'Beeri the Hittite', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', NULL, NULL, NULL, 'Hittite of Canaan, father of Judith, whom Esau married (Gen 26:34).', 'No dates recorded; placed by generation from his daughter.'),
+(7603, 'Ammihud, father of Elishama the prince', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Ephraim', NULL, NULL, 'Ephraimite, father of Elishama, the prince of Ephraim at the census in the wilderness (Num 1:10; 2:18; 7:48). The Ammihud of 1 Chr 7:26, Joshua''s ancestor, bears the same name; the text does not say they are one man.', 'No dates recorded; placed by generation from his son.'),
+(7604, 'Zaccur, son of Asaph', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', 942, NULL, 'Son of Asaph, set apart by David among the singers; the third lot fell to him and his sons (1 Chr 25:1-2, 10).', 'No dates recorded; placed by generation from Asaph.'),
+(7760, 'Ehud, father of the heads of Geba', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Benjamin', NULL, NULL, 'Benjamite named in 1 Chronicles 8:6, whose sons were heads of the fathers of the inhabitants of Geba, removed to Manahath. He is not said to be the judge Ehud (Judges 3:15), who is called the son of Gera, so the two are kept apart; Abihud of verse 3 may be a variant of his name.', 'No dates recorded; placed by generation.'),
+(7761, 'Elishama, grandfather of Joshua', NULL, NULL, NULL, 1, 1, 'possible', 'ancestor', 'minor', 'Ephraim', 4481, NULL, 'Son of Ammihud and father of Nun in the line of Ephraim (1 Chronicles 7:26). He may be the Elishama son of Ammihud who was prince of Ephraim in the wilderness (Numbers 1:10), but no text says so.', 'No dates recorded; placed by generation.'),
+(7820, 'Jeshua, son of Kadmiel (Neh 12:24)', NULL, NULL, NULL, 1, 1, 'possible', 'other', 'minor', 'Levi', 6817, NULL, 'One of the chief of the Levites who, with Hashabiah and Sherebiah, praised and gave thanks ward over against ward (Nehemiah 12:24). Called the son of Kadmiel, so distinct from Jeshua the son of Azaniah (Nehemiah 10:9).', 'Estimate: contemporary with Nehemiah, whose days Nehemiah 12:26 names.');
 
 -- Apostolic Age
 INSERT INTO people (id, name, alt_names, birth_year, death_year, birth_approx, death_approx, date_confidence, role, significance, tribe, father_id, mother_id, description, date_notes) VALUES
@@ -3625,7 +3622,7 @@ INSERT INTO biblical_books (id, name, abbreviation, testament, genre, approx_wri
 (66, 'Revelation', 'Rev', 'NT', 'apocalyptic', 95, 95, 95);
 
 -- ============================================================
--- SCRIPTURE REFERENCES (1317)
+-- SCRIPTURE REFERENCES (1318)
 -- ============================================================
 INSERT INTO scripture_references (id, book_id, chapter_start, verse_start, chapter_end, verse_end, reference_text) VALUES
 (1, 1, 1, 1, 2, 25, 'Genesis 1:1–2:25'),
@@ -4693,7 +4690,7 @@ INSERT INTO scripture_references (id, book_id, chapter_start, verse_start, chapt
 (3810, 13, 5, 3, 5, 6, '1 Chronicles 5:3-6'),
 (3811, 13, 5, 7, 5, 10, '1 Chronicles 5:7-10'),
 (3812, 13, 5, 11, 5, 17, '1 Chronicles 5:11-17'),
-(3813, 13, 5, 24, 5, 24, '1 Chronicles 5:24-24'),
+(3813, 13, 5, 24, 5, 24, '1 Chronicles 5:24'),
 (4000, 13, 6, 4, 6, 15, '1 Chronicles 6:4-15'),
 (4001, 13, 6, 16, 6, 21, '1 Chronicles 6:16-21'),
 (4002, 13, 6, 22, 6, 27, '1 Chronicles 6:22-27'),
@@ -4970,7 +4967,8 @@ INSERT INTO scripture_references (id, book_id, chapter_start, verse_start, chapt
 (5647, 27, 10, 21, 10, 21, 'Daniel 10:21'),
 (5648, 27, 12, 1, 12, 1, 'Daniel 12:1'),
 (5649, 65, 1, 9, 1, 9, 'Jude 1:9'),
-(5650, 66, 12, 7, 12, 7, 'Revelation 12:7');
+(5650, 66, 12, 7, 12, 7, 'Revelation 12:7'),
+(5800, 1, 26, 34, 26, 35, 'Genesis 26:34-35');
 
 -- ============================================================
 -- LOCATIONS (178)
@@ -6027,8 +6025,8 @@ INSERT INTO person_events (person_id, event_id, role_in_event) VALUES
 (10, 405, 'protagonist'),
 (11, 405, 'spokesman before Pharaoh'),
 (66, 405, 'antagonist'),
-(7260, 405, 'Named in 2 Timothy 3:8 as one of the opposing magicians'),
-(7261, 405, 'Named in 2 Timothy 3:8 as one of the opposing magicians'),
+(7260, 405, 'Named in 2 Timothy 3:8 as withstanding Moses; Exodus does not name Pharaoh''s magicians'),
+(7261, 405, 'Named in 2 Timothy 3:8 as withstanding Moses; Exodus does not name Pharaoh''s magicians'),
 (10, 406, 'protagonist'),
 (11, 406, 'made the calf at the people''s demand'),
 (13, 406, 'waited with Moses on the mountain (Exod 32:17)'),
@@ -6360,6 +6358,7 @@ INSERT INTO person_events (person_id, event_id, role_in_event) VALUES
 (1000, 484, 'Chamberlain whose plot Mordecai exposed (Esth 2:21-23)'),
 (33, 485, 'Scribe who read the law'),
 (34, 485, 'Governor present at the assembly'),
+(4101, 485, 'Helped the people understand the Law'),
 (6800, 485, 'Stood at Ezra''s right hand'),
 (6801, 485, 'Stood at Ezra''s right hand'),
 (6802, 485, 'Stood at Ezra''s right hand'),
@@ -6381,7 +6380,6 @@ INSERT INTO person_events (person_id, event_id, role_in_event) VALUES
 (6823, 485, 'Helped the people understand the Law'),
 (6824, 485, 'Helped the people understand the Law'),
 (6830, 485, 'Helped the people understand the Law'),
-(6831, 485, 'Helped the people understand the Law'),
 (6832, 485, 'Helped the people understand the Law');
 
 INSERT INTO person_events (person_id, event_id, role_in_event) VALUES
@@ -6455,7 +6453,7 @@ INSERT INTO person_events (person_id, event_id, role_in_event) VALUES
 (339, 532, 'Martyr');
 
 -- ============================================================
--- SCRIPTURE FOR PEOPLE (3964)
+-- SCRIPTURE FOR PEOPLE (3969)
 -- ============================================================
 INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (1, 53, NULL),
@@ -6574,6 +6572,7 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (57, 146, NULL),
 (58, 147, NULL),
 (59, 148, NULL),
+(59, 5800, 'Marries Judith and Bashemath at forty'),
 (60, 149, NULL),
 (60, 834, 'Brother of Rebekah, son of Bethuel'),
 (61, 150, NULL),
@@ -6604,7 +6603,6 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (71, 3609, 'Son of Kenaz; father of Hathath'),
 (72, 161, NULL),
 (72, 861, 'Ehud the son of Gera'),
-(72, 4401, 'Father of Naaman, Ahiah and Gera'),
 (73, 162, NULL),
 (73, 860, 'Gilead begat Jephthah'),
 (74, 163, NULL),
@@ -7903,7 +7901,6 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (2160, 3011, 'Horite who found the hot springs or mules in the wilderness while feeding his...'),
 (2161, 3005, 'Daughter of Anah and wife of Esau, mother of Jeush, Jaalam and Korah'),
 (2161, 3006, 'Daughter of Anah and wife of Esau, mother of Jeush, Jaalam and Korah'),
-(2161, 3011, 'Daughter of Anah and wife of Esau, mother of Jeush, Jaalam and Korah'),
 (2162, 3005, 'Son of Esau by Aholibamah'),
 (2162, 3011, 'Son of Esau by Aholibamah'),
 (2163, 3005, 'Son of Esau by Aholibamah'),
@@ -7953,6 +7950,7 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (2411, 3202, 'Son of Gershon'),
 (2411, 3218, 'Founder of the Libnites'),
 (2411, 4001, 'Son of Gershom'),
+(2411, 4803, 'Gershonite'),
 (2412, 3202, 'Son of Gershon'),
 (2412, 4803, 'Gershonite'),
 (2413, 3202, 'Son of Kohath'),
@@ -8067,6 +8065,7 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (2459, 3214, 'Called Hupham; founder of the Huphamites'),
 (2460, 3200, 'Listed among the sons of Benjamin'),
 (2460, 3214, 'Son of Bela; founder of the Ardites'),
+(2460, 4400, 'Son of Bela'),
 (2461, 3200, 'Listed among the sons of Benjamin'),
 (2461, 3214, 'Son of Bela; founder of the Naamites'),
 (2461, 4400, 'Son of Bela'),
@@ -8086,10 +8085,10 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (2466, 4202, 'Son of Naphtali, by Bilhah'),
 (2467, 839, 'Son of Ephraim'),
 (2467, 3213, 'Son of Ephraim; founder of the Shuthalhites'),
-(2468, 3213, 'Son of Ephraim; founder of the Bachrites'),
-(2469, 3213, 'Son of Ephraim; founder of the Tahanites');
+(2468, 3213, 'Son of Ephraim; founder of the Bachrites');
 
 INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
+(2469, 3213, 'Son of Ephraim; founder of the Tahanites'),
 (2470, 3213, 'Son of Shuthelah; founder of the Eranites'),
 (2471, 3212, 'Son of Machir; founder of the Gileadites'),
 (2471, 4203, 'Son of Machir'),
@@ -8120,7 +8119,6 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (2807, 3401, 'Prince of Zebulun'),
 (2807, 3402, 'Prince of Zebulun'),
 (2807, 3403, 'Prince of Zebulun'),
-(2809, 839, 'Son of Ammihud, father of Nun'),
 (2809, 3400, 'Prince of Ephraim'),
 (2809, 3401, 'Prince of Ephraim'),
 (2809, 3402, 'Prince of Ephraim'),
@@ -8611,6 +8609,7 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (4067, 4007, 'Priest in Jerusalem'),
 (4068, 4007, 'Priest in Jerusalem'),
 (4069, 4007, 'Priest in Jerusalem'),
+(4069, 5407, 'Named with Jedaiah'),
 (4070, 4007, 'Ancestor of Azariah'),
 (4070, 5407, 'Named as a forefather in the line'),
 (4071, 4007, 'Son of Ahitub'),
@@ -8634,27 +8633,41 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (4084, 4007, 'Son of Jahzerah'),
 (4085, 4007, 'Son of Adiel'),
 (4086, 4008, 'Ancestor of Shemaiah'),
+(4086, 5408, 'Named as a forefather in the line'),
 (4087, 4008, 'Son of Hashabiah'),
+(4087, 5408, 'Named as a forefather in the line'),
 (4088, 4008, 'Son of Azrikam'),
+(4088, 5408, 'Named as a forefather in the line'),
 (4089, 4008, 'Son of Hasshub'),
+(4089, 5408, 'Named as the person listed'),
 (4090, 4008, 'Levite in Jerusalem'),
 (4091, 4008, 'Levite in Jerusalem'),
 (4092, 4008, 'Levite; son of Jeduthun'),
 (4092, 5408, 'Line of Abda, of Jeduthun'),
-(4093, 1707, 'Son of Asaph; third lot'),
 (4093, 4008, 'Son of Asaph'),
-(4093, 4808, 'Son of Asaph; third lot'),
 (4093, 5408, 'Son of Asaph, forefather of Mattaniah'),
 (4093, 5413, 'Called Zaccur, son of Asaph'),
 (4094, 4008, 'Son of Zichri'),
+(4094, 5408, 'Father of Mattaniah'),
+(4094, 5413, 'Called Michaiah'),
 (4095, 4008, 'Son of Micah'),
+(4095, 5408, 'Principal to begin the thanksgiving in prayer'),
+(4095, 5409, 'Over the thanksgiving'),
+(4095, 5412, 'Gatekeeper at the thresholds'),
 (4096, 4008, 'Son of Galal'),
+(4096, 5408, 'Line of Abda, of Jeduthun'),
 (4097, 4008, 'Son of Shemaiah'),
+(4097, 5408, 'Line of Abda, of Jeduthun'),
 (4098, 4008, 'Father of Asa'),
 (4099, 4008, 'Son of Elkanah'),
 (4100, 4008, 'Son of Asa'),
 (4101, 4009, 'Porter'),
+(4101, 5401, 'Helped the people understand the Law'),
+(4101, 5408, 'Gatekeeper, over the porters'),
+(4101, 5412, 'Keeper of the ward at the gates'),
 (4102, 4009, 'Porter'),
+(4102, 5408, 'Gatekeeper'),
+(4102, 5412, 'Keeper of the ward at the gates'),
 (4103, 4009, 'Porter'),
 (4104, 4009, 'Son of Ebiasaph; father of Shallum'),
 (4105, 4009, 'Chief porter; son of Kore'),
@@ -8684,7 +8697,9 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (4428, 4201, 'Son of Becher'),
 (4429, 4201, 'Son of Becher'),
 (4430, 4201, 'Son of Becher'),
-(4431, 4201, 'Son of Becher'),
+(4431, 4201, 'Son of Becher');
+
+INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (4432, 4201, 'Son of Jediael'),
 (4433, 4201, 'Son of Bilhan'),
 (4434, 4201, 'Son of Bilhan'),
@@ -8699,9 +8714,7 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (4443, 4201, 'Son of Aher'),
 (4448, 4203, 'Son of Manasseh'),
 (4450, 4203, 'Wife of Machir, sister of Huppim and Shuppim'),
-(4451, 4203, 'Son of Machir and Maachah');
-
-INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
+(4451, 4203, 'Son of Machir and Maachah'),
 (4452, 4203, 'Brother of Peresh'),
 (4453, 4203, 'Son of Sheresh'),
 (4454, 4203, 'Son of Sheresh'),
@@ -8731,7 +8744,6 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (4479, 839, 'Son of Telah'),
 (4480, 839, 'Son of Tahan'),
 (4481, 839, 'Son of Laadan'),
-(4481, 3400, 'Father of Elishama'),
 (4483, 4204, 'Son of Asher'),
 (4485, 4204, 'Son of Asher'),
 (4490, 4204, 'Son of Malchiel'),
@@ -8772,7 +8784,6 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (4802, 4400, 'Benjamin''s third son'),
 (4803, 4400, 'Benjamin''s fourth son'),
 (4804, 4400, 'Benjamin''s fifth son'),
-(4805, 4400, 'Son of Bela'),
 (4806, 4400, 'Son of Bela'),
 (4807, 4400, 'Son of Bela'),
 (4808, 4400, 'Son of Bela'),
@@ -8788,7 +8799,9 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (4819, 4402, 'Fathered children in Moab'),
 (4820, 4402, 'Wife of Shaharaim'),
 (4821, 4402, 'Wife of Shaharaim'),
-(4822, 4402, 'Wife of Shaharaim'),
+(4822, 4402, 'Wife of Shaharaim');
+
+INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (4823, 4402, 'Son of Shaharaim and Hodesh'),
 (4824, 4402, 'Son of Shaharaim and Hodesh'),
 (4825, 4402, 'Son of Shaharaim and Hodesh'),
@@ -8801,9 +8814,7 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (4832, 4403, 'Son of Elpaal'),
 (4833, 4403, 'Son of Elpaal'),
 (4834, 4403, 'Son of Elpaal; built Ono and Lod'),
-(4835, 4403, 'Head of the fathers of Ajalon');
-
-INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
+(4835, 4403, 'Head of the fathers of Ajalon'),
 (4836, 4403, 'Head of the fathers of Ajalon'),
 (4837, 4403, 'Son of Beriah'),
 (4838, 4403, 'Son of Beriah'),
@@ -8890,7 +8901,9 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (4900, 4409, 'Son of Jehoadah'),
 (4900, 4416, 'Son of Jarah'),
 (4901, 4409, 'Son of Jehoadah'),
-(4901, 4416, 'Son of Jarah'),
+(4901, 4416, 'Son of Jarah');
+
+INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (4902, 4409, 'Son of Zimri'),
 (4902, 4416, 'Son of Zimri'),
 (4903, 4409, 'Son of Moza'),
@@ -8903,9 +8916,7 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (4906, 4416, 'Son of Eleasah'),
 (4907, 4409, 'Son of Azel'),
 (4907, 4416, 'Son of Azel'),
-(4908, 4409, 'Son of Azel');
-
-INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
+(4908, 4409, 'Son of Azel'),
 (4908, 4416, 'Son of Azel'),
 (4909, 4409, 'Son of Azel'),
 (4909, 4416, 'Son of Azel'),
@@ -8992,7 +9003,9 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (5226, 4605, 'One of the valiant men'),
 (5227, 4605, 'Sons of Hashem among the valiant men'),
 (5228, 4605, 'Father of Jonathan'),
-(5229, 4602, 'Jonathan, one of the thirty'),
+(5229, 4602, 'Jonathan, one of the thirty');
+
+INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (5229, 4605, 'Jonathan son of Shage the Hararite'),
 (5230, 4602, 'One of the thirty'),
 (5231, 4602, 'Father of Ahiam'),
@@ -9005,9 +9018,7 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (5235, 4605, 'Listed as Hezro the Carmelite'),
 (5236, 4605, 'Father of Naarai'),
 (5237, 4602, 'One of the thirty'),
-(5237, 4605, 'Listed as Naarai son of Ezbai');
-
-INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
+(5237, 4605, 'Listed as Naarai son of Ezbai'),
 (5238, 4602, 'Father of Igal'),
 (5239, 4602, 'One of the thirty, of Zobah'),
 (5240, 4605, 'One of the valiant men'),
@@ -9094,7 +9105,9 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (5316, 4612, 'Succeeded his father as captain of the fourth month'),
 (5317, 4612, 'Captain of the fifth month'),
 (5318, 4613, 'Father of Eliezer'),
-(5319, 4613, 'Ruler of the Reubenites'),
+(5319, 4613, 'Ruler of the Reubenites');
+
+INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (5320, 4613, 'Ruler of the Simeonites'),
 (5321, 4613, 'Father of Hashabiah'),
 (5322, 4613, 'Ruler of the Levites'),
@@ -9107,9 +9120,7 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (5329, 4613, 'Father of Hoshea'),
 (5330, 4613, 'Ruler of Ephraim'),
 (5331, 4613, 'Father of Joel'),
-(5332, 4613, 'Ruler of the west half tribe of Manasseh');
-
-INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
+(5332, 4613, 'Ruler of the west half tribe of Manasseh'),
 (5333, 4613, 'Father of Iddo'),
 (5334, 4613, 'Ruler of the half tribe of Manasseh in Gilead'),
 (5335, 4613, 'Ruler of Benjamin'),
@@ -9196,7 +9207,9 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (5616, 4802, 'Singer, psalteries on Alamoth'),
 (5617, 4801, 'Singer, psalteries on Alamoth'),
 (5617, 4802, 'Singer, psalteries on Alamoth'),
-(5618, 4801, 'Singer, psalteries on Alamoth'),
+(5618, 4801, 'Singer, psalteries on Alamoth');
+
+INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (5619, 4801, 'Singer, harp on the Sheminith'),
 (5619, 4802, 'Singer, harp on the Sheminith'),
 (5620, 4801, 'Singer, harp on the Sheminith'),
@@ -9209,9 +9222,7 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (5625, 4801, 'Doorkeeper for the ark'),
 (5626, 4801, 'Doorkeeper for the ark'),
 (5627, 4801, 'Trumpeter before the ark'),
-(5628, 4801, 'Trumpeter before the ark');
-
-INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
+(5628, 4801, 'Trumpeter before the ark'),
 (5629, 4801, 'Trumpeter before the ark'),
 (5630, 4801, 'Trumpeter before the ark'),
 (5631, 4801, 'Trumpeter before the ark'),
@@ -9222,7 +9233,6 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (5635, 4802, 'Trumpeter before the ark'),
 (5636, 1706, 'Merarite gatekeeper'),
 (5636, 4809, 'Merarite gatekeeper'),
-(5637, 4803, 'Gershonite'),
 (5639, 4803, 'Chief of Laadan''s sons'),
 (5639, 4810, 'Chief of Laadan''s sons'),
 (5640, 4803, 'Son of Laadan; treasurer'),
@@ -9299,7 +9309,9 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (5699, 4807, 'Son of Isshiah'),
 (5700, 4807, 'Merarite; father of four'),
 (5701, 4807, 'Son of Jaaziah'),
-(5702, 4807, 'Son of Jaaziah'),
+(5702, 4807, 'Son of Jaaziah');
+
+INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (5703, 4807, 'Son of Jaaziah'),
 (5704, 4807, 'Son of Jaaziah'),
 (5705, 4807, 'Son of Kish'),
@@ -9311,9 +9323,7 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (5709, 4808, 'Son of Asaph'),
 (5710, 1707, 'Son of Jeduthun; second lot'),
 (5710, 4808, 'Son of Jeduthun; second lot'),
-(5711, 1707, 'Son of Jeduthun');
-
-INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
+(5711, 1707, 'Son of Jeduthun'),
 (5711, 4808, 'Son of Jeduthun'),
 (5712, 1707, 'Son of Jeduthun; eighth lot'),
 (5712, 4808, 'Son of Jeduthun; eighth lot'),
@@ -9401,7 +9411,9 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (6015, 5013, 'Father of Tabrimon'),
 (6016, 5013, 'Father of Ben-hadad'),
 (6017, 5014, 'Seer who rebuked Asa'),
-(6018, 5015, 'Prophet against Baasha'),
+(6018, 5015, 'Prophet against Baasha');
+
+INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (6018, 5016, 'Rebuked Jehoshaphat'),
 (6019, 5017, 'Steward in whose house Elah died'),
 (6020, 5018, 'Father of Tibni'),
@@ -9413,9 +9425,7 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (6026, 5021, 'Hid a hundred prophets'),
 (6027, 5022, 'Owner of the vineyard'),
 (6028, 5023, 'Father of Zedekiah'),
-(6029, 5023, 'False prophet who promised victory');
-
-INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
+(6029, 5023, 'False prophet who promised victory'),
 (6030, 5024, 'Governor of the city'),
 (6031, 5024, 'The king''s son who guarded Micaiah'),
 (6032, 5025, 'Father of Azubah'),
@@ -9503,7 +9513,9 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (6100, 5061, 'Chief captain'),
 (6101, 5061, 'Captain'),
 (6102, 5062, 'Father of Amasiah'),
-(6103, 5061, 'Captain who volunteered'),
+(6103, 5061, 'Captain who volunteered');
+
+INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (6104, 5061, 'Captain of Benjamin'),
 (6105, 5061, 'Captain of Benjamin'),
 (6106, 5063, 'Chief priest'),
@@ -9515,9 +9527,7 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (6112, 5065, 'Father of Jahaziel'),
 (6113, 5065, 'Levite who prophesied deliverance'),
 (6114, 5066, 'Father of Eliezer'),
-(6115, 5066, 'Prophesied against the joint fleet');
-
-INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
+(6115, 5066, 'Prophesied against the joint fleet'),
 (6116, 5067, 'Son of Jehoshaphat killed by Jehoram'),
 (6117, 5067, 'Son of Jehoshaphat killed by Jehoram'),
 (6118, 5067, 'Son of Jehoshaphat killed by Jehoram'),
@@ -9605,7 +9615,9 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (6199, 5079, 'Gave Passover offerings'),
 (6200, 5079, 'Gave Passover offerings'),
 (6201, 5079, 'Gave Passover offerings'),
-(6202, 5079, 'Gave Passover offerings'),
+(6202, 5079, 'Gave Passover offerings');
+
+INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (6203, 5080, 'Killed Josiah; enthroned Jehoiakim'),
 (6203, 5081, 'Warned Josiah at Megiddo'),
 (6203, 5082, 'Defeated at Carchemish'),
@@ -9617,9 +9629,7 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (6207, 5085, 'Addressed in Shemaiah''s letter'),
 (6207, 5086, 'Sent to ask Jeremiah''s prayers'),
 (6207, 5087, 'Second priest, killed at Riblah'),
-(6208, 5088, 'Father of Urijah');
-
-INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
+(6208, 5088, 'Father of Urijah'),
 (6209, 5088, 'Prophet put to death by Jehoiakim'),
 (6210, 5088, 'Fetched Urijah from Egypt'),
 (6210, 5089, 'Prince who urged the king'),
@@ -9707,7 +9717,9 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (6413, 5200, 'Leader with Zerubbabel'),
 (6413, 5205, 'Leader with Zerubbabel'),
 (6414, 5200, 'Leader with Zerubbabel'),
-(6414, 5205, 'Leader with Zerubbabel'),
+(6414, 5205, 'Leader with Zerubbabel');
+
+INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (6415, 5200, 'Leader with Zerubbabel'),
 (6415, 5205, 'Leader with Zerubbabel'),
 (6416, 5200, 'Leader with Zerubbabel'),
@@ -9719,9 +9731,7 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (6419, 5206, 'Head of the family of Parosh'),
 (6420, 5201, 'Head of the family of Shephatiah'),
 (6420, 5206, 'Head of the family of Shephatiah'),
-(6421, 5201, 'Head of the family of Arah');
-
-INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
+(6421, 5201, 'Head of the family of Arah'),
 (6421, 5206, 'Head of the family of Arah'),
 (6422, 5201, 'Head of the family of Pahath-moab'),
 (6422, 5206, 'Head of the family of Pahath-moab'),
@@ -9809,7 +9819,9 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (6465, 5208, 'Head of a Nethinim family'),
 (6466, 5203, 'Head of a Nethinim family'),
 (6466, 5208, 'Head of a Nethinim family'),
-(6467, 5203, 'Head of a Nethinim family'),
+(6467, 5203, 'Head of a Nethinim family');
+
+INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (6467, 5208, 'Head of a Nethinim family'),
 (6468, 5203, 'Head of a Nethinim family'),
 (6468, 5208, 'Head of a Nethinim family'),
@@ -9821,9 +9833,7 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (6471, 5208, 'Head of a Nethinim family'),
 (6472, 5203, 'Head of a Nethinim family'),
 (6472, 5208, 'Head of a Nethinim family'),
-(6473, 5203, 'Head of a Nethinim family');
-
-INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
+(6473, 5203, 'Head of a Nethinim family'),
 (6473, 5208, 'Head of a Nethinim family'),
 (6474, 5203, 'Head of a Nethinim family'),
 (6474, 5208, 'Head of a Nethinim family'),
@@ -9911,7 +9921,9 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (6529, 5212, 'Sent to Iddo at Casiphia'),
 (6530, 5212, 'Sent to Iddo at Casiphia'),
 (6531, 5212, 'Sent to Iddo at Casiphia'),
-(6532, 5212, 'Sent to Iddo at Casiphia'),
+(6532, 5212, 'Sent to Iddo at Casiphia');
+
+INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (6533, 5212, 'Sent to Iddo at Casiphia'),
 (6534, 5212, 'Sent to Iddo at Casiphia'),
 (6535, 5212, 'Sent to Iddo at Casiphia'),
@@ -9923,9 +9935,7 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (6541, 5212, 'Levite brought from Casiphia'),
 (6541, 5213, 'Guardian of the treasure'),
 (6542, 5212, 'Levite of Merari'),
-(6542, 5213, 'Guardian of the treasure');
-
-INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
+(6542, 5213, 'Guardian of the treasure'),
 (6543, 5212, 'Levite of Merari'),
 (6544, 5213, 'Father of Meremoth'),
 (6544, 5217, 'Father of Meremoth'),
@@ -10013,7 +10023,9 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (6625, 5216, 'Had taken a foreign wife'),
 (6626, 5216, 'Had taken a foreign wife'),
 (6627, 5216, 'Had taken a foreign wife'),
-(6628, 5216, 'Had taken a foreign wife'),
+(6628, 5216, 'Had taken a foreign wife');
+
+INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (6629, 5216, 'Had taken a foreign wife'),
 (6630, 5216, 'Had taken a foreign wife'),
 (6631, 5216, 'Had taken a foreign wife'),
@@ -10025,9 +10037,7 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (6637, 5216, 'Had taken a foreign wife'),
 (6638, 5216, 'Had taken a foreign wife'),
 (6639, 5216, 'Had taken a foreign wife'),
-(6640, 5216, 'Had taken a foreign wife');
-
-INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
+(6640, 5216, 'Had taken a foreign wife'),
 (6641, 5216, 'Had taken a foreign wife'),
 (6642, 5216, 'Had taken a foreign wife'),
 (6643, 5216, 'Had taken a foreign wife'),
@@ -10115,7 +10125,9 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (6725, 5218, 'Repaired the wall'),
 (6800, 5400, 'Stood at Ezra''s right hand'),
 (6801, 5400, 'Stood at Ezra''s right hand'),
-(6802, 5400, 'Stood at Ezra''s right hand'),
+(6802, 5400, 'Stood at Ezra''s right hand');
+
+INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (6803, 5400, 'Stood at Ezra''s right hand'),
 (6804, 5400, 'Stood at Ezra''s right hand'),
 (6805, 5400, 'Stood at Ezra''s right hand'),
@@ -10127,13 +10139,10 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (6811, 5400, 'Stood at Ezra''s left hand'),
 (6812, 5400, 'Stood at Ezra''s left hand'),
 (6813, 5404, 'Father of Jeshua'),
-(6814, 5401, 'Helped the people understand the Law');
-
-INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
+(6814, 5401, 'Helped the people understand the Law'),
 (6814, 5402, 'Stood on the stairs and cried to the LORD'),
 (6814, 5404, 'Sealed the covenant, son of Azaniah'),
 (6814, 5409, 'Chief Levite in the days of Jeshua the high priest'),
-(6814, 5412, 'Chief of the Levites; called son of Kadmiel in 12:24'),
 (6815, 5401, 'Helped the people understand the Law'),
 (6815, 5402, 'Stood on the stairs (named twice)'),
 (6815, 5404, 'Sealed the covenant'),
@@ -10167,9 +10176,6 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (6828, 5402, 'Stood on the stairs'),
 (6829, 5402, 'Called the people to bless the LORD'),
 (6830, 5401, 'Helped the people understand the Law'),
-(6831, 5401, 'Helped the people understand the Law'),
-(6831, 5408, 'Gatekeeper, over the porters'),
-(6831, 5412, 'Keeper of the ward at the gates'),
 (6832, 5401, 'Helped the people understand the Law'),
 (6832, 5408, 'Oversaw the outward business of the house of God'),
 (6833, 5401, 'Helped the people understand the Law'),
@@ -10185,21 +10191,12 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (6842, 5408, 'Second in the thanksgiving prayer'),
 (6842, 5409, 'Kept the watches with Unni'),
 (6842, 5412, 'Gatekeeper at the thresholds'),
-(6844, 5408, 'Father of Mattaniah'),
-(6844, 5413, 'Called Michaiah'),
-(6845, 5408, 'Principal to begin the thanksgiving in prayer'),
-(6845, 5409, 'Over the thanksgiving'),
-(6845, 5412, 'Gatekeeper at the thresholds'),
 (6846, 5408, 'Line of the overseer Uzzi'),
 (6847, 5408, 'Line of the overseer Uzzi'),
 (6848, 5408, 'Line of the overseer Uzzi'),
 (6849, 5413, 'Line of Zechariah, of Asaph'),
 (6850, 5413, 'Line of Zechariah, of Asaph'),
 (6851, 5413, 'Line of Zechariah, of Asaph'),
-(6853, 5408, 'Line of Abda, of Jeduthun'),
-(6854, 5408, 'Line of Abda, of Jeduthun'),
-(6855, 5408, 'Gatekeeper'),
-(6855, 5412, 'Keeper of the ward at the gates'),
 (6856, 5408, 'Over the Nethinim'),
 (6857, 5408, 'Over the Nethinim'),
 (6858, 5412, 'Keeper of the ward at the gates'),
@@ -10229,10 +10226,10 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (6882, 5403, 'Sealed the covenant, of the priests'),
 (6883, 5403, 'Sealed the covenant after Nehemiah'),
 (6884, 5405, 'Sealed the covenant, of the chief of the people'),
-(6885, 5405, 'Sealed the covenant, of the chief of the people');
+(6885, 5405, 'Sealed the covenant, of the chief of the people'),
+(6886, 5405, 'Sealed the covenant, of the chief of the people');
 
 INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
-(6886, 5405, 'Sealed the covenant, of the chief of the people'),
 (6887, 5405, 'Sealed the covenant, of the chief of the people'),
 (6888, 5405, 'Sealed the covenant, of the chief of the people'),
 (6889, 5405, 'Sealed the covenant, of the chief of the people'),
@@ -10304,7 +10301,6 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (6955, 5406, 'Overseer or father in Jerusalem'),
 (6956, 5407, 'Priest of Jerusalem'),
 (6957, 5407, 'Priest of Jerusalem'),
-(6958, 5407, 'Named with Jedaiah'),
 (6965, 5407, 'Named as a forefather in the line'),
 (6966, 5407, 'Named as a forefather in the line'),
 (6967, 5407, 'Named as a forefather in the line'),
@@ -10319,10 +10315,6 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (6976, 5407, 'Named as the person listed'),
 (6977, 5407, 'Overseer of the priests who were mighty men'),
 (6978, 5408, 'Named as a forefather in the line'),
-(6979, 5408, 'Named as a forefather in the line'),
-(6980, 5408, 'Named as a forefather in the line'),
-(6981, 5408, 'Named as a forefather in the line'),
-(6982, 5408, 'Named as the person listed'),
 (6983, 5409, 'Went up with Zerubbabel and Jeshua'),
 (6984, 5409, 'Went up with Zerubbabel and Jeshua'),
 (6985, 5409, 'Went up with Zerubbabel and Jeshua'),
@@ -10331,15 +10323,15 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (6988, 5409, 'Went up with Zerubbabel and Jeshua'),
 (6989, 5409, 'Went up with Zerubbabel and Jeshua'),
 (6990, 5409, 'Went up with Zerubbabel and Jeshua'),
-(6991, 5409, 'Went up with Zerubbabel and Jeshua');
-
-INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
+(6991, 5409, 'Went up with Zerubbabel and Jeshua'),
 (6992, 5409, 'Went up with Zerubbabel and Jeshua'),
 (6993, 5409, 'Went up with Zerubbabel and Jeshua'),
 (6994, 5409, 'Went up with Zerubbabel and Jeshua'),
 (6995, 5409, 'Went up with Zerubbabel and Jeshua'),
 (6996, 5409, 'Went up with Zerubbabel and Jeshua'),
-(6997, 5409, 'Went up with Zerubbabel and Jeshua'),
+(6997, 5409, 'Went up with Zerubbabel and Jeshua');
+
+INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (6998, 5409, 'Went up with Zerubbabel and Jeshua'),
 (6999, 5409, 'Went up with Zerubbabel and Jeshua'),
 (7000, 5409, 'Went up with Zerubbabel and Jeshua'),
@@ -10433,15 +10425,15 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (7217, 5610, 'Rose up before Judas of Galilee'),
 (7218, 5611, 'Saul lodged in his house'),
 (7219, 5612, 'Commanded Paul to be struck'),
-(7219, 5613, 'Came down to accuse Paul before Felix');
-
-INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
+(7219, 5613, 'Came down to accuse Paul before Felix'),
 (7221, 5614, 'Of the kindred of the high priest'),
 (7222, 5614, 'Of the kindred of the high priest'),
 (7223, 5615, 'His governor guarded Damascus'),
 (7224, 5616, 'Greeted by Paul'),
 (7225, 5617, 'Greeted by Paul'),
-(7226, 5617, 'Greeted by Paul'),
+(7226, 5617, 'Greeted by Paul');
+
+INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (7227, 5618, 'Greeted by Paul'),
 (7228, 5618, 'Household greeted by Paul'),
 (7229, 5619, 'Greeted by Paul'),
@@ -10499,7 +10491,18 @@ INSERT INTO person_scripture (person_id, scripture_id, context) VALUES
 (7272, 5648, 'Great prince who stands for Daniel''s people'),
 (7272, 5649, 'Contended with the devil about the body of Moses'),
 (7272, 5650, 'Fought against the dragon'),
-(7600, 4602, 'Eliam son of Ahithophel the Gilonite, one of the thirty');
+(7600, 4602, 'Eliam son of Ahithophel the Gilonite, one of the thirty'),
+(7601, 5800, 'Married to Esau; a grief to Isaac and Rebekah'),
+(7602, 5800, 'Father of Judith'),
+(7603, 3400, 'Father of Elishama, prince of Ephraim'),
+(7604, 1707, 'Son of Asaph, set apart for song'),
+(7604, 4808, 'The third lot, for Zaccur and his sons'),
+(7760, 4401, 'Father of Naaman, Ahiah and Gera; heads of the fathers of Geba'),
+(7761, 839, 'Son of Ammihud, father of Nun'),
+(7780, 4605, 'Hepher the Mecherathite, one of the valiant men'),
+(7781, 4605, 'Ahijah the Pelonite, one of the valiant men'),
+(7782, 4606, 'Hanan the son of Maachah, one of the valiant men'),
+(7820, 5412, 'Jeshua the son of Kadmiel is named among the chief of the Levites (Nehemiah 12:24).');
 
 -- ============================================================
 -- SCRIPTURE FOR EVENTS (378)
@@ -10891,7 +10894,7 @@ INSERT INTO event_scripture (event_id, scripture_id) VALUES
 (496, 814);
 
 -- ============================================================
--- RELATIONSHIPS (parentage lives in people.father_id / mother_id) (162)
+-- RELATIONSHIPS (parentage lives in people.father_id / mother_id) (163)
 -- ============================================================
 INSERT INTO person_relationships (person_id_1, person_id_2, relationship_type) VALUES
 (5, 58, 'contemporary'),
@@ -10984,6 +10987,7 @@ INSERT INTO person_relationships (person_id_1, person_id_2, relationship_type) V
 (59, 2099, 'spouse'),
 (59, 2101, 'spouse'),
 (59, 2161, 'spouse'),
+(59, 7601, 'spouse'),
 (71, 521, 'spouse'),
 (79, 221, 'spouse'),
 (80, 202, 'spouse'),
@@ -10992,10 +10996,10 @@ INSERT INTO person_relationships (person_id_1, person_id_2, relationship_type) V
 (85, 6076, 'spouse'),
 (86, 571, 'spouse'),
 (88, 94, 'spouse'),
-(89, 575, 'spouse'),
-(90, 576, 'spouse');
+(89, 575, 'spouse');
 
 INSERT INTO person_relationships (person_id_1, person_id_2, relationship_type) VALUES
+(90, 576, 'spouse'),
 (91, 578, 'spouse'),
 (92, 582, 'spouse'),
 (95, 573, 'spouse'),
