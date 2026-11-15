@@ -140,13 +140,13 @@ current view). The table lives in the header comment of `js/app.js`.
 
 | Table | Rows | Purpose |
 |-------|------|---------|
-| `people` | 593 | `name` (unique), `alt_names`, `birth_year`, `death_year`, `role`, `significance`, `date_confidence`, `father_id`, `mother_id`, `date_notes` |
+| `people` | 599 | `name` (unique), `alt_names`, `birth_year`, `death_year`, `role`, `significance`, `date_confidence`, `father_id`, `mother_id`, `date_notes` |
 | `events` | 352 | `name`, `start_year`, `end_year`, `category`, `significance`, `date_confidence`, `sort_order` |
 | `time_periods` | 18 | Contiguous eras, Creation to Modern Era |
 | `biblical_books` | 66 | testament, genre, period covered |
 | `locations` | 148 | latitude/longitude, region |
-| `scripture_references` | 776 | `book_id`, chapter/verse start and end, `reference_text` |
-| `person_events` | 840 | who took part in what |
+| `scripture_references` | 781 | `book_id`, chapter/verse start and end, `reference_text` |
+| `person_events` | 844 | who took part in what |
 | `person_relationships` | 108 | `spouse`, `sibling`, `mentor`, `successor`, `contemporary` (parent/child live in `father_id`/`mother_id`) |
 | `journeys` / `journey_stops` / `journey_people` | 5 / 89 / — | Map journeys |
 | `person_scripture`, `event_scripture`, `event_locations` | — | Junctions |
@@ -156,10 +156,16 @@ Counts are of the current seed; `agent-status.sh` prints live ones.
 
 ## Data rules
 
-- **Chronology policy.** Old Testament dates follow James Ussher (*Annals of the World*, 1650). Foreign rulers and church
-  history use standard historical dates. Where scholarship differs, the row's `date_notes` says so. There is one
-  chronology; do not mix systems. There is no year 0 (1 BC is `-1`, AD 1 is `1`).
-- **Explicit, stable ids.** Every seed row has an explicit id. Add rows with new ids (people currently go up to 822,
+- **Chronology policy (set by the owner): the Bible is the authority; Ussher is secondary.** In order:
+  1. Scripture's own figures and statements (ages, reign lengths, synchronisms, stated intervals, sequence) govern.
+  2. Where Scripture does not fix a year, James Ussher's *Annals of the World* governs — including foreign rulers who
+     meet the biblical record, the Persian and intertestamental periods, open identifications (e.g. Ahasuerus), and
+     New Testament events up to AD 73 (where the Annals end).
+  3. Standard history only where neither speaks (church history, people Ussher does not mention).
+  Where Ussher departs from Scripture's plain figures, Scripture wins and `date_notes` gives Ussher's figure; modern
+  scholarly dates may be noted but never set a row's years. There is one chronology; do not mix systems. There is no
+  year 0 (1 BC is `-1`, AD 1 is `1`). The Annals text and a search tool used for proofing live outside the repo.
+- **Explicit, stable ids.** Every seed row has an explicit id. Add rows with new ids (people currently go up to 855,
   events to 532); never renumber or reuse an id. The seed is one transaction with foreign keys deferred to commit, so a
   row may refer to a higher id.
 - **Vocabularies.**

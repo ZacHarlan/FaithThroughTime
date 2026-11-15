@@ -18,8 +18,8 @@ frontend with no build step.
   ("john 3:16") and name pairs ("noah and abraham").
 - **Detail sheet.** Dates with confidence and notes, relationships, places and scripture for any person or event.
 - **Share cards.** Render a moment as an image.
-- **About the dates.** Where dates come from and how sure anyone can be. Old Testament dates follow Ussher; other dates are
-  standard historical dates; every uncertain date says so.
+- **About the dates.** Where dates come from and how sure anyone can be. Scripture's own figures come first; where the Bible
+  does not fix a year, Ussher's chronology does; church history uses standard dates; every uncertain date says so.
 - **Themes and offline.** Dark and light themes; a service worker keeps the app working offline.
 
 ## Tech stack
