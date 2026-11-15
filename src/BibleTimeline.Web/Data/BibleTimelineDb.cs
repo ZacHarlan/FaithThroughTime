@@ -310,15 +310,20 @@ public partial class BibleTimelineDb
             // bm25 column weights (name, alt_names, description): a hit on
             // the NAME must outrank description mentions — otherwise a search
             // for David returns twenty people whose bios mention him before
-            // David himself. bm25() returns lower-is-better.
+            // David himself. bm25() returns lower-is-better. With the genealogies loaded, many
+            // names carry another's ("Shephatiah, son of David"), so an exact name, then a name
+            // that starts with the query, then significance come before the text score.
             var people = await conn.QueryAsync<SearchResultDto>("""
                 SELECT p.id, 'person' as Type, p.name, p.description as Snippet, p.birth_year as StartYear
                 FROM people p
                 JOIN people_fts fts ON fts.rowid = p.id
                 WHERE people_fts MATCH @Query
-                ORDER BY bm25(people_fts, 20.0, 5.0, 1.0)
+                ORDER BY (p.name = @Raw COLLATE NOCASE) DESC,
+                         (p.name LIKE @Prefix) DESC,
+                         CASE p.significance WHEN 'major' THEN 0 WHEN 'moderate' THEN 1 ELSE 2 END,
+                         bm25(people_fts, 20.0, 5.0, 1.0)
                 LIMIT 20
-                """, new { Query = ftsQuery });
+                """, new { Query = ftsQuery, Raw = query.Trim(), Prefix = query.Trim() + "%" });
             results.AddRange(people);
         }
 
