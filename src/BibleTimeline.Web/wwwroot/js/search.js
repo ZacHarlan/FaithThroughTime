@@ -152,9 +152,15 @@ const Search = (() => {
         active = -1;
         input.removeAttribute('aria-activedescendant');
 
-        if (q && !sections.some(s => s.rows.length)) {
+        const nothing = q && !sections.some(s => s.rows.length);
+        if (nothing) {
             list.append(noResults(q));
             sections.push(...waysIn());
+        }
+        const text = findRow(q);
+        if (text) {
+            const section = { label: 'In the text', rows: [text] };
+            if (nothing) sections.unshift(section); else sections.push(section);
         }
         sections.forEach((section, si) => {
             if (!section.rows.length) return;
@@ -237,6 +243,15 @@ const Search = (() => {
             href: Router.build('read', [book.slug, ref.startCh], { v: verses }),
             icon: 'book', action: true, name: `Read ${label}`, sub: 'Open in the reader',
             recent: { href: null, label: `Read ${label}`, icon: 'book' }
+        };
+    }
+
+    // "love your enemies" → a row that searches the words of Scripture itself.
+    function findRow(q) {
+        if (q.length < 2) return null;
+        return {
+            href: Router.build('find', [], { q }), icon: 'search', action: true,
+            name: `Search the text of Scripture for “${q}”`, sub: 'Find the words in any verse'
         };
     }
 

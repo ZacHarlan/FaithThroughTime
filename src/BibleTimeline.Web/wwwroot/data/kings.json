@@ -1,0 +1,838 @@
+{
+ "kings": [
+  {
+   "kingdom": "united",
+   "name": "Saul",
+   "person": 19,
+   "start": -1095,
+   "end": -1055,
+   "years": "40 years",
+   "verdict": "mixed",
+   "ref": "1 Samuel 10:1–31:13",
+   "synchronism": null,
+   "note": "Chosen by lot and anointed; rejected for disobedience (1 Sam 13:13; 15:26) and died at Gilboa. Forty years is Paul's figure (Acts 13:21).",
+   "order": 1
+  },
+  {
+   "kingdom": "united",
+   "name": "David",
+   "person": 20,
+   "start": -1055,
+   "end": -1015,
+   "years": "40 years",
+   "verdict": "good",
+   "ref": "2 Samuel 5:1–5",
+   "synchronism": null,
+   "note": "Seven years and six months over Judah at Hebron, thirty-three over all Israel from Jerusalem (2 Sam 5:4–5). Right in the LORD's eyes save in the matter of Uriah (1 Kgs 15:5).",
+   "order": 2
+  },
+  {
+   "kingdom": "united",
+   "name": "Solomon",
+   "person": 21,
+   "start": -1015,
+   "end": -975,
+   "years": "40 years",
+   "verdict": "mixed",
+   "ref": "1 Kings 11:41–43",
+   "synchronism": null,
+   "note": "Loved the LORD (1 Kgs 3:3), then his wives turned his heart and he did evil in the LORD's sight (11:4–6). The kingdom divided after him.",
+   "order": 3
+  },
+  {
+   "kingdom": "judah",
+   "name": "Rehoboam",
+   "person": 85,
+   "start": -975,
+   "end": -958,
+   "years": "17 years",
+   "verdict": "evil",
+   "ref": "1 Kings 14:21–31",
+   "synchronism": null,
+   "note": "The kingdom divided at his harsh answer (1 Kgs 12). Shishak of Egypt came up in his fifth year (14:25).",
+   "order": 1
+  },
+  {
+   "kingdom": "judah",
+   "name": "Abijah",
+   "person": 270,
+   "start": -958,
+   "end": -955,
+   "years": "3 years",
+   "verdict": "evil",
+   "ref": "1 Kings 15:1–8",
+   "synchronism": "In the eighteenth year of king Jeroboam the son of Nebat",
+   "note": "Called Abijam in Kings. His heart was not perfect with the LORD (15:3); 2 Chronicles 13 records his speech against Jeroboam.",
+   "order": 2
+  },
+  {
+   "kingdom": "judah",
+   "name": "Asa",
+   "person": 86,
+   "start": -955,
+   "end": -914,
+   "years": "41 years",
+   "verdict": "good",
+   "ref": "1 Kings 15:9–24",
+   "synchronism": "In the twentieth year of Jeroboam king of Israel",
+   "note": "Did right, as David; the high places were not removed (15:14). Diseased in his feet in old age (15:23).",
+   "order": 3
+  },
+  {
+   "kingdom": "judah",
+   "name": "Jehoshaphat",
+   "person": 87,
+   "start": -914,
+   "end": -889,
+   "years": "25 years",
+   "verdict": "good",
+   "ref": "1 Kings 22:41–50",
+   "synchronism": "In the fourth year of Ahab king of Israel",
+   "note": "Walked in the way of Asa; the high places remained (22:43). Allied with Ahab at Ramoth-gilead.",
+   "order": 4
+  },
+  {
+   "kingdom": "judah",
+   "name": "Jehoram of Judah",
+   "person": 88,
+   "start": -892,
+   "end": -885,
+   "years": "8 years",
+   "verdict": "evil",
+   "ref": "2 Kings 8:16–24",
+   "synchronism": "In the fifth year of Joram the son of Ahab king of Israel, Jehoshaphat being then king of Judah",
+   "note": "Married Ahab's daughter and walked in the way of the house of Ahab (8:18). Reckoned from an earlier association with his father, so his years overlap Jehoshaphat's.",
+   "order": 5
+  },
+  {
+   "kingdom": "judah",
+   "name": "Ahaziah of Judah",
+   "person": 267,
+   "start": -885,
+   "end": -884,
+   "years": "1 year",
+   "verdict": "evil",
+   "ref": "2 Kings 8:25–29",
+   "synchronism": "In the twelfth year of Joram the son of Ahab king of Israel",
+   "note": "Walked in the way of the house of Ahab; killed by Jehu (2 Kgs 9:27).",
+   "order": 6
+  },
+  {
+   "kingdom": "judah",
+   "name": "Athaliah",
+   "person": 94,
+   "start": -884,
+   "end": -878,
+   "years": "6 years",
+   "verdict": "evil",
+   "ref": "2 Kings 11:1–20",
+   "synchronism": null,
+   "note": "The only queen to reign. She destroyed the royal seed except Joash, hidden six years (11:1–3); the text gives no verdict formula, but 2 Chronicles 24:7 calls her wicked.",
+   "order": 7
+  },
+  {
+   "kingdom": "judah",
+   "name": "Joash",
+   "person": 95,
+   "start": -878,
+   "end": -839,
+   "years": "40 years",
+   "verdict": "mixed",
+   "ref": "2 Kings 12:1–21",
+   "synchronism": "In the seventh year of Jehu",
+   "note": "Did right all his days while Jehoiada the priest instructed him (12:2); after Jehoiada died he turned aside (2 Chr 24:17–19). Slain by his servants.",
+   "order": 8
+  },
+  {
+   "kingdom": "judah",
+   "name": "Amaziah",
+   "person": 96,
+   "start": -839,
+   "end": -810,
+   "years": "29 years",
+   "verdict": "mixed",
+   "ref": "2 Kings 14:1–22",
+   "synchronism": "In the second year of Joash son of Jehoahaz king of Israel",
+   "note": "Did right, yet not like David (14:3); not with a perfect heart (2 Chr 25:2). He outlived Jehoash of Israel by fifteen years (14:17).",
+   "order": 9
+  },
+  {
+   "kingdom": "judah",
+   "name": "Uzziah",
+   "person": 89,
+   "start": -810,
+   "end": -759,
+   "years": "52 years",
+   "verdict": "mixed",
+   "ref": "2 Kings 15:1–7",
+   "synchronism": "In the twenty and seventh year of Jeroboam king of Israel",
+   "note": "Called Azariah in Kings. Did right (15:3), but pride led him into the temple and he died a leper (2 Chr 26:16–21). Jotham judged the people meanwhile.",
+   "order": 10
+  },
+  {
+   "kingdom": "judah",
+   "name": "Jotham",
+   "person": 97,
+   "start": -759,
+   "end": -742,
+   "years": "16 years",
+   "verdict": "good",
+   "ref": "2 Kings 15:32–38",
+   "synchronism": "In the second year of Pekah the son of Remaliah king of Israel",
+   "note": "Did right; the high places were not removed (15:34–35).",
+   "order": 11
+  },
+  {
+   "kingdom": "judah",
+   "name": "Ahaz",
+   "person": 90,
+   "start": -742,
+   "end": -726,
+   "years": "16 years",
+   "verdict": "evil",
+   "ref": "2 Kings 16:1–20",
+   "synchronism": "In the seventeenth year of Pekah the son of Remaliah",
+   "note": "Walked in the way of the kings of Israel and made his son pass through the fire (16:3). Isaiah met him in the Syro-Ephraimite crisis (Isa 7).",
+   "order": 12
+  },
+  {
+   "kingdom": "judah",
+   "name": "Hezekiah",
+   "person": 29,
+   "start": -726,
+   "end": -698,
+   "years": "29 years",
+   "verdict": "good",
+   "ref": "2 Kings 18:1–20:21",
+   "synchronism": "In the third year of Hoshea son of Elah king of Israel",
+   "note": "Did right as David; removed the high places (18:3–4). Samaria fell in his sixth year (18:10) and Sennacherib came in his fourteenth (18:13).",
+   "order": 13
+  },
+  {
+   "kingdom": "judah",
+   "name": "Manasseh",
+   "person": 91,
+   "start": -698,
+   "end": -643,
+   "years": "55 years",
+   "verdict": "evil",
+   "ref": "2 Kings 21:1–18",
+   "synchronism": null,
+   "note": "Judah's longest reign and its worst; he rebuilt the high places (21:2–3). 2 Chronicles 33:12–13 records his humbling in Babylon.",
+   "order": 14
+  },
+  {
+   "kingdom": "judah",
+   "name": "Amon",
+   "person": 268,
+   "start": -643,
+   "end": -641,
+   "years": "2 years",
+   "verdict": "evil",
+   "ref": "2 Kings 21:19–26",
+   "synchronism": null,
+   "note": "Walked in his father's ways; his servants conspired and slew him (21:19–23).",
+   "order": 15
+  },
+  {
+   "kingdom": "judah",
+   "name": "Josiah",
+   "person": 30,
+   "start": -641,
+   "end": -610,
+   "years": "31 years",
+   "verdict": "good",
+   "ref": "2 Kings 22:1–23:30",
+   "synchronism": null,
+   "note": "Crowned at eight. Found the book of the law in his eighteenth year and reformed the land (22:3–8; 23:25). Slain at Megiddo by Pharaoh Necho (23:29).",
+   "order": 16
+  },
+  {
+   "kingdom": "judah",
+   "name": "Jehoahaz of Judah",
+   "person": 448,
+   "start": -610,
+   "end": -610,
+   "years": "3 months",
+   "verdict": "evil",
+   "ref": "2 Kings 23:31–35",
+   "synchronism": null,
+   "note": "Called Shallum in Jeremiah 22:11. Pharaoh Necho deposed him and took him to Egypt. Not Jehoahaz of Israel.",
+   "order": 17
+  },
+  {
+   "kingdom": "judah",
+   "name": "Jehoiakim",
+   "person": 92,
+   "start": -610,
+   "end": -599,
+   "years": "11 years",
+   "verdict": "evil",
+   "ref": "2 Kings 23:36–24:7",
+   "synchronism": null,
+   "note": "Set on the throne by Necho; Nebuchadnezzar came up in his reign (24:1). Jeremiah's scroll was burned before him (Jer 36).",
+   "order": 18
+  },
+  {
+   "kingdom": "judah",
+   "name": "Jehoiachin",
+   "person": 269,
+   "start": -599,
+   "end": -599,
+   "years": "3 months",
+   "verdict": "evil",
+   "ref": "2 Kings 24:8–16",
+   "synchronism": null,
+   "note": "Surrendered to Nebuchadnezzar and was carried to Babylon with Ezekiel; released in the thirty-seventh year of his captivity (25:27). Also called Jeconiah and Coniah.",
+   "order": 19
+  },
+  {
+   "kingdom": "judah",
+   "name": "Zedekiah",
+   "person": 93,
+   "start": -599,
+   "end": -588,
+   "years": "11 years",
+   "verdict": "evil",
+   "ref": "2 Kings 24:17–25:7",
+   "synchronism": null,
+   "note": "Rebelled against Babylon; Jerusalem fell in his eleventh year and he was blinded and taken to Babylon (25:1–7).",
+   "order": 20
+  },
+  {
+   "kingdom": "israel",
+   "name": "Jeroboam",
+   "person": 31,
+   "start": -975,
+   "end": -954,
+   "years": "22 years",
+   "verdict": "evil",
+   "ref": "1 Kings 14:19–20",
+   "synchronism": null,
+   "note": "Led the ten tribes from Rehoboam and set up golden calves at Bethel and Dan (1 Kgs 12:28–30); his \"sin\" is the measure of every later king.",
+   "order": 1
+  },
+  {
+   "kingdom": "israel",
+   "name": "Nadab",
+   "person": 98,
+   "start": -954,
+   "end": -953,
+   "years": "2 years",
+   "verdict": "evil",
+   "ref": "1 Kings 15:25–31",
+   "synchronism": "In the second year of Asa king of Judah",
+   "note": "Walked in the way of his father; Baasha killed him and all Jeroboam's house (15:27–29).",
+   "order": 2
+  },
+  {
+   "kingdom": "israel",
+   "name": "Baasha",
+   "person": 99,
+   "start": -953,
+   "end": -930,
+   "years": "24 years",
+   "verdict": "evil",
+   "ref": "1 Kings 15:32–16:7",
+   "synchronism": "In the third year of Asa king of Judah",
+   "note": "Killed Nadab; Jehu son of Hanani prophesied against him (16:1–4).",
+   "order": 3
+  },
+  {
+   "kingdom": "israel",
+   "name": "Elah",
+   "person": 442,
+   "start": -930,
+   "end": -929,
+   "years": "2 years",
+   "verdict": "evil",
+   "ref": "1 Kings 16:8–14",
+   "synchronism": "In the twenty and sixth year of Asa king of Judah",
+   "note": "Killed by Zimri while drunk in Arza's house (16:9–10).",
+   "order": 4
+  },
+  {
+   "kingdom": "israel",
+   "name": "Zimri",
+   "person": 106,
+   "start": -929,
+   "end": -929,
+   "years": "7 days",
+   "verdict": "evil",
+   "ref": "1 Kings 16:15–20",
+   "synchronism": "In the twenty and seventh year of Asa king of Judah",
+   "note": "Reigned seven days in Tirzah, then burned the palace over himself when the army besieged it (16:18).",
+   "order": 5
+  },
+  {
+   "kingdom": "israel",
+   "name": "Omri",
+   "person": 100,
+   "start": -929,
+   "end": -918,
+   "years": "12 years",
+   "verdict": "evil",
+   "ref": "1 Kings 16:21–28",
+   "synchronism": "In the thirty and first year of Asa king of Judah",
+   "note": "Contested at first by Tibni (16:21–22). Bought the hill of Samaria and built the city (16:24). Worse than all before him.",
+   "order": 6
+  },
+  {
+   "kingdom": "israel",
+   "name": "Ahab",
+   "person": 32,
+   "start": -918,
+   "end": -897,
+   "years": "22 years",
+   "verdict": "evil",
+   "ref": "1 Kings 16:29–22:40",
+   "synchronism": "In the thirty and eighth year of Asa king of Judah",
+   "note": "Married Jezebel and served Baal (16:31). Elijah and Micaiah spoke to him. Killed at Ramoth-gilead (22:34–37).",
+   "order": 7
+  },
+  {
+   "kingdom": "israel",
+   "name": "Ahaziah of Israel",
+   "person": 101,
+   "start": -898,
+   "end": -896,
+   "years": "2 years",
+   "verdict": "evil",
+   "ref": "1 Kings 22:51–53",
+   "synchronism": "In the seventeenth year of Jehoshaphat king of Judah",
+   "note": "Walked in the way of his father and mother and of Jeroboam. Reigned partly with Ahab, partly alone, and died without a son (2 Kgs 1:17).",
+   "order": 8
+  },
+  {
+   "kingdom": "israel",
+   "name": "Jehoram of Israel",
+   "person": 102,
+   "start": -896,
+   "end": -884,
+   "years": "12 years",
+   "verdict": "evil",
+   "ref": "2 Kings 3:1–27",
+   "synchronism": "In the eighteenth year of Jehoshaphat king of Judah",
+   "note": "Called Joram. Put away the image of Baal, but clung to Jeroboam's sin (3:2–3). Killed by Jehu (9:24).",
+   "order": 9
+  },
+  {
+   "kingdom": "israel",
+   "name": "Jehu",
+   "person": 103,
+   "start": -884,
+   "end": -856,
+   "years": "28 years",
+   "verdict": "mixed",
+   "ref": "2 Kings 9:1–10:36",
+   "synchronism": null,
+   "note": "Anointed to destroy Ahab's house, and did well in it (10:30); yet took no heed to walk in the law of the LORD and kept Jeroboam's calves (10:29, 31).",
+   "order": 10
+  },
+  {
+   "kingdom": "israel",
+   "name": "Jehoahaz of Israel",
+   "person": 440,
+   "start": -856,
+   "end": -840,
+   "years": "17 years",
+   "verdict": "evil",
+   "ref": "2 Kings 13:1–9",
+   "synchronism": "In the twenty and third year of Joash king of Judah",
+   "note": "Oppressed by Hazael of Syria; he sought the LORD and was given a saviour (13:3–5). Not Jehoahaz of Judah.",
+   "order": 11
+  },
+  {
+   "kingdom": "israel",
+   "name": "Jehoash of Israel",
+   "person": 441,
+   "start": -840,
+   "end": -825,
+   "years": "16 years",
+   "verdict": "evil",
+   "ref": "2 Kings 13:10–25",
+   "synchronism": "In the thirty and seventh year of Joash king of Judah",
+   "note": "Called Joash. Wept over the dying Elisha (13:14). Defeated Amaziah of Judah (14:11–14).",
+   "order": 12
+  },
+  {
+   "kingdom": "israel",
+   "name": "Jeroboam II",
+   "person": 104,
+   "start": -825,
+   "end": -784,
+   "years": "41 years",
+   "verdict": "evil",
+   "ref": "2 Kings 14:23–29",
+   "synchronism": "In the fifteenth year of Amaziah king of Judah",
+   "note": "Restored the border of Israel as Jonah had said (14:25). Amos and Hosea prophesied in his days.",
+   "order": 13
+  },
+  {
+   "kingdom": "israel",
+   "name": "Zechariah of Israel",
+   "person": 443,
+   "start": -773,
+   "end": -772,
+   "years": "6 months",
+   "verdict": "evil",
+   "ref": "2 Kings 15:8–12",
+   "synchronism": "In the thirty and eighth year of Azariah king of Judah",
+   "note": "Followed after an eleven-year gap, an interregnum on Ussher's reckoning. Shallum killed him; so fulfilling the word given to Jehu (15:12). Not the prophet Zechariah.",
+   "order": 14
+  },
+  {
+   "kingdom": "israel",
+   "name": "Shallum of Israel",
+   "person": 444,
+   "start": -772,
+   "end": -772,
+   "years": "1 month",
+   "verdict": "none",
+   "ref": "2 Kings 15:13–15",
+   "synchronism": "In the nine and thirtieth year of Uzziah king of Judah",
+   "note": "Reigned a full month in Samaria and was killed by Menahem. The text gives him no verdict. Not Shallum (Jehoahaz) of Judah.",
+   "order": 15
+  },
+  {
+   "kingdom": "israel",
+   "name": "Menahem",
+   "person": 445,
+   "start": -772,
+   "end": -761,
+   "years": "10 years",
+   "verdict": "evil",
+   "ref": "2 Kings 15:16–22",
+   "synchronism": "In the nine and thirtieth year of Azariah king of Judah",
+   "note": "Paid Pul king of Assyria a thousand talents of silver (15:19–20).",
+   "order": 16
+  },
+  {
+   "kingdom": "israel",
+   "name": "Pekahiah",
+   "person": 446,
+   "start": -761,
+   "end": -759,
+   "years": "2 years",
+   "verdict": "evil",
+   "ref": "2 Kings 15:23–26",
+   "synchronism": "In the fiftieth year of Azariah king of Judah",
+   "note": "Killed by his captain Pekah in the palace at Samaria (15:25).",
+   "order": 17
+  },
+  {
+   "kingdom": "israel",
+   "name": "Pekah",
+   "person": 447,
+   "start": -759,
+   "end": -739,
+   "years": "20 years",
+   "verdict": "evil",
+   "ref": "2 Kings 15:27–31",
+   "synchronism": "In the two and fiftieth year of Azariah king of Judah",
+   "note": "Joined Rezin of Syria in attacking Judah (16:5). Tiglath-pileser took the northern cities in his days; Hoshea killed him (15:29–30).",
+   "order": 18
+  },
+  {
+   "kingdom": "israel",
+   "name": "Hoshea",
+   "person": 105,
+   "start": -730,
+   "end": -721,
+   "years": "9 years",
+   "verdict": "evil",
+   "ref": "2 Kings 17:1–6",
+   "synchronism": "In the twelfth year of Ahaz king of Judah",
+   "note": "Israel's last king, evil though not as the kings before him (17:2). Followed nine years without a king on Ussher's reckoning. Shalmaneser took Samaria in his ninth year (17:5–6).",
+   "order": 19
+  }
+ ],
+ "prophets": [
+  {
+   "name": "Samuel",
+   "person": 18,
+   "start": -1095,
+   "end": -1060,
+   "kingdom": "both",
+   "kings": [
+    "Saul",
+    "David"
+   ],
+   "ref": "1 Samuel 9:15–17",
+   "note": "Anointed Saul (1 Sam 10:1) and later David (16:13). He judged Israel before the kings; this bar covers his work with them."
+  },
+  {
+   "name": "Nathan",
+   "person": 22,
+   "start": -1044,
+   "end": -1015,
+   "kingdom": "both",
+   "kings": [
+    "David",
+    "Solomon"
+   ],
+   "ref": "2 Samuel 7:1–17",
+   "note": "Gave David the covenant promise, rebuked him over Bathsheba (2 Sam 12) and helped secure Solomon's throne (1 Kgs 1)."
+  },
+  {
+   "name": "Gad",
+   "person": null,
+   "start": -1060,
+   "end": -1035,
+   "kingdom": "both",
+   "kings": [
+    "David"
+   ],
+   "ref": "1 Samuel 22:5",
+   "note": "David's seer. He told David to leave the stronghold (1 Sam 22:5) and brought the choice of judgments after the census (2 Sam 24:11–14). Dates are not given.",
+   "uncertain": true
+  },
+  {
+   "name": "Ahijah",
+   "person": 951,
+   "start": -985,
+   "end": -955,
+   "kingdom": "both",
+   "kings": [
+    "Solomon",
+    "Jeroboam"
+   ],
+   "ref": "1 Kings 11:29–39",
+   "note": "Tore his garment in twelve pieces to tell Jeroboam of the divided kingdom; as an old man he foretold the end of Jeroboam's house (1 Kgs 14:4–16)."
+  },
+  {
+   "name": "Shemaiah",
+   "person": 950,
+   "start": -975,
+   "end": -971,
+   "kingdom": "judah",
+   "kings": [
+    "Rehoboam"
+   ],
+   "ref": "1 Kings 12:22–24",
+   "note": "Forbade Rehoboam to fight Israel (1 Kgs 12:22–24) and explained Shishak's invasion (2 Chr 12:5–7)."
+  },
+  {
+   "name": "Elijah",
+   "person": 23,
+   "start": -918,
+   "end": -896,
+   "kingdom": "israel",
+   "kings": [
+    "Ahab",
+    "Ahaziah of Israel",
+    "Jehoram of Judah"
+   ],
+   "ref": "1 Kings 17:1",
+   "note": "Foretold the drought to Ahab and contended with the prophets of Baal at Carmel. He was taken up in a whirlwind (2 Kgs 2:11). A writing from him reached Jehoram of Judah (2 Chr 21:12–15)."
+  },
+  {
+   "name": "Micaiah",
+   "person": 961,
+   "start": -898,
+   "end": -897,
+   "kingdom": "israel",
+   "kings": [
+    "Ahab",
+    "Jehoshaphat"
+   ],
+   "ref": "1 Kings 22:8–28",
+   "note": "Alone of Ahab's prophets foretold defeat at Ramoth-gilead, and was imprisoned for it."
+  },
+  {
+   "name": "Elisha",
+   "person": 24,
+   "start": -897,
+   "end": -839,
+   "kingdom": "israel",
+   "kings": [
+    "Jehoram of Israel",
+    "Jehoshaphat",
+    "Jehu",
+    "Jehoash of Israel"
+   ],
+   "ref": "2 Kings 3:11–19",
+   "note": "Succeeded Elijah (2 Kgs 2). Advised Jehoram and Jehoshaphat against Moab, sent a prophet to anoint Jehu (9:1–3), and prophesied to Jehoash on his deathbed (13:14–19)."
+  },
+  {
+   "name": "Jonah",
+   "person": 112,
+   "start": -825,
+   "end": -784,
+   "kingdom": "israel",
+   "kings": [
+    "Jeroboam II"
+   ],
+   "ref": "2 Kings 14:25",
+   "note": "Foretold Jeroboam II's restoration of Israel's border. The dates of his mission to Nineveh are not given; this bar shows the reign the text names.",
+   "uncertain": true
+  },
+  {
+   "name": "Amos",
+   "person": 110,
+   "start": -810,
+   "end": -784,
+   "kingdom": "both",
+   "kings": [
+    "Uzziah",
+    "Jeroboam II"
+   ],
+   "ref": "Amos 1:1",
+   "note": "A herdman of Tekoa who prophesied against Israel two years before the earthquake. The span is the overlap of the two reigns the book names."
+  },
+  {
+   "name": "Hosea",
+   "person": 108,
+   "start": -790,
+   "end": -726,
+   "kingdom": "both",
+   "kings": [
+    "Uzziah",
+    "Jotham",
+    "Ahaz",
+    "Hezekiah",
+    "Jeroboam II"
+   ],
+   "ref": "Hosea 1:1",
+   "note": "Prophesied chiefly to Israel. The span runs from Jeroboam II's reign into Hezekiah's; where it ends is not stated."
+  },
+  {
+   "name": "Joel",
+   "person": 109,
+   "start": -810,
+   "end": -759,
+   "kingdom": "judah",
+   "kings": [],
+   "ref": "Joel 1:1",
+   "note": "The book names no king and no year, so its date is open; Ussher places it under Uzziah and other readers differ widely. Shown with the uncertainty marked.",
+   "uncertain": true
+  },
+  {
+   "name": "Isaiah",
+   "person": 25,
+   "start": -759,
+   "end": -713,
+   "kingdom": "judah",
+   "kings": [
+    "Uzziah",
+    "Jotham",
+    "Ahaz",
+    "Hezekiah"
+   ],
+   "ref": "Isaiah 1:1",
+   "note": "Saw the LORD in the year Uzziah died (Isa 6:1); met Ahaz (Isa 7) and Hezekiah (2 Kgs 19:2; 20:1). His last dated act is Sennacherib's invasion; Isa 37:38 records that king's death, later still."
+  },
+  {
+   "name": "Micah",
+   "person": 113,
+   "start": -759,
+   "end": -698,
+   "kingdom": "judah",
+   "kings": [
+    "Jotham",
+    "Ahaz",
+    "Hezekiah"
+   ],
+   "ref": "Micah 1:1",
+   "note": "The Morasthite whose words of judgment on Samaria and Jerusalem Jeremiah's elders recalled under Hezekiah (Jer 26:18)."
+  },
+  {
+   "name": "Obadiah",
+   "person": 111,
+   "start": -588,
+   "end": -580,
+   "kingdom": "judah",
+   "kings": [],
+   "ref": "Obadiah 1:1",
+   "note": "Against Edom for its part in Jerusalem's fall (Obad 11–14). The book names no king; the date follows from the event it describes.",
+   "uncertain": true
+  },
+  {
+   "name": "Nahum",
+   "person": 114,
+   "start": -665,
+   "end": -655,
+   "kingdom": "judah",
+   "kings": [],
+   "ref": "Nahum 1:1",
+   "note": "Foretold Nineveh's fall after No-amon's (Nah 3:8). The book names no king; the year here is an estimate between those two events.",
+   "uncertain": true
+  },
+  {
+   "name": "Zephaniah",
+   "person": 116,
+   "start": -641,
+   "end": -610,
+   "kingdom": "judah",
+   "kings": [
+    "Josiah"
+   ],
+   "ref": "Zephaniah 1:1",
+   "note": "The word of the LORD came to him in the days of Josiah; the exact years within that reign are not given."
+  },
+  {
+   "name": "Huldah",
+   "person": 222,
+   "start": -624,
+   "end": -623,
+   "kingdom": "judah",
+   "kings": [
+    "Josiah"
+   ],
+   "ref": "2 Kings 22:14–20",
+   "note": "The prophetess consulted in Josiah's eighteenth year about the book of the law."
+  },
+  {
+   "name": "Jeremiah",
+   "person": 26,
+   "start": -629,
+   "end": -588,
+   "kingdom": "judah",
+   "kings": [
+    "Josiah",
+    "Jehoahaz of Judah",
+    "Jehoiakim",
+    "Jehoiachin",
+    "Zedekiah"
+   ],
+   "ref": "Jeremiah 1:1–3",
+   "note": "Called in Josiah's thirteenth year and prophesied to the carrying away of Jerusalem in Zedekiah's eleventh. He spoke of Shallum (Jehoahaz) in Jer 22:11 and of Coniah (Jehoiachin) in 22:24."
+  },
+  {
+   "name": "Habakkuk",
+   "person": 115,
+   "start": -610,
+   "end": -600,
+   "kingdom": "judah",
+   "kings": [],
+   "ref": "Habakkuk 1:1",
+   "note": "Foresaw the rise of the Chaldeans (Hab 1:6). The book names no king; the years are an estimate from its content.",
+   "uncertain": true
+  },
+  {
+   "name": "Ezekiel",
+   "person": 27,
+   "start": -595,
+   "end": -573,
+   "kingdom": "judah",
+   "kings": [
+    "Jehoiachin",
+    "Zedekiah"
+   ],
+   "ref": "Ezekiel 1:1–3",
+   "note": "Carried to Babylon with Jehoiachin; called in the fifth year of that captivity (Ezek 1:2). He spoke of Zedekiah's rebellion (Ezek 17:12–21). His last dated word is the twenty-seventh year (29:17)."
+  },
+  {
+   "name": "Daniel",
+   "person": 28,
+   "start": -607,
+   "end": -570,
+   "kingdom": "judah",
+   "kings": [
+    "Jehoiakim"
+   ],
+   "ref": "Daniel 1:1–6",
+   "note": "Taken to Babylon in Jehoiakim's reign (Dan 1:1). He served in Babylon and Persia until at least the third year of Cyrus (10:1), about 535 BC, so this bar runs off the chart."
+  }
+ ]
+}

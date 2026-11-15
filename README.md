@@ -12,8 +12,12 @@ frontend with no build step.
 - **Did they meet?** Pick two people and see whether their lifetimes overlapped; a gallery of curated pairs.
 - **Family.** The line of descent from Adam to Jesus (following Matthew or Luke where the data has both) and a family tree
   for any person.
-- **Map.** 178 places and 12 journeys on a Leaflet map, from Genesis to Peter, each played stop by stop with its passage.
+- **Map.** 208 places and 22 journeys on a Leaflet map, from Genesis to Peter, each played stop by stop with its passage.
 - **Read.** The 66 books from local text, with links from verses back to people and events.
+- **Study.** Pick a verse and press Study for its cross-references, Old Testament quotations and fulfilled prophecy,
+  parallel accounts and the Hebrew or Greek words behind it. Also: search the words of Scripture offline, parallel
+  passages side by side (a Gospel harmony; Samuel–Kings with Chronicles), a 365-day reading plan in story order, a chart
+  of the kings of Israel and Judah with their prophets, and Strong's word studies.
 - **Search.** A command palette (press `/` or Cmd/Ctrl-K) for people, events, places, books, eras, scripture references
   ("john 3:16") and name pairs ("noah and abraham").
 - **Detail sheet.** Dates with confidence and notes, relationships, places and scripture for any person or event.

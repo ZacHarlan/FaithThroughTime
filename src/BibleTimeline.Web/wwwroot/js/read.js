@@ -2,7 +2,7 @@
 // chapter page, and a rail that leads from the text back into history.
 //
 //   #/read                      the library
-//   #/read/<book>[/<chapter>]   a chapter (?v=3-7 softly marks verses)
+//   #/read/<book>[/<chapter>]   a chapter (?v=3-7 softly marks verses; ?study=16 opens the verse study panel)
 const Read = (() => {
     const { h, icon } = UI;
     const LAST_KEY = 'ftt-read-last';
@@ -171,7 +171,9 @@ const Read = (() => {
                 h('p', { class: 'lede' }, 'Every passage on the timeline, in the order it was written down. Open a chapter and see who and what it is about.'),
                 h('div', { class: 'read-search' }, icon('search'), field, results)),
             last ? continueCard(last) : null,
+            studyLink(),
             ['OT', 'NT'].map(testamentSection));
+        Study.close({ silent: true });
         root.replaceChildren(page);
         root.scrollTop = 0;
     }
@@ -183,6 +185,15 @@ const Read = (() => {
                 h('span', { class: 'eyebrow' }, 'Continue reading'),
                 h('span', { class: 'read-continue-title display' }, `${book.name} ${last.chapter}`)),
             icon('arrow-right'));
+    }
+
+    // A quiet way into the study tools (#/study).
+    function studyLink() {
+        return h('a', { class: 'study-readlink rise', href: '#/study' },
+            icon('scroll', 'icon-sm'),
+            h('span', { class: 'study-readlink-title' }, 'Study tools'),
+            h('span', { class: 'study-readlink-sub' }, 'Cross-references, word study, a reading plan and more'),
+            icon('arrow-right', 'icon-sm'));
     }
 
     function testamentSection(testament) {
@@ -270,6 +281,7 @@ const Read = (() => {
         store.set(LAST_KEY, JSON.stringify({ slug: book.slug, chapter }));
         root.replaceChildren(chapterPage(loaded, wanted));
         highlightVerses(v);
+        Study.follow(Router.current, current);
     }
 
     function chapterPage({ version, verses, fellBack }, wanted) {
@@ -455,6 +467,11 @@ const Read = (() => {
                 })
             }, icon('share', 'icon-sm'), 'Share'),
             h('button', {
+                type: 'button', class: 'btn btn-sm read-study', onclick: () => Study.open({
+                    book: current.book, chapter: current.chapter, verse: Math.min(...selection), version: current.version
+                })
+            }, icon('book', 'icon-sm'), 'Study'),
+            h('button', {
                 type: 'button', class: 'icon-btn', 'aria-label': 'Clear selection',
                 onclick: () => { selection = new Set(); syncSelection(); }
             }, icon('close')));
@@ -495,7 +512,7 @@ const Read = (() => {
                 chipGroup('People', [...people].sort(byImportance)),
                 chipGroup('Events', [...events].sort(byImportance)),
                 whenBlock(book, events)
-            ]));
+            ], Study.chapterSections({ book, chapter })));
         // Open on wide screens, where it is a rail; folded on phones.
         box.open = !UI.isMobile();
         return box;
@@ -558,6 +575,7 @@ const Read = (() => {
             offline: ['Offline', 'Scripture text is not available', 'The Bible files could not be reached. Check your connection and try again.']
         }[kind];
         current = null;
+        Study.close({ silent: true });
         const actions = [h('a', { class: 'btn btn-primary', href: '#/read' }, 'Back to the library')];
         if (kind === 'chapter') actions.unshift(h('a', { class: 'btn', href: readHref(book.slug, 1) }, `Start ${book.name}`));
         if (kind === 'failure' || kind === 'offline') {
@@ -604,7 +622,7 @@ const Read = (() => {
         const book = Store.book(slug);
         if (!book) { renderState(null, 'unknown'); return; }
         if (chapterText == null) {
-            Router.replace(readHref(book.slug, 1, route.query.v));
+            Router.replace(Router.build('read', [book.slug, 1], { v: route.query.v, study: route.query.study }));
             return renderChapter(book, 1);
         }
         const chapter = Number(chapterText);
@@ -615,11 +633,14 @@ const Read = (() => {
         // Closing a sheet opened over the reader shows this route again: keep the page,
         // its scroll position and the chosen verses rather than loading it afresh.
         if (current && current.book === book && current.chapter === chapter
-            && current.wanted === activeVersion() && current.v === route.query.v) return;
+            && current.wanted === activeVersion() && current.v === route.query.v) {
+            Study.follow(route, current);
+            return;
+        }
         return renderChapter(book, chapter);
     }
 
-    function hide() { closePicker?.(); }
+    function hide() { closePicker?.(); Study.close({ silent: true }); }
 
     function title(route) {
         const book = route.parts[0] && Store.book(route.parts[0]);

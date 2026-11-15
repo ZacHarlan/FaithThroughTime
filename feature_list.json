@@ -284,9 +284,86 @@
   {
     "id": "e2e-tests",
     "category": "testing",
-    "description": "Playwright end-to-end suite (60 tests) covers every view, the detail sheet, search, share, the tour, phone layout and an accessibility smoke check",
+    "description": "Playwright end-to-end suite (113 tests) covers every view, the detail sheet, search, share, the tour, the study tools, phone layout and an accessibility smoke check",
     "verification": [
       "Start the app (bash init.sh)",
+      "dotnet test tests/BibleTimeline.E2E passes"
+    ],
+    "passes": true
+  },
+  {
+    "id": "study-panel",
+    "category": "study",
+    "description": "Verse study panel: from the reader's selection bar (or ?study=<verse>), cross-references, quotations and prophecy, parallel accounts and original words for one verse",
+    "verification": [
+      "Open #/read/john/3?study=16",
+      "Cross-references list Romans 5:8 with text; Escape closes; previous/next verse move",
+      "dotnet test tests/BibleTimeline.E2E passes"
+    ],
+    "passes": true
+  },
+  {
+    "id": "find",
+    "category": "study",
+    "description": "Search the words of Scripture offline in any translation, with phrases, prefixes and scope (#/find)",
+    "verification": [
+      "Open #/find?q=%22the%20Lord%20is%20my%20shepherd%22",
+      "Psalms 23:1 is found and links to the reader",
+      "dotnet test tests/BibleTimeline.E2E passes"
+    ],
+    "passes": true
+  },
+  {
+    "id": "parallels",
+    "category": "study",
+    "description": "Parallel passages side by side: a harmony of the Gospels, Samuel/Kings with Chronicles, and other pairs (#/parallel)",
+    "verification": [
+      "Open #/parallel/feeding-the-five-thousand",
+      "Four columns of text appear",
+      "dotnet test tests/BibleTimeline.E2E passes"
+    ],
+    "passes": true
+  },
+  {
+    "id": "prophecy",
+    "category": "study",
+    "description": "Old Testament quotations in the New, and prophecies with their recorded fulfilment (#/prophecy)",
+    "verification": [
+      "Open #/prophecy/born-in-bethlehem",
+      "Micah 5:2 and Matthew 2 appear side by side",
+      "dotnet test tests/BibleTimeline.E2E passes"
+    ],
+    "passes": true
+  },
+  {
+    "id": "reading-plan",
+    "category": "study",
+    "description": "Chronological reading plan: 365 days, every chapter once, linked to the reader and the timeline (#/plan)",
+    "verification": [
+      "Open #/plan/1",
+      "Genesis 1-2 links to the reader",
+      "dotnet test tests/BibleTimeline.E2E passes"
+    ],
+    "passes": true
+  },
+  {
+    "id": "kings-chart",
+    "category": "study",
+    "description": "Kings of Israel and Judah and the prophets who spoke to them, as a chart and a list (#/kings)",
+    "verification": [
+      "Open #/kings?sel=hezekiah",
+      "Hezekiah's card lists Isaiah",
+      "dotnet test tests/BibleTimeline.E2E passes"
+    ],
+    "passes": true
+  },
+  {
+    "id": "word-study",
+    "category": "study",
+    "description": "Word study with the KJV's Strong's numbers: lexicon entry and every verse that uses the word (#/word)",
+    "verification": [
+      "Open #/word/H7225",
+      "The Hebrew lemma shows and Genesis 1:1 is in the verse list",
       "dotnet test tests/BibleTimeline.E2E passes"
     ],
     "passes": true

@@ -1,0 +1,90 @@
+/* plan.css — the reading plan: one day at a time, and the year at a glance. Tokens come from base.css. */
+
+.plan-page { max-width: 980px; }
+
+/* ── The day ────────────────────────────────────────────────────────── */
+.plan-head { display: grid; gap: var(--s3); max-width: 46rem; }
+.plan-title {
+    font-size: clamp(2.1rem, 1.3rem + 3.4vw, 3.8rem);
+    font-weight: 340; line-height: 1.04; letter-spacing: -.026em; text-wrap: balance;
+}
+.plan-date { font-size: var(--fs-sm); }
+.plan-actions { display: flex; flex-wrap: wrap; gap: var(--s3); margin-top: var(--s2); }
+
+.plan-body { display: grid; gap: var(--s6); margin-top: var(--s6); }
+.plan-sub {
+    margin-bottom: var(--s3);
+    font-family: var(--font-ui); font-size: var(--fs-xs); font-weight: 600;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--text-dim);
+}
+.plan-passages { display: grid; gap: var(--s3); }
+.plan-passage { display: grid; gap: var(--s3); padding: var(--s4) var(--s5); }
+.plan-passage-name {
+    display: inline-flex; align-items: center; gap: var(--s2); width: fit-content; min-height: 44px;
+    font-family: var(--font-display); font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2rem); line-height: 1.1;
+    border-bottom: 1px solid transparent; transition: border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+}
+a.plan-passage-name:hover { color: var(--gold-bright); border-color: var(--gold); }
+.plan-passage-name .icon { color: var(--gold); }
+.plan-chapters { display: flex; flex-wrap: wrap; gap: var(--s2); }
+.plan-chapters .chip { min-width: 44px; min-height: 44px; justify-content: center; font-variant-numeric: tabular-nums; }
+.plan-time { max-width: 24rem; }
+
+/* ── Previous and next ──────────────────────────────────────────────── */
+.plan-steps { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s4); margin-top: var(--s7); }
+.plan-step {
+    display: flex; align-items: center; gap: var(--s3); min-height: 72px; min-width: 0; padding: var(--s3) var(--s4);
+    border: 1px solid var(--line); border-radius: var(--r-md); background: var(--bg-1);
+    transition: border-color var(--t-med) var(--ease), background var(--t-med) var(--ease);
+}
+.plan-step:hover { border-color: var(--gold); background: var(--bg-2); }
+.plan-step.is-next { justify-content: flex-end; text-align: right; grid-column: 2; }
+.plan-step.is-empty { border: 0; background: none; }
+.plan-step .icon { color: var(--gold); flex: none; }
+.plan-step-text { display: grid; gap: 2px; min-width: 0; }
+.plan-step-label { font-size: var(--fs-xs); letter-spacing: .12em; text-transform: uppercase; color: var(--text-faint); font-weight: 600; }
+.plan-step-day { font-weight: 600; }
+.plan-step-title { font-size: var(--fs-sm); color: var(--text-dim); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.plan-ornament { margin: var(--s7) 0 var(--s6); }
+
+/* ── The year ───────────────────────────────────────────────────────── */
+.plan-year-hint { margin: var(--s2) 0 var(--s5); font-size: var(--fs-sm); }
+.plan-months { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr)); gap: var(--s5) var(--s6); }
+.plan-month-name {
+    margin-bottom: var(--s2);
+    font-family: var(--font-ui); font-size: var(--fs-xs); font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--gold);
+}
+.plan-cells { display: grid; grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); gap: 4px; }
+.plan-cell {
+    display: grid; place-items: center; min-height: 40px;
+    border: 1px solid var(--line); border-radius: var(--r-sm);
+    font-size: var(--fs-sm); font-variant-numeric: tabular-nums; color: var(--text-dim);
+    transition: background var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+}
+.plan-cell:hover { background: var(--bg-3); border-color: var(--line-strong); color: var(--text); }
+.plan-cell.is-today { border-color: var(--gold); color: var(--text); }
+.plan-cell.is-current { background: var(--gold); border-color: var(--gold); color: var(--on-gold); font-weight: 700; }
+
+/* ── About the order ────────────────────────────────────────────────── */
+.plan-order { margin-top: var(--s7); max-width: 42rem; }
+.plan-order h2, .plan-year h2 { font-size: var(--fs-h2); }
+.plan-order-short { margin-top: var(--s3); font-size: 1.05rem; line-height: 1.65; color: var(--text-dim); text-wrap: pretty; }
+.plan-order-more { margin-top: var(--s4); }
+.plan-order-more summary {
+    display: inline-flex; align-items: center; min-height: 44px; cursor: pointer;
+    font-size: var(--fs-sm); font-weight: 600; color: var(--gold-bright);
+}
+.plan-order-more p { margin-top: var(--s2); line-height: 1.7; color: var(--text-dim); text-wrap: pretty; }
+
+/* ── Not found, offline ─────────────────────────────────────────────── */
+.plan-state { display: grid; gap: var(--s4); justify-items: start; max-width: 36rem; padding-top: var(--s7); }
+
+@media (max-width: 640px) {
+    .plan-page { padding-top: var(--s6); }
+    .plan-steps { grid-template-columns: 1fr; }
+    .plan-step.is-next { grid-column: 1; }
+    .plan-step.is-empty { display: none; }
+    .plan-passage { padding: var(--s4); }
+    .plan-cells { grid-template-columns: repeat(auto-fill, minmax(44px, 1fr)); }
+    .plan-cell { min-height: 44px; }
+}

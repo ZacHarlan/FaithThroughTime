@@ -1,0 +1,83 @@
+/* words.css — word study (#/word) and the "Original words" study section. Tokens from base.css. */
+
+.words-page { max-width: 860px; }
+.words-crumbs { display: flex; gap: var(--s2); font-size: var(--fs-sm); color: var(--text-faint); margin-bottom: var(--s5); }
+.words-crumbs a:hover { color: var(--gold-bright); }
+
+/* ── Entry ──────────────────────────────────────────────────────────── */
+.words-head { display: grid; gap: var(--s3); justify-items: start; margin-bottom: var(--s6); }
+.words-title { display: grid; gap: var(--s2); font-weight: 400; }
+.words-lemma, .words-lemma-big, .words-starter-lemma, .words-gloss-lemma {
+    font-family: 'SBL Hebrew', 'SBL Greek', 'Ezra SIL', 'Gentium Plus', 'Cardo', 'Times New Roman', 'Noto Serif Hebrew', 'Noto Serif', serif;
+    font-feature-settings: 'kern', 'liga';
+}
+.words-lemma-big { font-size: clamp(3.4rem, 2rem + 8vw, 6rem); line-height: 1.15; color: var(--gold-bright); }
+.words-translit { font-family: var(--font-display); font-style: italic; font-size: var(--fs-h2); color: var(--text-dim); }
+.words-step { display: flex; gap: var(--s2); margin: var(--s2) 0 0 calc(var(--s3) * -1); }
+
+.words-entry { display: grid; gap: var(--s4); margin-bottom: var(--s7); }
+.words-field { display: grid; grid-template-columns: 11rem minmax(0, 1fr); gap: var(--s4); align-items: baseline; }
+.words-field dt { font-size: var(--fs-xs); font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--text-faint); }
+.words-field dd { margin: 0; text-wrap: pretty; }
+.words-xlink { color: var(--gold-bright); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--line-strong); }
+.words-xlink:hover { text-decoration-color: var(--gold); }
+
+/* ── Verses ─────────────────────────────────────────────────────────── */
+.words-uses h2 { margin-bottom: var(--s2); }
+.words-note { margin-bottom: var(--s5); font-size: var(--fs-sm); }
+.words-verses { list-style: none; padding: 0; margin: 0; }
+.words-verse { padding: var(--s4) 0; border-bottom: 1px solid var(--line); display: grid; gap: var(--s1); }
+.words-ref { font-size: var(--fs-sm); font-weight: 600; color: var(--gold); min-height: 24px; justify-self: start; }
+.words-ref:hover, .words-ref:focus-visible { color: var(--gold-bright); text-decoration: underline; }
+.words-hit { background: var(--gold-soft); color: var(--gold-bright); box-shadow: 0 0 0 2px var(--gold-soft); border-radius: 3px; padding: 0 1px; }
+.words-status { margin-top: var(--s4); font-size: var(--fs-sm); }
+.words-more { margin-top: var(--s3); }
+
+.words-state { display: grid; gap: var(--s4); justify-items: start; max-width: 40rem; }
+
+/* ── Introduction and lookup ────────────────────────────────────────── */
+.words-intro { display: grid; gap: var(--s4); max-width: 46rem; margin-bottom: var(--s7); }
+.words-intro h1 { font-size: clamp(2.6rem, 1.6rem + 4vw, 4.6rem); line-height: 1; letter-spacing: -.03em; }
+.words-lookup { display: grid; gap: var(--s3); margin-top: var(--s3); max-width: 34rem; }
+.words-kinds { display: inline-flex; justify-self: start; padding: 3px; border: 1px solid var(--line-strong); border-radius: var(--r-pill); background: var(--bg-1); }
+.words-kind {
+    min-height: 38px; padding: 0 var(--s5); border-radius: var(--r-pill);
+    font-size: var(--fs-sm); font-weight: 600; color: var(--text-dim);
+}
+.words-kind[aria-pressed='true'] { background: var(--gold); color: var(--on-gold); }
+.words-lookup-row { display: flex; gap: var(--s2); }
+.words-input { border-radius: var(--r-pill); padding-left: var(--s5); }
+.words-hint { font-size: var(--fs-sm); }
+.words-msg { min-height: 1.4em; font-size: var(--fs-sm); color: var(--fam-crimson); }
+
+.words-starters { list-style: none; padding: 0; margin: var(--s4) 0 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 12.5rem), 1fr)); gap: var(--s3); }
+.words-starter { display: grid; gap: var(--s1); height: 100%; padding: var(--s4); }
+.words-starter-lemma { font-size: 2.4rem; line-height: 1.2; color: var(--gold-bright); min-height: 1.2em; }
+.words-starter-id { font-size: var(--fs-xs); font-weight: 600; letter-spacing: .14em; color: var(--text-faint); }
+
+/* ── Study section ──────────────────────────────────────────────────── */
+.words-study { display: grid; gap: var(--s3); }
+.words-study-verse { line-height: 2.1; }
+.words-tag {
+    display: inline; padding: 2px 3px; margin: 0 -1px; border-radius: 4px; font: inherit; color: inherit; text-align: inherit;
+    border-bottom: 1px dotted var(--gold); cursor: pointer;
+}
+.words-tag:hover, .words-tag:focus-visible { background: var(--gold-soft); color: var(--gold-bright); }
+.words-tag[aria-expanded='true'] { background: var(--gold); color: var(--on-gold); border-bottom-color: transparent; }
+.words-detail:empty { display: none; }
+.words-detail { display: grid; gap: var(--s3); padding: var(--s4); background: var(--bg-2); border: 1px solid var(--line-strong); border-radius: var(--r-md); }
+.words-gloss { display: grid; gap: var(--s2); }
+.words-gloss-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--s3); }
+.words-gloss-lemma { font-size: 1.9rem; line-height: 1.2; color: var(--gold-bright); }
+.words-gloss-translit { font-family: var(--font-display); font-style: italic; color: var(--text-dim); }
+.words-gloss-link { display: inline-flex; align-items: center; gap: var(--s1); justify-self: start; min-height: 32px; font-size: var(--fs-sm); font-weight: 600; color: var(--gold); }
+.words-gloss-link:hover { color: var(--gold-bright); }
+.words-study-note { font-size: var(--fs-sm); }
+
+@media (max-width: 760px) {
+    .words-field { grid-template-columns: minmax(0, 1fr); gap: var(--s1); }
+    .words-lookup-row { flex-direction: column; }
+    .words-lookup-row .btn { width: 100%; }
+    .words-kinds { width: 100%; }
+    .words-kind { flex: 1; }
+}

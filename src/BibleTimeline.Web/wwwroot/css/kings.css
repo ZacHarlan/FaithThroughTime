@@ -1,0 +1,170 @@
+/* kings.css — the kings and prophets chart and table. Tokens come from base.css. */
+
+.kings {
+    --v-good: var(--fam-green);
+    --v-evil: var(--fam-crimson);
+    --v-mixed: var(--fam-amber);
+    --v-none: var(--fam-slate);
+}
+.kings-page { max-width: 1280px; }
+.kings-head { display: grid; gap: var(--s4); max-width: 46rem; margin-bottom: var(--s6); }
+.kings-head h1 { font-size: clamp(2.4rem, 1.5rem + 3.6vw, 4.2rem); line-height: 1; letter-spacing: -.03em; }
+
+/* ── Toggle and legend ──────────────────────────────────────────────── */
+.kings-bar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s4) var(--s6); margin-bottom: var(--s4); }
+.kings-toggle { display: inline-flex; gap: var(--s2); }
+.kings-toggle .chip { min-height: 44px; padding: 0 var(--s4); cursor: pointer; }
+.kings-legend { display: flex; flex-wrap: wrap; gap: var(--s2) var(--s4); list-style: none; padding: 0; margin: 0; font-size: var(--fs-sm); color: var(--text-dim); }
+.kings-key { display: inline-flex; align-items: center; gap: var(--s2); }
+.kings-swatch {
+    display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 5px;
+    border: 1.5px solid var(--c); background: color-mix(in srgb, var(--c) 24%, var(--bg-1)); color: var(--text); font-size: 12px; line-height: 1;
+}
+.kings-key.is-good { --c: var(--v-good); }
+.kings-key.is-evil { --c: var(--v-evil); }
+.kings-key.is-evil .kings-swatch { background-image: repeating-linear-gradient(135deg, color-mix(in srgb, var(--c) 45%, transparent) 0 2px, transparent 2px 6px); }
+.kings-key.is-mixed { --c: var(--v-mixed); }
+.kings-key.is-mixed .kings-swatch { background-image: linear-gradient(90deg, color-mix(in srgb, var(--c) 45%, transparent) 50%, transparent 50%); }
+.kings-key.is-none { --c: var(--v-none); }
+.kings-key.is-none .kings-swatch { border-style: dashed; }
+.kings-swatch.is-prophet { --c: var(--fam-violet); border-radius: 11px; width: 30px; height: 16px; }
+.kings-swatch.is-prophet.is-uncertain { border-style: dashed; }
+
+/* ── Chart ──────────────────────────────────────────────────────────── */
+.kings-chartbox[hidden], .kings-cardbox[hidden], .kings-listbox[hidden] { display: none; }
+.kings-chart {
+    display: flex; background: var(--bg-1); border: 1px solid var(--line); border-radius: var(--r-lg); overflow: hidden;
+}
+.kings-gutter { position: relative; flex: none; width: 30px; border-right: 1px solid var(--line); background: var(--bg-1); z-index: 2; }
+.kings-gutter-label {
+    position: absolute; left: 0; width: 100%; display: flex; align-items: center; justify-content: center;
+    writing-mode: vertical-rl; transform: rotate(180deg); font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--text-dim); overflow: hidden;
+}
+.kings-scroll { flex: 1; min-width: 0; overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain; scrollbar-color: var(--line-strong) transparent; }
+.kings-scroll:focus-visible { outline-offset: -2px; }
+.kings-plot { position: relative; }
+
+.kings-grid { position: absolute; width: 1px; background: var(--line); pointer-events: none; }
+.kings-grid.is-major { background: var(--line-strong); }
+.kings-tick { position: absolute; top: 6px; transform: translateX(4px); font-size: 11px; color: var(--text-faint); pointer-events: none; }
+.kings-tick.is-major { color: var(--text-dim); }
+.kings-lane { position: absolute; left: 0; right: 0; background: color-mix(in srgb, var(--bg-2) 55%, transparent); border-block: 1px solid var(--line); pointer-events: none; }
+.kings-lane.is-prophets { background: color-mix(in srgb, var(--fam-violet) 7%, transparent); }
+
+/* Events */
+.kings-event-line { position: absolute; width: 0; border-left: 1.5px dashed var(--gold); opacity: .7; pointer-events: none; z-index: 1; }
+.kings-event {
+    position: absolute; z-index: 4; display: inline-flex; align-items: center; gap: 5px; white-space: nowrap;
+    min-height: 20px; padding: 0 7px; border-radius: var(--r-pill); font-size: 12px; line-height: 20px;
+    background: var(--bg-1); border: 1px solid var(--gold); color: var(--text);
+}
+.kings-event.is-right { transform: translateX(4px); }
+.kings-event.is-left { transform: translateX(calc(-100% - 4px)); }
+a.kings-event:hover { background: var(--gold-soft); }
+.kings-event .kings-mark { color: var(--gold); font-size: 9px; }
+
+/* Reigns */
+.kings-king {
+    position: absolute; z-index: 2; --c: var(--v-none);
+    display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px 3px; overflow: hidden;
+    border: 1.5px solid var(--c); border-radius: 7px; text-align: center; color: var(--text);
+    background: color-mix(in srgb, var(--c) 22%, var(--bg-1));
+    transition: background var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease), opacity var(--t-fast) var(--ease);
+}
+.kings-king.is-good { --c: var(--v-good); }
+.kings-king.is-evil {
+    --c: var(--v-evil);
+    background-image: repeating-linear-gradient(135deg, color-mix(in srgb, var(--c) 34%, transparent) 0 2px, transparent 2px 7px);
+}
+.kings-king.is-mixed {
+    --c: var(--v-mixed);
+    background-image: linear-gradient(180deg, color-mix(in srgb, var(--c) 36%, transparent) 50%, transparent 50%);
+}
+.kings-king.is-none { --c: var(--v-none); border-style: dashed; }
+.kings-king.is-united { justify-content: flex-start; padding-top: 14px; z-index: 1; }
+.kings-king:hover { background-color: color-mix(in srgb, var(--c) 34%, var(--bg-1)); }
+.kings-king .kings-mark { font-size: 13px; line-height: 1; color: var(--c); font-weight: 700; flex: none; }
+.kings-king-name { font-size: var(--fs-sm); font-weight: 600; line-height: 1.15; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.kings-king-years { font-size: 11px; color: var(--text-dim); white-space: nowrap; }
+.kings-king.is-narrow { padding: 6px 0; }
+.kings-king.is-narrow .kings-king-name { writing-mode: vertical-rl; font-size: 11px; font-weight: 600; max-width: none; max-height: calc(100% - 22px); line-height: 1; }
+.kings-king.is-sel { outline: 2px solid var(--gold); outline-offset: 1px; z-index: 3; box-shadow: var(--glow); }
+.kings-king.is-rel { box-shadow: 0 0 0 2px var(--fam-violet); z-index: 3; }
+.kings-chartbox.has-sel .kings-king:not(.is-sel):not(.is-rel),
+.kings-chartbox.has-sel .kings-prophet:not(.is-sel):not(.is-rel) { opacity: .5; }
+
+/* Prophets */
+.kings-prophet {
+    position: absolute; z-index: 3; display: flex; align-items: center; gap: 4px; padding: 0 8px; min-width: 10px;
+    border: 1.5px solid var(--fam-violet); border-radius: 12px; font-size: 12px; font-weight: 600; color: var(--text);
+    background: color-mix(in srgb, var(--fam-violet) 26%, var(--bg-1)); white-space: nowrap;
+    transition: background var(--t-fast) var(--ease), opacity var(--t-fast) var(--ease);
+}
+.kings-prophet:hover { background: color-mix(in srgb, var(--fam-violet) 40%, var(--bg-1)); }
+.kings-prophet.is-uncertain { border-style: dashed; background: color-mix(in srgb, var(--fam-violet) 12%, var(--bg-1)); }
+.kings-prophet .kings-mark { font-size: 12px; color: var(--fam-violet); font-weight: 700; }
+.kings-prophet-name { overflow: hidden; text-overflow: ellipsis; }
+.kings-prophet.is-short { padding: 0; overflow: visible; }
+.kings-prophet.is-short .kings-prophet-name {
+    position: absolute; left: calc(100% + 5px); top: 50%; transform: translateY(-50%); overflow: visible; color: var(--text);
+}
+.kings-prophet.is-short .kings-mark { display: none; }
+.kings-prophet.is-clipped { border-top-right-radius: 4px; border-bottom-right-radius: 4px; }
+.kings-prophet.is-sel { outline: 2px solid var(--gold); outline-offset: 1px; z-index: 4; box-shadow: var(--glow); }
+.kings-prophet.is-rel { box-shadow: 0 0 0 2px var(--gold); z-index: 4; }
+
+.kings-king:focus-visible, .kings-prophet:focus-visible { outline: 3px solid var(--gold-bright); outline-offset: 2px; z-index: 5; }
+
+/* ── Card ───────────────────────────────────────────────────────────── */
+.kings-cardbox { margin-top: var(--s5); min-height: 120px; }
+.kings-hint { color: var(--text-dim); padding: var(--s5); border: 1px dashed var(--line-strong); border-radius: var(--r-lg); }
+.kings-card { display: grid; gap: var(--s4); }
+.kings-card-head { display: grid; gap: var(--s2); }
+.kings-card h2 { font-size: var(--fs-h2); }
+.kings-verdict { display: inline-flex; align-items: baseline; flex-wrap: wrap; gap: var(--s2); margin: 0; color: var(--text-dim); }
+.kings-verdict .kings-mark { color: var(--c); font-weight: 700; }
+.kings-verdict strong { color: var(--text); }
+.kings-verdict.is-good { --c: var(--v-good); }
+.kings-verdict.is-evil { --c: var(--v-evil); }
+.kings-verdict.is-mixed { --c: var(--v-mixed); }
+.kings-verdict.is-none { --c: var(--v-none); }
+.kings-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--s3) var(--s5); margin: 0; }
+.kings-fact dt { font-size: var(--fs-xs); letter-spacing: .08em; text-transform: uppercase; color: var(--text-faint); }
+.kings-fact dd { margin: 2px 0 0; }
+.kings-note { margin: 0; color: var(--text-dim); max-width: 64ch; }
+.kings-related h3 { font-size: var(--fs-h3); margin-bottom: var(--s2); }
+.kings-none { margin: 0; color: var(--text-dim); font-size: var(--fs-sm); }
+.kings-chip { cursor: pointer; min-height: 40px; }
+.kings-links { display: flex; flex-wrap: wrap; gap: var(--s3); }
+
+/* ── List ───────────────────────────────────────────────────────────── */
+.kings-list { display: grid; gap: var(--s6); }
+.kings-list-section h2 { font-size: var(--fs-h2); margin-bottom: var(--s3); }
+.kings-table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--r-md); background: var(--bg-1); }
+.kings-table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); min-width: 760px; }
+.kings-table th, .kings-table td { padding: var(--s3); text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); }
+.kings-table thead th { font-size: var(--fs-xs); letter-spacing: .08em; text-transform: uppercase; color: var(--text-faint); white-space: nowrap; }
+.kings-table tbody th { font-weight: 600; white-space: nowrap; }
+.kings-table tbody tr:last-child > * { border-bottom: 0; }
+.kings-table .num { color: var(--text-faint); }
+.kings-table a { color: var(--gold-bright); }
+.kings-table .year { white-space: nowrap; }
+.kings-link { color: var(--gold-bright); text-decoration: underline; text-underline-offset: 3px; padding: 6px 0; min-height: 32px; }
+.kings-table .kings-verdict { white-space: nowrap; color: var(--text); }
+.kings-foot { margin-top: var(--s6); color: var(--text-dim); font-size: var(--fs-sm); max-width: 64ch; }
+.kings-foot a { color: var(--gold-bright); }
+
+/* ── Phone ──────────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+    .kings-bar { gap: var(--s3); }
+    .kings-toggle { width: 100%; }
+    .kings-toggle .chip { flex: 1; justify-content: center; }
+    .kings-gutter { width: 24px; }
+    .kings-chart { border-radius: var(--r-md); margin-inline: calc(var(--gutter) * -1 + 8px); }
+    .kings-card { padding: var(--s4); }
+    .kings-links .btn { flex: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .kings-king, .kings-prophet { transition: none; }
+}

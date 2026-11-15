@@ -46,6 +46,13 @@
     <link rel="stylesheet" href="css/search.css">
     <link rel="stylesheet" href="css/share.css">
     <link rel="stylesheet" href="css/about.css">
+    <link rel="stylesheet" href="css/study.css">
+    <link rel="stylesheet" href="css/find.css">
+    <link rel="stylesheet" href="css/plan.css">
+    <link rel="stylesheet" href="css/kings.css">
+    <link rel="stylesheet" href="css/parallel.css">
+    <link rel="stylesheet" href="css/prophecy.css">
+    <link rel="stylesheet" href="css/words.css">
 
     <!-- Google Analytics 4 is loaded by js/analytics.js, on faiththroughtime.com only. -->
 </head>
@@ -85,7 +92,8 @@
             <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 3l1.9 5.6L19.5 10l-5.6 1.9L12 17.5l-1.9-5.6L4.5 10l5.6-1.4zM19 16l.7 2.3L22 19l-2.3.7L19 22l-.7-2.3L16 19l2.3-.7z"/></symbol>
             <symbol id="i-swap" viewBox="0 0 24 24"><path d="M4 8h14M14 4l4 4-4 4M20 16H6M10 12l-4 4 4 4"/></symbol>
             <symbol id="i-crown" viewBox="0 0 24 24"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z"/></symbol>
-            <symbol id="i-scroll" viewBox="0 0 24 24"><path d="M7 4h11a2 2 0 0 1 2 2v1h-4M7 4a2 2 0 0 0-2 2v12a2 2 0 0 1-2 2h11a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2M9 9h4M9 13h4"/></symbol>
+            <symbol id="i-calendar" viewBox="0 0 24 24"><path d="M5.5 5h13a2 2 0 0 1 2 2v11.5a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2zM3.5 9.5h17M8 3v4M16 3v4M8 13.5h2M12 13.5h2M8 17h2M12 17h2"/></symbol>
+        <symbol id="i-scroll" viewBox="0 0 24 24"><path d="M7 4h11a2 2 0 0 1 2 2v1h-4M7 4a2 2 0 0 0-2 2v12a2 2 0 0 1-2 2h11a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2M9 9h4M9 13h4"/></symbol>
         </defs>
     </svg>
 
@@ -102,6 +110,7 @@
             <a href="#/family" data-nav="family">Family Tree</a>
             <a href="#/map" data-nav="map">Map</a>
             <a href="#/read" data-nav="read">Read</a>
+            <a href="#/study" data-nav="study">Study</a>
         </nav>
         <div class="topbar-spacer"></div>
         <button class="search-trigger" type="button" data-open-search aria-label="Search people, events and places">
@@ -129,6 +138,13 @@
         <section class="view view-fill" id="view-map" hidden aria-label="Map"></section>
         <section class="view" id="view-read" hidden aria-label="Read Scripture"></section>
         <section class="view" id="view-about" hidden aria-label="About the dates"></section>
+        <section class="view" id="view-study" hidden aria-label="Study tools"></section>
+        <section class="view" id="view-find" hidden aria-label="Search Scripture"></section>
+        <section class="view" id="view-plan" hidden aria-label="Reading plan"></section>
+        <section class="view" id="view-kings" hidden aria-label="Kings and prophets"></section>
+        <section class="view" id="view-parallel" hidden aria-label="Parallel passages"></section>
+        <section class="view" id="view-prophecy" hidden aria-label="Quotations and prophecy"></section>
+        <section class="view" id="view-word" hidden aria-label="Word study"></section>
     </main>
 
     <!-- Overlays. Each is owned by one module. -->
@@ -142,6 +158,7 @@
         <a href="#/family" data-nav="family"><svg class="icon" aria-hidden="true"><use href="#i-tree"/></svg>Family</a>
         <a href="#/map" data-nav="map"><svg class="icon" aria-hidden="true"><use href="#i-map"/></svg>Map</a>
         <a href="#/read" data-nav="read"><svg class="icon" aria-hidden="true"><use href="#i-book"/></svg>Read</a>
+        <a href="#/study" data-nav="study"><svg class="icon" aria-hidden="true"><use href="#i-scroll"/></svg>Study</a>
     </nav>
 
     <div id="toast" role="status" aria-live="polite"></div>
@@ -170,7 +187,15 @@
     <script src="js/meet.js" defer></script>
     <script src="js/family.js" defer></script>
     <script src="js/map.js" defer></script>
+    <script src="js/study.js" defer></script>
     <script src="js/read.js" defer></script>
+    <script src="js/xrefs.js" defer></script>
+    <script src="js/parallel.js" defer></script>
+    <script src="js/prophecy.js" defer></script>
+    <script src="js/words.js" defer></script>
+    <script src="js/find.js" defer></script>
+    <script src="js/plan.js" defer></script>
+    <script src="js/kings.js" defer></script>
     <script src="js/about.js" defer></script>
 </body>
 </html>

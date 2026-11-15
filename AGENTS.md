@@ -29,8 +29,13 @@ Browser (vanilla JS, classic scripts, no build step)
   js/search.js    command palette
   js/detail.js    person/event detail sheet (overlay)
   js/home.js, timeline.js, tour.js, meet.js, family.js, map.js, read.js, about.js   views
+  js/study.js     Study: the verse study panel (sections registered by the files below), shared reference helpers, #/study hub
+  js/xrefs.js, parallel.js, prophecy.js, words.js   study-panel sections, plus the #/parallel, #/prophecy, #/word views
+  js/find.js, plan.js, kings.js                     #/find (search the text), #/plan (reading plan), #/kings (chart)
   css/base.css    design tokens; one stylesheet per view
   data/tours.json, data/discoveries.json   authored content
+  data/parallels.json, prophecy.json, reading-plan.json, kings.json   authored study content (checked against the KJV)
+  bibles/xrefs/, kjv-strongs/, strongs/, strongs-index/   study data beside the text (cross-references, Strong's)
   vendor/         D3 v7 and Leaflet, vendored
         │
         │  ONE request: GET data/dataset.json  (or /api/dataset)
@@ -91,8 +96,32 @@ Also tested: every local `<script src>` and stylesheet in `index.html` exists, a
 ## Routes
 
 Browser (hash-based): `#/` home, `#/timeline`, `#/story/<tour>/<step>`, `#/meet/<a>/<b>`, `#/family/<slug>`,
-`#/map/<journey>`, `#/read/<book>/<chapter>`, `#/about`, `#/person/<slug>`, `#/event/<slug>` (detail sheet over the
-current view). The table lives in the header comment of `js/app.js`.
+`#/map/<journey>`, `#/read/<book>/<chapter>` (`?v=` marks verses, `?study=<verse>` opens the study panel), `#/about`,
+`#/person/<slug>`, `#/event/<slug>` (detail sheet over the current view); study tools: `#/study` hub, `#/find?q=`,
+`#/plan/<day>`, `#/kings`, `#/parallel/<id>`, `#/prophecy/<id>`, `#/word/<strongs>`. The table lives in the header
+comment of `js/app.js`.
+
+## Study tools
+
+The reader's selection bar has a **Study** button that opens a panel for one verse. Each section registers itself
+with `Study.addSection({ id, order, title, render(ctx) })` (`ctx = { book, chapter, verse, version, ref }`; return a
+node, `null` to hide, or a promise); chapter-level groups for the reader rail use `Study.addChapterSection`. Orders:
+10 cross-references (`xrefs.js`), 20 quotations and prophecy (`prophecy.js`), 30 parallel accounts (`parallel.js`),
+40 original words (`words.js`). Use `Study.parse`, `Study.format`, `Study.refLink` and `Study.verseText` rather than
+parsing references by hand.
+
+| Data | Shape | Source |
+|------|-------|--------|
+| `bibles/xrefs/<book>.json` | `{ch: {v: ["Isaiah 7:14", …]}}`, best first, ≤ 12 | OpenBible.info (CC BY), votes ≥ 5 |
+| `bibles/kjv-strongs/<book>.json` | `{ch: {v: ["text", ["word", "H7225"], …]}}` | eBible.org KJV with Strong's (PD) |
+| `bibles/strongs/<H\|G><n/500>.json`, `strongs-index/…` | lexicon entries; verses per number | Open Scriptures (CC BY-SA); built from the tagged KJV |
+| `data/parallels.json` | groups → sections → passages | compiled; Gospel order after A. T. Robertson |
+| `data/prophecy.json` | `quotations` (NT ← OT) and `prophecies` (spoken → fulfilled) | compiled, reviewed against the KJV |
+| `data/reading-plan.json` | 365 days, every chapter once, in story order | compiled on the site's chronology |
+| `data/kings.json` | kings (years from the database) and prophets | compiled from the text and the database |
+
+Every reference in these files must resolve in the local KJV. Credits are on the About page ("Study tools and their
+sources"); keep them in step if a source changes.
 
 ## API Endpoints
 
@@ -144,11 +173,11 @@ current view). The table lives in the header comment of `js/app.js`.
 | `events` | 352 | `name`, `start_year`, `end_year`, `category`, `significance`, `date_confidence`, `sort_order` |
 | `time_periods` | 18 | Contiguous eras, Creation to Modern Era |
 | `biblical_books` | 66 | testament, genre, period covered |
-| `locations` | 178 | latitude/longitude, region |
+| `locations` | 208 | latitude/longitude, region |
 | `scripture_references` | 1318 | `book_id`, chapter/verse start and end, `reference_text` |
 | `person_events` | 1268 | who took part in what |
 | `person_relationships` | 163 | `spouse`, `sibling`, `mentor`, `successor`, `contemporary` (parent/child live in `father_id`/`mother_id`) |
-| `journeys` / `journey_stops` / `journey_people` | 12 / 193 / — | Map journeys |
+| `journeys` / `journey_stops` / `journey_people` | 22 / 325 / — | Map journeys |
 | `person_scripture`, `event_scripture`, `event_locations` | — | Junctions |
 | `people_fts`, `events_fts` | — | FTS5 indexes kept in sync by triggers |
 
@@ -201,7 +230,7 @@ locations. Then delete the local database files, run `dotnet test tests/BibleTim
 
 ## End-to-end tests
 
-`tests/BibleTimeline.E2E` (NUnit + Playwright, 60 tests, about 25 seconds) drives the real app in headless Chromium:
+`tests/BibleTimeline.E2E` (NUnit + Playwright, 113 tests, about 45 seconds) drives the real app in headless Chromium:
 every view, the detail sheet, search, share, the tour, the phone layout and an accessibility smoke check. The app must
 already be running on http://localhost:5180.
 

@@ -25,6 +25,7 @@
             ['genealogies', 'The two genealogies of Jesus', genealogies],
             ['places', 'Places on the map', places],
             ['scripture', 'Scripture text', scripture],
+            ['study', 'Study tools and their sources', studySources],
             ['eras', 'The eras', eras],
             ['corrections', 'Corrections', corrections]
         ].map(([id, title, body]) => ({ id, title, el: section(id, title, body()) }));
@@ -226,6 +227,22 @@
         });
         return [
             p('Passages are quoted from the English Standard Version. Other translations', others, ' can be chosen in the reader.')
+        ];
+    }
+
+    function studySources() {
+        const out = (href, text) => h('a', { href, target: '_blank', rel: 'noopener' }, text);
+        return [
+            p('The ', h('a', { href: '#/study' }, 'study tools'), ' draw on these sources, used with thanks:'),
+            h('ul', null,
+                h('li', null, 'Cross-references: ', out('https://www.openbible.info/labs/cross-references/', 'OpenBible.info'),
+                    ' (CC BY), derived from the ', h('cite', null, 'Treasury of Scripture Knowledge'), ' and ranked by readers’ votes.'),
+                h('li', null, 'Word study: the King James Version with Strong’s numbers from ', out('https://ebible.org/', 'eBible.org'),
+                    ' (public domain), and Strong’s Hebrew and Greek dictionaries from ',
+                    out('https://github.com/openscriptures/strongs', 'Open Scriptures'), ' (CC BY-SA).'),
+                h('li', null, 'Parallel passages: the order of the Gospel harmony follows A. T. Robertson, ',
+                    h('cite', null, 'A Harmony of the Gospels'), ' (public domain).'),
+                h('li', null, 'The kings and prophets chart and the reading plan follow the same chronology as the timeline. The quotations, prophecies and parallels were compiled for this site and checked against the text.'))
         ];
     }
 
