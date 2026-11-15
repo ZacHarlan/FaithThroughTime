@@ -750,7 +750,16 @@ const Share = (() => {
     async function send() {
         const { spec } = state;
         const file = await currentFile();
-        await UI.share({ title: spec.title, text: spec.subtitle || spec.title, url: spec.url, file });
+        const outcome = await UI.share({ title: spec.title, text: spec.subtitle || spec.title, url: spec.url, file });
+        if (outcome === 'shared') shared('native');
+        else if (outcome === 'copied') shared('copy_link');
+    }
+
+    function shared(method) {
+        const { spec } = state;
+        let item = spec.url || '';
+        try { item = new URL(spec.url).hash.replace(/^#/, '') || item; } catch { /* keep the url */ }
+        Analytics.event('share', { method, content_type: spec.kind, item_id: item });
     }
 
     async function download() {
@@ -760,11 +769,13 @@ const Share = (() => {
         document.body.append(a);
         a.click();
         a.remove();
+        shared('download');
         setTimeout(() => URL.revokeObjectURL(url), 4000);
     }
 
     async function copyLink() {
         const ok = await UI.copy(state.spec.url);
+        if (ok) shared('copy_link');
         UI.toast(ok ? 'Link copied' : 'Could not copy the link');
     }
 

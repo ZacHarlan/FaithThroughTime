@@ -336,6 +336,7 @@ const Read = (() => {
                 onclick: () => {
                     if (v.id === active) return;
                     BibleText.setVersion(v.id);
+                    Analytics.event('select_translation', { translation: v.id });
                     chosen = v.id;             // remembered for this visit even if storage is blocked
                     renderChapter(current.book, current.chapter);
                 }

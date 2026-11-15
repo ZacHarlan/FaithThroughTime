@@ -17,7 +17,7 @@ const SHELL = [
     'css/base.css', 'css/home.css', 'css/timeline.css', 'css/tour.css', 'css/detail.css', 'css/meet.css',
     'css/family.css', 'css/map.css', 'css/read.css', 'css/search.css', 'css/share.css', 'css/about.css',
     'vendor/d3.v7.min.js',
-    'js/api.js', 'js/store.js', 'js/ui.js', 'js/app.js', 'js/bible.js', 'js/share.js', 'js/search.js',
+    'js/api.js', 'js/store.js', 'js/ui.js', 'js/app.js', 'js/analytics.js', 'js/bible.js', 'js/share.js', 'js/search.js',
     'js/detail.js', 'js/home.js', 'js/timeline.js', 'js/tour.js', 'js/meet.js', 'js/family.js',
     'js/map.js', 'js/read.js', 'js/about.js',
     'data/dataset.json', 'data/tours.json', 'data/discoveries.json',

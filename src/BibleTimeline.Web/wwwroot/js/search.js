@@ -136,6 +136,8 @@ const Search = (() => {
     }
 
     function choose(row) {
+        const q = input.value.trim();
+        if (q) Analytics.event('search', { search_term: q });
         remember(row);
         close(row.href);
     }
