@@ -1,0 +1,390 @@
+/* detail.css — the detail sheet for a person or event (js/detail.js).
+   Desktop: a panel docked right under the top bar, sliding in without a scrim.
+   Phones: a bottom sheet positioned by --y (set from JS while snapping and dragging). */
+
+/* ── Frame ──────────────────────────────────────────────────────────── */
+.detail {
+    /* --era is set from JS to the entry's era colour; on light ground it is mixed toward ink. */
+    --era-c: var(--era, var(--gold));
+    --pad: var(--s6);
+    position: fixed; top: var(--topbar-h); right: 0; bottom: 0; z-index: 25;
+    width: min(var(--sheet-w), 100vw);
+    display: flex; flex-direction: column;
+    background:
+        radial-gradient(120% 260px at 0% 0%, color-mix(in srgb, var(--era-c) 15%, transparent), transparent 72%),
+        var(--bg-1);
+    border-left: 1px solid var(--line);
+    box-shadow: var(--shadow);
+    transform: translateX(calc(100% + 24px));
+    transition: transform var(--t-slow) var(--ease-out);
+}
+.detail.is-open { transform: none; }
+:root[data-theme='light'] .detail { --era-c: color-mix(in srgb, var(--era, var(--gold)) 70%, #000); }
+
+/* Bar: close button, and the entry's name once its heading has scrolled away. */
+.ds-bar {
+    position: relative; flex: none;
+    display: flex; align-items: center; gap: var(--s2);
+    height: 52px; padding: 0 var(--s2) 0 var(--pad);
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--t-med) var(--ease), background var(--t-med) var(--ease);
+}
+.ds-bar.is-titled { border-bottom-color: var(--line); background: color-mix(in srgb, var(--bg-1) 70%, transparent); }
+.ds-bar-title {
+    flex: 1; min-width: 0;
+    font-family: var(--font-display); font-size: 1.05rem; font-variation-settings: 'opsz' 30;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    opacity: 0; transform: translateY(6px);
+    transition: opacity var(--t-med) var(--ease), transform var(--t-med) var(--ease-out);
+}
+.ds-bar.is-titled .ds-bar-title { opacity: 1; transform: none; }
+.ds-close { margin-left: auto; }
+.ds-handle { display: none; }
+
+.ds-scroll { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+.ds-body {
+    position: relative;
+    padding: 0 var(--pad) var(--s8);
+    transition: opacity var(--t-med) var(--ease);
+}
+.ds-body.is-swapping { opacity: 0; transition-duration: var(--t-fast); }
+.ds-body > * { min-width: 0; }
+
+/* ── Header ─────────────────────────────────────────────────────────── */
+.ds-eyebrow { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s1) var(--s2); }
+.ds-eyebrow-sep { color: var(--text-faint); }
+.ds-era {
+    display: inline-flex; align-items: center; gap: var(--s2);
+    color: var(--text-dim);
+    transition: color var(--t-fast) var(--ease);
+}
+.ds-era:hover { color: var(--text); }
+/* A one-line link: its hit area grows to 44px tall, downward, because the sheet's
+   bar sits right above it and would take any area extended upward. */
+.ds-era { position: relative; }
+.ds-era::after { content: ''; position: absolute; inset: 0 0 min(0px, calc(100% - 44px)); }
+.ds-era-dot {
+    width: 8px; height: 8px; border-radius: 50%; flex: none;
+    background: var(--era-c);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--era-c) 22%, transparent);
+}
+
+.ds-name {
+    margin-top: var(--s3);
+    font-size: clamp(2.2rem, 1.9rem + 1vw, 2.85rem);
+    line-height: 1.02; letter-spacing: -.025em;
+    overflow-wrap: anywhere;
+    outline: none;
+}
+.ds-name.is-long { font-size: clamp(1.8rem, 1.6rem + .8vw, 2.25rem); line-height: 1.08; }
+.ds-alt {
+    margin-top: var(--s2);
+    font-family: var(--font-display); font-style: italic; font-size: 1.05rem;
+    color: var(--text-dim);
+}
+
+.ds-dates {
+    margin-top: var(--s4);
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 var(--s3);
+    font-size: 1.05rem;
+}
+.ds-dates-main { font-weight: 600; letter-spacing: .01em; }
+.ds-dates-sub { color: var(--text-dim); }
+.ds-sep { color: var(--text-faint); }
+
+.ds-notes {
+    margin-top: var(--s3);
+    display: flex; flex-wrap: wrap; align-items: center; gap: var(--s2) var(--s3);
+    font-size: var(--fs-sm); color: var(--text-dim);
+}
+.ds-link {
+    display: inline-flex; align-items: center; gap: var(--s1);
+    color: var(--text);
+    text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--gold) 55%, transparent);
+    text-underline-offset: 3px; text-decoration-thickness: 1px;
+    transition: text-decoration-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+}
+.ds-link:hover { text-decoration-color: var(--gold); color: var(--gold-bright); }
+.ds-notes .ds-link { font-size: var(--fs-sm); }
+
+/* Confidence: a discreet labelled pill whose meaning appears on hover or focus. */
+.ds-conf { position: relative; display: inline-flex; }
+.ds-conf-btn {
+    position: relative;
+    display: inline-flex; align-items: center; gap: 7px;
+    min-height: 28px; padding: 0 10px 0 9px;
+    border: 1px solid var(--line-strong); border-radius: var(--r-pill);
+    font-size: var(--fs-xs); font-weight: 600; color: var(--text);
+    cursor: help;
+    transition: border-color var(--t-fast) var(--ease), background var(--t-fast) var(--ease);
+}
+.ds-conf-btn::after { content: ''; position: absolute; inset: min(0px, calc(50% - 22px)) -2px; }   /* 44px touch target */
+.ds-conf-btn:hover, .ds-conf-btn:focus { border-color: var(--gold); background: var(--gold-soft); }
+.ds-conf-key { color: var(--text-dim); font-weight: 500; letter-spacing: .08em; text-transform: uppercase; font-size: 10px; }
+.ds-meter { display: inline-flex; align-items: flex-end; gap: 2px; height: 10px; }
+.ds-meter i { width: 3px; border-radius: 1px; background: var(--line-strong); }
+.ds-meter i:nth-child(1) { height: 5px; }
+.ds-meter i:nth-child(2) { height: 7.5px; }
+.ds-meter i:nth-child(3) { height: 10px; }
+.ds-meter i.is-on { background: var(--gold); }
+.ds-conf-icon { width: 13px; height: 13px; color: var(--gold); }
+.ds-tip {
+    position: absolute; left: 0; top: calc(100% + 10px); z-index: 3;
+    width: max-content; max-width: min(260px, 70vw);
+    padding: var(--s2) var(--s3); border-radius: var(--r-sm);
+    background: var(--text); color: var(--bg);
+    font-size: var(--fs-xs); font-weight: 500; line-height: 1.45;
+    box-shadow: var(--shadow);
+    opacity: 0; visibility: hidden; transform: translateY(-4px); pointer-events: none;
+    transition: opacity var(--t-fast) var(--ease), transform var(--t-fast) var(--ease), visibility 0s linear var(--t-fast);
+}
+.ds-conf:hover .ds-tip, .ds-conf-btn:focus + .ds-tip {
+    opacity: 1; visibility: visible; transform: none;
+    transition: opacity var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
+}
+
+.ds-actions { display: flex; flex-wrap: wrap; gap: var(--s2); margin-top: var(--s5); }
+.ds-actions .btn { padding: 0 var(--s4); }
+.ds-actions .ds-copy { width: 44px; padding: 0; }
+
+/* ── Time bar ───────────────────────────────────────────────────────── */
+.ds-tb { margin: var(--s6) 0 0; }
+.ds-tb-visual { position: relative; }
+.ds-tb-eras { position: relative; height: 16px; }
+.ds-tb-era-name {
+    position: absolute; top: 0;
+    padding-left: 2px;
+    font-size: 10.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--text-faint);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.ds-tb-track { position: relative; height: 22px; margin-top: 2px; }
+.ds-tb-era {
+    position: absolute; top: 8px; height: 6px;
+    background: color-mix(in srgb, var(--c) 26%, transparent);
+    border-left: 1px solid var(--bg-1);
+}
+.ds-tb-era:first-child { border-radius: 3px 0 0 3px; }
+.ds-tb-era:nth-last-child(1 of .ds-tb-era) { border-radius: 0 3px 3px 0; }
+:root[data-theme='light'] .ds-tb-era { background: color-mix(in srgb, color-mix(in srgb, var(--c) 70%, #000) 22%, transparent); }
+.ds-tb-span {
+    position: absolute; top: 6px; height: 10px; border-radius: 5px;
+    background: var(--era-c);
+    box-shadow: 0 0 0 2px var(--bg-1), 0 0 18px color-mix(in srgb, var(--era-c) 45%, transparent);
+}
+.ds-tb-span.is-estimated {
+    background: repeating-linear-gradient(90deg, var(--era-c) 0 5px, transparent 5px 8px);
+    box-shadow: none;
+}
+.ds-tb-span.is-point {
+    width: 12px; height: 12px; top: 5px; border-radius: 2px;
+    transform: translateX(-50%) rotate(45deg);
+}
+/* Each event mark: a small diamond on a 22px hit area. */
+.ds-tb-mark {
+    position: absolute; top: 0; width: 22px; height: 22px; margin-left: -11px;
+    display: grid; place-items: center;
+}
+.ds-tb-mark::before {
+    content: ''; width: 7px; height: 7px; transform: rotate(45deg);
+    background: var(--bg-1); border: 1.5px solid var(--text);
+    transition: transform var(--t-fast) var(--ease), background var(--t-fast) var(--ease);
+}
+.ds-tb-mark:hover::before { transform: rotate(45deg) scale(1.5); background: var(--gold); border-color: var(--gold); }
+.ds-tb-years { position: relative; height: 20px; margin-top: 2px; }
+.ds-tb-year {
+    position: absolute; top: 0;
+    font-size: var(--fs-xs); font-weight: 600; color: var(--text-dim);
+    font-variant-numeric: tabular-nums lining-nums; white-space: nowrap;
+}
+.ds-tb-year.is-mid { transform: translateX(-50%); }
+.ds-tb-year.is-end { transform: translateX(-100%); }
+.ds-tb-year.is-estimated { font-style: italic; font-weight: 500; }
+
+/* ── Prose ──────────────────────────────────────────────────────────── */
+.ds-prose {
+    margin-top: var(--s6);
+    font-family: var(--font-display); font-variation-settings: 'opsz' 16;
+    font-size: 1.1rem; line-height: 1.68;
+    text-wrap: pretty; hanging-punctuation: first;
+}
+/* An illuminated initial in the era's colour. */
+.ds-prose::first-letter {
+    float: left;
+    margin: .08em .1em 0 0;
+    font-size: 3.9em; line-height: .8;
+    font-variation-settings: 'opsz' 144, 'SOFT' 100;
+    color: var(--era-c);
+}
+@supports (initial-letter: 2) {
+    .ds-prose::first-letter { float: none; initial-letter: 2; margin: 0 .12em 0 0; font-size: inherit; line-height: inherit; }
+}
+
+.ds-dating { margin-top: var(--s5); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.ds-dating summary {
+    display: flex; align-items: center; gap: var(--s2);
+    min-height: 44px; cursor: pointer; list-style: none;
+    font-size: var(--fs-sm); font-weight: 600; color: var(--text-dim);
+    transition: color var(--t-fast) var(--ease);
+}
+.ds-dating summary::-webkit-details-marker { display: none; }
+.ds-dating summary:hover { color: var(--text); }
+.ds-dating .ds-chev { transition: transform var(--t-med) var(--ease-out); }
+.ds-dating[open] .ds-chev { transform: rotate(90deg); }
+.ds-dating p { padding: 0 0 var(--s4) var(--s5); font-size: var(--fs-sm); color: var(--text-dim); text-wrap: pretty; }
+
+/* ── Sections ───────────────────────────────────────────────────────── */
+.ds-section { margin-top: var(--s7); }
+.ds-h {
+    display: flex; align-items: center; gap: var(--s3);
+    margin-bottom: var(--s3);
+    font-family: var(--font-ui); font-size: var(--fs-xs); font-weight: 600;
+    letter-spacing: .16em; text-transform: uppercase; line-height: 1.4;
+    color: var(--gold);
+}
+.ds-h::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+.ds-sub {
+    margin: var(--s5) 0 var(--s2);
+    font-size: var(--fs-sm); font-weight: 600; color: var(--text-dim);
+}
+.ds-section > .ds-sub:first-of-type { margin-top: var(--s2); }
+.ds-caption { font-size: var(--fs-sm); color: var(--text-dim); text-wrap: pretty; margin-bottom: var(--s3); }
+
+.ds-more {
+    display: flex; align-items: center; gap: var(--s1);
+    min-height: 44px; margin-top: var(--s1);
+    font-size: var(--fs-sm); font-weight: 600; color: var(--text-dim);
+    transition: color var(--t-fast) var(--ease);
+}
+.ds-more:hover { color: var(--text); }
+
+/* Rows: events and other dated items. */
+.ds-rows > li + li { border-top: 1px solid var(--line); }
+.ds-row {
+    display: grid; grid-template-columns: 5.6rem 8px minmax(0, 1fr) 16px;
+    align-items: center; gap: var(--s3);
+    min-height: 52px; padding: var(--s2) var(--s2);
+    margin: 0 calc(-1 * var(--s2));
+    border-radius: var(--r-sm);
+    transition: background var(--t-fast) var(--ease);
+}
+.ds-row:hover { background: var(--bg-2); }
+.ds-row-year { font-size: var(--fs-sm); color: var(--text-dim); white-space: nowrap; }
+.ds-c { color: var(--text-faint); }
+.ds-row-dot { width: 7px; height: 7px; transform: rotate(45deg); background: var(--chip, var(--gold)); }
+.ds-row-main { display: flex; flex-direction: column; min-width: 0; }
+.ds-row-title { font-weight: 500; line-height: 1.3; }
+.ds-row-sub { font-size: var(--fs-xs); color: var(--text-dim); line-height: 1.4; }
+.ds-row-go { color: var(--text-faint); transition: transform var(--t-fast) var(--ease), color var(--t-fast) var(--ease); }
+.ds-row:hover .ds-row-go { transform: translateX(2px); color: var(--gold); }
+
+/* Kin and connections: a label column beside its chips. */
+.ds-kin {
+    display: grid; grid-template-columns: 5.6rem minmax(0, 1fr); gap: var(--s3);
+    padding: var(--s3) 0;
+}
+.ds-kin + .ds-kin { border-top: 1px solid var(--line); }
+.ds-kin-label { padding-top: 6px; font-size: var(--fs-sm); color: var(--text-dim); }
+.ds-kin .ds-more { margin-top: 0; }
+.ds-tree { margin-top: var(--s2); margin-left: calc(-1 * var(--s3)); }
+
+.detail .chip { min-height: 36px; }
+.detail .chip-label { overflow: hidden; text-overflow: ellipsis; }
+.detail .chip-row { gap: var(--s2); }
+
+.ds-meet { margin-top: var(--s4); }
+
+/* Scripture */
+.ds-scrip + .ds-scrip { border-top: 1px solid var(--line); }
+.ds-scrips { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.ds-scrip-head {
+    display: flex; align-items: center; gap: var(--s3);
+    width: 100%; min-height: 52px; padding: var(--s2) 0;
+    text-align: left;
+    font-family: var(--font-display); font-size: 1.08rem; font-variation-settings: 'opsz' 24;
+    transition: color var(--t-fast) var(--ease);
+}
+.ds-scrip-head:hover { color: var(--gold-bright); }
+.ds-scrip-icon { color: var(--gold); }
+.ds-scrip-ref { flex: 1; display: flex; flex-direction: column; }
+.ds-scrip .ds-chev { color: var(--text-faint); transition: transform var(--t-med) var(--ease-out); }
+.ds-scrip-head[aria-expanded='true'] .ds-chev { transform: rotate(180deg); }
+.ds-scrip-body { padding: 0 0 var(--s4) calc(20px + var(--s3)); animation: rise var(--t-med) var(--ease-out) both; }
+.ds-passage { color: var(--text); text-wrap: pretty; }
+.ds-vn {
+    margin-right: 3px;
+    font-family: var(--font-ui); font-size: .6em; font-weight: 700; letter-spacing: .02em;
+    color: var(--gold); vertical-align: .5em; line-height: 0;
+}
+.ds-passage-foot {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s2) var(--s4);
+    margin-top: var(--s3);
+    font-size: var(--fs-xs); color: var(--text-dim);
+}
+.ds-passage-foot abbr { text-decoration: none; font-weight: 700; letter-spacing: .08em; }
+
+/* Places */
+.ds-places > li + li { border-top: 1px solid var(--line); }
+.ds-place {
+    display: grid; grid-template-columns: 20px minmax(0, 1fr) auto; align-items: center; gap: var(--s3);
+    min-height: 56px; padding: var(--s1) 0;
+}
+.ds-place-icon { color: var(--text-dim); }
+.ds-place-map { padding: 0 var(--s3); }
+
+/* Foot of an event: the ornament, then earlier and later. */
+.ds-end { margin-top: var(--s7); }
+.ds-end > span { width: 6px; height: 6px; }
+.ds-pager { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s3); margin-top: var(--s6); }
+.ds-page {
+    display: flex; flex-direction: column; gap: 3px; min-width: 0;
+    padding: var(--s3) var(--s4);
+    border: 1px solid var(--line); border-radius: var(--r-md);
+    transition: border-color var(--t-med) var(--ease), background var(--t-med) var(--ease);
+}
+.ds-page:hover { border-color: var(--gold); background: var(--bg-2); }
+.ds-page.is-next { grid-column: 2; text-align: right; align-items: flex-end; }
+.ds-page-label {
+    display: inline-flex; align-items: center; gap: 2px;
+    font-size: var(--fs-xs); font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text-dim);
+}
+.ds-page-name { font-family: var(--font-display); font-size: 1.05rem; line-height: 1.25; text-wrap: balance; }
+.ds-page-year { font-size: var(--fs-xs); color: var(--text-dim); }
+
+/* Not found */
+.ds-missing { padding-top: var(--s6); }
+.ds-missing .ds-name { margin-bottom: var(--s4); }
+.ds-missing .btn { margin-top: var(--s3); }
+
+/* ── Phones: bottom sheet ───────────────────────────────────────────── */
+@media (max-width: 760px) {
+    .detail {
+        --pad: var(--s5);
+        top: calc(var(--topbar-h) + 8px); left: 0; right: 0; bottom: 0; z-index: 35;
+        width: auto;
+        border-left: 0; border-top: 1px solid var(--line-strong);
+        border-radius: var(--r-lg) var(--r-lg) 0 0;
+        transform: translateY(var(--y, 100%));
+        transition: transform var(--t-slow) var(--ease-out);
+    }
+    .detail.is-open { transform: translateY(var(--y, 0)); }
+    .detail.is-dragging { transition: none; }
+    .ds-bar { height: 52px; padding-top: 10px; touch-action: none; cursor: grab; }
+    .detail.is-dragging .ds-bar { cursor: grabbing; }
+    .ds-handle {
+        display: block; position: absolute; top: 8px; left: 50%;
+        width: 40px; height: 5px; border-radius: var(--r-pill);
+        background: var(--line-strong);
+        transform: translateX(-50%);
+    }
+    .ds-body { padding-bottom: calc(var(--s8) + env(safe-area-inset-bottom, 0px)); }
+    .ds-name { font-size: 2.25rem; }
+    .ds-name.is-long { font-size: 1.85rem; }
+    .ds-row { grid-template-columns: 5.2rem 8px minmax(0, 1fr) 16px; }
+    .ds-kin { grid-template-columns: 1fr; gap: var(--s2); }
+    .ds-kin-label { padding-top: 0; font-size: var(--fs-xs); font-weight: 600; letter-spacing: .06em; }
+    /* Chips are the way on from here: 44px hit areas (36px chips on 8px row gaps, so
+       neighbouring rows meet without overlapping). */
+    .detail .chip { position: relative; }
+    .detail .chip::after { content: ''; position: absolute; inset: min(0px, calc(50% - 22px)) 0; }
+}

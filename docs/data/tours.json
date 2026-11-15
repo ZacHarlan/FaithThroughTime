@@ -1,0 +1,370 @@
+{
+  "tours": [
+    {
+      "id": "the-whole-story",
+      "title": "The whole story",
+      "subtitle": "From Creation to the church around the world today, in about four minutes.",
+      "steps": [
+        {
+          "title": "In the beginning",
+          "body": "Scripture opens with God speaking an ordered world into being and crowning it with man and woman made in his image. In the garden, Adam and Eve choose their own way over God's word, and sin and death enter the story. Yet even in judgment God speaks of an offspring of the woman who will one day crush the serpent.",
+          "year": -3800, "span": 600,
+          "spotlight": [
+            { "kind": "event", "slug": "creation" },
+            { "kind": "event", "slug": "the-fall" },
+            { "kind": "person", "slug": "adam" },
+            { "kind": "person", "slug": "eve" }
+          ],
+          "scripture": "Genesis 1:1",
+          "link": { "kind": "event", "slug": "creation" }
+        },
+        {
+          "title": "The long generations",
+          "body": "Genesis traces the line from Adam through Seth to Noah, and the lives it records stretch across centuries. Of Enoch it says only that he walked with God, and was not, for God took him. Methuselah, his son, lives longest of all.",
+          "year": -3200, "span": 2000,
+          "spotlight": [
+            { "kind": "person", "slug": "adam" },
+            { "kind": "person", "slug": "seth" },
+            { "kind": "person", "slug": "enoch" },
+            { "kind": "person", "slug": "methuselah" },
+            { "kind": "person", "slug": "noah" }
+          ],
+          "scripture": "Genesis 5:24",
+          "link": { "kind": "person", "slug": "enoch" }
+        },
+        {
+          "title": "The Flood",
+          "body": "The earth fills with violence, and God resolves to begin again. Noah builds the ark and his family is carried through the waters; afterwards God sets his bow in the clouds as a sign that he will never again destroy the earth by flood. Noah's descendants spread out, and at Babel their pride ends in scattered languages.",
+          "year": -2300, "span": 400,
+          "spotlight": [
+            { "kind": "event", "slug": "the-flood" },
+            { "kind": "person", "slug": "noah" },
+            { "kind": "person", "slug": "shem" },
+            { "kind": "event", "slug": "tower-of-babel" }
+          ],
+          "scripture": "Genesis 9:13",
+          "link": { "kind": "event", "slug": "the-flood" }
+        },
+        {
+          "title": "Abraham and the promise",
+          "body": "God calls Abram to leave his country for a land he will be shown, and promises that through him all the families of the earth will be blessed. Abraham believes, and it is counted to him as righteousness. The promise passes to Isaac, then to Jacob, whose twelve sons become the tribes of Israel.",
+          "year": -1880, "span": 320,
+          "spotlight": [
+            { "kind": "event", "slug": "call-of-abraham" },
+            { "kind": "person", "slug": "abraham" },
+            { "kind": "person", "slug": "sarah" },
+            { "kind": "event", "slug": "abrahamic-covenant" },
+            { "kind": "person", "slug": "isaac" },
+            { "kind": "person", "slug": "jacob" }
+          ],
+          "scripture": "Genesis 12:1-3",
+          "link": { "kind": "person", "slug": "abraham" }
+        },
+        {
+          "title": "Egypt and the Exodus",
+          "body": "Joseph, sold into slavery by his brothers, rises to rule in Egypt and saves his family from famine. Generations later their descendants are slaves, and God calls Moses from a burning bush to tell Pharaoh, Let my people go. Through the plagues and the parting of the sea he brings them out, and at Sinai he gives them his Law.",
+          "year": -1600, "span": 380,
+          "spotlight": [
+            { "kind": "person", "slug": "joseph" },
+            { "kind": "event", "slug": "israel-enters-egypt" },
+            { "kind": "person", "slug": "moses" },
+            { "kind": "event", "slug": "the-exodus" },
+            { "kind": "event", "slug": "giving-of-the-law" }
+          ],
+          "scripture": "Exodus 20:2",
+          "link": { "kind": "event", "slug": "the-exodus" }
+        },
+        {
+          "title": "The land and the judges",
+          "body": "Joshua leads Israel across the Jordan, and the walls of Jericho fall. Then comes a long, unsettled age: the people turn from God, are oppressed, cry out, and are rescued by judges such as Deborah, Gideon and Samson. In those days, the book of Judges says, everyone did what was right in their own eyes.",
+          "year": -1270, "span": 420,
+          "spotlight": [
+            { "kind": "person", "slug": "joshua-son-of-nun" },
+            { "kind": "event", "slug": "fall-of-jericho" },
+            { "kind": "person", "slug": "deborah" },
+            { "kind": "person", "slug": "gideon" },
+            { "kind": "person", "slug": "samson" },
+            { "kind": "person", "slug": "ruth" }
+          ],
+          "scripture": "Judges 21:25",
+          "link": { "kind": "person", "slug": "joshua-son-of-nun" }
+        },
+        {
+          "title": "David and the kingdom",
+          "body": "Israel asks for a king. After Saul comes David, the shepherd from Bethlehem, who makes Jerusalem his city; God promises him a house and a throne that will last forever. His son Solomon builds the Temple, and for a time the twelve tribes are one kingdom.",
+          "year": -1040, "span": 160,
+          "spotlight": [
+            { "kind": "person", "slug": "samuel" },
+            { "kind": "person", "slug": "saul" },
+            { "kind": "person", "slug": "david" },
+            { "kind": "event", "slug": "davidic-covenant" },
+            { "kind": "person", "slug": "solomon" },
+            { "kind": "event", "slug": "solomon-builds-temple" }
+          ],
+          "scripture": "2 Samuel 7:16",
+          "link": { "kind": "person", "slug": "david" }
+        },
+        {
+          "title": "A kingdom divided",
+          "body": "After Solomon the kingdom splits: Israel in the north, Judah in the south. Prophets call kings and people back to God, Elijah on Mount Carmel and Isaiah in Jerusalem among them. The northern kingdom falls to Assyria; Judah stands for a time under kings like Hezekiah.",
+          "year": -790, "span": 420,
+          "spotlight": [
+            { "kind": "event", "slug": "kingdom-divides" },
+            { "kind": "person", "slug": "elijah" },
+            { "kind": "event", "slug": "elijah-on-mount-carmel" },
+            { "kind": "person", "slug": "isaiah" },
+            { "kind": "event", "slug": "fall-of-samaria" },
+            { "kind": "person", "slug": "hezekiah" }
+          ],
+          "scripture": "1 Kings 18:21",
+          "link": { "kind": "event", "slug": "kingdom-divides" }
+        },
+        {
+          "title": "Exile",
+          "body": "Jeremiah warns, and is not heeded. Nebuchadnezzar's armies destroy Jerusalem and its Temple, and the people are carried away to Babylon. There Ezekiel sees visions of God's glory and of dry bones living again, and Daniel serves in a foreign court while keeping faith with the God of Israel.",
+          "year": -575, "span": 120,
+          "spotlight": [
+            { "kind": "person", "slug": "jeremiah" },
+            { "kind": "event", "slug": "fall-of-jerusalem" },
+            { "kind": "person", "slug": "nebuchadnezzar" },
+            { "kind": "event", "slug": "babylonian-exile" },
+            { "kind": "person", "slug": "ezekiel" },
+            { "kind": "person", "slug": "daniel" }
+          ],
+          "scripture": "Psalm 137:1",
+          "link": { "kind": "event", "slug": "babylonian-exile" }
+        },
+        {
+          "title": "The return",
+          "body": "Cyrus of Persia lets the exiles go home, and a second Temple rises on the ruins of the first. In the Persian court Esther risks her life for her people. Ezra teaches the Law again, and Nehemiah rebuilds Jerusalem's walls.",
+          "year": -480, "span": 160,
+          "spotlight": [
+            { "kind": "person", "slug": "cyrus" },
+            { "kind": "event", "slug": "edict-of-cyrus" },
+            { "kind": "event", "slug": "second-temple-built" },
+            { "kind": "person", "slug": "esther" },
+            { "kind": "person", "slug": "ezra" },
+            { "kind": "person", "slug": "nehemiah" }
+          ],
+          "scripture": "Ezra 1:3",
+          "link": { "kind": "event", "slug": "edict-of-cyrus" }
+        },
+        {
+          "title": "The quiet centuries",
+          "body": "About four hundred years pass between Malachi and the birth of Jesus, under Persian and then Greek rule, a century of independence won by the Maccabees, and finally Rome. Protestants often call them the silent years, since no new prophet speaks; Catholic and Orthodox Bibles include books from this time, such as Maccabees. At its close, the devout Simeon and Anna wait in the Temple for the consolation of Israel.",
+          "year": -200, "span": 450,
+          "spotlight": [
+            { "kind": "person", "slug": "malachi" },
+            { "kind": "person", "slug": "alexander-the-great" },
+            { "kind": "event", "slug": "maccabean-revolt" },
+            { "kind": "person", "slug": "herod-the-great" },
+            { "kind": "person", "slug": "simeon-of-jerusalem" },
+            { "kind": "person", "slug": "anna" }
+          ],
+          "scripture": "Malachi 4:2",
+          "link": { "kind": "person", "slug": "malachi" }
+        },
+        {
+          "title": "The Word made flesh",
+          "body": "In Bethlehem, Mary gives birth to Jesus. After John the Baptist prepares the way, Jesus goes through Galilee teaching, healing and calling disciples to follow him. He proclaims that the kingdom of God has come near, and in the Sermon on the Mount he shows what life in it looks like.",
+          "year": 14, "span": 50,
+          "spotlight": [
+            { "kind": "event", "slug": "birth-of-jesus" },
+            { "kind": "person", "slug": "mary-mother-of-jesus" },
+            { "kind": "person", "slug": "jesus" },
+            { "kind": "person", "slug": "john-the-baptist" },
+            { "kind": "event", "slug": "baptism-of-jesus" },
+            { "kind": "event", "slug": "sermon-on-the-mount" }
+          ],
+          "scripture": "John 1:14",
+          "link": { "kind": "person", "slug": "jesus" }
+        },
+        {
+          "title": "The cross and the empty tomb",
+          "body": "At Passover in Jerusalem, Jesus is arrested, tried before Pontius Pilate and crucified. On the third day the tomb is found empty; he appears to Mary Magdalene, to his disciples, and to many others. Christians of every tradition confess this as the centre of the whole story.",
+          "year": 33, "span": 8,
+          "spotlight": [
+            { "kind": "event", "slug": "crucifixion" },
+            { "kind": "event", "slug": "resurrection" },
+            { "kind": "event", "slug": "appearance-to-mary-magdalene" },
+            { "kind": "event", "slug": "ascension" }
+          ],
+          "scripture": "1 Corinthians 15:3-4",
+          "link": { "kind": "event", "slug": "resurrection" }
+        },
+        {
+          "title": "To the ends of the earth",
+          "body": "At Pentecost the Spirit comes upon the disciples, and Peter preaches to a crowd from many nations. The good news spreads from Jerusalem to Samaria and on to the Gentiles. Paul, once a persecutor, carries it across the Roman world in journeys and letters that become much of the New Testament.",
+          "year": 60, "span": 90,
+          "spotlight": [
+            { "kind": "event", "slug": "pentecost" },
+            { "kind": "person", "slug": "peter" },
+            { "kind": "event", "slug": "conversion-of-paul" },
+            { "kind": "person", "slug": "paul" },
+            { "kind": "event", "slug": "council-of-jerusalem" },
+            { "kind": "event", "slug": "paul-arrives-in-rome" }
+          ],
+          "scripture": "Acts 1:8",
+          "link": { "kind": "person", "slug": "paul" }
+        },
+        {
+          "title": "Martyrs, councils and creeds",
+          "body": "Through generations of persecution the church bears witness, as Polycarp did at his death. When Rome grants toleration, bishops gather at Nicaea and later Chalcedon to confess who Christ is, words still shared by most churches today. Athanasius names the twenty-seven books of the New Testament, and Augustine writes works that shape Christian thought for centuries.",
+          "year": 290, "span": 400,
+          "spotlight": [
+            { "kind": "event", "slug": "martyrdom-of-polycarp" },
+            { "kind": "event", "slug": "edict-of-milan" },
+            { "kind": "event", "slug": "council-of-nicaea" },
+            { "kind": "person", "slug": "athanasius-of-alexandria" },
+            { "kind": "person", "slug": "augustine-of-hippo" },
+            { "kind": "event", "slug": "council-of-chalcedon" }
+          ],
+          "scripture": "John 1:1",
+          "link": { "kind": "event", "slug": "council-of-nicaea" }
+        },
+        {
+          "title": "A thousand years of faith",
+          "body": "As the western empire falls, monasteries like Benedict's keep prayer, learning and the Scriptures alive. East and West grow apart until the Great Schism divides the church into what become the Orthodox and Catholic communions. Francis of Assisi embraces poverty to follow Christ, and Thomas Aquinas sets faith and reason in conversation.",
+          "year": 900, "span": 1000,
+          "spotlight": [
+            { "kind": "person", "slug": "benedict-of-nursia" },
+            { "kind": "event", "slug": "great-schism-east-west-split" },
+            { "kind": "person", "slug": "francis-of-assisi" },
+            { "kind": "person", "slug": "thomas-aquinas" }
+          ],
+          "link": { "kind": "event", "slug": "great-schism-east-west-split" }
+        },
+        {
+          "title": "The Bible in every tongue",
+          "body": "Wycliffe has the Bible put into English, and Gutenberg's press makes books for the many. Luther's theses spark the Reformation, Tyndale gives his life to translate the New Testament, and the Catholic Church answers with renewal at the Council of Trent. Scripture reaches ordinary people in their own languages as never before.",
+          "year": 1510, "span": 300,
+          "spotlight": [
+            { "kind": "person", "slug": "john-wycliffe" },
+            { "kind": "event", "slug": "gutenberg-prints-the-bible" },
+            { "kind": "person", "slug": "martin-luther" },
+            { "kind": "person", "slug": "william-tyndale" },
+            { "kind": "event", "slug": "council-of-trent" },
+            { "kind": "event", "slug": "king-james-version-published" }
+          ],
+          "scripture": "Psalm 119:105",
+          "link": { "kind": "event", "slug": "martin-luther-posts-the-95-theses" }
+        },
+        {
+          "title": "Every nation, tribe and tongue",
+          "body": "Revivals stir Britain and America, and missionaries like William Carey carry the gospel and the Bible to new peoples. In the last century the Pentecostal movement spreads worldwide, the Catholic Church gathers at the Second Vatican Council, and Billy Graham preaches to millions. Today most Christians live in Africa, Asia and Latin America, and the story is still being written.",
+          "year": 1840, "span": 380,
+          "spotlight": [
+            { "kind": "person", "slug": "john-wesley" },
+            { "kind": "event", "slug": "william-carey-sails-for-india" },
+            { "kind": "event", "slug": "azusa-street-revival" },
+            { "kind": "event", "slug": "second-vatican-council" },
+            { "kind": "person", "slug": "billy-graham" },
+            { "kind": "event", "slug": "christianity-shifts-to-the-global-south" }
+          ],
+          "scripture": "Revelation 7:9",
+          "link": { "kind": "event", "slug": "christianity-shifts-to-the-global-south" }
+        }
+      ]
+    },
+    {
+      "id": "the-line-of-promise",
+      "title": "The line of promise",
+      "subtitle": "Follow the family line Scripture traces from Adam to Jesus.",
+      "steps": [
+        {
+          "title": "A promised offspring",
+          "body": "After the Fall, God tells the serpent that the woman's offspring will crush his head. From then on Genesis follows one family line with care. It runs from Adam through Seth, the son given in place of Abel.",
+          "year": -3850, "span": 500,
+          "spotlight": [
+            { "kind": "person", "slug": "adam" },
+            { "kind": "person", "slug": "eve" },
+            { "kind": "event", "slug": "the-fall" },
+            { "kind": "person", "slug": "seth" }
+          ],
+          "scripture": "Genesis 3:15",
+          "link": { "kind": "person", "slug": "adam" }
+        },
+        {
+          "title": "Through Noah and Shem",
+          "body": "Generation by generation the line runs down to Noah, who finds grace in the eyes of the Lord. After the Flood, Noah's blessing singles out his son Shem, and the line continues through Shem's descendants.",
+          "year": -2900, "span": 1800,
+          "spotlight": [
+            { "kind": "person", "slug": "seth" },
+            { "kind": "person", "slug": "enoch" },
+            { "kind": "person", "slug": "methuselah" },
+            { "kind": "person", "slug": "noah" },
+            { "kind": "person", "slug": "shem" }
+          ],
+          "scripture": "Genesis 6:8",
+          "link": { "kind": "person", "slug": "noah" }
+        },
+        {
+          "title": "Abraham's seed",
+          "body": "From Shem's line comes Abraham, son of Terah. God promises that in his seed all the nations of the earth will be blessed. The promise is handed on to Isaac and then to Jacob.",
+          "year": -1900, "span": 320,
+          "spotlight": [
+            { "kind": "person", "slug": "terah" },
+            { "kind": "person", "slug": "abraham" },
+            { "kind": "person", "slug": "isaac" },
+            { "kind": "person", "slug": "jacob" }
+          ],
+          "scripture": "Genesis 22:18",
+          "link": { "kind": "person", "slug": "abraham" }
+        },
+        {
+          "title": "The sceptre of Judah",
+          "body": "Of Jacob's twelve sons, the line runs through Judah, and Jacob's blessing says the sceptre will not depart from him. Judah's son Perez, born to Tamar, carries it on; Matthew names Tamar among the ancestors of Jesus.",
+          "year": -1700, "span": 200,
+          "spotlight": [
+            { "kind": "person", "slug": "jacob" },
+            { "kind": "person", "slug": "judah" },
+            { "kind": "person", "slug": "tamar" },
+            { "kind": "person", "slug": "perez" }
+          ],
+          "scripture": "Genesis 49:10",
+          "link": { "kind": "person", "slug": "judah" }
+        },
+        {
+          "title": "The house of David",
+          "body": "In Bethlehem, Boaz marries Ruth the Moabite; their son Obed is the father of Jesse, and Jesse is the father of David. God promises David that his throne will be established forever, and the prophets look for a king from Jesse's root.",
+          "year": -1120, "span": 220,
+          "spotlight": [
+            { "kind": "person", "slug": "boaz" },
+            { "kind": "person", "slug": "ruth" },
+            { "kind": "person", "slug": "obed" },
+            { "kind": "person", "slug": "jesse" },
+            { "kind": "person", "slug": "david" }
+          ],
+          "scripture": "Ruth 4:17",
+          "link": { "kind": "person", "slug": "david" }
+        },
+        {
+          "title": "Through exile and return",
+          "body": "David's line rules in Jerusalem until Babylon, when King Jehoiachin is carried into exile. The line survives in captivity: his son Shealtiel, and then Zerubbabel, who leads exiles home and lays the foundation of the new Temple.",
+          "year": -565, "span": 140,
+          "spotlight": [
+            { "kind": "person", "slug": "jehoiachin" },
+            { "kind": "event", "slug": "babylonian-exile" },
+            { "kind": "person", "slug": "shealtiel" },
+            { "kind": "person", "slug": "zerubbabel" }
+          ],
+          "scripture": "Haggai 2:23",
+          "link": { "kind": "person", "slug": "zerubbabel" }
+        },
+        {
+          "title": "The son of David",
+          "body": "Matthew opens his Gospel with the line from Abraham through David to Joseph, the husband of Mary, of whom Jesus was born. Luke traces it back all the way to Adam. The promise first spoken in the garden finds its fulfilment in him.",
+          "year": -2, "span": 60,
+          "spotlight": [
+            { "kind": "person", "slug": "joseph-of-nazareth" },
+            { "kind": "person", "slug": "mary-mother-of-jesus" },
+            { "kind": "event", "slug": "birth-of-jesus" },
+            { "kind": "person", "slug": "jesus" }
+          ],
+          "scripture": "Matthew 1:1",
+          "link": { "kind": "person", "slug": "jesus" }
+        }
+      ]
+    }
+  ]
+}

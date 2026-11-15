@@ -1,0 +1,200 @@
+{
+  "discoveries": [
+    {
+      "id": "noah-abraham",
+      "a": "noah",
+      "b": "abraham",
+      "headline": "Noah died {gap} before Abraham was born.",
+      "body": "Genesis 11 traces the family line from Noah’s son Shem down to Abraham. On Ussher’s reckoning the man of the ark and the father of the faithful very nearly shared the world."
+    },
+    {
+      "id": "methuselah-noah",
+      "a": "methuselah",
+      "b": "noah",
+      "headline": "Methuselah’s life overlapped his grandson Noah’s for {years}.",
+      "body": "Methuselah is the longest-lived man in Scripture, and Ussher dates his death to the very year the Flood came."
+    },
+    {
+      "id": "shem-abraham",
+      "a": "shem",
+      "b": "abraham",
+      "headline": "Shem, who came through the Flood, shared {years} with Abraham.",
+      "body": "Shem stands at the head of the line that Genesis 11 follows down to Abraham, so the call of Abraham happened within the lifetime of a survivor of the ark."
+    },
+    {
+      "id": "paul-jesus",
+      "a": "paul",
+      "b": "jesus",
+      "headline": "Paul’s life overlapped Jesus’ for {years}.",
+      "body": "Nothing records that they met before the crucifixion. Paul describes his meeting with the risen Christ on the road to Damascus as the turning point of his life."
+    },
+    {
+      "id": "augustine-jerome",
+      "a": "augustine-of-hippo",
+      "b": "jerome",
+      "headline": "Augustine and Jerome shared {years}.",
+      "body": "They never met in person, but they wrote to each other across the Mediterranean for years, sometimes warmly and sometimes in sharp disagreement."
+    },
+    {
+      "id": "adam-lamech",
+      "a": "adam",
+      "b": "lamech",
+      "headline": "Adam was still alive for the first {years} of Lamech’s life.",
+      "body": "Lamech was Noah’s father, so a single life links the first man to the man who built the ark."
+    },
+    {
+      "id": "malachi-jesus",
+      "a": "malachi",
+      "b": "jesus",
+      "headline": "About four centuries lie between Malachi and the birth of Jesus.",
+      "body": "Malachi closes the prophets in Protestant Bibles, and no canonical prophet speaks again until John the Baptist. Catholic and Orthodox Bibles include books from the centuries between, such as Maccabees."
+    },
+    {
+      "id": "wesley-edwards",
+      "a": "john-wesley",
+      "b": "jonathan-edwards",
+      "headline": "John Wesley and Jonathan Edwards shared {years}.",
+      "body": "Both were caught up in the revivals of the 1730s and 1740s, Wesley in Britain and Edwards in New England, and Wesley published abridged editions of Edwards’s writings."
+    },
+    {
+      "id": "hus-luther",
+      "a": "jan-hus",
+      "b": "martin-luther",
+      "headline": "Jan Hus was burned at Constance {gap} before Martin Luther was born.",
+      "body": "When Luther read Hus a century later he wrote, “We are all Hussites without knowing it.”"
+    },
+    {
+      "id": "isaiah-hezekiah",
+      "a": "isaiah",
+      "b": "hezekiah",
+      "headline": "Isaiah was already a prophet in Jerusalem when Hezekiah, the king he would counsel, was born.",
+      "body": "Their stories meet in 2 Kings 19 and 20 and in Isaiah 36 to 39, when Assyria besieged Jerusalem and Hezekiah fell ill."
+    },
+    {
+      "id": "seth-noah",
+      "a": "seth",
+      "b": "noah",
+      "headline": "Seth, Adam’s son, died {gap} before Noah was born.",
+      "body": "In the genealogy of Genesis 5 the long lives of the first generations overlap one another almost all the way down to the Flood."
+    },
+    {
+      "id": "john-the-baptist-jesus",
+      "a": "john-the-baptist",
+      "b": "jesus",
+      "headline": "John the Baptist and Jesus shared {years}.",
+      "body": "Luke tells of their mothers meeting while both were expecting, and John later baptised Jesus in the Jordan."
+    },
+    {
+      "id": "shem-isaac",
+      "a": "shem",
+      "b": "isaac",
+      "headline": "Shem’s life overlapped Isaac’s for {years}.",
+      "body": "A man who had lived before the Flood was still alive in the lifetime of Isaac, the child of the promise."
+    },
+    {
+      "id": "daniel-ezekiel",
+      "a": "daniel",
+      "b": "ezekiel",
+      "headline": "Daniel and Ezekiel lived through {years} of the same history.",
+      "body": "Both were exiles in Babylon, and Ezekiel names Daniel as a byword for righteousness alongside Noah and Job (Ezekiel 14:14)."
+    },
+    {
+      "id": "abraham-jacob",
+      "a": "abraham",
+      "b": "jacob",
+      "headline": "Abraham was alive for the first {years} of his grandson Jacob’s life.",
+      "body": "Genesis never shows them together, but on Ussher’s dates their lives overlapped."
+    },
+    {
+      "id": "adam-noah",
+      "a": "adam",
+      "b": "noah",
+      "headline": "Adam died {gap} before Noah was born.",
+      "body": "Noah’s father Lamech was born while Adam was still alive, so the gap between the first man and the man of the ark was bridged by a single life."
+    },
+    {
+      "id": "paul-peter",
+      "a": "paul",
+      "b": "peter",
+      "headline": "Paul and Peter shared {years}.",
+      "body": "Here Scripture does record meetings: Paul visited Peter in Jerusalem, and later opposed him to his face in Antioch (Galatians 1 and 2)."
+    },
+    {
+      "id": "luther-calvin",
+      "a": "martin-luther",
+      "b": "john-calvin",
+      "headline": "Martin Luther and John Calvin shared {years}.",
+      "body": "They never met. Calvin, a generation younger, wrote of Luther with deep respect even where they disagreed."
+    },
+    {
+      "id": "joseph-moses",
+      "a": "joseph",
+      "b": "moses",
+      "headline": "Joseph died {gap} before Moses was born.",
+      "body": "Exodus opens with a new king over Egypt “which knew not Joseph” (Exodus 1:8). In between, Jacob’s family had grown into a people."
+    },
+    {
+      "id": "jeremiah-daniel",
+      "a": "jeremiah",
+      "b": "daniel",
+      "headline": "Jeremiah and Daniel shared {years}.",
+      "body": "Jeremiah stayed in Judah while Daniel was taken to Babylon. Daniel later read Jeremiah’s prophecy of seventy years of exile (Daniel 9:2)."
+    },
+    {
+      "id": "john-polycarp",
+      "a": "john-the-apostle",
+      "b": "polycarp-of-smyrna",
+      "headline": "The apostle John and Polycarp shared {years}.",
+      "body": "Irenaeus, who heard Polycarp preach as a boy, wrote that Polycarp had been taught by John, a living thread from the apostles to the second century."
+    },
+    {
+      "id": "ruth-david",
+      "a": "ruth",
+      "b": "david",
+      "headline": "Ruth the Moabite was King David’s great-grandmother.",
+      "body": "The book of Ruth closes with a short genealogy: Obed, the father of Jesse, the father of David."
+    },
+    {
+      "id": "herod-jesus",
+      "a": "herod-the-great",
+      "b": "jesus",
+      "headline": "Herod the Great and Jesus shared just {years}.",
+      "body": "Matthew records Herod’s attempt to find the child born in Bethlehem, and the family’s flight into Egypt until Herod died."
+    },
+    {
+      "id": "enosh-noah",
+      "a": "enosh",
+      "b": "noah",
+      "headline": "Enosh, Adam’s grandson, lived into the first {years} of Noah’s life.",
+      "body": "Genesis 4 says that in the days of Enosh people began to call on the name of the Lord."
+    },
+    {
+      "id": "gutenberg-luther",
+      "a": "johannes-gutenberg",
+      "b": "martin-luther",
+      "headline": "Johannes Gutenberg died {gap} before Martin Luther was born.",
+      "body": "Luther’s writings went on to spread across Europe on the printing presses that Gutenberg’s work made possible."
+    },
+    {
+      "id": "wycliffe-hus",
+      "a": "john-wycliffe",
+      "b": "jan-hus",
+      "headline": "John Wycliffe and Jan Hus shared {years}.",
+      "body": "They never met, but Wycliffe’s writings travelled from Oxford to Prague and shaped Hus’s preaching."
+    },
+    {
+      "id": "eber-jacob",
+      "a": "eber",
+      "b": "jacob",
+      "headline": "Eber, the ancestor of the Hebrews, shared {years} with Jacob.",
+      "body": "Genesis 10 and 11 trace the line from Shem through Eber to Abraham, and from Abraham to Isaac and Jacob."
+    },
+    {
+      "id": "lewis-bonhoeffer",
+      "a": "c-s-lewis",
+      "b": "dietrich-bonhoeffer",
+      "headline": "C. S. Lewis and Dietrich Bonhoeffer shared {years}.",
+      "body": "One spoke to Britain over the wartime radio while the other resisted the Nazi regime from inside Germany. Their lives ran side by side; nothing records that they met."
+    }
+  ]
+}

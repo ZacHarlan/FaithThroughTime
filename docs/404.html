@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Page not found — Faith Through Time</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/icons/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..600,0..100;1,9..144,300..600,0..100&family=Hanken+Grotesk:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="/css/base.css">
+<style>html,body{height:auto}</style>
+<script>
+// An old-style /person/<slug> or /event/<slug> path that has no page goes to the app.
+var m = location.pathname.match(/^\/(person|event)\/([^/]+)/);
+if (m) location.replace('/#/' + m[1] + '/' + m[2]);
+</script>
+</head>
+<body>
+<main class="page">
+<p class="eyebrow">Not found</p>
+<h1 class="display">This page is <em>not on the map</em></h1>
+<p class="lede">The link may be old or mistyped. The whole story is one click away.</p>
+<p style="margin-top:var(--s5)"><a class="btn btn-primary" href="/">Go to the timeline</a></p>
+</main>
+</body>
+</html>

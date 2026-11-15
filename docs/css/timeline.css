@@ -1,0 +1,195 @@
+/* timeline.css — the timeline view (js/timeline.js).
+   The marks are drawn on a canvas; this styles the frame around it: the
+   footer (era, minimap, controls), the year readouts, the hover card, the
+   "Alive in" panel and the filter popover. --tl-ribbon is set from JS. */
+
+.tl {
+    --tl-ribbon: 30px;
+    --tl-foot-h: 68px;
+    position: absolute; inset: 0;
+    display: grid; grid-template-rows: minmax(0, 1fr) auto;
+    background: var(--bg);
+}
+
+/* ── Stage ──────────────────────────────────────────────────────────── */
+.tl-stage { position: relative; min-height: 0; overflow: hidden; }
+.tl-canvas {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    touch-action: none; cursor: grab; outline: none;
+    -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent;
+}
+.tl-canvas:focus-visible { box-shadow: inset 0 0 0 2px var(--gold); border-radius: 0; }
+.tl-stage.is-over-item .tl-canvas { cursor: pointer; }
+.tl-stage.is-dragging .tl-canvas { cursor: grabbing; }
+
+/* ── Year readouts ──────────────────────────────────────────────────── */
+.tl-readout {
+    position: absolute; top: calc(var(--tl-ribbon) + 8px); left: 0; z-index: 3;
+    padding: 3px 10px; border-radius: var(--r-pill);
+    background: var(--bg-1); border: 1px solid var(--line-strong);
+    font-size: var(--fs-xs); font-weight: 600; color: var(--text); white-space: nowrap;
+    pointer-events: none; box-shadow: 0 4px 14px rgba(0, 0, 0, .18);
+    /* Centred on --x, clamped 6px inside the stage; set from timeline.js positionReadout. */
+    transform: translate3d(clamp(6px, calc(var(--x, 0px) - 50%), calc(var(--stage-w, 100vw) - 100% - 6px)), 0, 0);
+}
+.tl-readout-pin { border-color: var(--gold); color: var(--gold-bright); background: color-mix(in srgb, var(--bg-1) 88%, var(--gold)); }
+
+/* ── Hover card ─────────────────────────────────────────────────────── */
+.tl-card {
+    position: absolute; top: 0; left: 0; z-index: 6;
+    width: min(300px, calc(100% - 20px));
+    padding: var(--s3) var(--s4) var(--s4);
+    background: color-mix(in srgb, var(--bg-1) 94%, transparent);
+    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+    border: 1px solid var(--line-strong); border-radius: var(--r-md);
+    box-shadow: var(--shadow);
+    pointer-events: none;
+}
+.tl-card-kind {
+    display: flex; align-items: center; gap: var(--s2);
+    font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--text-dim);
+}
+.tl-card-dot { width: 8px; height: 8px; transform: rotate(45deg); background: var(--fam); flex: none; }
+.tl-card-name {
+    margin-top: 4px;
+    font-family: var(--font-display); font-size: 1.2rem; line-height: 1.15; letter-spacing: -.01em;
+    font-variation-settings: 'opsz' 48;
+}
+.tl-card-dates { margin-top: 2px; font-size: var(--fs-sm); color: var(--text); }
+.tl-card-len { color: var(--text-dim); }
+.tl-card-desc { margin-top: var(--s2); font-size: var(--fs-sm); line-height: 1.45; color: var(--text-dim); text-wrap: pretty; }
+
+/* ── "Alive in" panel ───────────────────────────────────────────────── */
+.tl-yearpanel {
+    position: absolute; top: calc(var(--tl-ribbon) + 44px); left: 0; z-index: 5;
+    width: 320px; max-height: calc(100% - var(--tl-ribbon) - 64px);
+    overflow: auto; overscroll-behavior: contain;
+    padding: var(--s4) var(--s4) var(--s3);
+    background: var(--bg-1); border: 1px solid var(--line-strong); border-radius: var(--r-lg);
+    box-shadow: var(--shadow);
+    animation: rise var(--t-med) var(--ease-out) both;
+}
+.tl-yp-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--s2); margin-bottom: var(--s3); }
+.tl-yp-head .icon-btn { margin: -10px -10px 0 0; }
+.tl-yp-title { font-size: 1.45rem; margin-top: 2px; }
+.tl-yp-title .year { color: var(--gold-bright); }
+.tl-yp-list { display: flex; flex-wrap: wrap; gap: var(--s2); }
+.tl-yp-list .chip { min-height: 34px; }
+.tl-yp-empty { color: var(--text-dim); font-size: var(--fs-sm); }
+.tl-yp-note { margin-top: var(--s3); font-size: var(--fs-xs); color: var(--text-dim); }
+.tl-yp-note a { color: var(--gold); text-decoration: underline; text-underline-offset: 2px; }
+
+/* ── Footer: era, minimap, controls ─────────────────────────────────── */
+.tl-foot {
+    position: relative; z-index: 4;
+    display: grid; grid-template-columns: minmax(180px, 340px) minmax(0, 1fr) auto;
+    align-items: center; gap: var(--s5);
+    height: var(--tl-foot-h); padding: 0 var(--s3) 0 var(--gutter);
+    border-top: 1px solid var(--line);
+    background: var(--bg);
+}
+
+/* The era under the centre of the view: large, quiet display type. */
+.tl-era {
+    --era-c: var(--gold);
+    display: flex; flex-direction: column; align-items: flex-start; min-width: 0;
+    text-align: left; padding: 4px 8px 4px 0; border-radius: var(--r-sm);
+}
+.tl-era-dates { color: color-mix(in srgb, var(--era-c) 75%, var(--text)); font-size: 10.5px; white-space: nowrap; }
+:root[data-theme='light'] .tl-era-dates { color: color-mix(in srgb, var(--era-c) 60%, #000); }
+.tl-era-name {
+    max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    font-family: var(--font-display); font-size: 1.6rem; line-height: 1.1; letter-spacing: -.015em;
+    font-variation-settings: 'opsz' 144, 'SOFT' 50; color: var(--text);
+    transition: color var(--t-fast) var(--ease);
+}
+.tl-era:hover .tl-era-name { color: var(--gold-bright); }
+
+.tl-mini { position: relative; height: 40px; min-width: 0; }
+.tl-mini-canvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; border-radius: 4px; }
+
+.tl-controls { display: flex; align-items: center; gap: 2px; }
+.tl-kinds { display: flex; gap: 4px; margin-right: 4px; }
+.tl-sep { width: 1px; height: 24px; background: var(--line); margin: 0 var(--s2); }
+
+.tl-toggle {
+    display: inline-flex; align-items: center; gap: 6px;
+    min-height: 36px; padding: 0 12px; border-radius: var(--r-pill);
+    border: 1px solid var(--line); color: var(--text-dim);
+    font-size: var(--fs-sm); font-weight: 500; white-space: nowrap;
+    transition: background var(--t-fast) var(--ease), color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease);
+}
+.tl-toggle:hover { background: var(--bg-3); color: var(--text); }
+.tl-toggle[aria-pressed='true'] { color: var(--text); border-color: var(--line-strong); background: var(--bg-1); }
+.tl-toggle[aria-pressed='false'] { border-style: dashed; }
+.tl-toggle[aria-pressed='false'] .icon { opacity: .5; }
+.tl-filter-btn.is-on { color: var(--gold-bright); border-color: var(--gold); background: var(--gold-soft); }
+
+/* ── Filter popover ─────────────────────────────────────────────────── */
+.tl-filter {
+    position: absolute; right: var(--s3); bottom: calc(var(--tl-foot-h) + 10px); z-index: 20;
+    width: 340px; max-height: calc(100% - var(--tl-foot-h) - 24px); overflow: auto;
+    padding: var(--s4);
+    background: var(--bg-1); border: 1px solid var(--line-strong); border-radius: var(--r-lg);
+    box-shadow: var(--shadow);
+    animation: rise var(--t-med) var(--ease-out) both;
+}
+.tl-filter-head { display: flex; align-items: center; justify-content: space-between; margin: -6px -8px var(--s2) 0; }
+.tl-filter-kinds { display: none; gap: var(--s2); margin-bottom: var(--s3); }
+.tl-fam-list { display: grid; gap: 2px; }
+.tl-fam {
+    display: grid; grid-template-columns: 10px 1fr auto; align-items: center; gap: var(--s3);
+    width: 100%; min-height: 44px; padding: 6px 10px; border-radius: var(--r-md);
+    border: 1px solid transparent; text-align: left;
+    transition: background var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease);
+}
+.tl-fam:hover { background: var(--bg-3); }
+.tl-fam[aria-pressed='true'] { background: color-mix(in srgb, var(--fam) 14%, var(--bg-1)); border-color: color-mix(in srgb, var(--fam) 55%, transparent); }
+.tl-fam-dot { width: 9px; height: 9px; transform: rotate(45deg); background: var(--fam); }
+.tl-fam-names { font-size: var(--fs-sm); line-height: 1.3; color: var(--text); }
+.tl-fam-n { font-size: var(--fs-xs); color: var(--text-dim); }
+.tl-filter-foot { display: flex; align-items: center; justify-content: space-between; gap: var(--s3); margin-top: var(--s3); padding-top: var(--s3); border-top: 1px solid var(--line); }
+.tl-filter-hint { font-size: var(--fs-xs); color: var(--text-dim); }
+.tl-filter-foot .btn:disabled { opacity: .45; cursor: default; }
+
+/* ── First-visit hint ───────────────────────────────────────────────── */
+.tl-hint {
+    position: absolute; left: 50%; bottom: var(--s5); z-index: 4;
+    transform: translateX(-50%);
+    max-width: calc(100% - 32px); padding: 8px 16px; border-radius: var(--r-pill);
+    background: color-mix(in srgb, var(--bg-1) 88%, transparent);
+    -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+    border: 1px solid var(--line); color: var(--text-dim);
+    font-size: var(--fs-sm); text-align: center; pointer-events: none;
+    opacity: 0; transition: opacity var(--t-slow) var(--ease);
+}
+.tl-hint.is-in { opacity: 1; transition-delay: .5s; }
+
+/* ── Phones ─────────────────────────────────────────────────────────── */
+@media (max-width: 760px) {
+    .tl { --tl-foot-h: 92px; }
+    .tl-foot {
+        grid-template-columns: minmax(0, 1fr) auto;
+        grid-template-areas: 'era controls' 'mini mini';
+        align-content: center; row-gap: 6px; column-gap: var(--s2);
+        padding: 4px var(--s3) 8px var(--s4);
+    }
+    .tl-era { grid-area: era; }
+    .tl-era-name { font-size: 1.2rem; }
+    .tl-mini { grid-area: mini; height: 24px; }
+    .tl-controls { grid-area: controls; }
+    .tl-kinds, .tl-sep { display: none; }
+    .tl-filter-btn { position: relative; width: 44px; min-height: 44px; padding: 0; justify-content: center; border-color: transparent; background: none; }
+    .tl-filter-btn .tl-filter-label { display: none; }
+    .tl-filter-btn.is-on::after { content: ''; position: absolute; top: 8px; right: 8px; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+    .tl-filter { left: var(--s3); right: var(--s3); width: auto; }
+    .tl-filter-kinds { display: flex; }
+    .tl-filter-kinds .tl-toggle { flex: 1; justify-content: center; min-height: 44px; }
+
+    .tl-yearpanel {
+        top: auto; bottom: 10px; left: var(--s3) !important; right: var(--s3); width: auto;
+        max-height: 48%;
+    }
+    .tl-card { display: none; }
+    .tl-hint { bottom: var(--s4); font-size: var(--fs-xs); border-radius: var(--r-md); }
+}

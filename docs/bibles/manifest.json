@@ -1,16 +1,16 @@
 {
   "versions": [
     {
-      "id": "kjv",
-      "label": "King James Version",
-      "short": "KJV",
-      "publicDomain": true
-    },
-    {
       "id": "esv",
       "label": "English Standard Version",
       "short": "ESV",
       "publicDomain": false
+    },
+    {
+      "id": "kjv",
+      "label": "King James Version",
+      "short": "KJV",
+      "publicDomain": true
     },
     {
       "id": "niv",
