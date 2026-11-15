@@ -407,7 +407,9 @@ const MapView = (() => {
 
     // ── Picker ──────────────────────────────────────────────────────────
     function picker() {
-        const cards = Store.journeys.map(j => {
+        // In story order: by each journey's earliest stop.
+        const first = j => Math.min(...j.stops.map(s => s.year ?? Infinity));
+        const cards = Store.journeys.slice().sort((a, b) => first(a) - first(b) || a.id - b.id).map(j => {
             const people = travellers(j);
             const names = people.slice(0, 3).map(p => p.name).join(', ');
             const more = people.length > 3 ? ` and ${people.length - 3} more` : '';

@@ -9,7 +9,7 @@
 // build-static.py replaces both names with content hashes: CACHE_NAME from the app's own
 // files, LIBRARY_CACHE from bibles/ and vendor/, so each is invalidated only by a change
 // to what it holds.
-const CACHE_NAME = 'ftt-7c745f09a75e';
+const CACHE_NAME = 'ftt-15591e5a2b04';
 const LIBRARY_CACHE = 'ftt-library-92bf78582589';
 
 const SHELL = [
