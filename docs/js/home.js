@@ -446,7 +446,7 @@
                         'See for yourself', UI.icon('arrow-right', 'icon-sm')),
                     h('a', { class: 'btn btn-quiet', href: '#/meet' }, 'Try any two people')),
                 h('p', { class: 'discovery-note' },
-                    'Dates follow Ussher’s chronology. ',
+                    'Dates follow Scripture first, then Ussher’s chronology. ',
                     h('a', { href: '#/about' }, 'How the dates are chosen'))),
             lifeBars(o, { className: 'discovery-bars' }));
     }
@@ -647,7 +647,7 @@
                 h('div', { class: 'home-foot-body', dataset: { reveal: '' } },
                     h('h2', { class: 'home-foot-title' }, 'How the dates are chosen'),
                     h('p', { class: 'home-foot-text' },
-                        'Old Testament dates follow James Ussher’s chronology, one respected reckoning among several, so that every life sits on the same calendar. Each date carries a label saying how sure anyone can be, from anchored in outside records to handed down by tradition.'),
+                        'The Bible’s own figures come first. Where Scripture does not fix a year, the timeline follows James Ussher’s chronology, so that every life sits on the same calendar. Each date carries a label saying how sure anyone can be, from anchored in outside records to handed down by tradition.'),
                     h('a', { class: 'btn btn-quiet home-foot-link', href: '#/about' },
                         'Read about the dates and sources', UI.icon('arrow-right', 'icon-sm'))),
                 h('p', { class: 'home-colophon' },

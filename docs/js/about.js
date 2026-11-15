@@ -110,8 +110,8 @@
             [Store.event('the-exodus'), Store.dates, 'the Exodus']
         ].filter(([x]) => x).map(([x, when, label]) => h('span', null, link(x, label), ' in ', h('span', { class: 'year' }, when(x))));
         return [
-            p('For the Old Testament the timeline follows the chronology of James Ussher, the seventeenth-century Archbishop of Armagh, published in his ',
-                h('cite', null, 'Annales'), ' (1650; in English as ', h('cite', null, 'The Annals of the World'), ', 1658). Ussher added up the ages and reign lengths given in the Hebrew (Masoretic) text of the Bible and tied the total to an anchor in recorded history.'),
+            p('Scripture is the authority. Where the Bible gives ages, reign lengths and intervals, those figures set the dates. Where it does not fix a year, the timeline follows the chronology of James Ussher, the seventeenth-century Archbishop of Armagh, published in his ',
+                h('cite', null, 'Annales'), ' (1650; in English as ', h('cite', null, 'The Annals of the World'), ', 1658). Ussher added up the ages and reign lengths given in the Hebrew (Masoretic) text of the Bible and tied the total to an anchor in recorded history. His reckoning also dates the foreign kings, the years between the Testaments, and the New Testament to AD 73; church history after that uses standard historical dates.'),
             anchors.length ? p('His reckoning places ', list(anchors), '.') : null
         ];
     }
