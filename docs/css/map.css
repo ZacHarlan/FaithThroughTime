@@ -6,7 +6,10 @@
     background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
     background-size: 64px 64px;
 }
-.leaflet-container { font-family: var(--font-ui); background: var(--bg-2); outline: none; }
+/* Scoped under .map-root: leaflet.css loads after this file (on first visit to the map), so an
+   unscoped rule loses to its light grey #ddd, which then shows through the hairline seams between
+   tiles as bright lines on the dark map. */
+.map-root .leaflet-container { font-family: var(--font-ui); background: var(--bg-2); outline: none; }
 
 /* ── Base map, tuned per theme ─────────────────────────────────────── */
 /* Dark: relief inverted into a desaturated night map. Light: warm parchment. */
