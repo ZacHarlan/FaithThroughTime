@@ -714,38 +714,45 @@ const Family = (() => {
                 label(sibNodes.length > 1 ? 'Siblings' : 'Sibling', leftmost.x - leftmost.w / 2, leftmost.y + leftmost.h / 2 + 16, 'left');
             }
 
-            // Spouses: stacked to the right, joined by a brace.
+            // Spouses: stacked to the right, joined by a brace. A stack no taller than the
+            // centre is centred on it; a taller one (David's wives) starts level with the
+            // centre's top and grows downward, so it never reaches up into the parents.
             const sps = Store.spouses(c);
             const spX = SIZE.centre.w / 2 + GAP_SIDE + SIZE.spouse.w / 2;
             const pitch = Math.max(SIZE.spouse.h, ...sps.map(s => fit(s, 'spouse', SIZE.spouse).h)) + GAP_STACK;
+            const stackH = sps.length * pitch - GAP_STACK;
+            const stackTop = stackH <= centreH ? -stackH / 2 : -centreH / 2;
             sps.forEach((s, i) => {
-                const y = (i - (sps.length - 1) / 2) * pitch;
+                const y = stackTop + i * pitch + (pitch - GAP_STACK) / 2;
                 const n = add(s, 'spouse', spX, y, fit(s, 'spouse', SIZE.spouse), { row: 0 });
                 const a = SIZE.centre.w / 2, b = n.x - n.w / 2, m = a + GAP_SIDE / 2;
                 paths.push({ d: `M${a},0 C${m},0 ${m},${y} ${b},${y}`, cls: 'pair' });
             });
-            if (sps.length) {
-                const topY = (-(sps.length - 1) / 2) * pitch - (pitch - GAP_STACK) / 2;
-                label(sps.length > 1 ? 'Spouses' : 'Spouse', spX - SIZE.spouse.w / 2, topY - 14, 'left');
-            }
+            if (sps.length) label(sps.length > 1 ? 'Spouses' : 'Spouse', spX - SIZE.spouse.w / 2, stackTop - 14, 'left');
 
-            // Children in a row below; each child's own children stacked under it.
+            // Children in a row below; each child's own children stacked under it. The row
+            // drops below the spouses when the two would overlap.
             const kids = collapse(Store.children(c), LIMIT.children, 'children');
             const cols = kids.shown.length + (kids.hidden ? 1 : 0);
             const colW = SIZE.node.w + GAP_COL;
             const colX = i => (i - (cols - 1) / 2) * colW;
+            const rowRight = colX(cols - 1) + SIZE.node.w / 2;
+            const underSpouses = sps.length && rowRight > spX - SIZE.spouse.w / 2 - GAP_COL;
+            const kidY = underSpouses
+                ? Math.max(childY(), stackTop + stackH + GAP_ROW / 2 + 14 + SIZE.node.h / 2)
+                : childY();
             kids.shown.forEach((k, i) => {
-                const n = add(k, 'child', colX(i), childY(), fit(k, 'child', SIZE.node), { row: 1, up: centre, down: null });
+                const n = add(k, 'child', colX(i), kidY, fit(k, 'child', SIZE.node), { row: 1, up: centre, down: null });
                 curve(bottomOf(centre), topOf(n));
                 grandchildren(n);
             });
             if (kids.hidden) {
-                const n = add(null, 'more', colX(cols - 1), childY(), SIZE.more, {
+                const n = add(null, 'more', colX(cols - 1), kidY, SIZE.more, {
                     key: 'more-children', group: 'children', count: kids.hidden, row: 1, up: centre, what: 'children'
                 });
                 curve(bottomOf(centre), topOf(n), 'more');
             }
-            if (cols) label(cols > 1 ? 'Children' : 'Child', colX(0) - SIZE.node.w / 2, childY() - SIZE.node.h / 2 - 14, 'left');
+            if (cols) label(cols > 1 ? 'Children' : 'Child', colX(0) - SIZE.node.w / 2, kidY - SIZE.node.h / 2 - 14, 'left');
 
             function grandchildren(child) {
                 const list = collapse(Store.children(child.person), LIMIT.grandchildren, `gc-${child.person.id}`);
