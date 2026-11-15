@@ -11,3 +11,21 @@ using Xunit;
 // integration test deterministic. All tests are read-only, so sequential execution costs us
 // nothing functionally and trades a small amount of wall time for stability.
 [assembly: CollectionBehavior(DisableTestParallelization = true)]
+
+namespace BibleTimeline.Tests
+{
+    internal static class FreshDatabase
+    {
+        // Integration tests open bin/.../faith-through-time.db, which the app seeds only when empty.
+        // A database left over from an earlier run would silently test an old seed, so remove it
+        // (and its -wal/-shm/-journal files) before any test host starts.
+        [System.Runtime.CompilerServices.ModuleInitializer]
+        internal static void DeleteStaleDatabase()
+        {
+            foreach (var f in Directory.GetFiles(AppContext.BaseDirectory, "faith-through-time.db*"))
+            {
+                try { File.Delete(f); } catch (IOException) { /* in use: leave it */ }
+            }
+        }
+    }
+}

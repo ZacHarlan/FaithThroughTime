@@ -1,6 +1,27 @@
 using BibleTimeline.Web.Data;
 using BibleTimeline.Web.Endpoints;
 
+// Export mode: --export-dataset <path> writes the dataset JSON and exits without starting the server.
+var exportIdx = Array.IndexOf(args, "--export-dataset");
+if (exportIdx >= 0)
+{
+    if (exportIdx + 1 >= args.Length)
+    {
+        Console.Error.WriteLine("--export-dataset requires an output path.");
+        return 2;
+    }
+    var outPath = Path.GetFullPath(args[exportIdx + 1]);
+    var exportConn = $"Data Source={Path.Combine(AppContext.BaseDirectory, "faith-through-time.db")}";
+    new DatabaseInitializer(exportConn).Initialize();
+    var exportDb = new BibleTimelineDb(exportConn);
+    var bytes = await exportDb.GetDatasetJsonAsync();
+    var dir = Path.GetDirectoryName(outPath);
+    if (!string.IsNullOrEmpty(dir)) Directory.CreateDirectory(dir);
+    await File.WriteAllBytesAsync(outPath, bytes);
+    Console.WriteLine($"Wrote dataset ({bytes.Length / 1024.0:F1} KB) to {outPath}");
+    return 0;
+}
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Database
@@ -32,8 +53,10 @@ app.MapEventEndpoints();
 app.MapSearchEndpoints();
 app.MapLineageEndpoints();
 app.MapMapEndpoints();
+app.MapDatasetEndpoints();
 
 app.Run();
+return 0;
 
 // Make Program accessible for WebApplicationFactory in tests
 public partial class Program { }
