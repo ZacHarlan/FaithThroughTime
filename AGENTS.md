@@ -162,6 +162,9 @@ Counts are of the current seed; `agent-status.sh` prints live ones.
      meet the biblical record, the Persian and intertestamental periods, open identifications (e.g. Ahasuerus), and
      New Testament events up to AD 73 (where the Annals end).
   3. Standard history only where neither speaks (church history, people Ussher does not mention).
+  **Owner's exceptions to Ussher (2026-11-15):** Esther's Ahasuerus is Xerxes I, so the Persian kings from Darius I on
+  (and Esther, Ezra, Nehemiah, Malachi) keep standard dates; Sennacherib died in 681 BC as modern history has it, so the
+  Assyrian line keeps modern dates (Sargon II his father, Esarhaddon 681-669). Their notes give Ussher's years.
   Where Ussher departs from Scripture's plain figures, Scripture wins and `date_notes` gives Ussher's figure; modern
   scholarly dates may be noted but never set a row's years. There is one chronology; do not mix systems. There is no
   year 0 (1 BC is `-1`, AD 1 is `1`). The Annals text and a search tool used for proofing live outside the repo.

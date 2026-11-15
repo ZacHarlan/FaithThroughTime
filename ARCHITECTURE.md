@@ -80,7 +80,8 @@ references, 18 time periods, 66 books and 5 journeys.
 
 - **One chronology: the Bible first, Ussher second.** Scripture's own figures govern; where Scripture does not fix a
   year, Ussher's *Annals of the World* does (foreign rulers, the Persian and intertestamental periods and New Testament
-  events to AD 73 included); standard history only after the Annals end. Anchors the tests check: Creation 4004 BC, Flood 2349 BC, Abraham born 1996 BC, Exodus 1491 BC, kingdom divides
+  events to AD 73 included); standard history only after the Annals end. The owner's exceptions: Esther's Ahasuerus is
+  Xerxes I (Persian kings from Darius I on use standard dates) and Sennacherib died in 681 BC (modern Assyrian dates). Anchors the tests check: Creation 4004 BC, Flood 2349 BC, Abraham born 1996 BC, Exodus 1491 BC, kingdom divides
   975 BC, fall of Jerusalem 588 BC. Differences from mainstream scholarship are written in `date_notes`.
 - **Explicit stable ids.** Rows carry explicit ids so links, slugs' tie-breaks, shared URLs and tests do not shift when
   rows are added. The seed is a single transaction with deferred foreign keys.
