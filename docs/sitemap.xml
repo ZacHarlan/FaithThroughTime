@@ -269,7 +269,6 @@
   <url><loc>https://faiththroughtime.com/person/abednego/</loc></url>
   <url><loc>https://faiththroughtime.com/person/neri/</loc></url>
   <url><loc>https://faiththroughtime.com/person/jehoiachin/</loc></url>
-  <url><loc>https://faiththroughtime.com/person/mordecai/</loc></url>
   <url><loc>https://faiththroughtime.com/person/darius-the-mede/</loc></url>
   <url><loc>https://faiththroughtime.com/person/cyrus/</loc></url>
   <url><loc>https://faiththroughtime.com/person/shealtiel/</loc></url>
@@ -277,20 +276,21 @@
   <url><loc>https://faiththroughtime.com/person/jeshua-the-high-priest/</loc></url>
   <url><loc>https://faiththroughtime.com/person/zerubbabel/</loc></url>
   <url><loc>https://faiththroughtime.com/person/haggai/</loc></url>
-  <url><loc>https://faiththroughtime.com/person/haman/</loc></url>
-  <url><loc>https://faiththroughtime.com/person/vashti/</loc></url>
   <url><loc>https://faiththroughtime.com/person/darius-i/</loc></url>
   <url><loc>https://faiththroughtime.com/person/zechariah-the-prophet/</loc></url>
-  <url><loc>https://faiththroughtime.com/person/esther/</loc></url>
+  <url><loc>https://faiththroughtime.com/person/mordecai/</loc></url>
+  <url><loc>https://faiththroughtime.com/person/vashti/</loc></url>
   <url><loc>https://faiththroughtime.com/person/xerxes/</loc></url>
+  <url><loc>https://faiththroughtime.com/person/haman/</loc></url>
   <url><loc>https://faiththroughtime.com/person/abiud/</loc></url>
   <url><loc>https://faiththroughtime.com/person/ezra/</loc></url>
+  <url><loc>https://faiththroughtime.com/person/esther/</loc></url>
   <url><loc>https://faiththroughtime.com/person/sanballat/</loc></url>
   <url><loc>https://faiththroughtime.com/person/tobiah/</loc></url>
   <url><loc>https://faiththroughtime.com/person/rhesa/</loc></url>
+  <url><loc>https://faiththroughtime.com/person/malachi/</loc></url>
   <url><loc>https://faiththroughtime.com/person/artaxerxes-i/</loc></url>
   <url><loc>https://faiththroughtime.com/person/nehemiah/</loc></url>
-  <url><loc>https://faiththroughtime.com/person/malachi/</loc></url>
   <url><loc>https://faiththroughtime.com/person/eliakim-son-of-abiud/</loc></url>
   <url><loc>https://faiththroughtime.com/person/azor/</loc></url>
   <url><loc>https://faiththroughtime.com/person/philip-ii-of-macedon/</loc></url>
@@ -709,8 +709,8 @@
   <url><loc>https://faiththroughtime.com/event/fall-of-samaria/</loc></url>
   <url><loc>https://faiththroughtime.com/event/hezekiah-s-deliverance/</loc></url>
   <url><loc>https://faiththroughtime.com/event/hezekiah-s-illness-and-the-babylonian-envoys/</loc></url>
-  <url><loc>https://faiththroughtime.com/event/sennacherib-assassinated/</loc></url>
   <url><loc>https://faiththroughtime.com/event/manasseh-s-apostasy/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/sennacherib-assassinated/</loc></url>
   <url><loc>https://faiththroughtime.com/event/manasseh-s-captivity-and-repentance/</loc></url>
   <url><loc>https://faiththroughtime.com/event/jeremiah-s-call/</loc></url>
   <url><loc>https://faiththroughtime.com/event/fall-of-nineveh/</loc></url>
@@ -733,8 +733,8 @@
   <url><loc>https://faiththroughtime.com/event/first-return-under-zerubbabel-and-jeshua/</loc></url>
   <url><loc>https://faiththroughtime.com/event/altar-rebuilt-and-temple-foundation-laid/</loc></url>
   <url><loc>https://faiththroughtime.com/event/haggai-and-zechariah-rouse-the-rebuilding/</loc></url>
-  <url><loc>https://faiththroughtime.com/event/vashti-deposed/</loc></url>
   <url><loc>https://faiththroughtime.com/event/second-temple-built/</loc></url>
+  <url><loc>https://faiththroughtime.com/event/vashti-deposed/</loc></url>
   <url><loc>https://faiththroughtime.com/event/esther-made-queen/</loc></url>
   <url><loc>https://faiththroughtime.com/event/esther-saves-her-people/</loc></url>
   <url><loc>https://faiththroughtime.com/event/ezra-s-return/</loc></url>
