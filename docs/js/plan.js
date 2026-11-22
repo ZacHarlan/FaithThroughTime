@@ -176,7 +176,13 @@ const Plan = (() => {
                 h('p', { class: 'eyebrow' }, `${data.title || 'Reading plan'} · Day ${n} of ${DAYS}`),
                 h('h1', { class: 'display plan-title' }, day.title),
                 h('p', { class: 'plan-date dim' }, `${MONTHS[where.month]} ${where.date} in a year of ${DAYS} days`),
-                extra.length ? h('div', { class: 'plan-actions' }, extra) : null),
+                h('div', { class: 'plan-actions' }, extra,
+                    h('button', { type: 'button', class: 'btn btn-sm', 'data-act': 'print', onclick: () => window.print() },
+                        icon('print', 'icon-sm'), 'Print'),
+                    h('button', {
+                        type: 'button', class: 'btn btn-sm', 'data-act': 'share',
+                        onclick: () => UI.share({ title: `${data.title || 'Reading plan'}: day ${n}`, text: day.title, url: window.location.href })
+                    }, icon('share', 'icon-sm'), 'Share'))),
             h('div', { class: 'plan-body' },
                 h('section', { class: 'plan-today', 'aria-labelledby': 'plan-read-h' },
                     h('h2', { id: 'plan-read-h', class: 'plan-sub' }, 'Read today'),

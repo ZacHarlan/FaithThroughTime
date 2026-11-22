@@ -1,4 +1,4 @@
-/* home.css — the opening page: hero, today's discovery, ways in, eras, footer. */
+/* home.css — the opening page: hero, start here, today, today's discovery, ways in, eras, footer, install bar. */
 
 .home-wrap { width: min(100%, var(--content-w)); margin: 0 auto; padding: 0 var(--gutter); }
 .home-section { padding: clamp(56px, 8vw, 112px) 0 0; }
@@ -266,6 +266,79 @@
 .home-colophon a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--line-strong); }
 .home-colophon a:hover { color: var(--text); }
 
+
+/* ── Start here (first visit) ───────────────────────────────────────── */
+.home-welcome { padding-top: var(--s5); }
+.home-welcome[hidden] { display: none; }
+.welcome {
+    padding: var(--s4) var(--s5) var(--s5);
+    border: 1px solid var(--line); border-radius: var(--r-lg);
+    background: radial-gradient(ellipse 60% 120% at 0% 0%, var(--gold-soft), transparent 70%), var(--bg-1);
+}
+.welcome-head { display: flex; align-items: center; justify-content: space-between; gap: var(--s4); }
+.welcome-title { margin-top: var(--s1); font-size: var(--fs-h2); outline-offset: 4px; }
+.welcome-paths { list-style: none; margin: var(--s4) 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s3); }
+.welcome-path {
+    display: flex; gap: var(--s3); align-items: flex-start; height: 100%;
+    padding: var(--s3) var(--s4);
+    border: 1px solid var(--line); border-radius: var(--r-md); background: var(--bg);
+    transition: border-color var(--t-med) var(--ease), transform var(--t-med) var(--ease-out);
+}
+.welcome-path:hover { border-color: var(--gold); transform: translateY(-2px); }
+.welcome-num { flex: none; font-family: var(--font-display); font-style: italic; font-size: 1.25rem; line-height: 1.2; color: var(--gold); }
+.welcome-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.welcome-name { font-weight: 600; }
+.welcome-text { font-size: var(--fs-sm); line-height: 1.45; color: var(--text-dim); text-wrap: pretty; }
+
+/* ── Today ──────────────────────────────────────────────────────────── */
+.home-today { padding-top: clamp(40px, 6vw, 80px); }
+.home-today[hidden] { display: none; }
+.today-head .display { margin-top: var(--s2); font-size: var(--fs-h1); }
+.today-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: var(--s4); margin-top: var(--s5); }
+.today-slot { display: flex; min-height: 220px; }
+.today-slot:empty { border: 1px dashed var(--line); border-radius: var(--r-lg); }
+.today-grid:has(> .today-slot:only-child) { grid-template-columns: minmax(0, 1fr); }
+.today-card {
+    position: relative; flex: 1; display: flex; flex-direction: column; align-items: flex-start;
+    padding: clamp(22px, 3vw, 36px);
+    border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--bg-1);
+}
+.today-read { background: radial-gradient(ellipse 70% 90% at 100% 0%, var(--gold-soft), transparent 70%), var(--bg-1); }
+.today-eyebrow { display: inline-flex; align-items: center; gap: var(--s2); }
+.today-card-title { margin-top: var(--s3); font-size: clamp(1.4rem, 1.1rem + 1.2vw, 2rem); text-wrap: balance; }
+.today-passages { list-style: none; margin: var(--s4) 0 0; padding: 0; }
+.today-line { margin-top: var(--s3); max-width: 46ch; color: var(--text-dim); text-wrap: pretty; }
+.today-actions { margin-top: auto; padding-top: var(--s5); display: flex; flex-wrap: wrap; gap: var(--s2); }
+
+/* ── Study tools row ────────────────────────────────────────────────── */
+.ways-study {
+    display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--s3) var(--s5); align-items: center;
+    margin-top: var(--s4); padding: var(--s4) var(--s5);
+    border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--bg-1);
+}
+.ways-study-title { font-family: var(--font-display); font-size: 1.25rem; font-weight: 400; font-variation-settings: 'opsz' 72; }
+.ways-study-title a:hover { color: var(--gold); }
+.ways-study-text p { margin-top: var(--s1); font-size: var(--fs-sm); color: var(--text-dim); text-wrap: pretty; }
+.ways-study-links { grid-column: 1; }
+.ways-study-go { grid-column: 2; grid-row: 1 / span 2; margin-top: 0; }
+
+/* ── Quiet footer actions and the install bar ───────────────────────── */
+.home-foot-quiet { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--s2); margin-top: var(--s5); }
+.home-foot-quiet [hidden] { display: none; }
+.install-bar {
+    position: fixed; left: var(--s3); right: var(--s3); bottom: calc(var(--tabbar-h) + var(--s3)); z-index: 70;
+    display: flex; align-items: center; gap: var(--s3);
+    padding: var(--s2) var(--s2) var(--s2) var(--s4);
+    border: 1px solid var(--line-strong); border-radius: var(--r-pill);
+    background: var(--bg-2); box-shadow: var(--shadow);
+    opacity: 0; transform: translateY(16px);
+    transition: opacity var(--t-med) var(--ease), transform var(--t-med) var(--ease-out);
+}
+.install-bar.is-visible { opacity: 1; transform: none; }
+.install-text { flex: 1; min-width: 0; font-size: var(--fs-sm); font-weight: 600; }
+.install-close { flex: none; }
+@media (min-width: 761px) { .install-bar { display: none; } }
+
 /* ── Light theme: era colours are tuned for the dark ground ─────────── */
 :root[data-theme='light'] .mini-era,
 :root[data-theme='light'] .era-card::before { background: color-mix(in srgb, var(--c) 70%, #000); }
@@ -277,6 +350,7 @@
 
 /* ── Sizes ──────────────────────────────────────────────────────────── */
 @media (max-width: 1000px) {
+    .welcome-paths { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .ways-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .way { grid-column: span 1; }
     .way-timeline { grid-column: span 2; }
@@ -290,6 +364,14 @@
     .home-stats { gap: var(--s4) var(--s5); padding-bottom: var(--s5); }
     .home-cue { display: none; }
     .discovery { grid-template-columns: 1fr; }
+    .welcome { padding: var(--s3) var(--s4) var(--s4); }
+    .welcome-paths { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s2); }
+    .welcome-path { flex-direction: column; gap: 2px; padding: var(--s3); }
+    .welcome-text { font-size: var(--fs-xs); }
+    .today-grid { grid-template-columns: 1fr; }
+    .today-slot { min-height: 0; }
+    .ways-study { grid-template-columns: 1fr; padding: var(--s4); }
+    .ways-study-links, .ways-study-go { grid-column: 1; grid-row: auto; }
     .lifebars { --lw: 6.5rem; --lgap: var(--s3); }
     .ways-grid { grid-template-columns: 1fr; }
     .way, .way-timeline { grid-column: auto; }

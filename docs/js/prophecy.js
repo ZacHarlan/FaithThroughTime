@@ -246,13 +246,26 @@ const Prophecy = (() => {
             h('header', { class: 'pr-head rise' },
                 h('p', { class: 'eyebrow' }, 'Spoken, then fulfilled'),
                 h('h1', { class: 'pr-title' }, p.title),
-                h('p', { class: 'lede' }, p.note)),
+                h('p', { class: 'lede' }, p.note),
+                h('div', { class: 'pr-tools pr-share' }, shareTools(p))),
             h('div', { class: 'pr-pair' },
                 column('The prophecy', p.prophecyRefs),
                 h('span', { class: 'pr-arrow', 'aria-hidden': 'true' }, icon('arrow-right')),
                 column('The fulfilment', p.fulfilmentRefs)),
             h('nav', { class: 'pr-pager', 'aria-label': 'Other prophecies' },
                 pagerLink(prev, 'Previous'), pagerLink(next, 'Next'))));
+    }
+
+    // Print and Share for one prophecy.
+    function shareTools(p) {
+        return [
+            h('button', { type: 'button', class: 'btn btn-sm', 'data-act': 'print', onclick: () => window.print() },
+                icon('print', 'icon-sm'), 'Print'),
+            h('button', {
+                type: 'button', class: 'btn btn-sm', 'data-act': 'share',
+                onclick: () => UI.share({ title: p.title, text: `${p.title} — prophecy and fulfilment`, url: window.location.href })
+            }, icon('share', 'icon-sm'), 'Share')
+        ];
     }
 
     function pagerLink(p, text) {

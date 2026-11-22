@@ -6,7 +6,8 @@
 // and event pages use. Router.replace() updates (the timeline's position while panning)
 // emit no 'route' event and so are never counted.
 //
-// Events: page_view, search, share, journey_play, select_translation, theme_change, study_verse.
+// Events: page_view, search, share, journey_play, select_translation, theme_change, study_verse,
+// compare_translation, listen_chapter.
 // Nothing loads off the live hostname (localhost, test runs), so development traffic never
 // reaches the property; events are still recorded in Analytics.log for tests.
 const Analytics = (() => {

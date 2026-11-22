@@ -1,0 +1,2530 @@
+{
+ "books": {
+  "genesis": {
+   "author": "Moses (traditional)",
+   "written": "about 1451 BC",
+   "setting": "The book opens before time as we count it, with the creation in 4004 BC, and closes in Egypt with the death of Joseph in 1635 BC. Its scenes move from Eden and Mesopotamia to Canaan and Egypt.",
+   "summary": "Genesis tells how God made the world and everything in it, how sin entered and spread, and how God began to rescue the world through one family. It follows Abraham, Isaac, Jacob and Joseph, and ends with Israel living in Egypt.",
+   "themes": [
+    "Creation",
+    "The fall and its cost",
+    "The covenant with Abraham",
+    "God's faithfulness to a chosen family",
+    "Providence through suffering"
+   ],
+   "keyVerses": [
+    "Genesis 1:1",
+    "Genesis 3:15",
+    "Genesis 12:1–3",
+    "Genesis 50:20"
+   ],
+   "outline": [
+    {
+     "title": "Creation",
+     "ref": "Genesis 1–2"
+    },
+    {
+     "title": "The fall, and the line to Noah",
+     "ref": "Genesis 3–5"
+    },
+    {
+     "title": "The flood and the tower of Babel",
+     "ref": "Genesis 6–11"
+    },
+    {
+     "title": "Abraham and the promise",
+     "ref": "Genesis 12–24"
+    },
+    {
+     "title": "Isaac, Jacob and Esau",
+     "ref": "Genesis 25–36"
+    },
+    {
+     "title": "Joseph in Egypt",
+     "ref": "Genesis 37–50"
+    }
+   ]
+  },
+  "exodus": {
+   "author": "Moses (traditional)",
+   "written": "about 1451 BC",
+   "setting": "Israel is in Egypt, enslaved, from the birth of Moses in 1571 BC; the book ends at Mount Sinai in 1490 BC with the tabernacle set up. The scenes run from the Nile to the Red Sea and the wilderness.",
+   "summary": "Exodus tells how God heard his people's cry, sent plagues on Egypt and brought Israel out through the sea. At Sinai he gave them the law and made his covenant with them, then came to live among them in the tabernacle.",
+   "themes": [
+    "Deliverance",
+    "The Passover",
+    "The covenant and the law",
+    "God's presence among his people",
+    "Worship"
+   ],
+   "keyVerses": [
+    "Exodus 3:14",
+    "Exodus 12:13",
+    "Exodus 20:2–3",
+    "Exodus 34:6"
+   ],
+   "outline": [
+    {
+     "title": "Bondage, Moses and the ten plagues",
+     "ref": "Exodus 1–12"
+    },
+    {
+     "title": "Out of Egypt and into the wilderness",
+     "ref": "Exodus 13–18"
+    },
+    {
+     "title": "The covenant and the law at Sinai",
+     "ref": "Exodus 19–24"
+    },
+    {
+     "title": "The pattern of the tabernacle",
+     "ref": "Exodus 25–31"
+    },
+    {
+     "title": "The golden calf and the covenant renewed",
+     "ref": "Exodus 32–34"
+    },
+    {
+     "title": "The tabernacle built and filled with glory",
+     "ref": "Exodus 35–40"
+    }
+   ]
+  },
+  "leviticus": {
+   "author": "Moses (traditional)",
+   "written": "about 1490 BC",
+   "setting": "The book belongs to the year 1490 BC, while Israel camps at the foot of Mount Sinai. The Lord first speaks to Moses from the tabernacle that has just been set up.",
+   "summary": "Leviticus tells Israel how a sinful people may come near a holy God. It sets out the offerings, the work of the priests, the laws of clean and unclean, the Day of Atonement and the feasts, and calls the people to be holy as the Lord is holy.",
+   "themes": [
+    "Holiness",
+    "Sacrifice and atonement",
+    "The priesthood",
+    "Clean and unclean",
+    "The sacred year"
+   ],
+   "keyVerses": [
+    "Leviticus 11:44",
+    "Leviticus 16:30",
+    "Leviticus 17:11",
+    "Leviticus 19:18"
+   ],
+   "outline": [
+    {
+     "title": "The offerings",
+     "ref": "Leviticus 1–7"
+    },
+    {
+     "title": "The priests consecrated",
+     "ref": "Leviticus 8–10"
+    },
+    {
+     "title": "Clean and unclean",
+     "ref": "Leviticus 11–15"
+    },
+    {
+     "title": "The Day of Atonement, and the life in the blood",
+     "ref": "Leviticus 16–17"
+    },
+    {
+     "title": "Holy living",
+     "ref": "Leviticus 18–22"
+    },
+    {
+     "title": "The feasts and the sacred years",
+     "ref": "Leviticus 23–25"
+    },
+    {
+     "title": "Blessings, warnings and vows",
+     "ref": "Leviticus 26–27"
+    }
+   ]
+  },
+  "numbers": {
+   "author": "Moses (traditional)",
+   "written": "about 1451 BC",
+   "setting": "The story runs from the second year after the exodus, 1490 BC, at Sinai, through thirty-eight years in the wilderness, to the plains of Moab by the Jordan in 1451 BC.",
+   "summary": "Numbers counts Israel and sets the camp in order, then tells how the people refused to enter the land and wandered for a generation. A new generation reaches the edge of Canaan, and the book closes with the land's borders, the cities of refuge and the inheritance of Zelophehad's daughters.",
+   "themes": [
+    "Faith and unbelief",
+    "God's patience with a grumbling people",
+    "Judgment and mercy",
+    "Leadership",
+    "The promised land ahead"
+   ],
+   "keyVerses": [
+    "Numbers 6:24–26",
+    "Numbers 14:9",
+    "Numbers 21:9",
+    "Numbers 23:19"
+   ],
+   "outline": [
+    {
+     "title": "The census and the camp at Sinai",
+     "ref": "Numbers 1–10"
+    },
+    {
+     "title": "Complaints, the spies and the wandering",
+     "ref": "Numbers 11–20"
+    },
+    {
+     "title": "From Edom to Moab, and Balaam",
+     "ref": "Numbers 21–25"
+    },
+    {
+     "title": "A new census and preparations",
+     "ref": "Numbers 26–31"
+    },
+    {
+     "title": "Settlement east of the Jordan, and the borders",
+     "ref": "Numbers 32–36"
+    }
+   ]
+  },
+  "deuteronomy": {
+   "author": "Moses (traditional)",
+   "written": "about 1451 BC",
+   "setting": "The book is set in the plains of Moab in 1451 BC, just before Israel crosses the Jordan. It is Moses' farewell, spoken in the last weeks of his life.",
+   "summary": "Moses speaks to the new generation, looking back over the forty years and restating the law before they enter the land. He calls them to love the Lord with all their heart, sets before them blessing and curse, and the book ends with his death.",
+   "themes": [
+    "Love the Lord with all your heart",
+    "Remember what God has done",
+    "Obedience and blessing",
+    "The choice of life or death",
+    "Passing the leadership on"
+   ],
+   "keyVerses": [
+    "Deuteronomy 6:4–5",
+    "Deuteronomy 8:3",
+    "Deuteronomy 30:19",
+    "Deuteronomy 31:6"
+   ],
+   "outline": [
+    {
+     "title": "Moses looks back on the wilderness",
+     "ref": "Deuteronomy 1–4"
+    },
+    {
+     "title": "The commandments and the call to love God",
+     "ref": "Deuteronomy 5–11"
+    },
+    {
+     "title": "The laws for life in the land",
+     "ref": "Deuteronomy 12–26"
+    },
+    {
+     "title": "The covenant, blessing and curse",
+     "ref": "Deuteronomy 27–30"
+    },
+    {
+     "title": "Joshua, the song and the death of Moses",
+     "ref": "Deuteronomy 31–34"
+    }
+   ]
+  },
+  "joshua": {
+   "author": "Joshua (traditional)",
+   "written": "about 1415 BC, after the death of Eleazar that closes it",
+   "setting": "The events run from the crossing of the Jordan in 1451 BC to the death of Joshua in 1443 BC, and of Eleazar the priest after him. They take place across the land of Canaan.",
+   "summary": "Under Joshua, Israel crosses the Jordan, takes Jericho and wins the land in battle. The country is then divided among the tribes, and Joshua ends his life calling the people to serve the Lord.",
+   "themes": [
+    "God keeps his promise of the land",
+    "Faith and obedience in battle",
+    "Sin in the camp",
+    "Inheritance",
+    "Choosing whom to serve"
+   ],
+   "keyVerses": [
+    "Joshua 1:9",
+    "Joshua 6:20",
+    "Joshua 21:45",
+    "Joshua 24:15"
+   ],
+   "outline": [
+    {
+     "title": "Crossing the Jordan and taking Jericho",
+     "ref": "Joshua 1–6"
+    },
+    {
+     "title": "Ai, Gibeon and the conquest",
+     "ref": "Joshua 7–12"
+    },
+    {
+     "title": "The land divided among the tribes",
+     "ref": "Joshua 13–21"
+    },
+    {
+     "title": "The eastern tribes, and Joshua's farewell",
+     "ref": "Joshua 22–24"
+    }
+   ]
+  },
+  "judges": {
+   "author": "Samuel (traditional)",
+   "written": "about 1095 BC",
+   "setting": "The book covers about 350 years, from the death of Joshua in 1443 BC to near the time of the first king, in 1095 BC. Israel lives in the land, tribe by tribe, without a king.",
+   "summary": "Again and again Israel turns from the Lord, falls under an enemy, cries out and is delivered by a judge. The cycle grows worse until the book ends in idolatry and civil war, with the refrain that there was no king in Israel.",
+   "themes": [
+    "The cycle of sin and rescue",
+    "God raises up deliverers",
+    "Leadership that fails",
+    "Every man did what was right in his own eyes",
+    "The need for a king"
+   ],
+   "keyVerses": [
+    "Judges 2:16",
+    "Judges 6:12",
+    "Judges 16:30",
+    "Judges 21:25"
+   ],
+   "outline": [
+    {
+     "title": "Israel fails to finish the work",
+     "ref": "Judges 1–2"
+    },
+    {
+     "title": "The judges, from Othniel to Samson",
+     "ref": "Judges 3–16"
+    },
+    {
+     "title": "Idolatry and civil war",
+     "ref": "Judges 17–21"
+    }
+   ]
+  },
+  "ruth": {
+   "author": "Unknown (Jewish tradition: Samuel)",
+   "written": "about 1000 BC",
+   "setting": "The story is set in the days when the judges ruled; the site places the birth of Obed about 1170 BC. It moves between Moab and Bethlehem.",
+   "summary": "Naomi loses her husband and sons in Moab and returns to Bethlehem with her Moabite daughter-in-law Ruth. Ruth gleans in the field of Boaz, who redeems the family and marries her, and she becomes an ancestor of David.",
+   "themes": [
+    "Loyal love",
+    "Redemption",
+    "God's quiet providence",
+    "A foreigner welcomed",
+    "The line of David"
+   ],
+   "keyVerses": [
+    "Ruth 1:16",
+    "Ruth 2:12",
+    "Ruth 4:14",
+    "Ruth 4:17"
+   ],
+   "outline": [
+    {
+     "title": "Loss, and the return to Bethlehem",
+     "ref": "Ruth 1"
+    },
+    {
+     "title": "Ruth gleans in Boaz's field",
+     "ref": "Ruth 2"
+    },
+    {
+     "title": "Ruth at the threshing floor",
+     "ref": "Ruth 3"
+    },
+    {
+     "title": "The redeemer, and the line of David",
+     "ref": "Ruth 4"
+    }
+   ]
+  },
+  "1-samuel": {
+   "author": "Samuel, with Nathan and Gad (traditional)",
+   "written": "about 975 BC",
+   "setting": "The book runs from the birth of Samuel about 1150 BC to the death of Saul in 1055 BC. Israel moves from judges to a king, and the scenes are Shiloh, Gibeah, the Valley of Elah and the wilderness of Judah.",
+   "summary": "Samuel is born to Hannah and serves as prophet and judge. Israel asks for a king, Saul is chosen and then rejected, and David is anointed. David kills Goliath, is hunted by Saul, and the book ends with Saul's death.",
+   "themes": [
+    "God rejects pride and lifts up the humble",
+    "Kingship under God",
+    "Obedience better than sacrifice",
+    "David and Saul",
+    "Friendship"
+   ],
+   "keyVerses": [
+    "1 Samuel 2:2",
+    "1 Samuel 15:22",
+    "1 Samuel 16:7",
+    "1 Samuel 17:45"
+   ],
+   "outline": [
+    {
+     "title": "Hannah, Samuel and the ark",
+     "ref": "1 Samuel 1–7"
+    },
+    {
+     "title": "Israel asks for a king",
+     "ref": "1 Samuel 8–12"
+    },
+    {
+     "title": "Saul's failure",
+     "ref": "1 Samuel 13–15"
+    },
+    {
+     "title": "David and Goliath, and Saul's jealousy",
+     "ref": "1 Samuel 16–20"
+    },
+    {
+     "title": "David on the run",
+     "ref": "1 Samuel 21–27"
+    },
+    {
+     "title": "The end of Saul",
+     "ref": "1 Samuel 28–31"
+    }
+   ]
+  },
+  "2-samuel": {
+   "author": "Nathan and Gad (traditional)",
+   "written": "about 975 BC",
+   "setting": "The book covers David's reign, from 1055 to 1017 BC. It begins at Ziklag and Hebron, moves to Jerusalem and ends with the plague of the census.",
+   "summary": "David becomes king over Judah and then all Israel, takes Jerusalem and brings the ark there. God promises him a house and a throne for ever, but David's sin with Bathsheba brings trouble on his family, including the rebellion of Absalom.",
+   "themes": [
+    "The covenant with David",
+    "Sin and repentance",
+    "Consequences within a family",
+    "God's anointed king",
+    "Mercy"
+   ],
+   "keyVerses": [
+    "2 Samuel 7:16",
+    "2 Samuel 12:7",
+    "2 Samuel 22:2–3",
+    "2 Samuel 23:3"
+   ],
+   "outline": [
+    {
+     "title": "David king, first of Judah and then of all Israel",
+     "ref": "2 Samuel 1–4"
+    },
+    {
+     "title": "Jerusalem, the ark and the covenant",
+     "ref": "2 Samuel 5–10"
+    },
+    {
+     "title": "Bathsheba and Nathan's rebuke",
+     "ref": "2 Samuel 11–12"
+    },
+    {
+     "title": "Amnon, Absalom and the rebellion",
+     "ref": "2 Samuel 13–20"
+    },
+    {
+     "title": "Songs, mighty men and the census",
+     "ref": "2 Samuel 21–24"
+    }
+   ]
+  },
+  "1-kings": {
+   "author": "Unknown (Jewish tradition: Jeremiah)",
+   "written": "about 560 BC",
+   "setting": "The book covers the years from 1015 to 896 BC: the end of David, the reign of Solomon, the split of the kingdom and the days of Elijah and Ahab.",
+   "summary": "Solomon receives wisdom, builds the temple and then turns his heart to other gods. The kingdom divides into Israel and Judah, and the prophet Elijah stands against Ahab and Baal.",
+   "themes": [
+    "Wisdom and its loss",
+    "The temple",
+    "A divided kingdom",
+    "Idolatry and judgment",
+    "The prophet's courage"
+   ],
+   "keyVerses": [
+    "1 Kings 3:9",
+    "1 Kings 8:27",
+    "1 Kings 11:4",
+    "1 Kings 18:21"
+   ],
+   "outline": [
+    {
+     "title": "David's death and Solomon's throne",
+     "ref": "1 Kings 1–2"
+    },
+    {
+     "title": "Solomon's wisdom",
+     "ref": "1 Kings 3–4"
+    },
+    {
+     "title": "Building and dedicating the temple",
+     "ref": "1 Kings 5–8"
+    },
+    {
+     "title": "Solomon's glory and fall",
+     "ref": "1 Kings 9–11"
+    },
+    {
+     "title": "The kingdom divided",
+     "ref": "1 Kings 12–16"
+    },
+    {
+     "title": "Elijah and Ahab",
+     "ref": "1 Kings 17–22"
+    }
+   ]
+  },
+  "2-kings": {
+   "author": "Unknown (Jewish tradition: Jeremiah)",
+   "written": "about 560 BC",
+   "setting": "The book covers about 330 years, from 896 BC to Jehoiachin's release from prison in 562 BC, with the fall of Jerusalem in 588 BC between. Israel falls to Assyria, and Judah later falls to Babylon.",
+   "summary": "Elijah is taken up and Elisha carries on his work. The northern kingdom sinks into idolatry and is carried away by Assyria, and Judah, despite the reforms of Hezekiah and Josiah, is finally carried away to Babylon.",
+   "themes": [
+    "Prophets and kings",
+    "Judgment on idolatry",
+    "The reforming kings",
+    "Exile",
+    "God's patience"
+   ],
+   "keyVerses": [
+    "2 Kings 2:11",
+    "2 Kings 17:7",
+    "2 Kings 19:19",
+    "2 Kings 23:25"
+   ],
+   "outline": [
+    {
+     "title": "Elijah taken up, and the ministry of Elisha",
+     "ref": "2 Kings 1–8"
+    },
+    {
+     "title": "Jehu's revolution",
+     "ref": "2 Kings 9–10"
+    },
+    {
+     "title": "Athaliah, Joash and the kings to Ahaz",
+     "ref": "2 Kings 11–16"
+    },
+    {
+     "title": "The fall of Samaria",
+     "ref": "2 Kings 17"
+    },
+    {
+     "title": "Hezekiah",
+     "ref": "2 Kings 18–20"
+    },
+    {
+     "title": "Manasseh, Amon and Josiah",
+     "ref": "2 Kings 21–23"
+    },
+    {
+     "title": "Babylon takes Judah",
+     "ref": "2 Kings 24–25"
+    }
+   ]
+  },
+  "1-chronicles": {
+   "author": "Ezra (traditional)",
+   "written": "about 450 BC",
+   "setting": "The book reaches from Adam in its opening genealogies to the death of David and the crowning of Solomon in 1015 BC. It was written for Israel after the exile, to remind them of their roots.",
+   "summary": "After a long set of family lines from Adam, the book gives the story of David, with his reign cast in a hopeful light. It dwells on the ark, the covenant and David's preparations for the temple.",
+   "themes": [
+    "Identity and family",
+    "Worship",
+    "The covenant with David",
+    "The temple",
+    "Seeking the Lord"
+   ],
+   "keyVerses": [
+    "1 Chronicles 16:34",
+    "1 Chronicles 17:14",
+    "1 Chronicles 22:19",
+    "1 Chronicles 29:11"
+   ],
+   "outline": [
+    {
+     "title": "Genealogies from Adam",
+     "ref": "1 Chronicles 1–9"
+    },
+    {
+     "title": "The death of Saul",
+     "ref": "1 Chronicles 10"
+    },
+    {
+     "title": "David made king over all Israel",
+     "ref": "1 Chronicles 11–12"
+    },
+    {
+     "title": "The ark brought to Jerusalem",
+     "ref": "1 Chronicles 13–16"
+    },
+    {
+     "title": "God's promise, David's wars and the census",
+     "ref": "1 Chronicles 17–21"
+    },
+    {
+     "title": "Preparing the temple, and Solomon crowned",
+     "ref": "1 Chronicles 22–29"
+    }
+   ]
+  },
+  "2-chronicles": {
+   "author": "Ezra (traditional)",
+   "written": "about 450 BC",
+   "setting": "The book runs from the start of Solomon's reign in 1015 BC to the decree of Cyrus in 537 BC, ending with the exile and the call to return.",
+   "summary": "Solomon builds the temple, and then the book follows the kings of Judah, praising those who sought the Lord and recording the cost of those who did not. It closes with Jerusalem burned and then with Cyrus's decree to rebuild.",
+   "themes": [
+    "The temple and worship",
+    "Seeking God brings renewal",
+    "Reform and revival",
+    "Exile and return",
+    "Faithful and unfaithful kings"
+   ],
+   "keyVerses": [
+    "2 Chronicles 7:14",
+    "2 Chronicles 16:9",
+    "2 Chronicles 20:15",
+    "2 Chronicles 36:23"
+   ],
+   "outline": [
+    {
+     "title": "Solomon and the temple",
+     "ref": "2 Chronicles 1–9"
+    },
+    {
+     "title": "Rehoboam to Asa",
+     "ref": "2 Chronicles 10–16"
+    },
+    {
+     "title": "Jehoshaphat",
+     "ref": "2 Chronicles 17–20"
+    },
+    {
+     "title": "Decline, from Jehoram to Ahaz",
+     "ref": "2 Chronicles 21–28"
+    },
+    {
+     "title": "Hezekiah's reform",
+     "ref": "2 Chronicles 29–32"
+    },
+    {
+     "title": "Manasseh to Josiah",
+     "ref": "2 Chronicles 33–35"
+    },
+    {
+     "title": "Exile and Cyrus's decree",
+     "ref": "2 Chronicles 36"
+    }
+   ]
+  },
+  "ezra": {
+   "author": "Ezra (traditional)",
+   "written": "about 440 BC",
+   "setting": "The book covers the return from Babylon, from the decree of Cyrus in 537 BC and the return under Zerubbabel in 536 BC to Ezra's coming to Jerusalem in 458 BC and his reform, finished in the spring of 457 BC, in the Persian Empire.",
+   "summary": "The exiles return under Zerubbabel, rebuild the altar and the temple despite opposition, and complete it. Decades later Ezra comes to Jerusalem, teaches the law and leads the people to put away their disobedience.",
+   "themes": [
+    "God stirs hearts to return",
+    "Rebuilding worship",
+    "Opposition",
+    "The law of the Lord",
+    "Repentance"
+   ],
+   "keyVerses": [
+    "Ezra 1:3",
+    "Ezra 3:11",
+    "Ezra 7:10",
+    "Ezra 9:15"
+   ],
+   "outline": [
+    {
+     "title": "The return and the rebuilding of the temple",
+     "ref": "Ezra 1–6"
+    },
+    {
+     "title": "Ezra comes to Jerusalem and leads reform",
+     "ref": "Ezra 7–10"
+    }
+   ]
+  },
+  "nehemiah": {
+   "author": "Nehemiah, traditionally with Ezra",
+   "written": "about 430 BC",
+   "setting": "The book belongs to the years 445 to 433 BC, in Persia and in Jerusalem under the Persian king Artaxerxes.",
+   "summary": "Nehemiah, the king's cupbearer, hears that Jerusalem's walls are broken and asks leave to rebuild them. He finishes the wall in the face of opposition, and Ezra reads the law to a people who renew their covenant.",
+   "themes": [
+    "Prayer and action together",
+    "Leadership",
+    "Opposition faced",
+    "The word of God read and kept",
+    "Renewal"
+   ],
+   "keyVerses": [
+    "Nehemiah 2:18",
+    "Nehemiah 6:15",
+    "Nehemiah 8:10",
+    "Nehemiah 9:6"
+   ],
+   "outline": [
+    {
+     "title": "Nehemiah's prayer and journey",
+     "ref": "Nehemiah 1–2"
+    },
+    {
+     "title": "The wall built despite opposition",
+     "ref": "Nehemiah 3–7"
+    },
+    {
+     "title": "The law read and the covenant renewed",
+     "ref": "Nehemiah 8–10"
+    },
+    {
+     "title": "Resettling Jerusalem and the dedication",
+     "ref": "Nehemiah 11–12"
+    },
+    {
+     "title": "Nehemiah's reforms",
+     "ref": "Nehemiah 13"
+    }
+   ]
+  },
+  "esther": {
+   "author": "Unknown (Jewish tradition: Mordecai)",
+   "written": "about 470 BC",
+   "setting": "The story is set in the Persian capital, Susa, in the reign of Ahasuerus (the site follows the view that he is Xerxes I), between 483 and 473 BC.",
+   "summary": "Esther, a Jewish orphan, becomes queen of Persia. When Haman plots to destroy the Jews, she risks her life by going to the king, and the plot is turned back on Haman.",
+   "themes": [
+    "God's hidden providence",
+    "Courage",
+    "Deliverance of his people",
+    "Pride and its fall",
+    "The feast of Purim"
+   ],
+   "keyVerses": [
+    "Esther 4:14",
+    "Esther 4:16",
+    "Esther 7:10",
+    "Esther 9:22"
+   ],
+   "outline": [
+    {
+     "title": "Vashti deposed, Esther made queen",
+     "ref": "Esther 1–2"
+    },
+    {
+     "title": "Haman's plot and Esther's resolve",
+     "ref": "Esther 3–4"
+    },
+    {
+     "title": "Esther's banquets and Haman's fall",
+     "ref": "Esther 5–7"
+    },
+    {
+     "title": "Deliverance and the feast of Purim",
+     "ref": "Esther 8–10"
+    }
+   ]
+  },
+  "job": {
+   "author": "Unknown (traditionally Job or Moses)",
+   "written": "unknown; not before Job's death about 1495 BC, which it records; the events about 1635 BC",
+   "setting": "Job lived in the land of Uz, in the age of the patriarchs; the site follows Ussher in placing his trials about 1635 BC, before Moses. The book is set in his home, on the ash heap and in the whirlwind.",
+   "summary": "Job loses his children, his wealth and his health, though he is blameless. His friends say it must be his sin, Job protests his innocence and asks for an answer, and God answers him from the whirlwind and restores him.",
+   "themes": [
+    "Suffering of the righteous",
+    "The wisdom and power of God",
+    "Faith without answers",
+    "Friends who speak wrongly",
+    "Restoration"
+   ],
+   "keyVerses": [
+    "Job 1:21",
+    "Job 19:25",
+    "Job 38:4",
+    "Job 42:5"
+   ],
+   "outline": [
+    {
+     "title": "The testing of Job",
+     "ref": "Job 1–2"
+    },
+    {
+     "title": "Job and his three friends",
+     "ref": "Job 3–31"
+    },
+    {
+     "title": "Elihu speaks",
+     "ref": "Job 32–37"
+    },
+    {
+     "title": "The Lord answers, and Job is restored",
+     "ref": "Job 38–42"
+    }
+   ]
+  },
+  "psalms": {
+   "author": "David, Asaph, the sons of Korah, Solomon, Heman, Ethan and Moses (named in the headings), and others unnamed",
+   "written": "about 1451 to 450 BC; many about 1015 BC",
+   "setting": "The psalms were written over about a thousand years, from Moses (Psalm 90) to the years after the exile. David wrote nearly half of them, some, their headings say, in the wilderness, in a cave and in flight from Saul and from Absalom.",
+   "summary": "The Psalms are Israel's prayers and songs: praise, thanksgiving, lament, confession and trust. They are gathered in five books, and many look ahead to the Messiah.",
+   "themes": [
+    "Praise and worship",
+    "Lament and trust",
+    "The word of God",
+    "The king and the Messiah",
+    "Confession and forgiveness"
+   ],
+   "keyVerses": [
+    "Psalms 1:1–2",
+    "Psalms 23:1",
+    "Psalms 51:10",
+    "Psalms 119:105"
+   ],
+   "outline": [
+    {
+     "title": "Book I",
+     "ref": "Psalms 1–41"
+    },
+    {
+     "title": "Book II",
+     "ref": "Psalms 42–72"
+    },
+    {
+     "title": "Book III",
+     "ref": "Psalms 73–89"
+    },
+    {
+     "title": "Book IV",
+     "ref": "Psalms 90–106"
+    },
+    {
+     "title": "Book V",
+     "ref": "Psalms 107–150"
+    }
+   ]
+  },
+  "proverbs": {
+   "author": "Solomon, with sayings of the wise, of Agur and of King Lemuel",
+   "written": "about 995 BC",
+   "setting": "Most of the book comes from the reign of Solomon, about 1015 to 975 BC, and some sayings were copied out in the time of Hezekiah, about 700 BC.",
+   "summary": "Proverbs gathers short sayings that teach wisdom for daily life: work, speech, money, family and justice. It begins with a father's call to his son and ends with a portrait of a woman who fears the Lord.",
+   "themes": [
+    "The fear of the Lord",
+    "Wisdom and folly",
+    "Speech",
+    "Diligence and justice",
+    "Family life"
+   ],
+   "keyVerses": [
+    "Proverbs 1:7",
+    "Proverbs 3:5–6",
+    "Proverbs 16:3",
+    "Proverbs 22:6"
+   ],
+   "outline": [
+    {
+     "title": "A father's call to wisdom",
+     "ref": "Proverbs 1–9"
+    },
+    {
+     "title": "The sayings of Solomon and the wise",
+     "ref": "Proverbs 10–24"
+    },
+    {
+     "title": "More proverbs of Solomon, copied under Hezekiah",
+     "ref": "Proverbs 25–29"
+    },
+    {
+     "title": "Agur, Lemuel and the woman of worth",
+     "ref": "Proverbs 30–31"
+    }
+   ]
+  },
+  "ecclesiastes": {
+   "author": "The Preacher, the son of David, king in Jerusalem (traditionally Solomon)",
+   "written": "about 985 BC",
+   "setting": "Tradition places the book late in the reign of Solomon, about 985 BC, when he looked back on a life of wealth and pleasure.",
+   "summary": "The Preacher searches for meaning in wisdom, pleasure, work and riches and finds them empty if they are all there is. His conclusion is to fear God and keep his commandments, and to enjoy his gifts while we have them.",
+   "themes": [
+    "Vanity under the sun",
+    "The gift of work and of joy",
+    "Time and death",
+    "Wisdom and folly",
+    "Fear God"
+   ],
+   "keyVerses": [
+    "Ecclesiastes 1:2",
+    "Ecclesiastes 3:1",
+    "Ecclesiastes 12:1",
+    "Ecclesiastes 12:13"
+   ],
+   "outline": [
+    {
+     "title": "Everything is vanity",
+     "ref": "Ecclesiastes 1–2"
+    },
+    {
+     "title": "Time, toil and wealth",
+     "ref": "Ecclesiastes 3–6"
+    },
+    {
+     "title": "Wisdom and folly",
+     "ref": "Ecclesiastes 7–10"
+    },
+    {
+     "title": "Live boldly and remember your Creator",
+     "ref": "Ecclesiastes 11–12"
+    }
+   ]
+  },
+  "song-of-solomon": {
+   "author": "Solomon",
+   "written": "about 1005 BC",
+   "setting": "The song is traditionally dated to the early reign of Solomon, about 1005 BC, and is set in the countryside and the royal city.",
+   "summary": "A bride and her beloved speak to each other and about each other in poems of desire and delight. The book celebrates married love as a gift of God.",
+   "themes": [
+    "The gift of married love",
+    "Desire and commitment",
+    "Longing and delight",
+    "Love strong as death"
+   ],
+   "keyVerses": [
+    "Song of Solomon 2:4",
+    "Song of Solomon 2:16",
+    "Song of Solomon 6:3",
+    "Song of Solomon 8:6"
+   ],
+   "outline": [
+    {
+     "title": "The lovers meet",
+     "ref": "Song of Solomon 1–2"
+    },
+    {
+     "title": "Searching, and the wedding",
+     "ref": "Song of Solomon 3–4"
+    },
+    {
+     "title": "Absence, longing and praise",
+     "ref": "Song of Solomon 5–7"
+    },
+    {
+     "title": "Love strong as death",
+     "ref": "Song of Solomon 8"
+    }
+   ]
+  },
+  "isaiah": {
+   "author": "Isaiah, the son of Amoz",
+   "written": "about 700 BC; finished after Sennacherib's death in 681 BC, which it records (Isaiah 37:38)",
+   "setting": "Isaiah prophesied in Jerusalem in the reigns of Uzziah, Jotham, Ahaz and Hezekiah; his vision of the Lord came in the year Uzziah died, 759 BC. These were the days of the Assyrian threat.",
+   "summary": "Isaiah warns Judah of judgment for injustice and idolatry, and speaks of a coming king and servant who will bring salvation. The last chapters speak comfort to a people who will go into exile and promise new heavens and a new earth.",
+   "themes": [
+    "The holiness of God",
+    "Judgment and comfort",
+    "The coming king",
+    "The suffering servant",
+    "A new creation"
+   ],
+   "keyVerses": [
+    "Isaiah 6:3",
+    "Isaiah 9:6",
+    "Isaiah 40:31",
+    "Isaiah 53:5"
+   ],
+   "outline": [
+    {
+     "title": "Judgment and promise for Judah",
+     "ref": "Isaiah 1–12"
+    },
+    {
+     "title": "Oracles against the nations",
+     "ref": "Isaiah 13–23"
+    },
+    {
+     "title": "The Lord's judgment and triumph over the earth",
+     "ref": "Isaiah 24–27"
+    },
+    {
+     "title": "Woes, and hope in the Assyrian crisis",
+     "ref": "Isaiah 28–35"
+    },
+    {
+     "title": "Hezekiah and Sennacherib",
+     "ref": "Isaiah 36–39"
+    },
+    {
+     "title": "Comfort for the exiles; the Lord above the idols",
+     "ref": "Isaiah 40–48"
+    },
+    {
+     "title": "The Servant and the restoration of Zion",
+     "ref": "Isaiah 49–57"
+    },
+    {
+     "title": "The new heavens and the new earth",
+     "ref": "Isaiah 58–66"
+    }
+   ]
+  },
+  "jeremiah": {
+   "author": "Jeremiah, with Baruch his scribe",
+   "written": "about 585 BC; finished after 562 BC with the last chapter (Jeremiah 52)",
+   "setting": "Jeremiah's ministry begins in 629 BC in the reign of Josiah and runs through the fall of Jerusalem to Babylon in 588 BC and the years after, in Judah and Egypt.",
+   "summary": "Jeremiah warns a people who will not listen that Babylon is coming, and is persecuted for it. He also promises that God will make a new covenant with his people and bring them home.",
+   "themes": [
+    "Repentance",
+    "The weeping prophet",
+    "False prophets",
+    "The new covenant",
+    "Hope for the exiles"
+   ],
+   "keyVerses": [
+    "Jeremiah 1:5",
+    "Jeremiah 17:9",
+    "Jeremiah 29:11",
+    "Jeremiah 31:33"
+   ],
+   "outline": [
+    {
+     "title": "The prophet called, and the first warnings",
+     "ref": "Jeremiah 1–10"
+    },
+    {
+     "title": "The broken covenant, the potter and the persecution of Jeremiah",
+     "ref": "Jeremiah 11–20"
+    },
+    {
+     "title": "Kings, false prophets and the letter to the exiles",
+     "ref": "Jeremiah 21–29"
+    },
+    {
+     "title": "The book of consolation and the new covenant",
+     "ref": "Jeremiah 30–33"
+    },
+    {
+     "title": "The siege, the fall and the flight to Egypt",
+     "ref": "Jeremiah 34–45"
+    },
+    {
+     "title": "Oracles against the nations",
+     "ref": "Jeremiah 46–51"
+    },
+    {
+     "title": "The fall of Jerusalem recalled",
+     "ref": "Jeremiah 52"
+    }
+   ]
+  },
+  "lamentations": {
+   "author": "Jeremiah (traditional)",
+   "written": "about 588 BC",
+   "setting": "The poems were written after Jerusalem fell to Babylon in 588 BC, among the ruins of the city.",
+   "summary": "Five poems mourn the destruction of Jerusalem and the suffering of its people, and own that it came from the Lord's judgment. In the middle, the poet holds to the Lord's steadfast mercy.",
+   "themes": [
+    "Grief",
+    "Sin and its consequences",
+    "Hope in the Lord's mercy",
+    "Prayer for restoration"
+   ],
+   "keyVerses": [
+    "Lamentations 1:12",
+    "Lamentations 3:22–23",
+    "Lamentations 3:40",
+    "Lamentations 5:21"
+   ],
+   "outline": [
+    {
+     "title": "The city sits solitary",
+     "ref": "Lamentations 1"
+    },
+    {
+     "title": "The Lord's anger",
+     "ref": "Lamentations 2"
+    },
+    {
+     "title": "Hope in his mercies",
+     "ref": "Lamentations 3"
+    },
+    {
+     "title": "The siege recalled",
+     "ref": "Lamentations 4"
+    },
+    {
+     "title": "A prayer for restoration",
+     "ref": "Lamentations 5"
+    }
+   ]
+  },
+  "ezekiel": {
+   "author": "Ezekiel, the son of Buzi, a priest",
+   "written": "about 570 BC",
+   "setting": "Ezekiel was carried to Babylon in 599 BC and prophesied among the exiles by the river Chebar from 595 to 573 BC.",
+   "summary": "Ezekiel sees the glory of God and is sent to warn the exiles that Jerusalem will fall. After it falls, he promises a new heart, the bones that live again, and a new temple where the Lord dwells.",
+   "themes": [
+    "The glory of the Lord",
+    "The watchman",
+    "Personal responsibility",
+    "A new heart and spirit",
+    "The restored temple"
+   ],
+   "keyVerses": [
+    "Ezekiel 18:4",
+    "Ezekiel 34:11",
+    "Ezekiel 36:26",
+    "Ezekiel 37:5"
+   ],
+   "outline": [
+    {
+     "title": "The vision of glory and the prophet's call",
+     "ref": "Ezekiel 1–3"
+    },
+    {
+     "title": "Judgment on Jerusalem",
+     "ref": "Ezekiel 4–24"
+    },
+    {
+     "title": "Judgment on the nations",
+     "ref": "Ezekiel 25–32"
+    },
+    {
+     "title": "Restoration and the dry bones",
+     "ref": "Ezekiel 33–39"
+    },
+    {
+     "title": "The new temple",
+     "ref": "Ezekiel 40–48"
+    }
+   ]
+  },
+  "daniel": {
+   "author": "Daniel",
+   "written": "about 530 BC",
+   "setting": "Daniel was taken to Babylon as a youth in 607 BC and served there under Nebuchadnezzar, Belshazzar, Darius and Cyrus. His last vision is dated in the third year of Cyrus, 535 BC.",
+   "summary": "Daniel and his friends stay faithful in the courts of foreign kings and are delivered from the furnace and the lions' den. Daniel is given visions of empires that rise and fall and of a kingdom that God will set up for ever.",
+   "themes": [
+    "Faithfulness in exile",
+    "God rules over kings",
+    "Deliverance",
+    "Prayer",
+    "The kingdom of God"
+   ],
+   "keyVerses": [
+    "Daniel 2:44",
+    "Daniel 3:17–18",
+    "Daniel 6:26",
+    "Daniel 7:13–14"
+   ],
+   "outline": [
+    {
+     "title": "Daniel in Babylon, and the king's dream",
+     "ref": "Daniel 1–2"
+    },
+    {
+     "title": "The fiery furnace",
+     "ref": "Daniel 3"
+    },
+    {
+     "title": "Nebuchadnezzar humbled, and Belshazzar's feast",
+     "ref": "Daniel 4–5"
+    },
+    {
+     "title": "The lions' den",
+     "ref": "Daniel 6"
+    },
+    {
+     "title": "Visions of beasts, the ram and goat, and the seventy weeks",
+     "ref": "Daniel 7–9"
+    },
+    {
+     "title": "The last vision",
+     "ref": "Daniel 10–12"
+    }
+   ]
+  },
+  "hosea": {
+   "author": "Hosea, the son of Beeri",
+   "written": "about 721 BC",
+   "setting": "Hosea prophesied in the northern kingdom of Israel from about 785 BC, in the reign of Jeroboam II, into the days of Hezekiah, in its last decades before Assyria carried it away in 721 BC.",
+   "summary": "God tells Hosea to marry an unfaithful wife, as a picture of Israel's unfaithfulness to the Lord. The book charges Israel with idolatry and calls it to return, for God's love will not let go.",
+   "themes": [
+    "Unfaithfulness and faithful love",
+    "Idolatry",
+    "Judgment",
+    "A call to return",
+    "God's compassion"
+   ],
+   "keyVerses": [
+    "Hosea 2:19",
+    "Hosea 6:6",
+    "Hosea 11:8",
+    "Hosea 14:4"
+   ],
+   "outline": [
+    {
+     "title": "Hosea's marriage and Israel's",
+     "ref": "Hosea 1–3"
+    },
+    {
+     "title": "The charge against Israel",
+     "ref": "Hosea 4–10"
+    },
+    {
+     "title": "God's love, and the call to return",
+     "ref": "Hosea 11–14"
+    }
+   ]
+  },
+  "joel": {
+   "author": "Joel, the son of Pethuel",
+   "written": "about 808 BC",
+   "setting": "The book names no king; the site follows Ussher in placing Joel in Judah about 808 BC, early in the reign of Uzziah, when a plague of locusts had stripped the land.",
+   "summary": "A swarm of locusts becomes a picture of the day of the Lord. Joel calls the people to turn to God, and promises that he will pour out his Spirit on all flesh.",
+   "themes": [
+    "The day of the Lord",
+    "Repentance",
+    "The outpouring of the Spirit",
+    "Restoration"
+   ],
+   "keyVerses": [
+    "Joel 2:13",
+    "Joel 2:28",
+    "Joel 2:32",
+    "Joel 3:16"
+   ],
+   "outline": [
+    {
+     "title": "The locust plague",
+     "ref": "Joel 1"
+    },
+    {
+     "title": "Return to the Lord, and the Spirit poured out",
+     "ref": "Joel 2"
+    },
+    {
+     "title": "The nations judged, and Zion blessed",
+     "ref": "Joel 3"
+    }
+   ]
+  },
+  "amos": {
+   "author": "Amos, a herdman of Tekoa",
+   "written": "about 787 BC",
+   "setting": "Amos, a shepherd from Tekoa in Judah, prophesied in the northern kingdom about 787 BC, in the prosperous reign of Jeroboam II.",
+   "summary": "Amos condemns the nations around Israel and then Israel itself for oppressing the poor and for empty worship. He closes with the promise that God will rebuild David's fallen tent.",
+   "themes": [
+    "Justice",
+    "True worship",
+    "Judgment on the nations",
+    "Judgment and hope for Israel"
+   ],
+   "keyVerses": [
+    "Amos 3:3",
+    "Amos 5:24",
+    "Amos 7:14–15",
+    "Amos 9:11"
+   ],
+   "outline": [
+    {
+     "title": "Judgment on the nations and on Israel",
+     "ref": "Amos 1–2"
+    },
+    {
+     "title": "Three sermons against Israel",
+     "ref": "Amos 3–6"
+    },
+    {
+     "title": "Visions of judgment, and the promise of restoration",
+     "ref": "Amos 7–9"
+    }
+   ]
+  },
+  "obadiah": {
+   "author": "Obadiah",
+   "written": "about 588 BC",
+   "setting": "The prophecy is set about 588 BC, after Jerusalem fell to Babylon, when Edom gloated over the disaster.",
+   "summary": "Obadiah tells Edom, the descendants of Esau, that its pride will be brought down because it stood by when Jacob's people were attacked. He closes with the promise that the kingdom will be the Lord's.",
+   "themes": [
+    "Pride goes before a fall",
+    "Justice for the wronged",
+    "The day of the Lord",
+    "The kingdom is the Lord's"
+   ],
+   "keyVerses": [
+    "Obadiah 1:3",
+    "Obadiah 1:15",
+    "Obadiah 1:17",
+    "Obadiah 1:21"
+   ],
+   "outline": [
+    {
+     "title": "Edom's pride and fall",
+     "ref": "Obadiah 1–9"
+    },
+    {
+     "title": "Edom's violence against his brother",
+     "ref": "Obadiah 10–14"
+    },
+    {
+     "title": "The day of the Lord, and Zion delivered",
+     "ref": "Obadiah 15–21"
+    }
+   ]
+  },
+  "jonah": {
+   "author": "Jonah (traditional)",
+   "written": "about 760 BC",
+   "setting": "Jonah prophesied in the days of Jeroboam II, and was sent to Nineveh, the capital of Assyria; the site follows Ussher in placing the mission about 771 BC.",
+   "summary": "God sends Jonah to Nineveh, but he flees by sea and is swallowed by a great fish. After Jonah preaches there, the city repents, and Jonah is angry that God shows it mercy.",
+   "themes": [
+    "God's mercy for all nations",
+    "Obedience",
+    "Repentance",
+    "A reluctant prophet"
+   ],
+   "keyVerses": [
+    "Jonah 1:17",
+    "Jonah 2:9",
+    "Jonah 3:10",
+    "Jonah 4:11"
+   ],
+   "outline": [
+    {
+     "title": "Jonah flees from the Lord",
+     "ref": "Jonah 1"
+    },
+    {
+     "title": "Jonah's prayer in the fish",
+     "ref": "Jonah 2"
+    },
+    {
+     "title": "Nineveh repents",
+     "ref": "Jonah 3"
+    },
+    {
+     "title": "Jonah's anger and God's mercy",
+     "ref": "Jonah 4"
+    }
+   ]
+  },
+  "micah": {
+   "author": "Micah the Morasthite",
+   "written": "about 698 BC",
+   "setting": "Micah prophesied in Judah about 759 to 698 BC, in the days of Jotham, Ahaz and Hezekiah, when Assyria was rising.",
+   "summary": "Micah rebukes rulers and false prophets who oppress the poor and warns of judgment on Samaria and Jerusalem. He speaks of a ruler to be born in Bethlehem and of what the Lord requires.",
+   "themes": [
+    "Justice and mercy",
+    "Corrupt leaders",
+    "The ruler from Bethlehem",
+    "Peace in the last days",
+    "Pardon"
+   ],
+   "keyVerses": [
+    "Micah 4:3",
+    "Micah 5:2",
+    "Micah 6:8",
+    "Micah 7:18"
+   ],
+   "outline": [
+    {
+     "title": "Judgment on Samaria and Judah",
+     "ref": "Micah 1"
+    },
+    {
+     "title": "Against grasping rulers and false prophets",
+     "ref": "Micah 2–3"
+    },
+    {
+     "title": "The mountain of the Lord and the ruler from Bethlehem",
+     "ref": "Micah 4–5"
+    },
+    {
+     "title": "What the Lord requires, and his pardon",
+     "ref": "Micah 6–7"
+    }
+   ]
+  },
+  "nahum": {
+   "author": "Nahum the Elkoshite",
+   "written": "about 660 BC",
+   "setting": "Nahum is dated about 660 BC, when Assyria was at the height of its power and its capital, Nineveh, seemed secure.",
+   "summary": "Nahum announces that the Lord will bring down Nineveh for its cruelty. The same God is a refuge to those who trust him.",
+   "themes": [
+    "God's justice",
+    "The fall of the proud",
+    "A refuge for the faithful"
+   ],
+   "keyVerses": [
+    "Nahum 1:3",
+    "Nahum 1:7",
+    "Nahum 2:13",
+    "Nahum 3:19"
+   ],
+   "outline": [
+    {
+     "title": "The Lord is a jealous God",
+     "ref": "Nahum 1"
+    },
+    {
+     "title": "The fall of Nineveh",
+     "ref": "Nahum 2"
+    },
+    {
+     "title": "Woe to the bloody city",
+     "ref": "Nahum 3"
+    }
+   ]
+  },
+  "habakkuk": {
+   "author": "Habakkuk the prophet",
+   "written": "about 607 BC",
+   "setting": "The book is set about 607 BC in Judah, as Babylon rose to power and threatened the land.",
+   "summary": "Habakkuk asks why God lets wrong go unpunished and then why he would use Babylon to punish it. God answers that the righteous will live by faith, and the prophet ends by praising him whatever comes.",
+   "themes": [
+    "Questioning God",
+    "Living by faith",
+    "God's justice",
+    "Trust in trouble"
+   ],
+   "keyVerses": [
+    "Habakkuk 1:13",
+    "Habakkuk 2:4",
+    "Habakkuk 2:14",
+    "Habakkuk 3:17–18"
+   ],
+   "outline": [
+    {
+     "title": "The prophet's complaints and the Lord's answers",
+     "ref": "Habakkuk 1"
+    },
+    {
+     "title": "Woes, and the righteous who live by faith",
+     "ref": "Habakkuk 2"
+    },
+    {
+     "title": "The prophet's prayer and praise",
+     "ref": "Habakkuk 3"
+    }
+   ]
+  },
+  "zephaniah": {
+   "author": "Zephaniah, the son of Cushi",
+   "written": "about 629 BC",
+   "setting": "Zephaniah prophesied in Judah in the reign of Josiah; the site follows Ussher in placing his warnings about 629 BC, with the call of Jeremiah and before the reform of 624 BC.",
+   "summary": "Zephaniah warns of the day of the Lord that is coming on Judah and the nations. He ends with a promise that the Lord will gather a humble remnant and rejoice over them with singing.",
+   "themes": [
+    "The day of the Lord",
+    "Seeking the Lord in humility",
+    "The remnant",
+    "Joy in restoration"
+   ],
+   "keyVerses": [
+    "Zephaniah 1:14",
+    "Zephaniah 2:3",
+    "Zephaniah 3:9",
+    "Zephaniah 3:17"
+   ],
+   "outline": [
+    {
+     "title": "The day of the Lord on Judah",
+     "ref": "Zephaniah 1"
+    },
+    {
+     "title": "A call to seek the Lord, and judgment on the nations",
+     "ref": "Zephaniah 2"
+    },
+    {
+     "title": "Jerusalem judged and restored",
+     "ref": "Zephaniah 3"
+    }
+   ]
+  },
+  "haggai": {
+   "author": "Haggai the prophet",
+   "written": "about 520 BC",
+   "setting": "Haggai spoke in Jerusalem in 520 BC, in the second year of Darius, to the returned exiles who had left the temple unfinished.",
+   "summary": "Haggai calls the people to stop building their own houses and finish the temple. The Lord promises that the glory of this house will be greater and that he will bless them.",
+   "themes": [
+    "Priorities",
+    "Rebuilding the temple",
+    "God's presence",
+    "Blessing for obedience"
+   ],
+   "keyVerses": [
+    "Haggai 1:5",
+    "Haggai 1:8",
+    "Haggai 2:4",
+    "Haggai 2:9"
+   ],
+   "outline": [
+    {
+     "title": "The call to rebuild",
+     "ref": "Haggai 1"
+    },
+    {
+     "title": "The glory of the new house",
+     "ref": "Haggai 2"
+    }
+   ]
+  },
+  "zechariah": {
+   "author": "Zechariah, the son of Berechiah",
+   "written": "about 518 BC",
+   "setting": "Zechariah prophesied from 520 to 518 BC, beginning in the same year as Haggai, to the returned exiles in Jerusalem as they rebuilt the temple.",
+   "summary": "Zechariah sees a series of night visions of God's care for Jerusalem and calls the people back to the Lord. He foretells a humble king on a donkey, a pierced one, and the day when the Lord will be king over all the earth.",
+   "themes": [
+    "Return to the Lord",
+    "The coming king",
+    "The cleansing of the people",
+    "The Lord reigns over all"
+   ],
+   "keyVerses": [
+    "Zechariah 4:6",
+    "Zechariah 9:9",
+    "Zechariah 12:10",
+    "Zechariah 14:9"
+   ],
+   "outline": [
+    {
+     "title": "Eight night visions and the crowning of Joshua",
+     "ref": "Zechariah 1–6"
+    },
+    {
+     "title": "Fasting, and promises for Jerusalem",
+     "ref": "Zechariah 7–8"
+    },
+    {
+     "title": "The coming king and the rejected shepherd",
+     "ref": "Zechariah 9–11"
+    },
+    {
+     "title": "The pierced one, the cleansing and the reign of the Lord",
+     "ref": "Zechariah 12–14"
+    }
+   ]
+  },
+  "malachi": {
+   "author": "Malachi",
+   "written": "about 430 BC",
+   "setting": "Malachi is the last of the prophets, about 430 BC, in Jerusalem after the temple was rebuilt and Nehemiah's reforms.",
+   "summary": "Malachi speaks to a people who have grown careless in worship and faithless in marriage and giving. He promises a messenger who will prepare the way and the coming of the Lord to his temple.",
+   "themes": [
+    "Honouring God",
+    "Faithfulness",
+    "The messenger and the day of the Lord",
+    "Giving",
+    "Return to me"
+   ],
+   "keyVerses": [
+    "Malachi 1:11",
+    "Malachi 3:1",
+    "Malachi 3:10",
+    "Malachi 4:2"
+   ],
+   "outline": [
+    {
+     "title": "Dishonoured offerings",
+     "ref": "Malachi 1"
+    },
+    {
+     "title": "Faithless priests and people",
+     "ref": "Malachi 2"
+    },
+    {
+     "title": "The messenger, and robbing God",
+     "ref": "Malachi 3"
+    },
+    {
+     "title": "The day of the Lord",
+     "ref": "Malachi 4"
+    }
+   ]
+  },
+  "matthew": {
+   "author": "Matthew, also called Levi, an apostle (traditional)",
+   "written": "about AD 55",
+   "setting": "The book covers the life of Jesus from his birth, about 5 BC, to his resurrection and the Great Commission in AD 33, in Bethlehem, Galilee and Jerusalem.",
+   "summary": "Matthew shows Jesus as the promised king, son of David and son of Abraham, the fulfilment of the Old Testament. He records the Sermon on the Mount, the parables of the kingdom, the cross and the empty tomb, and ends with Jesus sending his disciples to all nations.",
+   "themes": [
+    "Jesus the promised king",
+    "The kingdom of heaven",
+    "Fulfilment of Scripture",
+    "Discipleship",
+    "The church and the mission"
+   ],
+   "keyVerses": [
+    "Matthew 5:3",
+    "Matthew 6:33",
+    "Matthew 16:16",
+    "Matthew 28:19–20"
+   ],
+   "outline": [
+    {
+     "title": "Birth, baptism and temptation",
+     "ref": "Matthew 1–4"
+    },
+    {
+     "title": "The Sermon on the Mount",
+     "ref": "Matthew 5–7"
+    },
+    {
+     "title": "Authority and the mission of the Twelve",
+     "ref": "Matthew 8–10"
+    },
+    {
+     "title": "Opposition and the parables of the kingdom",
+     "ref": "Matthew 11–13"
+    },
+    {
+     "title": "Teaching the disciples on the way",
+     "ref": "Matthew 14–20"
+    },
+    {
+     "title": "The final week in Jerusalem",
+     "ref": "Matthew 21–25"
+    },
+    {
+     "title": "The cross and the resurrection",
+     "ref": "Matthew 26–28"
+    }
+   ]
+  },
+  "mark": {
+   "author": "John Mark, from Peter's preaching (traditional)",
+   "written": "about AD 55",
+   "setting": "The story covers the ministry of Jesus from his baptism, about AD 27, to his death and resurrection in AD 33, in Galilee, on the road and in Jerusalem.",
+   "summary": "Mark moves quickly through the deeds of Jesus, the servant who gives his life as a ransom for many. More than a third of the book is the last week in Jerusalem.",
+   "themes": [
+    "Jesus the Son of God and servant",
+    "Miracles and authority",
+    "The cost of discipleship",
+    "The cross",
+    "The secret and the open confession"
+   ],
+   "keyVerses": [
+    "Mark 1:15",
+    "Mark 8:29",
+    "Mark 10:45",
+    "Mark 15:39"
+   ],
+   "outline": [
+    {
+     "title": "Beginning in Galilee",
+     "ref": "Mark 1–3"
+    },
+    {
+     "title": "Parables, miracles and Peter's confession",
+     "ref": "Mark 4–8"
+    },
+    {
+     "title": "The transfiguration and the road to Jerusalem",
+     "ref": "Mark 9–10"
+    },
+    {
+     "title": "The final week in Jerusalem",
+     "ref": "Mark 11–13"
+    },
+    {
+     "title": "The cross",
+     "ref": "Mark 14–15"
+    },
+    {
+     "title": "The resurrection",
+     "ref": "Mark 16"
+    }
+   ]
+  },
+  "luke": {
+   "author": "Luke, the physician and companion of Paul (traditional)",
+   "written": "about AD 60",
+   "setting": "The book runs from the promise of the birth of John the Baptist, about 6 BC, to the resurrection and ascension in AD 33, in Galilee, Samaria, Judea and Jerusalem.",
+   "summary": "Luke writes an orderly account for Theophilus, with a care for the poor, the outcast and women. It holds many parables found only in this Gospel, such as the good Samaritan and the prodigal son.",
+   "themes": [
+    "Salvation for all people",
+    "The poor and outcast",
+    "Prayer",
+    "The Holy Spirit",
+    "Joy"
+   ],
+   "keyVerses": [
+    "Luke 2:11",
+    "Luke 10:36–37",
+    "Luke 15:20",
+    "Luke 19:10"
+   ],
+   "outline": [
+    {
+     "title": "The births of John and Jesus",
+     "ref": "Luke 1–2"
+    },
+    {
+     "title": "Baptism, temptation and Nazareth",
+     "ref": "Luke 3–4"
+    },
+    {
+     "title": "Ministry in Galilee",
+     "ref": "Luke 5–9"
+    },
+    {
+     "title": "The road to Jerusalem",
+     "ref": "Luke 10–18"
+    },
+    {
+     "title": "Jerusalem: entry and teaching",
+     "ref": "Luke 19–21"
+    },
+    {
+     "title": "The passion",
+     "ref": "Luke 22–23"
+    },
+    {
+     "title": "The resurrection",
+     "ref": "Luke 24"
+    }
+   ]
+  },
+  "john": {
+   "author": "The disciple whom Jesus loved (traditionally John the apostle)",
+   "written": "about AD 85",
+   "setting": "The book covers the ministry of Jesus from about AD 27 to his resurrection in AD 33, moving between Galilee and Jerusalem at the feasts.",
+   "summary": "John opens with the Word who was with God and became flesh, and tells of seven signs and Jesus' claims to be the bread of life, the light and the good shepherd. It was written that readers might believe that Jesus is the Christ and have life in his name.",
+   "themes": [
+    "Jesus the Word made flesh",
+    "Signs and belief",
+    "Eternal life",
+    "Love",
+    "The Spirit"
+   ],
+   "keyVerses": [
+    "John 1:14",
+    "John 3:16",
+    "John 14:6",
+    "John 20:31"
+   ],
+   "outline": [
+    {
+     "title": "The Word made flesh",
+     "ref": "John 1"
+    },
+    {
+     "title": "The first signs and the new birth",
+     "ref": "John 2–4"
+    },
+    {
+     "title": "Signs, the bread of life and the good shepherd",
+     "ref": "John 5–10"
+    },
+    {
+     "title": "Lazarus raised",
+     "ref": "John 11–12"
+    },
+    {
+     "title": "The upper room",
+     "ref": "John 13–17"
+    },
+    {
+     "title": "The passion",
+     "ref": "John 18–19"
+    },
+    {
+     "title": "The resurrection",
+     "ref": "John 20–21"
+    }
+   ]
+  },
+  "acts": {
+   "author": "Luke (traditional)",
+   "written": "about AD 65",
+   "setting": "Acts runs from the ascension in AD 33 to Paul's two years of house arrest in Rome, AD 63 to 65, across Jerusalem, Judea, Samaria, Asia Minor, Greece and Rome.",
+   "summary": "Acts tells how the Holy Spirit came at Pentecost and how the message of Jesus spread from Jerusalem to Rome. It follows Peter and then Paul, through missionary journeys, councils, arrests and trials.",
+   "themes": [
+    "The Holy Spirit",
+    "Witness to the ends of the earth",
+    "The church grows",
+    "Gentiles welcomed",
+    "Courage under persecution"
+   ],
+   "keyVerses": [
+    "Acts 1:8",
+    "Acts 2:38",
+    "Acts 4:12",
+    "Acts 16:31"
+   ],
+   "outline": [
+    {
+     "title": "The church in Jerusalem",
+     "ref": "Acts 1–7"
+    },
+    {
+     "title": "The gospel reaches Samaria and the Gentiles",
+     "ref": "Acts 8–12"
+    },
+    {
+     "title": "The first missionary journey",
+     "ref": "Acts 13–14"
+    },
+    {
+     "title": "The council at Jerusalem",
+     "ref": "Acts 15"
+    },
+    {
+     "title": "The second journey",
+     "ref": "Acts 16–18"
+    },
+    {
+     "title": "The third journey, Ephesus and Miletus",
+     "ref": "Acts 19–20"
+    },
+    {
+     "title": "Arrest and defence",
+     "ref": "Acts 21–26"
+    },
+    {
+     "title": "To Rome",
+     "ref": "Acts 27–28"
+    }
+   ]
+  },
+  "romans": {
+   "author": "Paul, the apostle",
+   "written": "about AD 60",
+   "setting": "Paul wrote from Corinth in AD 60, at the end of his third journey, to the church in Rome, which he had not yet visited.",
+   "summary": "Romans sets out the gospel: all have sinned, and God puts people right with himself by faith in Christ. It goes on to life in the Spirit, God's purpose for Israel, and the way of life that follows.",
+   "themes": [
+    "Righteousness by faith",
+    "Grace",
+    "Life in the Spirit",
+    "Israel and the Gentiles",
+    "Living sacrifice"
+   ],
+   "keyVerses": [
+    "Romans 1:16",
+    "Romans 3:23–24",
+    "Romans 8:1",
+    "Romans 12:1"
+   ],
+   "outline": [
+    {
+     "title": "All have sinned; righteousness by faith",
+     "ref": "Romans 1–3"
+    },
+    {
+     "title": "Abraham, and peace with God",
+     "ref": "Romans 4–5"
+    },
+    {
+     "title": "Dead to sin, alive in the Spirit",
+     "ref": "Romans 6–8"
+    },
+    {
+     "title": "God's purpose for Israel",
+     "ref": "Romans 9–11"
+    },
+    {
+     "title": "Living the gospel",
+     "ref": "Romans 12–15"
+    },
+    {
+     "title": "Greetings",
+     "ref": "Romans 16"
+    }
+   ]
+  },
+  "1-corinthians": {
+   "author": "Paul, the apostle",
+   "written": "about AD 59",
+   "setting": "Paul wrote from Ephesus in AD 59 to the church in Corinth, a busy, divided Greek port city.",
+   "summary": "Paul answers reports and questions from Corinth about divisions, immorality, marriage, food offered to idols, worship and spiritual gifts. He lifts the whole discussion with the chapter on love and the chapter on the resurrection.",
+   "themes": [
+    "Unity in Christ",
+    "Holiness",
+    "Love",
+    "Spiritual gifts",
+    "The resurrection"
+   ],
+   "keyVerses": [
+    "1 Corinthians 1:18",
+    "1 Corinthians 10:13",
+    "1 Corinthians 13:13",
+    "1 Corinthians 15:3–4"
+   ],
+   "outline": [
+    {
+     "title": "Divisions in the church",
+     "ref": "1 Corinthians 1–4"
+    },
+    {
+     "title": "Immorality, lawsuits and marriage",
+     "ref": "1 Corinthians 5–7"
+    },
+    {
+     "title": "Food offered to idols, and freedom",
+     "ref": "1 Corinthians 8–10"
+    },
+    {
+     "title": "Worship, the Lord's supper, gifts and love",
+     "ref": "1 Corinthians 11–14"
+    },
+    {
+     "title": "The resurrection",
+     "ref": "1 Corinthians 15"
+    },
+    {
+     "title": "The collection and greetings",
+     "ref": "1 Corinthians 16"
+    }
+   ]
+  },
+  "2-corinthians": {
+   "author": "Paul, the apostle",
+   "written": "about AD 60",
+   "setting": "Paul wrote from Macedonia in AD 60, after Titus brought news that Corinth had responded to his earlier letter.",
+   "summary": "Paul writes of the comfort God gives in affliction and the ministry of reconciliation. He urges generous giving to the poor in Jerusalem and defends his apostleship against critics.",
+   "themes": [
+    "Comfort in suffering",
+    "Reconciliation",
+    "Generous giving",
+    "Strength in weakness",
+    "Defending the gospel"
+   ],
+   "keyVerses": [
+    "2 Corinthians 1:3–4",
+    "2 Corinthians 5:17",
+    "2 Corinthians 9:7",
+    "2 Corinthians 12:9"
+   ],
+   "outline": [
+    {
+     "title": "Comfort, forgiveness and the ministry of the new covenant",
+     "ref": "2 Corinthians 1–7"
+    },
+    {
+     "title": "The collection for Jerusalem",
+     "ref": "2 Corinthians 8–9"
+    },
+    {
+     "title": "Paul defends his apostleship",
+     "ref": "2 Corinthians 10–13"
+    }
+   ]
+  },
+  "galatians": {
+   "author": "Paul, the apostle",
+   "written": "about AD 58",
+   "setting": "Paul wrote about AD 58, on his third journey, soon after passing through Galatia again, to the churches of Galatia in Asia Minor.",
+   "summary": "Paul writes against those who said Gentile believers must keep the law of Moses. People are justified by faith in Christ, not by works of the law, and are called to live free by the Spirit.",
+   "themes": [
+    "Justification by faith",
+    "Freedom in Christ",
+    "The Spirit and the flesh",
+    "The cross"
+   ],
+   "keyVerses": [
+    "Galatians 2:20",
+    "Galatians 3:11",
+    "Galatians 5:1",
+    "Galatians 5:22–23"
+   ],
+   "outline": [
+    {
+     "title": "Paul's gospel and apostleship",
+     "ref": "Galatians 1–2"
+    },
+    {
+     "title": "Faith and the law",
+     "ref": "Galatians 3–4"
+    },
+    {
+     "title": "Walking by the Spirit",
+     "ref": "Galatians 5–6"
+    }
+   ]
+  },
+  "ephesians": {
+   "author": "Paul, the apostle",
+   "written": "about AD 64",
+   "setting": "Paul wrote about AD 64 from prison in Rome to the believers in Ephesus.",
+   "summary": "Paul praises God for the blessings given in Christ and for the one new people formed of Jew and Gentile. The second half calls the church to live worthy of this calling in unity, holiness, family life and spiritual battle.",
+   "themes": [
+    "Blessings in Christ",
+    "Grace",
+    "The unity of the church",
+    "Walking worthy",
+    "The armour of God"
+   ],
+   "keyVerses": [
+    "Ephesians 1:3",
+    "Ephesians 2:8–9",
+    "Ephesians 4:3",
+    "Ephesians 6:11"
+   ],
+   "outline": [
+    {
+     "title": "What God has done in Christ",
+     "ref": "Ephesians 1–3"
+    },
+    {
+     "title": "The new life together",
+     "ref": "Ephesians 4–5"
+    },
+    {
+     "title": "Households and the armour of God",
+     "ref": "Ephesians 6"
+    }
+   ]
+  },
+  "philippians": {
+   "author": "Paul, the apostle",
+   "written": "about AD 64",
+   "setting": "Paul wrote about AD 64 from prison in Rome to the church in Philippi, which he had founded on his second journey.",
+   "summary": "Paul thanks the Philippians for their gifts and writes with joy from prison. He holds up the humility of Christ and urges them to press on toward the prize.",
+   "themes": [
+    "Joy in suffering",
+    "The humility of Christ",
+    "Pressing on",
+    "Peace",
+    "Contentment"
+   ],
+   "keyVerses": [
+    "Philippians 1:21",
+    "Philippians 2:5",
+    "Philippians 3:14",
+    "Philippians 4:13"
+   ],
+   "outline": [
+    {
+     "title": "To live is Christ",
+     "ref": "Philippians 1"
+    },
+    {
+     "title": "The mind of Christ",
+     "ref": "Philippians 2"
+    },
+    {
+     "title": "Pressing on to know Christ",
+     "ref": "Philippians 3"
+    },
+    {
+     "title": "Rejoice, and the God of peace",
+     "ref": "Philippians 4"
+    }
+   ]
+  },
+  "colossians": {
+   "author": "Paul, the apostle",
+   "written": "about AD 64",
+   "setting": "Paul wrote about AD 64 from prison in Rome to the church in Colossae in Asia Minor.",
+   "summary": "Paul answers false teaching by showing that Christ is supreme over all creation and that believers are complete in him. He then describes what the new life in Christ looks like at home and at work.",
+   "themes": [
+    "The supremacy of Christ",
+    "Complete in him",
+    "The new life",
+    "Households"
+   ],
+   "keyVerses": [
+    "Colossians 1:15",
+    "Colossians 2:9–10",
+    "Colossians 3:2",
+    "Colossians 3:17"
+   ],
+   "outline": [
+    {
+     "title": "The supremacy of Christ, and warnings",
+     "ref": "Colossians 1–2"
+    },
+    {
+     "title": "The new life, and final greetings",
+     "ref": "Colossians 3–4"
+    }
+   ]
+  },
+  "1-thessalonians": {
+   "author": "Paul, the apostle",
+   "written": "about AD 54",
+   "setting": "Paul wrote about AD 54 from Corinth, soon after founding the church in Thessalonica on his second journey.",
+   "summary": "Paul gives thanks for the Thessalonians' faith and reminds them of his time with them. He encourages them to live holy lives and comforts them about those who have died, with the promise of the Lord's return.",
+   "themes": [
+    "Faith, hope and love",
+    "Holy living",
+    "The return of the Lord",
+    "Encouragement"
+   ],
+   "keyVerses": [
+    "1 Thessalonians 4:13",
+    "1 Thessalonians 4:16–17",
+    "1 Thessalonians 5:16–18",
+    "1 Thessalonians 5:23"
+   ],
+   "outline": [
+    {
+     "title": "Paul's ministry in Thessalonica",
+     "ref": "1 Thessalonians 1–3"
+    },
+    {
+     "title": "Holy living and the Lord's coming",
+     "ref": "1 Thessalonians 4–5"
+    }
+   ]
+  },
+  "2-thessalonians": {
+   "author": "Paul, the apostle",
+   "written": "about AD 55",
+   "setting": "Paul wrote about AD 55 from Corinth, not long after the first letter.",
+   "summary": "Paul encourages believers who were suffering and corrects a mistaken idea that the day of the Lord had already come. He tells them to stand firm and to keep working.",
+   "themes": [
+    "Standing firm in trials",
+    "The day of the Lord",
+    "Work",
+    "Prayer"
+   ],
+   "keyVerses": [
+    "2 Thessalonians 1:6–7",
+    "2 Thessalonians 2:15",
+    "2 Thessalonians 3:3",
+    "2 Thessalonians 3:10"
+   ],
+   "outline": [
+    {
+     "title": "Encouragement in suffering",
+     "ref": "2 Thessalonians 1"
+    },
+    {
+     "title": "The day of the Lord",
+     "ref": "2 Thessalonians 2"
+    },
+    {
+     "title": "Pray and work",
+     "ref": "2 Thessalonians 3"
+    }
+   ]
+  },
+  "1-timothy": {
+   "author": "Paul, the apostle",
+   "written": "about AD 65",
+   "setting": "Paul wrote about AD 65 to Timothy, his younger colleague, who was serving the church in Ephesus.",
+   "summary": "Paul gives Timothy guidance on sound teaching, prayer and worship, and the qualifications for overseers and deacons. He warns against false teaching and the love of money.",
+   "themes": [
+    "Sound doctrine",
+    "Order in the church",
+    "Godliness",
+    "Leaders",
+    "The love of money"
+   ],
+   "keyVerses": [
+    "1 Timothy 1:15",
+    "1 Timothy 2:5",
+    "1 Timothy 4:12",
+    "1 Timothy 6:10"
+   ],
+   "outline": [
+    {
+     "title": "Sound doctrine, prayer and church leaders",
+     "ref": "1 Timothy 1–3"
+    },
+    {
+     "title": "Godliness and false teachers",
+     "ref": "1 Timothy 4"
+    },
+    {
+     "title": "Care for widows and elders, and the true riches",
+     "ref": "1 Timothy 5–6"
+    }
+   ]
+  },
+  "2-timothy": {
+   "author": "Paul, the apostle",
+   "written": "about AD 66",
+   "setting": "Paul wrote about AD 66 from a Roman prison, expecting death, to Timothy in Ephesus. It is the last of his letters.",
+   "summary": "Paul urges Timothy to be strong, to keep the gospel he has received and to endure hardship. He says that Scripture is God-breathed, and he looks to the crown waiting for him.",
+   "themes": [
+    "Faithfulness",
+    "Endurance",
+    "The inspired Scriptures",
+    "Passing on the gospel"
+   ],
+   "keyVerses": [
+    "2 Timothy 1:7",
+    "2 Timothy 2:15",
+    "2 Timothy 3:16",
+    "2 Timothy 4:7"
+   ],
+   "outline": [
+    {
+     "title": "Be strong and do not be ashamed",
+     "ref": "2 Timothy 1–2"
+    },
+    {
+     "title": "The last days, and Paul's last words",
+     "ref": "2 Timothy 3–4"
+    }
+   ]
+  },
+  "titus": {
+   "author": "Paul, the apostle",
+   "written": "about AD 65",
+   "setting": "Paul wrote about AD 65 to Titus, whom he had left on the island of Crete to set the churches in order.",
+   "summary": "Paul tells Titus to appoint elders, teach sound doctrine and encourage good works. He rests everything on God's grace that brings salvation.",
+   "themes": [
+    "Sound teaching",
+    "Good works",
+    "Church leaders",
+    "Grace"
+   ],
+   "keyVerses": [
+    "Titus 2:11",
+    "Titus 2:14",
+    "Titus 3:5",
+    "Titus 3:8"
+   ],
+   "outline": [
+    {
+     "title": "Appointing elders",
+     "ref": "Titus 1"
+    },
+    {
+     "title": "Teaching sound doctrine",
+     "ref": "Titus 2"
+    },
+    {
+     "title": "Grace and good works",
+     "ref": "Titus 3"
+    }
+   ]
+  },
+  "philemon": {
+   "author": "Paul, the apostle",
+   "written": "about AD 64",
+   "setting": "Paul wrote about AD 64 from prison in Rome to Philemon, a believer in Colossae.",
+   "summary": "Paul sends the runaway slave Onesimus back to his master Philemon and asks him to receive him as a brother. It is a short, personal letter about forgiveness.",
+   "themes": [
+    "Forgiveness",
+    "Brotherhood in Christ",
+    "Appeal rather than command"
+   ],
+   "keyVerses": [
+    "Philemon 1:6",
+    "Philemon 1:16",
+    "Philemon 1:17",
+    "Philemon 1:18"
+   ],
+   "outline": [
+    {
+     "title": "Greeting and thanksgiving",
+     "ref": "Philemon 1–7"
+    },
+    {
+     "title": "The plea for Onesimus",
+     "ref": "Philemon 8–16"
+    },
+    {
+     "title": "Welcome him as you would welcome me",
+     "ref": "Philemon 17–25"
+    }
+   ]
+  },
+  "hebrews": {
+   "author": "Unknown (traditionally Paul)",
+   "written": "about AD 64",
+   "setting": "The letter was written about AD 64 to Jewish believers tempted to turn back, before the temple fell in AD 70.",
+   "summary": "Hebrews shows that Jesus is greater than the angels, Moses and the priests of the old covenant. He is the high priest who has made the one perfect sacrifice, so the readers should hold on in faith.",
+   "themes": [
+    "Christ is greater",
+    "The high priest and the sacrifice",
+    "The new covenant",
+    "Faith",
+    "Endurance"
+   ],
+   "keyVerses": [
+    "Hebrews 1:3",
+    "Hebrews 4:16",
+    "Hebrews 11:1",
+    "Hebrews 12:1–2"
+   ],
+   "outline": [
+    {
+     "title": "The Son is greater than the angels",
+     "ref": "Hebrews 1–2"
+    },
+    {
+     "title": "Greater than Moses; the rest of God",
+     "ref": "Hebrews 3–4"
+    },
+    {
+     "title": "The high priest after the order of Melchizedek",
+     "ref": "Hebrews 5–7"
+    },
+    {
+     "title": "The new covenant and the one sacrifice",
+     "ref": "Hebrews 8–10"
+    },
+    {
+     "title": "The heroes of faith",
+     "ref": "Hebrews 11"
+    },
+    {
+     "title": "Run with endurance, and live for God",
+     "ref": "Hebrews 12–13"
+    }
+   ]
+  },
+  "james": {
+   "author": "James (traditionally the brother of Jesus)",
+   "written": "about AD 49",
+   "setting": "James wrote about AD 49, perhaps the earliest of the letters, to Jewish believers scattered abroad.",
+   "summary": "James writes of faith that shows itself in works: patience in trials, control of the tongue, care for the poor, and prayer. It is practical wisdom for daily life.",
+   "themes": [
+    "Faith and works",
+    "Trials",
+    "The tongue",
+    "Wisdom",
+    "Prayer"
+   ],
+   "keyVerses": [
+    "James 1:2–3",
+    "James 1:22",
+    "James 2:17",
+    "James 5:16"
+   ],
+   "outline": [
+    {
+     "title": "Trials and wisdom",
+     "ref": "James 1"
+    },
+    {
+     "title": "Faith that works",
+     "ref": "James 2"
+    },
+    {
+     "title": "The tongue and true wisdom",
+     "ref": "James 3"
+    },
+    {
+     "title": "Pride and humility",
+     "ref": "James 4"
+    },
+    {
+     "title": "Patience and prayer",
+     "ref": "James 5"
+    }
+   ]
+  },
+  "1-peter": {
+   "author": "Peter, the apostle",
+   "written": "about AD 64",
+   "setting": "Peter wrote about AD 64, probably from Rome, to believers scattered across Asia Minor who faced growing hostility.",
+   "summary": "Peter encourages believers who suffer, pointing to the living hope given through Christ's resurrection. He calls them to holy lives, to follow Christ's example in suffering, and to elders to shepherd the flock.",
+   "themes": [
+    "Living hope",
+    "Suffering and glory",
+    "Holy living",
+    "Humility",
+    "The flock of God"
+   ],
+   "keyVerses": [
+    "1 Peter 1:3",
+    "1 Peter 2:9",
+    "1 Peter 3:15",
+    "1 Peter 5:7"
+   ],
+   "outline": [
+    {
+     "title": "A living hope and a chosen people",
+     "ref": "1 Peter 1–2"
+    },
+    {
+     "title": "Suffering for doing good",
+     "ref": "1 Peter 3–4"
+    },
+    {
+     "title": "Shepherd the flock and stand firm",
+     "ref": "1 Peter 5"
+    }
+   ]
+  },
+  "2-peter": {
+   "author": "Peter, the apostle",
+   "written": "about AD 66",
+   "setting": "Peter wrote about AD 66 shortly before his death, to the same circle of churches.",
+   "summary": "Peter urges his readers to grow in the knowledge of Christ, warns against false teachers and answers those who mock that the Lord will not return. The Lord is patient, and the day will come.",
+   "themes": [
+    "Growing in grace",
+    "Reliable Scripture",
+    "False teachers",
+    "The Lord's return"
+   ],
+   "keyVerses": [
+    "2 Peter 1:3",
+    "2 Peter 1:21",
+    "2 Peter 3:9",
+    "2 Peter 3:18"
+   ],
+   "outline": [
+    {
+     "title": "Make your calling sure",
+     "ref": "2 Peter 1"
+    },
+    {
+     "title": "False teachers",
+     "ref": "2 Peter 2"
+    },
+    {
+     "title": "The day of the Lord",
+     "ref": "2 Peter 3"
+    }
+   ]
+  },
+  "1-john": {
+   "author": "John, the apostle (traditional)",
+   "written": "about AD 90",
+   "setting": "John wrote about AD 90, traditionally from Ephesus, to churches troubled by teachers who denied that Jesus came in the flesh.",
+   "summary": "John gives tests by which believers may know that they have eternal life: walking in the light, obeying Christ, loving one another and holding to the truth about Jesus. God is light and God is love.",
+   "themes": [
+    "God is light",
+    "God is love",
+    "Assurance",
+    "Obedience",
+    "Truth and error"
+   ],
+   "keyVerses": [
+    "1 John 1:9",
+    "1 John 3:1",
+    "1 John 4:8",
+    "1 John 5:13"
+   ],
+   "outline": [
+    {
+     "title": "Walking in the light",
+     "ref": "1 John 1–2"
+    },
+    {
+     "title": "Children of God, and love",
+     "ref": "1 John 3–4"
+    },
+    {
+     "title": "Assurance of eternal life",
+     "ref": "1 John 5"
+    }
+   ]
+  },
+  "2-john": {
+   "author": "The elder (traditionally John the apostle)",
+   "written": "about AD 90",
+   "setting": "The elder wrote about AD 90 to the elect lady and her children, most likely a church and its members.",
+   "summary": "The elder urges walking in truth and love and warns the church not to welcome teachers who deny that Jesus has come in the flesh.",
+   "themes": [
+    "Truth and love",
+    "Guarding the truth"
+   ],
+   "keyVerses": [
+    "2 John 1:4",
+    "2 John 1:6",
+    "2 John 1:9",
+    "2 John 1:10"
+   ],
+   "outline": [
+    {
+     "title": "Truth and love",
+     "ref": "2 John 1–6"
+    },
+    {
+     "title": "Beware of deceivers",
+     "ref": "2 John 7–13"
+    }
+   ]
+  },
+  "3-john": {
+   "author": "The elder (traditionally John the apostle)",
+   "written": "about AD 90",
+   "setting": "The elder wrote about AD 90 to Gaius, a believer who showed hospitality to travelling teachers.",
+   "summary": "The elder commends Gaius for welcoming the brothers and warns of Diotrephes, who refuses them. He speaks well of Demetrius.",
+   "themes": [
+    "Hospitality",
+    "Walking in the truth",
+    "Pride in the church"
+   ],
+   "keyVerses": [
+    "3 John 1:2",
+    "3 John 1:4",
+    "3 John 1:8",
+    "3 John 1:11"
+   ],
+   "outline": [
+    {
+     "title": "Gaius commended",
+     "ref": "3 John 1–8"
+    },
+    {
+     "title": "Diotrephes and Demetrius",
+     "ref": "3 John 9–14"
+    }
+   ]
+  },
+  "jude": {
+   "author": "Jude, the brother of James (traditionally also a brother of Jesus)",
+   "written": "about AD 65",
+   "setting": "Jude wrote about AD 65 to believers faced with false teachers who had slipped into the churches.",
+   "summary": "Jude urges his readers to contend for the faith once delivered to the saints. He warns with examples of judgment and ends with a doxology to the God who is able to keep them from falling.",
+   "themes": [
+    "Contending for the faith",
+    "Warning against false teachers",
+    "Keeping yourselves in God's love"
+   ],
+   "keyVerses": [
+    "Jude 1:3",
+    "Jude 1:20–21",
+    "Jude 1:24",
+    "Jude 1:25"
+   ],
+   "outline": [
+    {
+     "title": "Contend for the faith",
+     "ref": "Jude 1–4"
+    },
+    {
+     "title": "Warnings from the past",
+     "ref": "Jude 5–16"
+    },
+    {
+     "title": "Keep yourselves in the love of God",
+     "ref": "Jude 17–25"
+    }
+   ]
+  },
+  "revelation": {
+   "author": "John (traditionally the apostle)",
+   "written": "about AD 95",
+   "setting": "John received the visions on the island of Patmos about AD 95, and wrote to seven churches in Asia, some of them facing persecution.",
+   "summary": "Revelation shows Jesus Christ in glory and sends letters to seven churches. Through visions of seals, trumpets and bowls it shows the struggle with evil and ends with the Lamb's victory and the new heaven and new earth.",
+   "themes": [
+    "Jesus is Lord",
+    "Endurance under persecution",
+    "The victory of the Lamb",
+    "Worship",
+    "The new creation"
+   ],
+   "keyVerses": [
+    "Revelation 1:8",
+    "Revelation 3:20",
+    "Revelation 21:4",
+    "Revelation 22:20"
+   ],
+   "outline": [
+    {
+     "title": "The vision of Christ, and the seven churches",
+     "ref": "Revelation 1–3"
+    },
+    {
+     "title": "The throne and the scroll",
+     "ref": "Revelation 4–5"
+    },
+    {
+     "title": "The seals and the trumpets",
+     "ref": "Revelation 6–11"
+    },
+    {
+     "title": "The dragon, the beasts and the Lamb",
+     "ref": "Revelation 12–14"
+    },
+    {
+     "title": "The seven bowls",
+     "ref": "Revelation 15–16"
+    },
+    {
+     "title": "The fall of Babylon, and the rider on the white horse",
+     "ref": "Revelation 17–19"
+    },
+    {
+     "title": "The thousand years and the judgment",
+     "ref": "Revelation 20"
+    },
+    {
+     "title": "The new heaven and the new earth",
+     "ref": "Revelation 21–22"
+    }
+   ]
+  }
+ }
+}

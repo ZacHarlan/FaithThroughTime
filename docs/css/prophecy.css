@@ -16,6 +16,7 @@
 /* ── Tools ──────────────────────────────────────────────────────────── */
 .pr-tools { display: grid; gap: var(--s4); margin-bottom: var(--s4); }
 .pr-tools-quotes { grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); align-items: end; }
+.pr-share { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s2); margin: var(--s3) 0 0; }
 .pr-label { display: grid; gap: var(--s1); }
 .pr-select { appearance: auto; }
 .pr-search { position: relative; max-width: 34rem; }

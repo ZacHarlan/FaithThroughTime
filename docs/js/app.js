@@ -17,6 +17,11 @@
 //   #/parallel/<id>            parallel passages side by side (index without an id)
 //   #/prophecy/<id>            Old Testament quotations and prophecy fulfilled (index without an id)
 //   #/word/<strongs>           word study: one Hebrew or Greek word (e.g. H7225, G26)
+//   #/book/<bookSlug>          about a book: author, date, outline, themes, and what the site holds on it
+//   #/place/<locationSlug>     a place: events there, journeys through it, verses that name it
+//   #/topic/<slug>             topical Bible (index without a slug)
+//   #/dictionary/<slug>        Bible dictionary (index without a slug)
+//   #/guide/<id>               reference guides: covenants, feasts, the tabernacle (index without an id)
 //   #/person/<slug>, #/event/<slug>   detail sheet, shown over the current view
 
 const Router = (() => {
@@ -67,7 +72,8 @@ const App = (() => {
     const overlays = new Map();    // route view → { open(route), close() }
     const ALIAS = { story: 'timeline' };   // routes rendered by another view
     // Views whose nav link is another view's (the study tools all light up "Study").
-    const NAV_GROUP = { find: 'study', plan: 'study', kings: 'study', parallel: 'study', prophecy: 'study', word: 'study' };
+    const NAV_GROUP = { find: 'study', plan: 'study', kings: 'study', parallel: 'study', prophecy: 'study', word: 'study',
+        topic: 'study', dictionary: 'study', guide: 'study', book: 'read', place: 'map' };
     const listeners = new Map();
 
     let activeView = null;         // name of the base view on screen

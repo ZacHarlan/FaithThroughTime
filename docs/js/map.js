@@ -460,7 +460,8 @@ const MapView = (() => {
             through.length ? h('section', { 'aria-label': 'Journeys through here' },
                 h('h3', { class: 'eyebrow map-sub' }, 'Journeys that pass through'),
                 h('div', { class: 'chip-row' }, through.map(j =>
-                    h('a', { class: 'chip', href: UI.href(j) }, UI.icon('map', 'icon-sm'), j.name)))) : null);
+                    h('a', { class: 'chip', href: UI.href(j) }, UI.icon('map', 'icon-sm'), j.name)))) : null,
+            h('a', { class: 'btn map-place-link', href: Router.build('place', [loc.slug]) }, `Open the page for ${loc.name}`));
     }
 
     // ── Journeys ────────────────────────────────────────────────────────

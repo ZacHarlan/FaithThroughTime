@@ -43,13 +43,22 @@
     font-size: var(--fs-xs); font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--text-dim);
 }
 .read-genre-label .chip-dot { background: var(--tone); }
+.read-book-item { position: relative; }
 .read-books { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr)); column-gap: var(--s6); }
 .read-book {
-    display: grid; gap: 2px; min-height: 44px; padding: var(--s3) var(--s2);
+    display: grid; gap: 2px; min-height: 44px; padding: var(--s3) 5.5rem var(--s3) var(--s2);
     border-bottom: 1px solid var(--line);
     transition: background var(--t-fast) var(--ease), padding var(--t-med) var(--ease-out);
 }
 .read-book:hover, .read-book:focus-visible { background: var(--gold-soft); padding-left: var(--s4); }
+/* "About": the book's page, beside the row that starts reading. */
+.read-book-about {
+    position: absolute; right: var(--s1); top: 50%; transform: translateY(-50%);
+    display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 var(--s3);
+    border-radius: var(--r-pill); font-size: var(--fs-xs); font-weight: 600; letter-spacing: .06em; color: var(--text-faint);
+    transition: color var(--t-fast) var(--ease), background var(--t-fast) var(--ease);
+}
+.read-book-about:hover, .read-book-about:focus-visible { color: var(--gold-bright); background: var(--bg-3); }
 .read-book-name { font-size: 1.45rem; line-height: 1.15; }
 .read-book:hover .read-book-name { color: var(--gold-bright); }
 .read-book-meta { font-size: var(--fs-sm); color: var(--text-faint); font-variant-numeric: tabular-nums; }
@@ -96,7 +105,7 @@
 /* ── The text ───────────────────────────────────────────────────────── */
 .read-flow { min-width: 0; }
 .read-text {
-    max-width: 62ch; font-size: clamp(1.15rem, 1.05rem + .45vw, 1.32rem); line-height: 1.72;
+    max-width: 62ch; font-size: calc(clamp(1.15rem, 1.05rem + .45vw, 1.32rem) * var(--read-scale, 1)); line-height: calc(1.72 * var(--read-leading, 1));
     font-variation-settings: 'opsz' 18; hanging-punctuation: first; text-wrap: pretty;
 }
 .verse {
@@ -141,8 +150,10 @@
 .read-pager-link .display { font-size: 1.35rem; }
 
 /* Selected verses: a bar that rides the bottom edge of the viewport. */
+.read-dock { position: sticky; bottom: var(--s4); z-index: 6; display: grid; justify-items: start; gap: var(--s2); margin-top: var(--s5); pointer-events: none; }
+.read-dock > * { pointer-events: auto; }
 .read-selbar {
-    position: sticky; bottom: var(--s4); z-index: 6; width: fit-content; max-width: 100%; margin: var(--s5) 0 0;
+    width: fit-content; max-width: 100%; margin: 0;
     display: flex; align-items: center; flex-wrap: wrap; gap: var(--s2); padding: var(--s2) var(--s2) var(--s2) var(--s4);
     background: var(--bg-2); border: 1px solid var(--gold); border-radius: var(--r-pill); box-shadow: var(--shadow);
     animation: rise var(--t-med) var(--ease-out) both;
@@ -199,11 +210,126 @@
 @media (max-width: 760px) {
     .read-hero h1 { font-size: clamp(2.4rem, 12vw, 3.4rem); }
     .read-versions { margin-left: 0; }
-    .read-text { line-height: 1.8; }
+    .read-text { line-height: calc(1.8 * var(--read-leading, 1)); }
     .read-pager-link { padding: var(--s3) var(--s4); }
-    .read-selbar { bottom: var(--s3); border-radius: var(--r-lg); }
+    .read-dock { bottom: var(--s3); }
+    .read-selbar, .read-listenbar { border-radius: var(--r-lg); }
     /* The rail's chips lead back into history: 44px hit areas, rows spaced to keep them apart. */
     .read-rail .chip { position: relative; }
     .read-rail .chip::after { content: ''; position: absolute; inset: min(0px, calc(50% - 22px)) 0; }
     .read-rail .chip-row { row-gap: 10px; }
+}
+
+/* ── Chapter tools: reading settings and listen ─────────────────────── */
+.read-tools-end { display: inline-flex; align-items: center; gap: var(--s2); margin-left: auto; }
+.read-aa { min-width: 48px; padding: 0 var(--s3); }
+.read-aa-glyph { font-family: var(--font-display); font-size: 1.15rem; font-weight: 500; letter-spacing: 0; line-height: 1; }
+.read-aa-glyph small { font-size: .72em; margin-left: 1px; }
+.read-aa[aria-expanded='true'], .read-listen.is-on { border-color: var(--gold); color: var(--gold-bright); background: var(--gold-soft); }
+.read-pop.read-settings {
+    left: auto; right: 0; width: min(20.5rem, calc(100vw - 2 * var(--gutter))); max-height: none; overflow: visible;
+    display: grid; gap: var(--s4); padding: var(--s4);
+}
+.read-set-row { display: grid; gap: var(--s2); }
+.read-set-label { font-size: var(--fs-xs); font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--text-dim); }
+.read-seg { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; padding: 3px; border: 1px solid var(--line); border-radius: var(--r-pill); background: var(--bg-2); }
+.read-seg-btn {
+    display: grid; place-items: center; min-height: 40px; padding: 0 var(--s2); border-radius: var(--r-pill);
+    font-size: var(--fs-xs); font-weight: 600; color: var(--text-dim);
+    transition: background var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+}
+.read-seg-btn > span { font-family: var(--font-display); font-weight: 500; line-height: 1; }
+.read-seg-btn:hover { color: var(--text); }
+.read-seg-btn[aria-pressed='true'] { background: var(--gold-soft); color: var(--gold-bright); box-shadow: inset 0 0 0 1px var(--gold); }
+
+.read-switch { display: flex; align-items: center; justify-content: space-between; gap: var(--s4); width: 100%; min-height: 44px; text-align: left; }
+.read-switch-text { display: grid; gap: 2px; }
+.read-switch-title { font-weight: 600; font-size: var(--fs-sm); }
+.read-switch-sub { font-size: var(--fs-xs); color: var(--text-faint); }
+.read-switch-track {
+    position: relative; flex: none; width: 42px; height: 24px; border-radius: var(--r-pill);
+    background: var(--bg-3); border: 1px solid var(--line-strong); transition: background var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease);
+}
+.read-switch-knob {
+    position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; border-radius: 50%; background: var(--text-dim);
+    transition: transform var(--t-med) var(--ease-out), background var(--t-fast) var(--ease);
+}
+.read-switch[aria-checked='true'] .read-switch-track { background: var(--gold-soft); border-color: var(--gold); }
+.read-switch[aria-checked='true'] .read-switch-knob { transform: translateX(18px); background: var(--gold); }
+.read-switch:focus-visible .read-switch-track { box-shadow: 0 0 0 3px var(--gold-soft); }
+.read-compare-select { min-height: 44px; border-radius: var(--r-md); color: var(--text); }
+
+/* ── Where this chapter stands in history ───────────────────────────── */
+.read-hist {
+    justify-self: stretch; max-width: 62ch; margin-top: var(--s3); padding-bottom: var(--s4); border-bottom: 1px solid var(--line);
+    display: grid; gap: var(--s2); font-size: var(--fs-sm); color: var(--text-dim);
+}
+.read-hist.is-bare { padding-bottom: var(--s3); }
+.read-hist-line { display: flex; flex-wrap: wrap; align-items: center; column-gap: var(--s4); row-gap: var(--s1); }
+.read-hist-when { display: inline-flex; align-items: center; gap: var(--s2); min-height: 32px; color: var(--text); }
+.read-hist-when .chip-dot { background: var(--era, var(--gold)); }
+:root[data-theme='light'] .read-hist-when .chip-dot { background: color-mix(in srgb, var(--era, var(--gold)) 70%, #000); }
+.read-hist-era { font-weight: 600; }
+.read-hist-year { font-family: var(--font-display); font-size: 1.02rem; color: var(--text-dim); }
+.read-hist-when .icon { color: var(--text-faint); transition: color var(--t-fast) var(--ease); }
+.read-hist-when:hover .read-hist-era, .read-hist-when:hover .icon { color: var(--gold-bright); }
+.read-hist-book { display: inline-flex; align-items: center; min-height: 32px; color: var(--text-faint); text-decoration: underline; text-decoration-color: var(--line-strong); text-underline-offset: .25em; }
+.read-hist-book:hover { color: var(--gold-bright); text-decoration-color: currentColor; }
+.read-hist-reign { column-gap: var(--s5); }
+.read-hist-group { line-height: 1.5; }
+.read-hist-label { margin-right: var(--s2); font-size: var(--fs-xs); font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text-faint); }
+.read-hist-person { display: inline-block; padding: 4px 0; color: var(--text); border-bottom: 1px dotted var(--line-strong); line-height: 1.2; }
+.read-hist-person:hover { color: var(--gold-bright); border-bottom-color: currentColor; }
+
+/* ── Names in the text: quiet until wanted ──────────────────────────── */
+.read-name {
+    color: inherit; text-decoration: underline dotted; text-decoration-thickness: 1px; text-underline-offset: .2em;
+    text-decoration-color: color-mix(in srgb, var(--gold) 55%, transparent); border-radius: 2px;
+    transition: color var(--t-fast) var(--ease), text-decoration-color var(--t-fast) var(--ease);
+}
+.read-name:hover, .read-name:focus-visible { color: var(--gold-bright); text-decoration-style: solid; text-decoration-color: currentColor; }
+.read-name:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
+
+/* ── Comparing two translations, verse by verse ─────────────────────── */
+.read-text.is-compare { max-width: none; }
+.read-compare-head { display: none; }
+.read-pair { padding: var(--s2) 0; border-bottom: 1px solid var(--line); }
+.read-pair .verse { display: block; }
+.read-alt { margin-top: var(--s1); padding-left: var(--s3); border-left: 2px solid var(--line-strong); font-size: .9em; color: var(--text-dim); }
+.read-alt-tag { margin-right: var(--s2); font-family: var(--font-ui); font-size: .62em; font-weight: 700; letter-spacing: .1em; color: var(--text-faint); }
+.read-alt-vn { display: none; }
+@media (min-width: 761px) {
+    .read-compare-head {
+        display: grid; grid-template-columns: 1fr 1fr; column-gap: var(--s6); padding-bottom: var(--s2); border-bottom: 1px solid var(--line-strong);
+        font-family: var(--font-ui); font-size: var(--fs-xs); font-weight: 700; letter-spacing: .14em; color: var(--gold);
+    }
+    .read-pair { display: grid; grid-template-columns: 1fr 1fr; column-gap: var(--s6); align-items: start; }
+    .read-alt { margin: 0; padding: 0; border: 0; font-size: 1em; }
+    .read-alt-tag { display: none; }
+    .read-alt-vn { display: inline; margin-right: .2em; font-family: var(--font-ui); font-size: .62em; font-weight: 700; color: var(--text-faint); }
+}
+@media (min-width: 1020px) {
+    body:not(.study-open) .read-chapter.is-compare { grid-template-columns: minmax(0, 1fr) 18.5rem; }
+}
+
+/* ── Listening ──────────────────────────────────────────────────────── */
+.verse.is-reading { background: color-mix(in srgb, var(--gold) 12%, transparent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--gold) 12%, transparent); }
+.read-listenbar {
+    display: flex; align-items: center; gap: var(--s2); padding: var(--s1) var(--s1) var(--s1) var(--s4);
+    background: var(--bg-2); border: 1px solid var(--line-strong); border-radius: var(--r-pill); box-shadow: var(--shadow);
+    animation: rise var(--t-med) var(--ease-out) both;
+}
+.read-listen-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gold); animation: read-pulse 1.6s var(--ease) infinite; }
+@keyframes read-pulse { 50% { opacity: .35; } }
+.read-listen-status { font-size: var(--fs-sm); color: var(--text-dim); margin-right: var(--s2); font-variant-numeric: tabular-nums; }
+@media (prefers-reduced-motion: reduce) { .read-listen-dot { animation: none; } }
+
+@media (max-width: 760px) {
+    .read-book { padding-right: 4.75rem; }
+    .read-tools-end { margin-left: 0; }
+    /* On a phone the settings rise from the bottom edge, clear of the tab bar. */
+    .read-pop.read-settings {
+        position: fixed; z-index: 40; left: var(--gutter); right: var(--gutter); top: auto; width: auto;
+        bottom: calc(var(--tabbar-h) + var(--s4));
+    }
 }

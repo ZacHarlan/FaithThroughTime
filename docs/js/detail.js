@@ -151,6 +151,8 @@ const Detail = (() => {
         barTitle.textContent = currentTitle;
         bar.classList.remove('is-titled');
 
+        if (entity) goDeeper(kind, entity, currentKey);
+
         const heading = body.querySelector('#ds-title');
         titleObserver.disconnect();
         if (heading) {
@@ -396,7 +398,10 @@ const Detail = (() => {
     // ── Scripture ───────────────────────────────────────────────────────
     function scriptureSection(refs) {
         if (!refs.length) return null;
-        return section('Scripture', h('div', { class: 'ds-scrips' }, refs.map(scriptureRow)));
+        const books = uniq(refs.map(r => Study.parse(r.ref)?.book).filter(Boolean));
+        return section('Scripture', h('div', { class: 'ds-scrips' }, refs.map(scriptureRow)),
+            books.length ? h('p', { class: 'ds-books' }, books.length === 1 ? 'About the book: ' : 'About the books: ',
+                books.map((b, i) => [i ? ' · ' : '', h('a', { class: 'ds-link', href: `#/book/${b.slug}` }, b.name)])) : null);
     }
 
     function scriptureRow(s) {
@@ -496,11 +501,13 @@ const Detail = (() => {
                 label: `${p.name}: ${personDates(p)}${era ? `, in the ${era.name} era` : ''}.`
             }) : null,
             prose(p),
+            h('div', { class: 'ds-dict', hidden: true }),
             personEvents(p),
             family(p),
             connections(p),
             overlapping(p),
             scriptureSection(p.scripture),
+            deeperSlot(),
             h('div', { class: 'ornament ds-end', 'aria-hidden': 'true' }, h('span'))
         ];
     }
@@ -618,6 +625,7 @@ const Detail = (() => {
             eventPeople(e),
             eventPlaces(e),
             scriptureSection(e.scripture),
+            deeperSlot(),
             aroundTheTime(e),
             h('div', { class: 'ornament ds-end', 'aria-hidden': 'true' }, h('span')),
             pager(e)
@@ -670,7 +678,7 @@ const Detail = (() => {
             return h('li', { class: 'ds-place' },
                 UI.icon('pin', 'ds-place-icon'),
                 h('span', { class: 'ds-row-main' },
-                    h('span', { class: 'ds-row-title' }, l.name),
+                    h('a', { class: 'ds-row-title ds-place-link', href: `#/place/${l.slug}` }, l.name),
                     sub ? h('span', { class: 'ds-row-sub' }, sub) : null),
                 l.lat != null ? h('a', { class: 'btn btn-quiet ds-place-map', href: UI.href(l), 'aria-label': `See ${l.name} on the map` },
                     UI.icon('map', 'icon-sm'), 'See on map') : null);
@@ -735,6 +743,90 @@ const Detail = (() => {
             h('span', { class: 'ds-page-year year' }, Store.dates(x)));
         return h('nav', { class: 'ds-pager', 'aria-label': 'Events by date' },
             prev ? link(prev, 'prev') : null, next ? link(next, 'next') : null);
+    }
+
+
+    // ── Go deeper: links into the study tools, built from what applies ──
+    const deeperSlot = () => h('section', { class: 'ds-section ds-deeper', hidden: true });
+
+    let studyData = null;
+    function loadStudyData() {
+        if (!studyData) {
+            studyData = Promise.all([Api.getKings(), Api.getParallels(), Api.getProphecy()])
+                .then(([kings, parallels, prophecy]) => ({ kings, parallels, prophecy }))
+                .catch(() => ({ kings: {}, parallels: {}, prophecy: {} }));
+        }
+        return studyData;
+    }
+
+    // A reference as a comparable range: [book slug, from, to] with chapter*1000+verse.
+    function rangeOf(ref) {
+        const p = Study.parse(ref);
+        if (!p) return null;
+        return [p.book.slug, p.startCh * 1000 + (p.startV ?? 0), p.endCh * 1000 + (p.endV ?? 999)];
+    }
+    function overlaps(refsA, refsB) {
+        const b = refsB.map(rangeOf).filter(Boolean);
+        return refsA.map(rangeOf).filter(Boolean)
+            .some(a => b.some(x => a[0] === x[0] && a[1] <= x[2] && x[1] <= a[2]));
+    }
+
+    const kingSlug = name => name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+    function deepRow(href, title, sub) {
+        return h('li', null, h('a', { class: 'ds-row ds-deep-row', href },
+            h('span', { class: 'ds-row-main' },
+                h('span', { class: 'ds-row-title' }, title),
+                sub ? h('span', { class: 'ds-row-sub' }, sub) : null),
+            UI.icon('chevron-right', 'icon-sm ds-row-go')));
+    }
+
+    function deeperRows(kind, x, data) {
+        const rows = [];
+        const refs = (x.scripture || []).map(s => s.ref);
+        const k = [...(data.kings.kings || []), ...(data.kings.prophets || [])].find(r => kind === 'person' && r.person === x.id);
+        if (k) {
+            const isKing = (data.kings.kings || []).includes(k);
+            rows.push(deepRow(`#/kings?sel=${kingSlug(k.name)}`, `See ${x.name} among the kings and prophets`,
+                isKing && k.start != null ? `Reigned ${Time.span(k.start, k.end)}` : null));
+        }
+        const journeys = kind === 'person'
+            ? Store.journeys.filter(j => (j.personIds || []).includes(x.id)).map(j => ({ j, step: 0 }))
+            : Store.journeys.map(j => ({ j, step: (j.stops || []).findIndex(s => s.eventId === x.id) + 1 })).filter(o => o.step);
+        for (const { j, step } of journeys.slice(0, 4)) {
+            const stop = step ? j.stops[step - 1] : null;
+            rows.push(deepRow(step ? `${UI.href(j)}?step=${step}` : UI.href(j),
+                kind === 'person' ? `Travel with ${x.name}: ${j.name}` : `${j.name}, at this stop`,
+                stop?.label || (j.stops ? `${j.stops.length} stops on the map` : null)));
+        }
+        for (const g of data.parallels.groups || []) for (const sec of g.sections || []) {
+            if (rows.length > 14) break;
+            if (overlaps(refs, sec.passages || [])) rows.push(deepRow(`#/parallel/${sec.id}`, sec.title, 'Parallel accounts'));
+        }
+        const pro = (data.prophecy.prophecies || []).filter(p => overlaps(refs, [...(p.prophecy || []), ...(p.fulfilment || [])]));
+        for (const p of pro.slice(0, 4)) rows.push(deepRow(`#/prophecy/${p.id}`, p.title, 'Prophecy and fulfilment'));
+        return rows;
+    }
+
+    async function goDeeper(kind, x, key) {
+        const data = await loadStudyData();
+        if (key !== currentKey) return;
+        const slot = body.querySelector('.ds-deeper');
+        const rows = slot ? deeperRows(kind, x, data) : [];
+        if (rows.length) {
+            slot.replaceChildren(h('h2', { class: 'ds-h' }, 'Go deeper'),
+                h('ul', { class: 'ds-rows ds-deep' }, rows.slice(0, 8)));
+            slot.hidden = false;
+        }
+        if (kind !== 'person' || typeof Dictionary === 'undefined' || !Dictionary.blockFor) return;
+        try {
+            const block = await Dictionary.blockFor(x);
+            const dict = body.querySelector('.ds-dict');
+            if (!block || key !== currentKey || !dict) return;
+            dict.replaceChildren(h('details', { class: 'ds-dating ds-dictionary' },
+                h('summary', null, UI.icon('chevron-right', 'icon-sm ds-chev'), 'From Easton’s Bible Dictionary'), block));
+            dict.hidden = false;
+        } catch { /* the dictionary is an extra; the sheet works without it */ }
     }
 
     // ── Not found ───────────────────────────────────────────────────────

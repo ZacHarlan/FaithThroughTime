@@ -1,0 +1,87 @@
+/* place.css — a place's page (#/place/<slug>) and the index of places. Tokens from base.css. */
+
+.place-page { max-width: 1040px; }
+.place-crumbs { display: flex; gap: var(--s2); font-size: var(--fs-sm); color: var(--text-faint); margin-bottom: var(--s5); }
+.place-crumbs a:hover { color: var(--gold-bright); }
+
+/* ── Head ───────────────────────────────────────────────────────────── */
+.place-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 22rem); gap: var(--s6); align-items: start; margin-bottom: var(--s7); }
+.place-head-text { display: grid; gap: var(--s3); justify-items: start; }
+.place-title { font-size: clamp(2.4rem, 1.5rem + 4vw, 4.4rem); line-height: 1.02; letter-spacing: -.03em; }
+.place-modern { margin: 0; }
+.place-desc { max-width: 40rem; }
+.place-locator-wrap {
+    position: relative; aspect-ratio: 4 / 3; border: 1px solid var(--line-strong); border-radius: var(--r-lg, 14px);
+    overflow: hidden; background: var(--bg-2);
+}
+.place-locator { position: absolute; inset: 0; background: var(--bg-2); }
+.place-pin-wrap { background: none; border: 0; }
+.place-pin {
+    display: block; width: 24px; height: 24px; border-radius: 50%;
+    background: var(--gold); border: 3px solid var(--bg-1); box-shadow: 0 0 0 2px var(--gold), var(--glow, none);
+}
+
+/* ── Sections ───────────────────────────────────────────────────────── */
+.place-body { display: grid; gap: var(--s7); }
+.place-sec h2 { margin-bottom: var(--s4); }
+.place-slot { margin-top: var(--s7); }
+.place-slot:empty { display: none; }
+
+.place-events { list-style: none; margin: 0; padding: 0; display: grid; }
+.place-event {
+    display: flex; align-items: center; gap: var(--s3); min-height: 44px; padding: var(--s2) var(--s3);
+    border-radius: var(--r-sm, 8px);
+}
+.place-event:hover { background: var(--bg-3); }
+.place-event-name { flex: 1; min-width: 0; }
+.place-event-year { font-variant-numeric: tabular-nums; font-size: var(--fs-sm); white-space: nowrap; }
+.place-people-block { margin-top: var(--s5); display: grid; gap: var(--s3); justify-items: start; }
+
+.place-journeys { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr)); gap: var(--s4); }
+.place-journey { display: grid; gap: var(--s3); align-content: start; }
+.place-journey-name { display: inline-flex; align-items: center; gap: var(--s2); font-weight: 600; color: var(--gold-bright); min-height: 24px; }
+.place-journey-name:hover { text-decoration: underline; }
+.place-stops { list-style: none; margin: 0; padding: 0; display: grid; }
+.place-stops a { display: flex; justify-content: space-between; gap: var(--s3); min-height: 36px; align-items: center; color: var(--text-dim); }
+.place-stops a:hover { color: var(--text); }
+.place-stop-year { font-size: var(--fs-sm); white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+.place-dict { max-width: 46rem; }
+
+/* ── Verses ─────────────────────────────────────────────────────────── */
+.place-count { margin-bottom: var(--s5); }
+.place-bookgroup + .place-bookgroup { margin-top: var(--s5); }
+.place-book { font-size: var(--fs-h3); padding-bottom: var(--s2); border-bottom: 1px solid var(--line-strong); }
+.place-book a:hover { color: var(--gold-bright); }
+.place-vlist { list-style: none; margin: 0; padding: 0; }
+.place-verse { padding: var(--s3) 0; border-bottom: 1px solid var(--line); display: grid; gap: var(--s1); }
+.place-ref { font-size: var(--fs-sm); font-weight: 600; color: var(--gold); min-height: 24px; justify-self: start; }
+.place-ref:hover, .place-ref:focus-visible { color: var(--gold-bright); text-decoration: underline; }
+.place-status { margin-top: var(--s4); font-size: var(--fs-sm); }
+.place-more { margin-top: var(--s3); }
+
+.place-state { display: grid; gap: var(--s4); justify-items: start; max-width: 40rem; }
+
+/* ── Index ──────────────────────────────────────────────────────────── */
+.place-intro { display: grid; gap: var(--s4); max-width: 46rem; margin-bottom: var(--s7); }
+.place-intro .place-title { font-size: clamp(2.4rem, 1.5rem + 4vw, 4.2rem); }
+.place-find { display: flex; flex-wrap: wrap; gap: var(--s3); align-items: center; }
+.place-filter { max-width: 22rem; border-radius: var(--r-pill); padding-left: var(--s5); flex: 1 1 14rem; }
+.place-msg { min-height: 1.4em; margin: 0; font-size: var(--fs-sm); }
+.place-region + .place-region { margin-top: var(--s6); }
+.place-region[hidden], .place-cards > li[hidden] { display: none; }
+.place-region-title { display: flex; align-items: baseline; gap: var(--s3); font-size: var(--fs-h3); padding-bottom: var(--s2); border-bottom: 1px solid var(--line-strong); margin-bottom: var(--s4); }
+.place-region-n { font-size: var(--fs-sm); font-weight: 400; font-variant-numeric: tabular-nums; }
+.place-cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr)); gap: var(--s3); }
+.place-card { display: grid; gap: var(--s1); height: 100%; padding: var(--s3) var(--s4); min-height: 44px; align-content: center; }
+.place-card-name { font-weight: 600; }
+.place-card:hover .place-card-name { color: var(--gold-bright); }
+.place-card-modern { font-size: var(--fs-xs); }
+
+@media (max-width: 760px) {
+    .place-head { grid-template-columns: minmax(0, 1fr); gap: var(--s5); margin-bottom: var(--s6); }
+    .place-locator-wrap { aspect-ratio: 16 / 10; }
+}
+
+/* The map's place card links here (the one rule that styles the link in map.js). */
+.map-place-link { margin-top: var(--s5); width: 100%; white-space: normal; text-align: center; }

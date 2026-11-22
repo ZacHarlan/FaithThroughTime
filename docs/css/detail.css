@@ -388,3 +388,12 @@
     .detail .chip { position: relative; }
     .detail .chip::after { content: ''; position: absolute; inset: min(0px, calc(50% - 22px)) 0; }
 }
+
+/* ── Go deeper, places, books, dictionary ── */
+.ds-deeper[hidden], .ds-dict[hidden] { display: none; }
+.ds-deep-row { grid-template-columns: minmax(0, 1fr) 16px; }
+.ds-place-link { color: inherit; text-decoration: none; }
+.ds-place-link:hover { color: var(--gold-bright); text-decoration: underline; text-decoration-color: var(--gold); }
+.ds-books { margin-top: var(--s3); font-size: var(--fs-sm); color: var(--text-dim); }
+.ds-dictionary .ds-chev { transition: transform var(--t-med) var(--ease-out); }
+.ds-dictionary > :not(summary) { padding: 0 0 var(--s4) var(--s5); font-size: var(--fs-sm); }

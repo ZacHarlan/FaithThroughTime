@@ -1,0 +1,77 @@
+/* topics.css — the topical Bible (#/topic) and the "Topics" study section. Tokens from base.css. */
+
+.tp-page { max-width: 980px; }
+.tp-head { display: grid; gap: var(--s3); max-width: 46rem; margin-bottom: var(--s6); }
+.tp-title { font-size: clamp(2.4rem, 1.5rem + 4vw, 4.4rem); line-height: 1.02; letter-spacing: -.03em; text-wrap: balance; overflow-wrap: anywhere; }
+.tp-crumbs { display: flex; flex-wrap: wrap; gap: var(--s2); font-size: var(--fs-sm); color: var(--text-faint); margin-bottom: var(--s5); }
+.tp-crumbs a:hover { color: var(--gold-bright); }
+.tp-credit { font-size: var(--fs-sm); max-width: 46rem; margin-top: var(--s8); text-wrap: pretty; }
+
+/* ── Index ──────────────────────────────────────────────────────────── */
+.tp-tools { display: grid; gap: var(--s4); margin-bottom: var(--s4); }
+.tp-search { position: relative; max-width: 34rem; }
+.tp-search > .icon { position: absolute; left: var(--s4); top: 13px; color: var(--text-faint); pointer-events: none; }
+.tp-search .field { padding-left: calc(var(--s4) + 30px); border-radius: var(--r-pill); }
+.tp-az { display: flex; flex-wrap: wrap; gap: var(--s1); }
+.tp-az-l {
+    display: inline-grid; place-items: center; min-width: 36px; min-height: 36px; border-radius: var(--r-sm, 8px);
+    font-size: var(--fs-sm); font-weight: 600; color: var(--text-dim); border: 1px solid transparent;
+}
+a.tp-az-l:hover, a.tp-az-l:focus-visible { background: var(--bg-3); color: var(--text); border-color: var(--line-strong); }
+.tp-az-l.is-on { background: var(--gold-soft); border-color: var(--gold); color: var(--gold-bright); }
+.tp-az-l.is-off { color: var(--text-faint); opacity: .4; }
+.tp-count { color: var(--text-faint); font-size: var(--fs-sm); margin: var(--s4) 0 var(--s5); font-variant-numeric: tabular-nums; min-height: 1.4em; }
+.tp-none { color: var(--text-dim); padding: var(--s5) 0; }
+
+.tp-starters h2, .tp-results h2 { margin-bottom: var(--s4); }
+.tp-cards { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr)); gap: var(--s3); }
+.tp-card { display: grid; gap: var(--s1); height: 100%; padding: var(--s4); }
+.tp-card-name { font-family: var(--font-display); font-size: 1.5rem; line-height: 1.15; }
+a.tp-card:hover .tp-card-name { color: var(--gold-bright); }
+
+.tp-grid { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr)); gap: 0 var(--s5); }
+.tp-item {
+    display: flex; align-items: baseline; justify-content: space-between; gap: var(--s3); min-height: 44px; padding: var(--s2) 0;
+    border-bottom: 1px solid var(--line); align-content: center;
+}
+.tp-item-name { overflow-wrap: anywhere; }
+.tp-item:hover .tp-item-name, .tp-item:focus-visible .tp-item-name { color: var(--gold-bright); }
+
+/* ── One topic ──────────────────────────────────────────────────────── */
+.tp-see { display: grid; gap: var(--s2); margin-bottom: var(--s5); }
+.tp-toc { margin-bottom: var(--s6); border: 1px solid var(--line-strong); border-radius: var(--r-md); background: var(--bg-1); }
+.tp-toc summary { cursor: pointer; padding: var(--s3) var(--s4); font-weight: 600; min-height: 44px; display: flex; align-items: center; }
+.tp-toc ul { list-style: none; margin: 0; padding: 0 var(--s4) var(--s4); display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr)); gap: var(--s1) var(--s5); max-height: 18rem; overflow: auto; }
+.tp-toc li a { display: block; padding: var(--s1) 0; color: var(--text-dim); font-size: var(--fs-sm); }
+.tp-toc li a:hover { color: var(--gold-bright); }
+
+.tp-section + .tp-section { margin-top: var(--s7); }
+.tp-section-head { display: flex; align-items: baseline; flex-wrap: wrap; gap: var(--s2) var(--s4); padding-bottom: var(--s3); border-bottom: 1px solid var(--line-strong); margin-bottom: var(--s2); scroll-margin-top: var(--s7); }
+.tp-section-title { font-size: var(--fs-h2); overflow-wrap: anywhere; }
+.tp-section-n { font-size: var(--fs-sm); font-variant-numeric: tabular-nums; }
+
+.tp-refs, .tp-rest { list-style: none; padding: 0; margin: 0; }
+.tp-row { padding: var(--s3) 0; border-bottom: 1px solid var(--line); display: grid; gap: var(--s1); }
+.tp-ref { font-size: var(--fs-sm); font-weight: 600; color: var(--gold); min-height: 24px; justify-self: start; }
+a.tp-ref:hover, a.tp-ref:focus-visible { color: var(--gold-bright); text-decoration: underline; }
+.tp-text { color: var(--text); display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; text-wrap: pretty; }
+.tp-rest { display: flex; flex-wrap: wrap; gap: 0 var(--s2); padding-top: var(--s3); }
+.tp-rest[hidden] { display: none; }
+.tp-rest li { display: block; }
+.tp-rest .tp-row { padding: 0; border: 0; }
+.tp-rest .tp-ref { display: inline-flex; align-items: center; min-height: 40px; padding: 0 var(--s3); border: 1px solid var(--line); border-radius: var(--r-pill); font-weight: 500; }
+.tp-rest a.tp-ref:hover { border-color: var(--gold); background: var(--gold-soft); text-decoration: none; }
+.tp-all { margin-top: var(--s3); }
+
+.tp-state { display: grid; gap: var(--s4); justify-items: start; max-width: 40rem; }
+
+/* ── Study section ──────────────────────────────────────────────────── */
+.tp-study { display: grid; gap: var(--s3); }
+.tp-chip { min-height: 36px; }
+.tp-study-note { font-size: var(--fs-sm); }
+
+@media (max-width: 760px) {
+    .tp-grid { grid-template-columns: minmax(0, 1fr); }
+    .tp-toc ul { grid-template-columns: minmax(0, 1fr); }
+    .tp-az-l { min-width: 40px; min-height: 40px; }
+}

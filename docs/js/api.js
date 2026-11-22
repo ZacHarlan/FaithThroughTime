@@ -42,6 +42,20 @@ const Api = (() => {
         getLexicon(chunk) { return getOptionalJson(`bibles/strongs/${encodeURIComponent(chunk)}.json`, {}); },
         getConcordance(chunk) { return getOptionalJson(`bibles/strongs-index/${encodeURIComponent(chunk)}.json`, {}); },
 
+        // Book introductions, reference guides, and the story year of each chapter.
+        getBooksInfo() { return getOptionalJson('data/books.json', { books: {} }); },
+        getGuides() { return getOptionalJson('data/guides.json', { guides: [] }); },
+        getChapterYears() { return getOptionalJson('data/chapter-years.json', {}); },
+        // Verses that name each place: bibles/places/<location-slug>.json.
+        getPlaceRefs(slug) { return getOptionalJson(`bibles/places/${encodeURIComponent(slug)}.json`, null); },
+        // Topical Bible: the list of topics, one chunk of topics, and the topics touching each book's verses.
+        getTopicList() { return getOptionalJson('bibles/topics/index.json', { topics: [] }); },
+        getTopics(chunk) { return getOptionalJson(`bibles/topics/${encodeURIComponent(chunk)}.json`, {}); },
+        getTopicIndex(bookSlug) { return getOptionalJson(`bibles/topics-index/${encodeURIComponent(bookSlug)}.json`, {}); },
+        // Bible dictionary: the list of headwords, and one chunk of entries.
+        getDictionaryList() { return getOptionalJson('bibles/dictionary/index.json', { entries: [] }); },
+        getDictionary(chunk) { return getOptionalJson(`bibles/dictionary/${encodeURIComponent(chunk)}.json`, {}); },
+
         // Local Bible text (per-book JSON under bibles/).
         getBibleManifest() { return getJson('bibles/manifest.json', 'Bible manifest'); },
         getBibleBook(versionId, bookSlug) {
