@@ -18,6 +18,12 @@ frontend with no build step.
   parallel accounts and the Hebrew or Greek words behind it. Also: search the words of Scripture offline, parallel
   passages side by side (a Gospel harmony; Samuel–Kings with Chronicles), a 365-day reading plan in story order, a chart
   of the kings of Israel and Judah with their prophets, and Strong's word studies.
+- **Reference.** A page for every book (author, date, outline, themes) and every place (events, journeys, the verses
+  that name it); Nave's Topical Bible; Easton's Bible Dictionary; guides to the covenants, the feasts of Israel and the
+  tabernacle.
+- **Reader.** Each chapter shows where it stands in history (era, year, who reigned, which prophets spoke); names in
+  the text link to people and places; text size, a second translation side by side, and read-aloud. Every page prints
+  cleanly.
 - **Search.** A command palette (press `/` or Cmd/Ctrl-K) for people, events, places, books, eras, scripture references
   ("john 3:16") and name pairs ("noah and abraham").
 - **Detail sheet.** Dates with confidence and notes, relationships, places and scripture for any person or event.

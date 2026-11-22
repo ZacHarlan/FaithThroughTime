@@ -1,0 +1,51 @@
+/* dictionary.css — Bible dictionary (#/dictionary) and the "From Easton's Bible Dictionary" block. Tokens from base.css. */
+
+.dict-page { max-width: 860px; }
+.dict-crumbs { display: flex; flex-wrap: wrap; gap: var(--s2); font-size: var(--fs-sm); color: var(--text-faint); margin-bottom: var(--s5); }
+.dict-crumbs a:hover { color: var(--gold-bright); }
+
+/* ── Index ──────────────────────────────────────────────────────────── */
+.dict-head { display: grid; gap: var(--s4); max-width: 46rem; margin-bottom: var(--s6); }
+.dict-head h1 { font-size: clamp(2.6rem, 1.6rem + 4vw, 4.6rem); line-height: 1; letter-spacing: -.03em; }
+.dict-search { position: relative; max-width: 34rem; margin-top: var(--s2); }
+.dict-search > .icon { position: absolute; left: var(--s4); top: 13px; color: var(--text-faint); pointer-events: none; }
+.dict-input { padding-left: calc(var(--s4) + 30px); border-radius: var(--r-pill); }
+
+.dict-az { display: flex; flex-wrap: wrap; gap: var(--s1); margin-bottom: var(--s4); }
+.dict-letter {
+    min-width: 40px; min-height: 40px; padding: 0 var(--s2); border-radius: var(--r-pill);
+    font-weight: 600; color: var(--text-dim); border: 1px solid transparent;
+}
+.dict-letter:hover { color: var(--gold-bright); border-color: var(--line-strong); }
+.dict-letter[aria-pressed='true'] { background: var(--gold); color: var(--on-gold); }
+.dict-az.is-idle .dict-letter { opacity: .55; }
+.dict-status { margin-bottom: var(--s4); font-size: var(--fs-sm); font-variant-numeric: tabular-nums; }
+.dict-list { list-style: none; margin: 0 0 var(--s7); padding: 0; columns: 3 12rem; column-gap: var(--s5); }
+.dict-list li { break-inside: avoid; }
+.dict-item { display: block; padding: var(--s2) 0; min-height: 40px; border-bottom: 1px solid var(--line); color: var(--text); }
+.dict-item:hover, .dict-item:focus-visible { color: var(--gold-bright); }
+.dict-note { font-size: var(--fs-sm); max-width: 40rem; margin: var(--s5) 0; }
+
+/* ── Entry ──────────────────────────────────────────────────────────── */
+.dict-entry-head { display: grid; gap: var(--s3); justify-items: start; margin-bottom: var(--s5); }
+.dict-entry-title { font-size: clamp(2.4rem, 1.5rem + 4vw, 4.2rem); line-height: 1.05; letter-spacing: -.02em; overflow-wrap: anywhere; }
+.dict-site { display: flex; flex-wrap: wrap; gap: var(--s2); }
+.dict-body { display: grid; gap: var(--s4); }
+.dict-p { margin: 0; line-height: 1.75; text-wrap: pretty; max-width: 40rem; }
+.dict-ref, .dict-xref { color: var(--gold-bright); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--line-strong); }
+.dict-ref:hover, .dict-ref:focus-visible, .dict-xref:hover, .dict-xref:focus-visible { text-decoration-color: var(--gold); }
+.dict-xref { font-variant: small-caps; letter-spacing: .03em; }
+.dict-step { display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--s2); margin-bottom: var(--s6); }
+.dict-state { display: grid; gap: var(--s4); justify-items: start; max-width: 40rem; }
+
+/* ── The block other views embed ───────────────────────────────────── */
+.dict-block { display: grid; gap: var(--s2); padding: var(--s4); border: 1px solid var(--line); border-left: 3px solid var(--gold); border-radius: var(--r-md, 10px); background: var(--bg-1); }
+.dict-block-h { font-family: var(--font-ui); font-size: var(--fs-xs); font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--text-faint); margin: 0; }
+.dict-block-text { margin: 0; line-height: 1.65; text-wrap: pretty; }
+.dict-block-link { display: inline-flex; align-items: center; gap: var(--s1); min-height: 32px; justify-self: start; font-weight: 600; color: var(--gold-bright); }
+.dict-block-link:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+@media (max-width: 600px) {
+    .dict-list { columns: 2 9rem; }
+    .dict-letter { min-width: 36px; }
+}

@@ -32,10 +32,16 @@ Browser (vanilla JS, classic scripts, no build step)
   js/study.js     Study: the verse study panel (sections registered by the files below), shared reference helpers, #/study hub
   js/xrefs.js, parallel.js, prophecy.js, words.js   study-panel sections, plus the #/parallel, #/prophecy, #/word views
   js/find.js, plan.js, kings.js                     #/find (search the text), #/plan (reading plan), #/kings (chart)
+  js/book.js, place.js, guide.js                    #/book (about a book), #/place (a place), #/guide (covenants, feasts, tabernacle)
+  js/topics.js, dictionary.js                       #/topic (Nave's), #/dictionary (Easton's; Dictionary.blockFor for sheets and place pages)
+  js/install.js                                     "Add to home screen" prompt (Install.available/prompt)
   css/base.css    design tokens; one stylesheet per view
   data/tours.json, data/discoveries.json   authored content
   data/parallels.json, prophecy.json, reading-plan.json, kings.json   authored study content (checked against the KJV)
+  data/books.json, guides.json, chapter-years.json   book introductions, reference guides, the story year of each chapter
   bibles/xrefs/, kjv-strongs/, strongs/, strongs-index/   study data beside the text (cross-references, Strong's)
+  bibles/topics/, topics-index/, dictionary/, places/   Nave's topics, Easton's dictionary, verses naming each place
+  css/print.css   print styles for every page (media="print")
   vendor/         D3 v7 and Leaflet, vendored
         │
         │  ONE request: GET data/dataset.json  (or /api/dataset)
@@ -98,7 +104,8 @@ Also tested: every local `<script src>` and stylesheet in `index.html` exists, a
 Browser (hash-based): `#/` home, `#/timeline`, `#/story/<tour>/<step>`, `#/meet/<a>/<b>`, `#/family/<slug>`,
 `#/map/<journey>`, `#/read/<book>/<chapter>` (`?v=` marks verses, `?study=<verse>` opens the study panel), `#/about`,
 `#/person/<slug>`, `#/event/<slug>` (detail sheet over the current view); study tools: `#/study` hub, `#/find?q=`,
-`#/plan/<day>`, `#/kings`, `#/parallel/<id>`, `#/prophecy/<id>`, `#/word/<strongs>`. The table lives in the header
+`#/plan/<day>`, `#/kings`, `#/parallel/<id>`, `#/prophecy/<id>`, `#/word/<strongs>`, `#/topic/<slug>`,
+`#/dictionary/<slug>`, `#/guide/<id>`; and `#/book/<bookSlug>`, `#/place/<locationSlug>`. The table lives in the header
 comment of `js/app.js`.
 
 ## Study tools
@@ -107,7 +114,7 @@ The reader's selection bar has a **Study** button that opens a panel for one ver
 with `Study.addSection({ id, order, title, render(ctx) })` (`ctx = { book, chapter, verse, version, ref }`; return a
 node, `null` to hide, or a promise); chapter-level groups for the reader rail use `Study.addChapterSection`. Orders:
 10 cross-references (`xrefs.js`), 20 quotations and prophecy (`prophecy.js`), 30 parallel accounts (`parallel.js`),
-40 original words (`words.js`). Use `Study.parse`, `Study.format`, `Study.refLink` and `Study.verseText` rather than
+40 original words (`words.js`), 50 topics (`topics.js`). Use `Study.parse`, `Study.format`, `Study.refLink` and `Study.verseText` rather than
 parsing references by hand.
 
 | Data | Shape | Source |
@@ -119,6 +126,16 @@ parsing references by hand.
 | `data/prophecy.json` | `quotations` (NT ← OT) and `prophecies` (spoken → fulfilled) | compiled, reviewed against the KJV |
 | `data/reading-plan.json` | 365 days, every chapter once, in story order | compiled on the site's chronology |
 | `data/kings.json` | kings (years from the database) and prophets | compiled from the text and the database |
+| `data/books.json` | per book: author, written, setting, summary, themes, key verses, outline | compiled, reviewed; years agree with `biblical_books` |
+| `data/guides.json` | covenants, feasts (with a `calendar`), tabernacle: items with points and refs | compiled, reviewed against the KJV |
+| `data/chapter-years.json` | `{book: {chapter: year\|null}}` | derived from the reading plan and the events |
+| `bibles/topics/<letter>.json`, `index.json`, `topics-index/<book>.json` | topics → sections → refs; topics per verse | Nave's Topical Bible (PD) |
+| `bibles/dictionary/<letter>.json`, `index.json` | headword → paragraphs | Easton's Bible Dictionary, 1897 (PD) |
+| `bibles/places/<location>.json` | `{count, refs}`: verses naming the place | searched from the local KJV with per-place rules |
+
+The reader (`read.js`) also shows a "where you are in history" strip (era, year, reigning kings and prophets from
+`chapter-years.json` and `kings.json`), links the names of people and places tied to the chapter, and has reading
+settings (text size, spacing, a second translation beside the first, listening).
 
 Every reference in these files must resolve in the local KJV. Credits are on the About page ("Study tools and their
 sources"); keep them in step if a source changes.
@@ -197,6 +214,9 @@ Counts are of the current seed; `agent-status.sh` prints live ones.
   Where Ussher departs from Scripture's plain figures, Scripture wins and `date_notes` gives Ussher's figure; modern
   scholarly dates may be noted but never set a row's years. There is one chronology; do not mix systems. There is no
   year 0 (1 BC is `-1`, AD 1 is `1`). The Annals text and a search tool used for proofing live outside the repo.
+- **Later corrections.** `SeedData.sql` ends with a "LATER CORRECTIONS" section of `UPDATE`/`INSERT OR IGNORE`
+  statements applied after the inserts, inside the same transaction. A correction may go there (with a dated comment)
+  or be made in the row itself; do not do both. `biblical_books` years must agree with the events and people.
 - **Explicit, stable ids.** Every seed row has an explicit id. Add rows with new ids (people currently go up to 7820,
   events to 532); never renumber or reuse an id. The seed is one transaction with foreign keys deferred to commit, so a
   row may refer to a higher id.
@@ -230,7 +250,7 @@ locations. Then delete the local database files, run `dotnet test tests/BibleTim
 
 ## End-to-end tests
 
-`tests/BibleTimeline.E2E` (NUnit + Playwright, 113 tests, about 45 seconds) drives the real app in headless Chromium:
+`tests/BibleTimeline.E2E` (NUnit + Playwright, about 175 tests, about a minute) drives the real app in headless Chromium:
 every view, the detail sheet, search, share, the tour, the phone layout and an accessibility smoke check. The app must
 already be running on http://localhost:5180.
 

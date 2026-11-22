@@ -209,7 +209,32 @@ const Search = (() => {
             const mine = hits.filter(h => h.type === g.type).slice(0, g.max);
             return { label: g.label, best: mine[0]?.score ?? -Infinity, rows: mine.map(h => entityRow(h.item, h.sub, q)) };
         }).sort((a, b) => b.best - a.best);
-        return [{ label: 'Suggested', rows: suggested }, ...groups];
+        return [{ label: 'Suggested', rows: suggested }, ...groups, { label: 'Study tools', rows: toolRows(q) }];
+    }
+
+    // The study tools and guides, found by any word in their name or keywords.
+    const TOOLS = [
+        ['#/study', 'Study tools', 'Everything for reading the text closely', 'study tools'],
+        ['#/find', 'Search Scripture', 'Find a word or phrase in the text', 'search find words text concordance'],
+        ['#/plan', 'Reading plan', 'The whole Bible in a year, in story order', 'reading plan year daily chronological'],
+        ['#/kings', 'Kings and prophets', 'Israel and Judah side by side', 'kings prophets chart reigns israel judah monarchy'],
+        ['#/parallel', 'Parallel passages', 'The same events told twice, side by side', 'parallel passages harmony gospels synoptic chronicles'],
+        ['#/prophecy', 'Quotations and prophecy', 'The Old Testament in the New', 'prophecy prophecies fulfilled fulfilment quotations messianic'],
+        ['#/word', 'Word study', 'The Hebrew and Greek behind the English', 'word study hebrew greek strongs lexicon original'],
+        ['#/topic', 'Topical Bible', 'Follow a subject through the whole Bible', 'topics topical nave subject themes'],
+        ['#/dictionary', 'Bible dictionary', 'Easton’s Bible Dictionary', 'dictionary easton definitions'],
+        ['#/place', 'Places', 'Every place on the map, with its verses', 'places locations cities towns'],
+        ['#/guide/covenants', 'Guide: The covenants', 'Noah, Abraham, Sinai, David and the new covenant', 'covenants covenant guide testament'],
+        ['#/guide/feasts', 'Guide: The feasts of Israel', 'Leviticus 23 by month and day', 'feasts festivals passover pentecost weeks tabernacles atonement trumpets purim sabbath calendar guide'],
+        ['#/guide/tabernacle', 'Guide: The tabernacle', 'Court, tent, furniture and garments', 'tabernacle ark altar laver lampstand candlestick veil mercy seat shewbread priest garments guide']
+    ];
+    function toolRows(q) {
+        const words = q.toLowerCase().split(/\s+/).filter(w => w.length > 2);
+        if (!words.length) return [];
+        return TOOLS.filter(([, name, , keys]) => {
+            const hay = ` ${name.toLowerCase()} ${keys} `;
+            return words.every(w => hay.includes(` ${w}`));
+        }).slice(0, 3).map(([href, name, sub]) => ({ href, icon: 'scroll', action: true, name, sub }));
     }
 
     function entityRow(item, sub, q = '') {

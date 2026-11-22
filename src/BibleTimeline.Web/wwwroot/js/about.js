@@ -242,6 +242,12 @@
                     out('https://github.com/openscriptures/strongs', 'Open Scriptures'), ' (CC BY-SA).'),
                 h('li', null, 'Parallel passages: the order of the Gospel harmony follows A. T. Robertson, ',
                     h('cite', null, 'A Harmony of the Gospels'), ' (public domain).'),
+                h('li', null, 'Topical Bible: ', h('cite', null, 'Nave’s Topical Bible'), ' (Orville J. Nave, 1896, public domain), from the structured edition at ',
+                    out('https://github.com/j86schroeder/topical-bible-search', 'topical-bible-search'), '.'),
+                h('li', null, 'Bible dictionary: ', h('cite', null, 'Easton’s Bible Dictionary'), ' (1897, public domain), from ',
+                    out('https://github.com/garydavenport73/eastons-bible-dictionary-json', 'eastons-bible-dictionary-json'),
+                    '. Its dates and identifications are its own and may differ from this site’s.'),
+                h('li', null, 'Book introductions and the guides to the covenants, feasts and tabernacle were compiled for this site and checked against the text. Authorship and dates of writing are given as the traditional view.'),
                 h('li', null, 'The kings and prophets chart and the reading plan follow the same chronology as the timeline. The quotations, prophecies and parallels were compiled for this site and checked against the text.'))
         ];
     }

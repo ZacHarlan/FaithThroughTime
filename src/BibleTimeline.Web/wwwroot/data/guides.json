@@ -1,0 +1,1262 @@
+{
+  "calendar": {
+    "note": "The Bible numbers the months from the one in which Israel left Egypt (Exodus 12:2). The names below are the ones used for them later. The King James Version has seven of them, spelt Nisan, Sivan, Elul, Chisleu, Tebeth, Sebat and Adar (in Ezra, Nehemiah, Esther and Zechariah), and four older names: Abib for the first month, Zif for the second, Ethanim for the seventh and Bul for the eighth.",
+    "months": [
+      {
+        "n": 1,
+        "name": "Nisan"
+      },
+      {
+        "n": 2,
+        "name": "Iyar"
+      },
+      {
+        "n": 3,
+        "name": "Sivan"
+      },
+      {
+        "n": 4,
+        "name": "Tammuz"
+      },
+      {
+        "n": 5,
+        "name": "Av"
+      },
+      {
+        "n": 6,
+        "name": "Elul"
+      },
+      {
+        "n": 7,
+        "name": "Tishri"
+      },
+      {
+        "n": 8,
+        "name": "Heshvan"
+      },
+      {
+        "n": 9,
+        "name": "Kislev"
+      },
+      {
+        "n": 10,
+        "name": "Tevet"
+      },
+      {
+        "n": 11,
+        "name": "Shevat"
+      },
+      {
+        "n": 12,
+        "name": "Adar"
+      }
+    ]
+  },
+  "guides": [
+    {
+      "id": "covenants",
+      "title": "The covenants",
+      "intro": "A covenant in Scripture is a promise or agreement that God makes and binds himself to, often with a sign to remember it by. These are the great covenants in the order they are made, from Noah to the new covenant that Jeremiah foretells and the New Testament says Jesus sealed.",
+      "items": [
+        {
+          "id": "noah",
+          "title": "The covenant with Noah",
+          "year": -2349,
+          "event": 3,
+          "people": [
+            3
+          ],
+          "summary": "After the flood God makes a covenant with Noah, his sons and every living creature that came out of the ark. He promises never again to cut off all flesh by the waters of a flood, and sets his bow in the cloud as the sign.",
+          "points": [
+            {
+              "label": "Promise",
+              "text": "Never again will a flood destroy the earth, and the seasons will not cease while the earth remains.",
+              "refs": [
+                "Genesis 9:11",
+                "Genesis 8:21–22"
+              ]
+            },
+            {
+              "label": "Parties",
+              "text": "Noah and his sons, their descendants, and every living creature with them.",
+              "refs": [
+                "Genesis 9:8–10"
+              ]
+            },
+            {
+              "label": "Sign",
+              "text": "The bow in the cloud, which God says he will look on to remember the everlasting covenant.",
+              "refs": [
+                "Genesis 9:12–17"
+              ]
+            }
+          ],
+          "refs": [
+            "Genesis 6:17–22",
+            "Genesis 9:8–17"
+          ],
+          "later": [
+            "Isaiah 54:9–10",
+            "1 Peter 3:20–21"
+          ]
+        },
+        {
+          "id": "abraham",
+          "title": "The covenant with Abraham",
+          "year": -1912,
+          "event": 6,
+          "people": [
+            4,
+            5,
+            6,
+            57
+          ],
+          "summary": "God calls Abram to leave his country and promises him a land, a great nation and a blessing for all the families of the earth. In Genesis 15 he counts Abram's faith as righteousness and makes a covenant with him over the pieces of the sacrifice. In Genesis 17 he renews it as an everlasting covenant, changes the names Abram and Sarai, and gives circumcision as its token.",
+          "points": [
+            {
+              "label": "Promise",
+              "text": "A land, a great nation, a great name, and blessing for all the families of the earth through him.",
+              "refs": [
+                "Genesis 12:1–3",
+                "Genesis 15:18–21"
+              ]
+            },
+            {
+              "label": "Offspring",
+              "text": "Descendants like the stars, through a son of Sarah, with whom the covenant is to be established.",
+              "refs": [
+                "Genesis 15:1–6",
+                "Genesis 17:15–21"
+              ]
+            },
+            {
+              "label": "Faith",
+              "text": "Abram believed the LORD, and he counted it to him for righteousness.",
+              "refs": [
+                "Genesis 15:6"
+              ]
+            },
+            {
+              "label": "Sign",
+              "text": "Circumcision of every male, as the token of the covenant between God and Abraham's seed.",
+              "refs": [
+                "Genesis 17:9–14"
+              ]
+            }
+          ],
+          "refs": [
+            "Genesis 12:1–3",
+            "Genesis 15:1–21",
+            "Genesis 17:1–14"
+          ],
+          "later": [
+            "Luke 1:72–73",
+            "Acts 3:25",
+            "Romans 4:9–13",
+            "Galatians 3:6–9",
+            "Galatians 3:16–18",
+            "Hebrews 6:13–18"
+          ]
+        },
+        {
+          "id": "sinai",
+          "title": "The covenant at Sinai",
+          "year": -1491,
+          "event": 16,
+          "people": [
+            10,
+            11
+          ],
+          "summary": "In the third month after leaving Egypt Israel camps before Mount Sinai. God offers to make them his own possession, a kingdom of priests and a holy nation, if they obey his voice and keep his covenant. The people agree, hear the ten commandments, and Moses seals the covenant by sprinkling blood on the altar and on the people.",
+          "points": [
+            {
+              "label": "Offer",
+              "text": "If Israel obeys and keeps the covenant, they will be a peculiar treasure, a kingdom of priests and a holy nation.",
+              "refs": [
+                "Exodus 19:3–8"
+              ]
+            },
+            {
+              "label": "Terms",
+              "text": "The ten commandments, spoken by God and written on two tables of stone, with the judgments that follow.",
+              "refs": [
+                "Exodus 20:1–17",
+                "Exodus 34:27–28",
+                "Deuteronomy 4:13"
+              ]
+            },
+            {
+              "label": "Seal",
+              "text": "Moses reads the book of the covenant, the people answer that they will do it, and he sprinkles the blood of the covenant on them.",
+              "refs": [
+                "Exodus 24:3–8"
+              ]
+            },
+            {
+              "label": "Sign",
+              "text": "The sabbath, a sign between the LORD and the children of Israel for ever.",
+              "refs": [
+                "Exodus 31:12–17"
+              ]
+            }
+          ],
+          "refs": [
+            "Exodus 19:1–8",
+            "Exodus 20:1–17",
+            "Exodus 24:3–8"
+          ],
+          "later": [
+            "John 1:17",
+            "2 Corinthians 3:6–9",
+            "Galatians 3:17–19",
+            "Hebrews 8:6–9",
+            "Hebrews 9:18–20",
+            "1 Peter 2:9"
+          ]
+        },
+        {
+          "id": "phinehas",
+          "title": "The covenant of peace with Phinehas",
+          "year": null,
+          "event": null,
+          "people": [
+            68,
+            184
+          ],
+          "summary": "When Israel joined itself to Baal-peor, Phinehas son of Eleazar the priest acted with zeal and the plague on the people was stayed. The LORD then gave him his covenant of peace, the covenant of an everlasting priesthood for him and his seed after him.",
+          "points": [
+            {
+              "label": "Promise",
+              "text": "God's covenant of peace, and a covenant of an everlasting priesthood to Phinehas and his seed.",
+              "refs": [
+                "Numbers 25:12–13"
+              ]
+            },
+            {
+              "label": "Reason",
+              "text": "He was zealous for his God and made an atonement for the children of Israel.",
+              "refs": [
+                "Numbers 25:11",
+                "Numbers 25:13"
+              ]
+            }
+          ],
+          "refs": [
+            "Numbers 25:1–13"
+          ],
+          "later": [
+            "Psalms 106:28–31",
+            "Jeremiah 33:17–22",
+            "Malachi 2:4–5"
+          ]
+        },
+        {
+          "id": "david",
+          "title": "The covenant with David",
+          "year": -1044,
+          "event": 28,
+          "people": [
+            20,
+            21,
+            22
+          ],
+          "summary": "David wishes to build a house for the LORD. Through Nathan the prophet God answers that he will build David a house instead: a son after him whose kingdom he will establish, who will build the house for his name, and whose throne will be established for ever. David later calls it an everlasting covenant.",
+          "points": [
+            {
+              "label": "Promise",
+              "text": "A son to succeed David, and a house, a kingdom and a throne established for ever.",
+              "refs": [
+                "2 Samuel 7:12–16"
+              ]
+            },
+            {
+              "label": "Fatherhood",
+              "text": "God will be a father to him, and a son who does wrong will be corrected, but God's mercy will not be taken away.",
+              "refs": [
+                "2 Samuel 7:14–15"
+              ]
+            },
+            {
+              "label": "David's own word",
+              "text": "God has made with him an everlasting covenant, ordered in all things and sure.",
+              "refs": [
+                "2 Samuel 23:1–5"
+              ]
+            },
+            {
+              "label": "Sung",
+              "text": "The psalms rehearse the oath God swore to David about his seed and his throne.",
+              "refs": [
+                "Psalms 89:3–4",
+                "Psalms 89:28–37",
+                "Psalms 132:11–12"
+              ]
+            }
+          ],
+          "refs": [
+            "2 Samuel 7:1–17",
+            "2 Samuel 23:1–5"
+          ],
+          "later": [
+            "Isaiah 55:3",
+            "Matthew 1:1",
+            "Luke 1:30–33",
+            "Acts 2:29–36",
+            "Acts 13:22–23",
+            "Revelation 22:16"
+          ]
+        },
+        {
+          "id": "new-covenant",
+          "title": "The new covenant",
+          "year": 33,
+          "event": 366,
+          "people": [
+            26,
+            37
+          ],
+          "summary": "Jeremiah foretells a new covenant with the house of Israel and the house of Judah, not like the one made when God took their fathers out of Egypt. God will write his law on their hearts, they will all know him, and he will forgive their iniquity and remember their sin no more. At the Last Supper Jesus takes the cup and calls it the new testament in his blood, and the letter to the Hebrews quotes Jeremiah's words and says Jesus is the mediator of it.",
+          "points": [
+            {
+              "label": "Promise",
+              "text": "God's law put in their inward parts and written in their hearts; he will be their God and they his people.",
+              "refs": [
+                "Jeremiah 31:33"
+              ]
+            },
+            {
+              "label": "Knowing God",
+              "text": "They will all know him, from the least to the greatest.",
+              "refs": [
+                "Jeremiah 31:34"
+              ]
+            },
+            {
+              "label": "Forgiveness",
+              "text": "God will forgive their iniquity and remember their sin no more.",
+              "refs": [
+                "Jeremiah 31:34"
+              ]
+            },
+            {
+              "label": "Sealed",
+              "text": "Jesus at the Last Supper: this cup is the new testament in my blood, which is shed for you.",
+              "refs": [
+                "Luke 22:20",
+                "Matthew 26:27–28"
+              ]
+            },
+            {
+              "label": "Spirit",
+              "text": "Ezekiel speaks of a new heart and God's Spirit within his people.",
+              "refs": [
+                "Ezekiel 36:25–27"
+              ]
+            }
+          ],
+          "refs": [
+            "Jeremiah 31:31–34",
+            "Jeremiah 32:36–41",
+            "Ezekiel 36:24–28"
+          ],
+          "later": [
+            "Luke 22:19–20",
+            "1 Corinthians 11:23–26",
+            "2 Corinthians 3:5–6",
+            "Hebrews 8:6–13",
+            "Hebrews 9:15",
+            "Hebrews 10:15–18",
+            "Hebrews 12:22–24"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "feasts",
+      "title": "The feasts of Israel",
+      "intro": "Leviticus 23 lists the feasts of the LORD, the set times when Israel was to stop work and gather. Each has its month and day as the text gives them. The strip below places them on the Hebrew year. Purim and the Dedication were added later, and are marked so.",
+      "items": [
+        {
+          "id": "sabbath",
+          "title": "The Sabbath",
+          "short": "Sabbath",
+          "kind": "feast",
+          "year": -4004,
+          "event": 1,
+          "people": [
+            10
+          ],
+          "month": null,
+          "days": "Every seventh day",
+          "summary": "The first of the feasts in Leviticus 23 is the weekly sabbath: six days of work, then a day of rest and holy convocation. It goes back to creation, when God rested on the seventh day and blessed and hallowed it, and it was given to Israel as a sign of the covenant.",
+          "points": [
+            {
+              "label": "When",
+              "text": "The seventh day of every week.",
+              "refs": [
+                "Leviticus 23:3"
+              ]
+            },
+            {
+              "label": "What was done",
+              "text": "No work was done; the people gathered for a holy convocation.",
+              "refs": [
+                "Leviticus 23:3",
+                "Exodus 20:8–10"
+              ]
+            },
+            {
+              "label": "What it remembered",
+              "text": "God's rest after creation, and, in Deuteronomy, the deliverance from Egypt.",
+              "refs": [
+                "Exodus 20:11",
+                "Deuteronomy 5:12–15"
+              ]
+            }
+          ],
+          "refs": [
+            "Genesis 2:1–3",
+            "Leviticus 23:1–3",
+            "Exodus 31:12–17"
+          ],
+          "later": [
+            "Luke 4:16",
+            "Mark 2:27–28",
+            "Colossians 2:16–17",
+            "Hebrews 4:9–10"
+          ]
+        },
+        {
+          "id": "passover",
+          "title": "Passover and Unleavened Bread",
+          "short": "Passover",
+          "kind": "feast",
+          "year": -1491,
+          "event": 405,
+          "people": [
+            10,
+            11
+          ],
+          "month": 1,
+          "days": "14; 15–21",
+          "summary": "Passover is kept on the fourteenth day of the first month at evening, and the feast of unleavened bread begins on the fifteenth and lasts seven days. The first and seventh days are holy convocations, and an offering made by fire is brought each day.",
+          "points": [
+            {
+              "label": "When",
+              "text": "The fourteenth day of the first month at evening for the Passover; the fifteenth day for Unleavened Bread, seven days.",
+              "refs": [
+                "Leviticus 23:5–6"
+              ]
+            },
+            {
+              "label": "What was done",
+              "text": "A lamb was killed and eaten with unleavened bread and bitter herbs; no leaven was eaten for seven days; no servile work on the first and seventh days.",
+              "refs": [
+                "Exodus 12:3–11",
+                "Exodus 12:15–20",
+                "Leviticus 23:7–8"
+              ]
+            },
+            {
+              "label": "What it remembered",
+              "text": "The night the LORD passed over the houses marked with blood and brought Israel out of Egypt.",
+              "refs": [
+                "Exodus 12:12–14",
+                "Exodus 12:26–27",
+                "Deuteronomy 16:1–3"
+              ]
+            }
+          ],
+          "refs": [
+            "Leviticus 23:4–8",
+            "Exodus 12:1–20",
+            "Deuteronomy 16:1–8"
+          ],
+          "later": [
+            "Luke 22:7–20",
+            "John 1:29",
+            "John 19:14",
+            "John 19:36",
+            "1 Corinthians 5:7–8"
+          ]
+        },
+        {
+          "id": "firstfruits",
+          "title": "Firstfruits",
+          "short": "Firstfruits",
+          "kind": "feast",
+          "year": null,
+          "event": null,
+          "people": [],
+          "month": 1,
+          "days": "The morrow after the sabbath",
+          "approx": true,
+          "summary": "When Israel comes into the land and reaps its harvest, it is to bring a sheaf of the firstfruits to the priest, who waves it before the LORD on the morrow after the sabbath. The text does not give a month and day for it; it is counted from that sabbath, and Leviticus places it between Unleavened Bread and Weeks. The strip puts it in the first month, after the Passover.",
+          "points": [
+            {
+              "label": "When",
+              "text": "On the morrow after the sabbath, after Israel has come into the land and reaped its harvest.",
+              "refs": [
+                "Leviticus 23:10–11"
+              ]
+            },
+            {
+              "label": "What was done",
+              "text": "A sheaf of the firstfruits was waved before the LORD, with a lamb for a burnt offering, a meat offering and a drink offering; no bread, parched corn or green ears were eaten until it was brought.",
+              "refs": [
+                "Leviticus 23:10–14"
+              ]
+            },
+            {
+              "label": "What it remembered",
+              "text": "The first of the harvest is brought to the LORD, and none of the new crop is eaten until it has been offered.",
+              "refs": [
+                "Leviticus 23:10",
+                "Leviticus 23:14"
+              ]
+            }
+          ],
+          "refs": [
+            "Leviticus 23:9–14"
+          ],
+          "later": [
+            "1 Corinthians 15:20",
+            "1 Corinthians 15:23"
+          ]
+        },
+        {
+          "id": "weeks",
+          "title": "Weeks, or Pentecost",
+          "short": "Weeks",
+          "kind": "feast",
+          "year": 33,
+          "event": 48,
+          "people": [
+            40
+          ],
+          "month": 3,
+          "days": "Fifty days counted",
+          "approx": true,
+          "summary": "Seven full sabbaths are counted from the day the sheaf was waved, the morrow after the sabbath, to the morrow after the seventh sabbath, which makes fifty days. On that day two loaves baked with leaven are waved as firstfruits and a new meat offering is brought. Counting fifty days from the first month's Firstfruits brings it to early in the third month.",
+          "points": [
+            {
+              "label": "When",
+              "text": "Fifty days counted from the day the sheaf was waved: seven sabbaths complete, then the morrow after the seventh.",
+              "refs": [
+                "Leviticus 23:15–16",
+                "Deuteronomy 16:9–10"
+              ]
+            },
+            {
+              "label": "What was done",
+              "text": "Two wave loaves of fine flour, baked with leaven, as firstfruits; burnt offerings, a sin offering and peace offerings; a holy convocation; the gleanings left for the poor and the stranger.",
+              "refs": [
+                "Leviticus 23:17–22"
+              ]
+            },
+            {
+              "label": "What it remembered",
+              "text": "The LORD's blessing of the harvest; the people rejoice before him, and remember that they were bondmen in Egypt.",
+              "refs": [
+                "Deuteronomy 16:10–12"
+              ]
+            }
+          ],
+          "refs": [
+            "Leviticus 23:15–22",
+            "Numbers 28:26–31",
+            "Deuteronomy 16:9–12"
+          ],
+          "later": [
+            "Acts 2:1–4",
+            "Acts 20:16",
+            "1 Corinthians 16:8"
+          ]
+        },
+        {
+          "id": "trumpets",
+          "title": "Trumpets",
+          "short": "Trumpets",
+          "kind": "feast",
+          "year": null,
+          "event": null,
+          "people": [],
+          "month": 7,
+          "days": "1",
+          "summary": "The first day of the seventh month is a sabbath, a memorial of blowing of trumpets, and a holy convocation, with an offering made by fire. Numbers 29 lists the burnt offerings and the sin offering for the day.",
+          "points": [
+            {
+              "label": "When",
+              "text": "The first day of the seventh month.",
+              "refs": [
+                "Leviticus 23:24"
+              ]
+            },
+            {
+              "label": "What was done",
+              "text": "A memorial of blowing of trumpets; no servile work; an offering made by fire.",
+              "refs": [
+                "Leviticus 23:24–25",
+                "Numbers 29:1–6"
+              ]
+            },
+            {
+              "label": "What it remembered",
+              "text": "The text calls it a memorial and says no more of what is remembered.",
+              "refs": [
+                "Leviticus 23:24"
+              ]
+            }
+          ],
+          "refs": [
+            "Leviticus 23:23–25",
+            "Numbers 29:1–6"
+          ],
+          "later": [
+            "Nehemiah 8:1–3",
+            "Nehemiah 8:9–12"
+          ]
+        },
+        {
+          "id": "atonement",
+          "title": "The Day of Atonement",
+          "short": "Atonement",
+          "kind": "feast",
+          "year": null,
+          "event": null,
+          "people": [
+            11
+          ],
+          "month": 7,
+          "days": "10",
+          "summary": "On the tenth day of the seventh month the people afflict their souls and do no work, because it is a day of atonement before the LORD. Leviticus 16 describes it: once a year the high priest enters the most holy place with blood, makes atonement for himself, the people and the sanctuary, and the sins of Israel are put on a live goat that is sent away into the wilderness.",
+          "points": [
+            {
+              "label": "When",
+              "text": "The tenth day of the seventh month.",
+              "refs": [
+                "Leviticus 23:27"
+              ]
+            },
+            {
+              "label": "What was done",
+              "text": "The people afflicted their souls and did no work. The high priest entered within the veil with blood, burned incense, sprinkled the mercy seat, and confessed the people's sins over the goat sent into the wilderness.",
+              "refs": [
+                "Leviticus 23:27–32",
+                "Leviticus 16:11–22"
+              ]
+            },
+            {
+              "label": "What it remembered",
+              "text": "It made atonement for the people, to cleanse them from all their sins before the LORD.",
+              "refs": [
+                "Leviticus 16:29–34",
+                "Leviticus 23:28"
+              ]
+            }
+          ],
+          "refs": [
+            "Leviticus 23:26–32",
+            "Leviticus 16:1–34",
+            "Numbers 29:7–11"
+          ],
+          "later": [
+            "Acts 27:9",
+            "Hebrews 9:6–12",
+            "Hebrews 9:24–28",
+            "Hebrews 10:19–22"
+          ]
+        },
+        {
+          "id": "tabernacles",
+          "title": "Tabernacles, or Booths",
+          "short": "Tabernacles",
+          "kind": "feast",
+          "year": -445,
+          "event": 485,
+          "people": [
+            33
+          ],
+          "month": 7,
+          "days": "15–21; 22",
+          "summary": "From the fifteenth day of the seventh month, when the fruit of the land has been gathered, Israel keeps a feast of seven days and lives in booths of branches. The first day is a holy convocation and the eighth day is a solemn assembly. When Ezra read the law in the seventh month, the people found this written and kept the feast with great gladness.",
+          "points": [
+            {
+              "label": "When",
+              "text": "The fifteenth day of the seventh month, for seven days; the eighth day is a solemn assembly.",
+              "refs": [
+                "Leviticus 23:34–36",
+                "Leviticus 23:39"
+              ]
+            },
+            {
+              "label": "What was done",
+              "text": "The people took boughs of goodly trees, palm branches and willows of the brook, rejoiced before the LORD seven days, and dwelt in booths.",
+              "refs": [
+                "Leviticus 23:40–42"
+              ]
+            },
+            {
+              "label": "What it remembered",
+              "text": "That the LORD made the children of Israel to dwell in booths when he brought them out of Egypt.",
+              "refs": [
+                "Leviticus 23:43"
+              ]
+            }
+          ],
+          "refs": [
+            "Leviticus 23:33–43",
+            "Deuteronomy 16:13–17",
+            "Nehemiah 8:13–18"
+          ],
+          "later": [
+            "Zechariah 14:16–19",
+            "John 7:2",
+            "John 7:37–38"
+          ]
+        },
+        {
+          "id": "purim",
+          "title": "Purim",
+          "short": "Purim",
+          "kind": "later",
+          "year": -473,
+          "event": 41,
+          "people": [
+            36,
+            120,
+            226
+          ],
+          "month": 12,
+          "days": "14; 15",
+          "summary": "Purim is not among the feasts of Leviticus 23. Mordecai wrote to the Jews to keep the fourteenth and fifteenth days of Adar every year, as the days on which they rested from their enemies and the month turned from sorrow to joy. It is named from the lot, pur, that Haman cast.",
+          "points": [
+            {
+              "label": "When",
+              "text": "The fourteenth and fifteenth days of the month Adar.",
+              "refs": [
+                "Esther 9:20–22"
+              ]
+            },
+            {
+              "label": "What was done",
+              "text": "Days of feasting and gladness, sending portions to one another and gifts to the poor.",
+              "refs": [
+                "Esther 9:22"
+              ]
+            },
+            {
+              "label": "What it remembered",
+              "text": "The deliverance of the Jews from Haman's plot, and the name, from the lot he cast.",
+              "refs": [
+                "Esther 9:24–26",
+                "Esther 3:7"
+              ]
+            }
+          ],
+          "refs": [
+            "Esther 9:20–32"
+          ],
+          "later": []
+        },
+        {
+          "id": "dedication",
+          "title": "The Dedication",
+          "short": "Dedication",
+          "kind": "later",
+          "year": -165,
+          "event": 343,
+          "people": [
+            454
+          ],
+          "month": 9,
+          "days": "25",
+          "approx": true,
+          "summary": "The feast of the Dedication is not commanded in the Law and is named once in Scripture, in John 10:22, where it was winter and Jesus was walking in the temple at Jerusalem. Its history, the cleansing and rededication of the temple after Antiochus IV, is told in the books of the Maccabees, which are not in this Bible. The ninth month and the twenty-fifth day are those the Jewish tradition gives.",
+          "points": [
+            {
+              "label": "When",
+              "text": "Winter, as John says. Tradition places it on the twenty-fifth day of the ninth month, Kislev (Chisleu in Zechariah 7:1).",
+              "refs": [
+                "John 10:22",
+                "Zechariah 7:1"
+              ]
+            },
+            {
+              "label": "What it remembered",
+              "text": "The rededication of the temple in 165 BC, on the site's timeline, after Antiochus IV had desecrated it.",
+              "refs": []
+            }
+          ],
+          "refs": [
+            "John 10:22–23"
+          ],
+          "later": []
+        }
+      ]
+    },
+    {
+      "id": "tabernacle",
+      "title": "The tabernacle",
+      "intro": "At Sinai the LORD told Moses to make him a sanctuary, so that he might dwell among his people, and to make it after the pattern he showed. The plan below follows Exodus: a court of fine linen hangings, and inside it the tent with its two rooms. Measurements are in cubits, as the text gives them. Hebrews 8 and 9 speak of the tabernacle as a copy and shadow of heavenly things.",
+      "items": [
+        {
+          "id": "court",
+          "title": "The court",
+          "year": -1490,
+          "event": 18,
+          "people": [
+            10,
+            186
+          ],
+          "summary": "The court is an enclosure of hangings of fine twined linen, hung on pillars with sockets of brass and hooks and fillets of silver. It is entered by a gate at the east side, with a hanging of blue, purple, scarlet and fine linen.",
+          "points": [
+            {
+              "label": "Size",
+              "text": "A hundred cubits long, fifty broad, and five cubits high.",
+              "refs": [
+                "Exodus 27:9–13",
+                "Exodus 27:18"
+              ]
+            },
+            {
+              "label": "Gate",
+              "text": "A hanging of twenty cubits, of blue, purple, scarlet and fine twined linen, on four pillars.",
+              "refs": [
+                "Exodus 27:16"
+              ]
+            },
+            {
+              "label": "Materials",
+              "text": "Fine twined linen, with pillars set in sockets of brass and filleted with silver.",
+              "refs": [
+                "Exodus 27:17–18"
+              ]
+            }
+          ],
+          "refs": [
+            "Exodus 27:9–19",
+            "Exodus 38:9–20"
+          ],
+          "later": [
+            "Hebrews 13:10–13"
+          ]
+        },
+        {
+          "id": "altar",
+          "title": "The altar of burnt offering",
+          "year": -1490,
+          "event": 18,
+          "people": [
+            11
+          ],
+          "summary": "The altar stands in the court. It is a hollow square of shittim wood overlaid with brass, with a horn at each corner, and it has vessels and a grate of brass. A lamb is offered on it every morning and every evening.",
+          "points": [
+            {
+              "label": "Size",
+              "text": "Five cubits long, five cubits broad, foursquare, and three cubits high.",
+              "refs": [
+                "Exodus 27:1"
+              ]
+            },
+            {
+              "label": "Materials",
+              "text": "Shittim wood overlaid with brass; horns of the same on the four corners.",
+              "refs": [
+                "Exodus 27:1–2"
+              ]
+            },
+            {
+              "label": "Use",
+              "text": "The daily offerings of two lambs, one in the morning and one at evening, a continual burnt offering at the door of the tabernacle.",
+              "refs": [
+                "Exodus 29:38–43"
+              ]
+            }
+          ],
+          "refs": [
+            "Exodus 27:1–8",
+            "Exodus 38:1–7",
+            "Exodus 29:38–43"
+          ],
+          "later": [
+            "Hebrews 13:10–12"
+          ]
+        },
+        {
+          "id": "laver",
+          "title": "The laver",
+          "year": -1490,
+          "event": 18,
+          "people": [
+            11
+          ],
+          "summary": "Between the tent of meeting and the altar stands a laver of brass with a foot of brass, filled with water. Aaron and his sons wash their hands and feet at it whenever they go into the tent or come near the altar, so that they die not.",
+          "points": [
+            {
+              "label": "Materials",
+              "text": "Brass, with a foot also of brass. The brass was from the looking glasses of the women who assembled at the door.",
+              "refs": [
+                "Exodus 30:18",
+                "Exodus 38:8"
+              ]
+            },
+            {
+              "label": "Place",
+              "text": "Between the tent of the congregation and the altar.",
+              "refs": [
+                "Exodus 30:18",
+                "Exodus 40:30"
+              ]
+            },
+            {
+              "label": "Use",
+              "text": "The priests washed their hands and feet before entering the tent and before ministering at the altar.",
+              "refs": [
+                "Exodus 30:19–21"
+              ]
+            }
+          ],
+          "refs": [
+            "Exodus 30:17–21",
+            "Exodus 38:8",
+            "Exodus 40:30–32"
+          ],
+          "later": [
+            "Hebrews 10:22"
+          ]
+        },
+        {
+          "id": "tent",
+          "title": "The tent and its coverings",
+          "year": -1490,
+          "event": 18,
+          "people": [
+            186
+          ],
+          "summary": "The tabernacle itself is a tent made of ten curtains of fine twined linen with cherubim, coupled together, and spread over a frame of boards of shittim wood. Over it are curtains of goats' hair, a covering of rams' skins dyed red, and a covering of badgers' skins above. When Moses finished the work the cloud covered the tent and the glory of the LORD filled it.",
+          "points": [
+            {
+              "label": "Inner curtains",
+              "text": "Ten curtains of fine twined linen, blue, purple and scarlet, with cherubim; each curtain twenty-eight cubits long and four cubits broad.",
+              "refs": [
+                "Exodus 26:1–2"
+              ]
+            },
+            {
+              "label": "Goats' hair",
+              "text": "Eleven curtains of goats' hair, each thirty cubits long and four cubits broad.",
+              "refs": [
+                "Exodus 26:7–8"
+              ]
+            },
+            {
+              "label": "Coverings",
+              "text": "A covering of rams' skins dyed red, and above it a covering of badgers' skins.",
+              "refs": [
+                "Exodus 26:14"
+              ]
+            },
+            {
+              "label": "Boards",
+              "text": "Boards of shittim wood standing up, each ten cubits long and a cubit and a half broad, twenty on the south side and twenty on the north.",
+              "refs": [
+                "Exodus 26:15–20"
+              ]
+            },
+            {
+              "label": "Glory",
+              "text": "A cloud covered the tent and the glory of the LORD filled the tabernacle.",
+              "refs": [
+                "Exodus 40:34–35"
+              ]
+            }
+          ],
+          "refs": [
+            "Exodus 26:1–30",
+            "Exodus 40:17–38"
+          ],
+          "later": [
+            "Hebrews 8:1–5",
+            "Hebrews 9:1–2",
+            "Hebrews 9:11"
+          ]
+        },
+        {
+          "id": "table",
+          "title": "The table of showbread",
+          "year": -1490,
+          "event": 18,
+          "people": [],
+          "summary": "In the holy place, on the north side, stands a table of shittim wood overlaid with pure gold, with a crown of gold round it. The showbread is set on it before the LORD always.",
+          "points": [
+            {
+              "label": "Size",
+              "text": "Two cubits long, a cubit broad, and a cubit and a half high.",
+              "refs": [
+                "Exodus 25:23"
+              ]
+            },
+            {
+              "label": "Materials",
+              "text": "Shittim wood overlaid with pure gold, with a golden crown and a border of a handbreadth.",
+              "refs": [
+                "Exodus 25:24–25"
+              ]
+            },
+            {
+              "label": "Place and use",
+              "text": "On the north side, outside the veil; the showbread is set before the LORD always.",
+              "refs": [
+                "Exodus 26:35",
+                "Exodus 25:30"
+              ]
+            }
+          ],
+          "refs": [
+            "Exodus 25:23–30",
+            "Exodus 40:22–23",
+            "Leviticus 24:5–9"
+          ],
+          "later": [
+            "Hebrews 9:2",
+            "John 6:35"
+          ]
+        },
+        {
+          "id": "lampstand",
+          "title": "The lampstand",
+          "year": -1490,
+          "event": 18,
+          "people": [],
+          "summary": "The candlestick of pure gold, all of beaten work, stands on the south side of the holy place across from the table. It has a shaft with six branches, three from each side, and seven lamps that give light over against it. Aaron and his sons keep the lamps burning before the LORD from evening to morning.",
+          "points": [
+            {
+              "label": "Make",
+              "text": "Pure gold, of beaten work: shaft, branches, bowls, knops and flowers of the same piece.",
+              "refs": [
+                "Exodus 25:31"
+              ]
+            },
+            {
+              "label": "Form",
+              "text": "Six branches, three out of each side of the shaft, and seven lamps.",
+              "refs": [
+                "Exodus 25:32",
+                "Exodus 25:37"
+              ]
+            },
+            {
+              "label": "Place",
+              "text": "On the south side of the tabernacle, over against the table.",
+              "refs": [
+                "Exodus 26:35",
+                "Exodus 40:24–25"
+              ]
+            }
+          ],
+          "refs": [
+            "Exodus 25:31–40",
+            "Exodus 27:20–21",
+            "Exodus 40:24–25"
+          ],
+          "later": [
+            "Hebrews 9:2",
+            "John 8:12",
+            "Revelation 1:12–13",
+            "Revelation 1:20"
+          ]
+        },
+        {
+          "id": "incense",
+          "title": "The altar of incense",
+          "year": -1490,
+          "event": 18,
+          "people": [
+            11
+          ],
+          "summary": "The golden altar stands in the holy place before the veil that is by the ark of the testimony. Aaron burns sweet incense on it every morning when he dresses the lamps and every evening when he lights them, a perpetual incense before the LORD.",
+          "points": [
+            {
+              "label": "Size",
+              "text": "A cubit long, a cubit broad, foursquare, and two cubits high, with horns of the same.",
+              "refs": [
+                "Exodus 30:2"
+              ]
+            },
+            {
+              "label": "Materials",
+              "text": "Shittim wood overlaid with pure gold on the top, the sides and the horns, with a crown of gold.",
+              "refs": [
+                "Exodus 30:1",
+                "Exodus 30:3"
+              ]
+            },
+            {
+              "label": "Place and use",
+              "text": "Before the veil, before the mercy seat; Aaron burns sweet incense on it every morning and at evening.",
+              "refs": [
+                "Exodus 30:6–8"
+              ]
+            }
+          ],
+          "refs": [
+            "Exodus 30:1–10",
+            "Exodus 40:26–27"
+          ],
+          "later": [
+            "Luke 1:8–11",
+            "Hebrews 9:3–4",
+            "Revelation 8:3–4"
+          ]
+        },
+        {
+          "id": "veil",
+          "title": "The veil",
+          "year": -1490,
+          "event": 18,
+          "people": [],
+          "summary": "A veil divides the holy place from the most holy place. It is made of blue, purple, scarlet and fine twined linen, with cherubim, and hangs on four pillars of shittim wood overlaid with gold, on sockets of silver.",
+          "points": [
+            {
+              "label": "Make",
+              "text": "Blue, purple, scarlet and fine twined linen, of cunning work, with cherubim.",
+              "refs": [
+                "Exodus 26:31"
+              ]
+            },
+            {
+              "label": "Hung",
+              "text": "On four pillars of shittim wood overlaid with gold, with golden hooks, on four sockets of silver.",
+              "refs": [
+                "Exodus 26:32"
+              ]
+            },
+            {
+              "label": "Purpose",
+              "text": "It divides between the holy place and the most holy, and the ark of the testimony is brought in within it.",
+              "refs": [
+                "Exodus 26:33"
+              ]
+            }
+          ],
+          "refs": [
+            "Exodus 26:31–35",
+            "Exodus 36:35–36"
+          ],
+          "later": [
+            "Matthew 27:50–51",
+            "Hebrews 9:3",
+            "Hebrews 9:8",
+            "Hebrews 10:19–20"
+          ]
+        },
+        {
+          "id": "ark",
+          "title": "The ark and the mercy seat",
+          "year": -1490,
+          "event": 18,
+          "people": [
+            10,
+            186,
+            11
+          ],
+          "summary": "The ark of the testimony is a chest of shittim wood overlaid with pure gold within and without, in which Moses is to put the testimony that God gives him. On it is a mercy seat of pure gold with two cherubim of beaten gold, facing each other with wings spread over it. There God says he will meet with Moses and speak with him. The ark stands in the most holy place, within the veil.",
+          "points": [
+            {
+              "label": "Ark",
+              "text": "Two cubits and a half long, a cubit and a half broad, and a cubit and a half high; shittim wood overlaid with pure gold, with a crown of gold.",
+              "refs": [
+                "Exodus 25:10–11"
+              ]
+            },
+            {
+              "label": "Mercy seat",
+              "text": "Pure gold, two cubits and a half long and a cubit and a half broad; two cherubim of beaten gold at its ends.",
+              "refs": [
+                "Exodus 25:17–20"
+              ]
+            },
+            {
+              "label": "Contents",
+              "text": "The testimony, the tables of the covenant, is put into the ark.",
+              "refs": [
+                "Exodus 25:16",
+                "Exodus 25:21",
+                "Deuteronomy 10:5"
+              ]
+            },
+            {
+              "label": "Meeting",
+              "text": "From above the mercy seat, between the cherubim, God says he will commune with Moses.",
+              "refs": [
+                "Exodus 25:22"
+              ]
+            }
+          ],
+          "refs": [
+            "Exodus 25:10–22",
+            "Exodus 26:33–34",
+            "Exodus 37:1–9"
+          ],
+          "later": [
+            "Hebrews 9:3–5",
+            "Hebrews 9:11–12",
+            "Revelation 11:19"
+          ]
+        },
+        {
+          "id": "garments",
+          "title": "The priests' garments",
+          "year": -1490,
+          "event": 18,
+          "people": [
+            11,
+            184,
+            525
+          ],
+          "summary": "God tells Moses to have holy garments made for Aaron, for glory and for beauty, by the wise-hearted whom he has filled with the spirit of wisdom. The high priest's garments are a breastplate, an ephod, a robe, a broidered coat, a mitre and a girdle, made of gold, blue, purple, scarlet and fine linen.",
+          "points": [
+            {
+              "label": "Materials",
+              "text": "Gold, blue, purple, scarlet and fine linen.",
+              "refs": [
+                "Exodus 28:5–6"
+              ]
+            },
+            {
+              "label": "Breastplate",
+              "text": "A span square and doubled, with four rows of three stones, each engraved with the name of one of the twelve tribes.",
+              "refs": [
+                "Exodus 28:15–21"
+              ]
+            },
+            {
+              "label": "Robe",
+              "text": "All of blue, with pomegranates and golden bells round the hem, so that its sound is heard when he goes in and out of the holy place.",
+              "refs": [
+                "Exodus 28:31–35"
+              ]
+            },
+            {
+              "label": "Plate",
+              "text": "A plate of pure gold engraved HOLINESS TO THE LORD.",
+              "refs": [
+                "Exodus 28:36"
+              ]
+            }
+          ],
+          "refs": [
+            "Exodus 28:1–43",
+            "Exodus 39:1–31"
+          ],
+          "later": [
+            "Hebrews 4:14",
+            "Hebrews 5:1–4",
+            "Hebrews 7:26–28"
+          ]
+        }
+      ]
+    }
+  ]
+}

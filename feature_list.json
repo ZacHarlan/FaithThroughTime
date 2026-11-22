@@ -284,7 +284,7 @@
   {
     "id": "e2e-tests",
     "category": "testing",
-    "description": "Playwright end-to-end suite (113 tests) covers every view, the detail sheet, search, share, the tour, the study tools, phone layout and an accessibility smoke check",
+    "description": "Playwright end-to-end suite (about 175 tests) covers every view, the detail sheet, search, share, the tour, the study tools, phone layout and an accessibility smoke check",
     "verification": [
       "Start the app (bash init.sh)",
       "dotnet test tests/BibleTimeline.E2E passes"
@@ -364,6 +364,116 @@
     "verification": [
       "Open #/word/H7225",
       "The Hebrew lemma shows and Genesis 1:1 is in the verse list",
+      "dotnet test tests/BibleTimeline.E2E passes"
+    ],
+    "passes": true
+  },
+  {
+    "id": "book-pages",
+    "category": "study",
+    "description": "A page for every book: author, date, setting, outline, themes, key verses and what the site holds on it (#/book/<slug>)",
+    "verification": [
+      "Open #/book/genesis",
+      "Author, outline and linked people appear",
+      "dotnet test tests/BibleTimeline.E2E passes"
+    ],
+    "passes": true
+  },
+  {
+    "id": "place-pages",
+    "category": "study",
+    "description": "A page for every place: events, journeys and the verses that name it (#/place/<slug>)",
+    "verification": [
+      "Open #/place/bethel",
+      "Events, a journey and verses appear",
+      "dotnet test tests/BibleTimeline.E2E passes"
+    ],
+    "passes": true
+  },
+  {
+    "id": "reader-context",
+    "category": "study",
+    "description": "Reader: history strip (era, year, kings, prophets), tappable names, text size, compare translations, listen",
+    "verification": [
+      "Open #/read/2-kings/19",
+      "The strip names Hezekiah and Isaiah; Aa opens reading settings",
+      "dotnet test tests/BibleTimeline.E2E passes"
+    ],
+    "passes": true
+  },
+  {
+    "id": "go-deeper",
+    "category": "study",
+    "description": "Detail sheets link to the kings chart, journeys, parallels, prophecies, place and book pages, and Easton's",
+    "verification": [
+      "Open #/person/hezekiah",
+      "Go deeper lists the kings chart and a parallel account",
+      "dotnet test tests/BibleTimeline.E2E passes"
+    ],
+    "passes": true
+  },
+  {
+    "id": "topics",
+    "category": "study",
+    "description": "Nave's Topical Bible with a Topics section in the verse study panel (#/topic)",
+    "verification": [
+      "Open #/topic/faith",
+      "Sections list references with text",
+      "dotnet test tests/BibleTimeline.E2E passes"
+    ],
+    "passes": true
+  },
+  {
+    "id": "dictionary",
+    "category": "study",
+    "description": "Easton's Bible Dictionary with linked references (#/dictionary)",
+    "verification": [
+      "Open #/dictionary/abraham",
+      "The entry shows with reader links",
+      "dotnet test tests/BibleTimeline.E2E passes"
+    ],
+    "passes": true
+  },
+  {
+    "id": "guides",
+    "category": "study",
+    "description": "Guides to the covenants, the feasts of Israel and the tabernacle (#/guide)",
+    "verification": [
+      "Open #/guide/tabernacle",
+      "The plan selects the ark",
+      "dotnet test tests/BibleTimeline.E2E passes"
+    ],
+    "passes": true
+  },
+  {
+    "id": "home-today",
+    "category": "study",
+    "description": "Home: Today (reading-plan day and a daily pick), a first-visit welcome, and an install prompt",
+    "verification": [
+      "Open #/ and scroll",
+      "Today shows the plan day for the date",
+      "dotnet test tests/BibleTimeline.E2E passes"
+    ],
+    "passes": true
+  },
+  {
+    "id": "find-forms",
+    "category": "study",
+    "description": "Search Scripture matches word forms and searches by Strong's number",
+    "verification": [
+      "Open #/find?q=G26",
+      "1 John 4:8 is listed with the lemma",
+      "dotnet test tests/BibleTimeline.E2E passes"
+    ],
+    "passes": true
+  },
+  {
+    "id": "print",
+    "category": "study",
+    "description": "Every page prints cleanly; Print and Share on parallel, prophecy and plan pages",
+    "verification": [
+      "Open #/parallel/feeding-the-five-thousand and print",
+      "Four columns, no app chrome",
       "dotnet test tests/BibleTimeline.E2E passes"
     ],
     "passes": true

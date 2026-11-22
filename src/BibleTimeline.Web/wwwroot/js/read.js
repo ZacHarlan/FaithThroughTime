@@ -3,13 +3,25 @@
 //
 //   #/read                      the library
 //   #/read/<book>[/<chapter>]   a chapter (?v=3-7 softly marks verses; ?study=16 opens the verse study panel)
+//
+// A chapter opens with a quiet strip that says where it stands in history (era, year, who reigned and
+// prophesied, from data/chapter-years.json and data/kings.json). The names of the people and places tied
+// to the chapter are links in the text. The "Aa" popover holds the reading settings (text size, line
+// spacing, name links, a second translation to compare); Listen reads the chapter aloud.
 const Read = (() => {
     const { h, icon } = UI;
     const LAST_KEY = 'ftt-read-last';
+    const SETTINGS_KEY = 'ftt-read-settings';
     const DEFAULT_VERSION = 'esv';
     const LAST_RESORT = 'kjv';          // complete and public domain: used if a chapter is missing elsewhere
     const RAIL_LIMIT = 10;
-    const BOOK_CACHE_MAX = 4;   // whole books are large; keep the few being read
+    const BOOK_CACHE_MAX = 6;   // whole books are large; keep the few being read (two at a time when comparing)
+
+    // Reading settings: text size and line spacing as steps, name links, and a translation to compare.
+    const SIZES = [0.84, 0.92, 1, 1.12, 1.26];
+    const SIZE_NAMES = ['Smallest', 'Smaller', 'Standard', 'Larger', 'Largest'];
+    const SPACINGS = [{ label: 'Compact', value: 0.88 }, { label: 'Standard', value: 1 }, { label: 'Airy', value: 1.16 }];
+    const DEFAULT_SETTINGS = { size: 2, spacing: 1, names: true, compare: null };
 
     // Genres arrive as lowercase words; these are how they read on the page,
     // and which of the eight colour families tints them.
@@ -30,11 +42,14 @@ const Read = (() => {
     let root, token = 0, manifest = null;
     let bookIndex = null;        // normalised name → book
     let linked = null;           // slug → chapter → { people, events }
+    let chapterYears = {};       // slug → chapter → year | null
+    let kingsData = { kings: [], prophets: [] };
     const bookCache = new Map(); // "version/slug" → book JSON, least recently used first
-    let closePicker = null;
+    let closePicker = null;      // closes whichever popover is open (chapter picker or settings)
     let chosen = null;           // translation picked this visit, in case storage is blocked
     let selection = new Set();
-    let current = null;          // { book, chapter, verses, version, wanted, v } of the chapter on screen
+    let current = null;          // { book, chapter, verses, version, wanted, v, alt, textEl } of the chapter on screen
+    let settings = null;
 
     // ── Small helpers ───────────────────────────────────────────────────
     const store = {
@@ -50,6 +65,29 @@ const Read = (() => {
             const p = JSON.parse(store.get(LAST_KEY));
             return p && Store.book(p.slug) ? p : null;
         } catch { return null; }
+    }
+
+    function loadSettings() {
+        let saved = {};
+        try { saved = JSON.parse(store.get(SETTINGS_KEY)) || {}; } catch { saved = {}; }
+        const step = (n, max, d) => (Number.isInteger(n) && n >= 0 && n <= max ? n : d);
+        return {
+            size: step(saved.size, SIZES.length - 1, DEFAULT_SETTINGS.size),
+            spacing: step(saved.spacing, SPACINGS.length - 1, DEFAULT_SETTINGS.spacing),
+            names: saved.names !== false,
+            compare: typeof saved.compare === 'string' ? saved.compare : null
+        };
+    }
+    function saveSettings() { store.set(SETTINGS_KEY, JSON.stringify(settings)); }
+    // Size and spacing are custom properties on the view, so they carry from chapter to chapter.
+    function applyComfort() {
+        if (!root) return;
+        root.style.setProperty('--read-scale', String(SIZES[settings.size]));
+        root.style.setProperty('--read-leading', String(SPACINGS[settings.spacing].value));
+    }
+    function compareVersion(primary) {
+        const c = settings.compare;
+        return c && c !== primary && manifest?.versions.some(v => v.id === c) ? c : null;
     }
 
     // Every way someone might type a book: its name, abbreviation or slug,
@@ -92,6 +130,142 @@ const Read = (() => {
         Store.SIG_RANK[a.significance] - Store.SIG_RANK[b.significance]
         || (a.span?.start ?? 1e9) - (b.span?.start ?? 1e9);
 
+    // ── Names in the text ───────────────────────────────────────────────
+    // People tied to the chapter are matched by the name before any epithet ("Joshua son of Nun" →
+    // Joshua) and by their other names; places by their names and the forms the translations use.
+    // Matching is case-sensitive and whole-word, longest name first.
+    const EPITHET = /,| (?:son|daughter|wife|mother|father|brother|sister) of | the | of /;
+    // Forms the King James Version uses (mostly the Greek spellings of the New Testament).
+    const OTHER_FORMS = {
+        Elijah: ['Elias'], Elisha: ['Eliseus'], Isaiah: ['Esaias'], Noah: ['Noe'], Jonah: ['Jonas'], Hosea: ['Osee'],
+        Korah: ['Core'], Uzziah: ['Ozias'], Hezekiah: ['Ezekias'], Josiah: ['Josias'], Jeremiah: ['Jeremy', 'Jeremias'],
+        Rehoboam: ['Roboam'], Abijah: ['Abia'], Jehoshaphat: ['Josaphat'], Ahaz: ['Achaz'], Manasseh: ['Manasses'],
+        Tamar: ['Thamar'], Perez: ['Phares', 'Pharez'], Zerah: ['Zara', 'Zarah'], Hezron: ['Esrom'], Nahshon: ['Naasson'],
+        Shealtiel: ['Salathiel'], Zerubbabel: ['Zorobabel'], Sarah: ['Sara'], Gideon: ['Gedeon'], Jephthah: ['Jephthae'],
+        Rahab: ['Rachab'], Boaz: ['Booz'], Kish: ['Cis'], Enoch: ['Henoch'], Hagar: ['Agar'], Timothy: ['Timotheus'],
+        Mark: ['Marcus'], Silas: ['Silvanus'], Priscilla: ['Prisca']
+    };
+    // Other names that, outside the book that gives them, mean a nation rather than the person.
+    const ALT_ONLY_IN = { Israel: 'genesis', Edom: 'genesis', Jeshurun: 'deuteronomy' };
+    const PLACE_FORMS = {
+        'Ai': ['Hai'], 'Beersheba': ['Beer-sheba'], 'Shechem': ['Sichem', 'Sychem'], 'Haran': ['Charran'],
+        'Kadesh Barnea': ['Kadesh-barnea', 'Kadesh'], 'Mount Sinai': ['Sinai'], 'Red Sea Crossing': ['Red Sea'],
+        'Jordan River': ['Jordan'], 'Tyre & Sidon': ['Tyre', 'Sidon', 'Tyrus', 'Zidon'],
+        'Sea of Galilee': ['Sea of Tiberias', 'lake of Gennesaret', 'Lake of Gennesaret'],
+        'Mount of Olives': ['mount of Olives', 'Mount Olivet', 'Olivet'], 'Mount Carmel': ['Carmel'],
+        'Sychar and Jacobs Well': ['Sychar'], 'Kiriath-jearim': ['Kirjath-jearim'], 'Peniel': ['Penuel'],
+        'Mount Ararat': ['Ararat'], 'Mount Gilboa': ['Gilboa'], 'Mount Tabor': ['Tabor'], 'Mount Nebo': ['Nebo'],
+        'Mount Ebal': ['Ebal'], 'Valley of Hinnom (Tophet)': ['Tophet', 'Topheth'],
+        'Pisidian Antioch': ['Antioch in Pisidia'], 'Nineveh': ['Niniveh'], 'Spring of Harod': ['Harod'],
+        'Bethabara beyond Jordan': ['Bethabara'], 'Ramah of Samuel (Ramathaim-zophim)': ['Ramathaim-zophim', 'Ramah'],
+        'Habor, River of Gozan': ['Habor', 'Gozan'], 'Euphrates (Perath)': ['Euphrates']
+    };
+    const PLACE_SKIP = new Set(['Gaza Road', 'Temple Mount']);            // never named so in the text
+    const PLACE_PREFIX = /^(?:Mount|Pool of|Cave of|Brook|Valley of|Wilderness of|Threshing Floor of|Spring of) /;
+    const PLACE_QUALIFIER = / (?:of [A-Z][\w-]*|beyond Jordan|River|Spring|Canal|Crossing)$/;
+    const GENERIC = new Set(['Sea', 'Mount', 'Valley', 'Road', 'River', 'Plains', 'Pool', 'Cave', 'Temple', 'Way', 'Wilderness', 'Spring']);
+    // Shorter forms that also name something else (Gihon is a river of Eden too): linked only where the place is tied.
+    const LOOSE_ALWAYS = new Set(['Gihon', 'Nebo', 'Harod', 'Arabah', 'Ramah', 'Carmel', 'Hinnom', 'Jacobs Well']);
+
+    const baseName = name => name.replace(/^the /i, '').split(EPITHET)[0].trim();
+    let placeNameIndex = null;   // location → { names: [...], loose: Set of names shared or only derived }
+    let personBases = null;      // every person's base name, so a place called "Elah" does not claim the king
+
+    function personNames(p, book) {
+        const names = new Set();
+        const add = n => { if (n && n.length > 2 && /^[A-Z]/.test(n)) names.add(n); };
+        const base = baseName(p.name);
+        add(base);
+        for (const f of OTHER_FORMS[base] || []) add(f);
+        for (const alt of p.altNames || []) {
+            const b = baseName(alt);
+            if (ALT_ONLY_IN[b] && ALT_ONLY_IN[b] !== book.slug) continue;
+            add(b);
+            if (alt !== b && /^[A-Z]/.test(alt) && !alt.includes(',')) add(alt);
+            for (const f of OTHER_FORMS[b] || []) add(f);
+        }
+        return names;
+    }
+
+    function buildPlaceNames() {
+        personBases = new Set(Store.people.map(p => baseName(p.name)));
+        placeNameIndex = new Map();
+        const claims = new Map();          // name → number of places that answer to it
+        for (const l of Store.locations) {
+            const name = l.name;
+            const exact = new Set(PLACE_SKIP.has(name) ? [] : [name]), derived = new Set();
+            const paren = /^(.*?)\s*\((.*)\)$/.exec(name);
+            const parts = paren ? [paren[1], paren[2]] : name.split(/ & | and /);
+            if (parts.length > 1) for (const p of parts) derived.add(p.trim());
+            for (const p of parts) {
+                const bare = p.replace(PLACE_PREFIX, '').replace(PLACE_QUALIFIER, '').trim();
+                if (bare && bare !== p) derived.add(bare);
+            }
+            for (const f of PLACE_FORMS[name] || []) derived.add(f);
+            // Hyphenated names are also printed joined ("En-gedi", "Engedi").
+            for (const n of [...exact, ...derived]) {
+                if (/-/.test(n)) derived.add(n.replace(/-(\w)/g, (_, c) => c.toLowerCase()));
+            }
+            const fine = n => n.length >= 2 && !n.includes(',') && !GENERIC.has(n) && (exact.has(n) || /^[A-Z]/.test(n) || /^(mount|lake) /.test(n));
+            const all = PLACE_SKIP.has(name) ? new Set() : new Set([...exact, ...derived].filter(fine));
+            for (const n of all) claims.set(n, (claims.get(n) || 0) + 1);
+            placeNameIndex.set(l, { all, exact });
+        }
+        // A name is loose (linked only where the place is tied to the chapter) when another place shares it,
+        // when it is also a person's name, or when it is a short derived form.
+        for (const [, entry] of placeNameIndex) {
+            entry.loose = new Set([...entry.all].filter(n => claims.get(n) > 1 || personBases.has(n) || LOOSE_ALWAYS.has(n)
+                || (!entry.exact.has(n) && n.length < 4)));
+        }
+    }
+
+    // name → entity for one chapter, and the pattern that finds them.
+    function nameMatcher(book, chapter) {
+        if (!placeNameIndex) buildPlaceNames();
+        const { people, events } = linkedIn(book.slug, chapter);
+        const map = new Map();
+        for (const p of [...people].sort(byImportance)) {
+            for (const n of personNames(p, book)) if (!map.has(n)) map.set(n, p);
+        }
+        const tied = new Set([...events].flatMap(e => Store.locationsOf(e)));
+        const places = [...tied, ...Store.locations.filter(l => !tied.has(l))];
+        for (const l of places) {
+            const entry = placeNameIndex.get(l);
+            for (const n of entry.all) {
+                if (map.has(n)) continue;
+                if (!tied.has(l) && entry.loose.has(n)) continue;
+                map.set(n, l);
+            }
+        }
+        if (!map.size) return null;
+        const escape = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const names = [...map.keys()].sort((a, b) => b.length - a.length).map(escape);
+        return { map, re: new RegExp(`\\b(?:${names.join('|')})\\b`, 'g') };
+    }
+
+    const entityHref = e => (e.kind === 'location' ? `#/place/${e.slug}` : UI.href(e));
+
+    // The verse text as text and links. Each person or place is linked once in a verse.
+    function linkNames(text, matcher) {
+        if (!matcher || !text) return [text];
+        const out = [];
+        const seen = new Set();
+        let last = 0;
+        for (const m of text.matchAll(matcher.re)) {
+            const entity = matcher.map.get(m[0]);
+            if (!entity || seen.has(entity)) continue;
+            seen.add(entity);
+            if (m.index > last) out.push(text.slice(last, m.index));
+            out.push(h('a', {
+                class: `read-name is-${entity.kind}`, href: entityHref(entity),
+                title: entity.name !== m[0] ? entity.name : null
+            }, m[0]));
+            last = m.index + m[0].length;
+        }
+        if (last < text.length) out.push(text.slice(last));
+        return out;
+    }
+
     // ── Text loading, with a quiet fall back to the default translation ─
     // BibleText keeps its own copy of each book it opens but does not expose it, so the
     // reader caches here too, bounded so a long reading session does not hold every book.
@@ -123,6 +297,15 @@ const Read = (() => {
             } catch { /* try the next translation */ }
         }
         return null;
+    }
+
+    // The second translation for comparing: { version, byVerse: Map } or { version, missing: true }.
+    async function loadAlt(slug, chapter, version) {
+        try {
+            const chap = (await loadBook(version, slug))[String(chapter)];
+            if (chap) return { version, byVerse: new Map(Object.entries(chap).map(([v, t]) => [Number(v), t])) };
+        } catch { /* reported below */ }
+        return { version, missing: true };
     }
 
     // ── Chapter order, across book boundaries ───────────────────────────
@@ -162,6 +345,7 @@ const Read = (() => {
             if (first) { e.preventDefault(); Router.go(first.getAttribute('href')); }
         });
 
+        Listen.stop();
         current = null;
         const last = lastPosition();
         const page = h('div', { class: 'page read-page' },
@@ -209,14 +393,17 @@ const Read = (() => {
                 h('ul', { class: 'read-books' }, books.filter(b => b.genre === g).map(bookRow)))));
     }
 
+    // The row starts reading at chapter 1; the small "About" link beside it opens the book's page.
     function bookRow(book) {
         const covers = book.coversStart != null ? `covers ${Time.span(book.coversStart, book.coversEnd)}` : null;
         const chapters = chapterCount(book.slug);
-        return h('li', null,
+        return h('li', { class: 'read-book-item' },
             h('a', { class: 'read-book', href: readHref(book.slug, 1) },
                 h('span', { class: 'read-book-name display' }, book.name),
                 h('span', { class: 'read-book-meta' },
-                    [chapters ? `${chapters} ${chapters === 1 ? 'chapter' : 'chapters'}` : null, covers].filter(Boolean).join(' · '))));
+                    [chapters ? `${chapters} ${chapters === 1 ? 'chapter' : 'chapters'}` : null, covers].filter(Boolean).join(' · '))),
+            h('a', { class: 'read-book-about', href: `#/book/${book.slug}`, 'aria-label': `About ${book.name}`, title: `About ${book.name}` },
+                icon('info', 'icon-sm'), h('span', { class: 'read-book-about-text', 'aria-hidden': 'true' }, 'About')));
     }
 
     // A typed reference wins; otherwise books whose names begin with, or
@@ -266,6 +453,7 @@ const Read = (() => {
     async function renderChapter(book, chapter) {
         const t = ++token;
         closePicker?.();
+        Listen.stop();
         selection = new Set();
         current = null;
         root.replaceChildren(skeleton(book, chapter));
@@ -275,39 +463,45 @@ const Read = (() => {
         const loaded = await loadChapter(book.slug, chapter, wanted);
         if (t !== token) return;
         if (!loaded) { renderState(book, 'failure'); return; }
+        const second = compareVersion(loaded.version);
+        const alt = second ? await loadAlt(book.slug, chapter, second) : null;
+        if (t !== token) return;
 
         const v = Router.current.query.v;
-        current = { book, chapter, ...loaded, wanted, v };
+        current = { book, chapter, ...loaded, wanted, v, alt };
         store.set(LAST_KEY, JSON.stringify({ slug: book.slug, chapter }));
         root.replaceChildren(chapterPage(loaded, wanted));
         highlightVerses(v);
         Study.follow(Router.current, current);
     }
 
-    function chapterPage({ version, verses, fellBack }, wanted) {
-        const { book, chapter } = current;
+    function chapterPage({ version, fellBack }, wanted) {
+        const { book, chapter, alt } = current;
         const prev = neighbour(book, chapter, -1), next = neighbour(book, chapter, 1);
-        const lines = LINE_GENRES.has(book.genre);
 
-        const text = h('div', {
-            class: `scripture read-text${lines ? ' is-lines' : ''}`,
-            lang: 'en', 'aria-label': `${book.name} ${chapter}`
-        }, verses.map((verse, i) => verseNode(verse, i, lines)));
+        const text = h('div', { lang: 'en', 'aria-label': `${book.name} ${chapter}` });
         text.addEventListener('click', onTextClick);
         text.addEventListener('keydown', onTextKey);
+        current.textEl = text;
+        fillText({ initial: true });
 
         const foot = versionInfo(version);
+        const altInfo = alt && versionInfo(alt.version);
         return h('div', { class: 'page read-page' },
-            h('div', { class: 'read-chapter' },
+            h('div', { class: `read-chapter${alt && !alt.missing ? ' is-compare' : ''}` },
                 chapterHead(book, chapter, version, prev, next),
                 rail(book, chapter),
                 h('article', { class: 'read-flow rise' },
                     fellBack ? h('p', { class: 'read-notice', role: 'status' },
                         `${versionInfo(wanted).short} is not available for ${book.name} ${chapter} on this device. Showing ${foot.short}.`) : null,
+                    alt?.missing ? h('p', { class: 'read-notice', role: 'status' },
+                        `${altInfo.short} is not available for ${book.name} ${chapter} on this device, so there is nothing to compare.`) : null,
                     text,
-                    h('p', { class: 'read-attrib' }, `${foot.label} · ${foot.publicDomain ? 'public domain' : 'copyrighted text'}`),
+                    h('p', { class: 'read-attrib' },
+                        `${foot.label} · ${foot.publicDomain ? 'public domain' : 'copyrighted text'}`,
+                        altInfo && !alt.missing ? ` — compared with the ${altInfo.label} · ${altInfo.publicDomain ? 'public domain' : 'copyrighted text'}` : null),
                     h('nav', { class: 'read-pager', 'aria-label': 'Chapters' }, pagerLink(prev, 'Previous'), pagerLink(next, 'Next')),
-                    selectionBar())));
+                    h('div', { class: 'read-dock' }, Listen.bar(), selectionBar()))));
     }
 
     function chapterHead(book, chapter, version, prev, next) {
@@ -322,7 +516,9 @@ const Read = (() => {
                 stepButton(prev, 'Previous chapter', 'chevron-left'),
                 picker,
                 stepButton(next, 'Next chapter', 'chevron-right'),
-                versionSwitch(version)));
+                versionSwitch(version),
+                h('span', { class: 'read-tools-end' }, settingsMenu(), Listen.button())),
+            historyStrip(book, chapter));
     }
 
     function stepButton(target, label, name) {
@@ -355,7 +551,31 @@ const Read = (() => {
             }, v.short)));
     }
 
-    // ── Chapter picker: a popover of numbers ────────────────────────────
+    // ── Popovers: the chapter picker and the reading settings ───────────
+    // One open at a time; Escape or a press outside closes it. `first` is focused on opening.
+    function popover(button, pop, first) {
+        function onDocPointer(e) { if (!pop.contains(e.target) && !button.contains(e.target)) close(); }
+        function onEscape(e) { if (e.key === 'Escape') { close(); button.focus(); } }
+        function open() {
+            closePicker?.();
+            pop.hidden = false;
+            button.setAttribute('aria-expanded', 'true');
+            closePicker = close;
+            document.addEventListener('pointerdown', onDocPointer);
+            document.addEventListener('keydown', onEscape);
+            first()?.focus({ preventScroll: true });
+        }
+        function close() {
+            pop.hidden = true;
+            button.setAttribute('aria-expanded', 'false');
+            document.removeEventListener('pointerdown', onDocPointer);
+            document.removeEventListener('keydown', onEscape);
+            if (closePicker === close) closePicker = null;
+        }
+        button.addEventListener('click', () => (pop.hidden ? open() : close()));
+        return { open, close };
+    }
+
     function chapterPicker(book, chapter) {
         const count = chapterCount(book.slug);
         const grid = h('div', { class: 'read-grid', role: 'group', 'aria-label': `Chapters of ${book.name}` },
@@ -365,35 +585,117 @@ const Read = (() => {
             }, i + 1)));
         const pop = h('div', { class: 'read-pop', hidden: true }, grid);
         const button = h('button', {
-            type: 'button', class: 'btn btn-sm read-pick', 'aria-haspopup': 'true', 'aria-expanded': 'false',
-            onclick: () => (pop.hidden ? open() : close())
+            type: 'button', class: 'btn btn-sm read-pick', 'aria-haspopup': 'true', 'aria-expanded': 'false'
         }, count > 1 ? `Chapter ${chapter} of ${count}` : 'One chapter', count > 1 ? icon('chevron-down', 'icon-sm') : null);
         if (count <= 1) button.disabled = true;
-
-        function onDocPointer(e) { if (!pop.contains(e.target) && !button.contains(e.target)) close(); }
-        function onEscape(e) { if (e.key === 'Escape') { close(); button.focus(); } }
-        function open() {
-            pop.hidden = false;
-            button.setAttribute('aria-expanded', 'true');
-            closePicker = close;
-            document.addEventListener('pointerdown', onDocPointer);
-            document.addEventListener('keydown', onEscape);
-            (grid.querySelector('.is-current') || grid.firstChild).focus({ preventScroll: true });
-            grid.querySelector('.is-current')?.scrollIntoView({ block: 'center' });
-        }
-        function close() {
-            pop.hidden = true;
-            button.setAttribute('aria-expanded', 'false');
-            document.removeEventListener('pointerdown', onDocPointer);
-            document.removeEventListener('keydown', onEscape);
-            if (closePicker === close) closePicker = null;
-        }
+        const { close } = popover(button, pop, () => {
+            const cur = grid.querySelector('.is-current');
+            requestAnimationFrame(() => cur?.scrollIntoView({ block: 'center' }));
+            return cur || grid.firstChild;
+        });
         grid.addEventListener('click', close);
         return h('div', { class: 'read-picker' }, button, pop);
     }
 
+    // "Aa": text size, line spacing, name links, and a translation to compare.
+    function settingsMenu() {
+        // A row of pressed/unpressed buttons; `face(i)` is { label?, content }.
+        const steps = (id, title, count, isOn, face, onPick) => {
+            const buttons = Array.from({ length: count }, (_, i) => {
+                const f = face(i);
+                return h('button', {
+                    type: 'button', class: 'read-seg-btn', 'aria-pressed': String(isOn(i)),
+                    'aria-label': f.label, title: f.label,
+                    onclick: () => {
+                        onPick(i);
+                        buttons.forEach((b, j) => b.setAttribute('aria-pressed', String(isOn(j))));
+                    }
+                }, f.content);
+            });
+            return h('div', { class: 'read-set-row' },
+                h('p', { class: 'read-set-label', id }, title),
+                h('div', { class: `read-seg is-${count}`, role: 'group', 'aria-labelledby': id }, buttons));
+        };
+        const size = steps('read-set-size', 'Text size', SIZES.length, i => i === settings.size,
+            i => ({ label: SIZE_NAMES[i], content: h('span', { 'aria-hidden': 'true', style: { fontSize: `${0.72 + i * 0.14}rem` } }, 'A') }),
+            i => { settings.size = i; saveSettings(); applyComfort(); });
+        const spacing = steps('read-set-spacing', 'Line spacing', SPACINGS.length, i => i === settings.spacing,
+            i => ({ content: SPACINGS[i].label }),
+            i => { settings.spacing = i; saveSettings(); applyComfort(); });
+
+        const names = h('button', {
+            type: 'button', class: 'read-switch', role: 'switch', 'aria-checked': String(settings.names),
+            onclick: () => {
+                settings.names = !settings.names;
+                names.setAttribute('aria-checked', String(settings.names));
+                saveSettings();
+                fillText();
+            }
+        }, h('span', { class: 'read-switch-text' },
+            h('span', { class: 'read-switch-title' }, 'Names as links'),
+            h('span', { class: 'read-switch-sub' }, 'Tap a person or place in the text to learn more')),
+        h('span', { class: 'read-switch-track', 'aria-hidden': 'true' }, h('span', { class: 'read-switch-knob' })));
+
+        const primary = current.version;
+        const choice = h('select', { class: 'field read-compare-select', id: 'read-compare' },
+            h('option', { value: '' }, 'No second translation'),
+            manifest.versions.filter(v => v.id !== primary).map(v => h('option', {
+                value: v.id, selected: compareVersion(primary) === v.id
+            }, `${v.short} — ${v.label}`)));
+        choice.addEventListener('change', () => {
+            settings.compare = choice.value || null;
+            saveSettings();
+            if (settings.compare) Analytics.event('compare_translation', { translation: settings.compare });
+            renderChapter(current.book, current.chapter);
+        });
+
+        const pop = h('div', { class: 'read-pop read-settings', hidden: true, role: 'dialog', 'aria-label': 'Reading settings' },
+            size, spacing,
+            h('div', { class: 'read-set-row' }, names),
+            h('div', { class: 'read-set-row' },
+                h('label', { class: 'read-set-label', for: 'read-compare' }, 'Compare with'),
+                choice));
+        const button = h('button', {
+            type: 'button', class: 'btn btn-sm read-aa', 'aria-haspopup': 'dialog', 'aria-expanded': 'false',
+            'aria-label': 'Reading settings', title: 'Reading settings'
+        }, h('span', { class: 'read-aa-glyph', 'aria-hidden': 'true' }, 'A', h('small', null, 'a')));
+        popover(button, pop, () => pop.querySelector('[aria-pressed="true"]'));
+        return h('div', { class: 'read-picker read-settings-wrap' }, button, pop);
+    }
+
     // ── The verses ──────────────────────────────────────────────────────
-    function verseNode({ v, text }, index, lines) {
+    // (Re)builds the chapter text in place: on first render, and when name links or comparing change.
+    function fillText({ initial = false } = {}) {
+        if (!current?.textEl) return;
+        const { book, chapter, verses, alt, textEl } = current;
+        const lines = LINE_GENRES.has(book.genre);
+        const comparing = alt && !alt.missing;
+        const matcher = settings.names ? nameMatcher(book, chapter) : null;
+        textEl.className = `scripture read-text${lines ? ' is-lines' : ''}${comparing ? ' is-compare' : ''}`;
+        if (comparing) {
+            const a = versionInfo(current.version), b = versionInfo(alt.version);
+            textEl.replaceChildren(
+                h('div', { class: 'read-compare-head', 'aria-hidden': 'true' },
+                    h('span', { title: a.label }, a.short), h('span', { title: b.label }, b.short)),
+                ...verses.map((verse, i) => h('div', { class: 'read-pair', dataset: { v: verse.v } },
+                    verseNode(verse, i, true, matcher),
+                    h('p', { class: 'read-alt' },
+                        h('span', { class: 'sr-only' }, `${b.short}: `),
+                        h('span', { class: 'read-alt-tag', 'aria-hidden': 'true' }, b.short),
+                        h('sup', { class: 'read-alt-vn', 'aria-hidden': 'true' }, verse.v),
+                        alt.byVerse.get(verse.v) || '—'))));
+        } else {
+            textEl.replaceChildren(...verses.map((verse, i) => verseNode(verse, i, lines, matcher)));
+        }
+        if (initial) return;            // renderChapter marks, highlights and follows the study panel
+        // Rebuilt in place: keep what the reader had marked.
+        if (current.v) for (const n of wantedVerses(current.v)) textEl.querySelector(`.verse[data-v="${n}"]`)?.classList.add('is-hl');
+        syncSelection();
+        Listen.remark();
+        if (Router.current.query.study != null) Study.follow(Router.current, current);
+    }
+
+    function verseNode({ v, text }, index, lines, matcher) {
         // A first verse opens with a drop cap in place of its number.
         const dropCap = !lines && v === 1 && /^[A-Za-z]/.test(text);
         const number = h('button', {
@@ -403,11 +705,12 @@ const Read = (() => {
         return h('span', { class: 'verse', dataset: { v } },
             dropCap ? h('span', { class: 'sr-only' }, '1 ') : h('sup', null, number),
             dropCap ? h('span', { class: 'dropcap', 'aria-hidden': 'true' }, text[0]) : null,
-            dropCap ? text.slice(1) : text, ' ');
+            linkNames(dropCap ? text.slice(1) : text, matcher), ' ');
     }
 
     function onTextClick(e) {
-        const verse = e.target.closest('.verse');
+        if (e.target.closest('a')) return;                                // a name: open it, leave the selection alone
+        const verse = e.target.closest('.verse') || e.target.closest('.read-pair')?.querySelector('.verse');
         if (!verse) return;
         const sel = window.getSelection();
         if (sel && !sel.isCollapsed && !e.target.closest('.vn')) return; // reading, not choosing
@@ -477,15 +780,21 @@ const Read = (() => {
             }, icon('close')));
     }
 
-    // "3-7", "16" or "3,5,9" → marks those verses and brings the first into view.
-    function highlightVerses(spec) {
-        if (!spec) return;
+    // "3-7", "16" or "3,5,9" → the verse numbers.
+    function wantedVerses(spec) {
         const wanted = new Set();
         for (const part of String(spec).split(',')) {
             const [a, b = a] = part.split(/[-–]/).map(Number);
             if (!Number.isFinite(a) || !Number.isFinite(b)) continue;
             for (let n = Math.min(a, b); n <= Math.max(a, b) && n - a < 200; n++) wanted.add(n);
         }
+        return wanted;
+    }
+
+    // Marks those verses and brings the first into view.
+    function highlightVerses(spec) {
+        if (!spec) return;
+        const wanted = wantedVerses(spec);
         let first = null;
         for (const el of root.querySelectorAll('.verse')) {
             if (!wanted.has(Number(el.dataset.v))) continue;
@@ -497,6 +806,58 @@ const Read = (() => {
                 block: 'center', behavior: UI.reducedMotion() ? 'auto' : 'smooth'
             }));
         }
+    }
+
+    // ── Where this chapter stands in history ────────────────────────────
+    // The era and year (data/chapter-years.json), who reigned in Judah and Israel and which prophets
+    // were active (data/kings.json), a link to the timeline at that year, and the book's page.
+    const kingSlug = name => name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    const shortKing = name => name.replace(/ of (Judah|Israel)$/, '');
+    const chapterYear = (book, chapter) => {
+        const y = chapterYears?.[book.slug]?.[String(chapter)];
+        return Number.isInteger(y) && y !== 0 ? y : null;
+    };
+
+    function historyStrip(book, chapter) {
+        const year = chapterYear(book, chapter);
+        const about = h('a', { class: 'read-hist-book', href: `#/book/${book.slug}` }, `About ${book.name}`);
+        if (year == null) {
+            return h('section', { class: 'read-hist is-bare', 'aria-label': 'About this book' },
+                h('p', { class: 'read-hist-line' }, about));
+        }
+        const era = Store.periodAt(year);
+        const when = Time.year(year, { approx: true });
+        const lines = [h('p', { class: 'read-hist-line' },
+            h('a', {
+                class: 'read-hist-when', href: Router.build('timeline', [], { y: year, span: 80 }),
+                style: era ? { '--era': era.color } : null, title: 'See this year on the timeline'
+            },
+                h('span', { class: 'chip-dot', 'aria-hidden': 'true' }),
+                era ? h('span', { class: 'read-hist-era' }, era.name) : null,
+                h('span', { class: 'read-hist-year year' }, when),
+                h('span', { class: 'sr-only' }, ', on the timeline'),
+                icon('timeline', 'icon-sm')),
+            about)];
+        const reign = reignLine(year);
+        if (reign) lines.push(reign);
+        return h('section', { class: 'read-hist', 'aria-label': 'Where this chapter stands in history' }, lines);
+    }
+
+    function reignLine(year) {
+        // Both ends count: in a year a reign ends and the next begins, both kings reigned.
+        const kings = kingsData.kings.filter(k => k.start <= year && year <= k.end);
+        const prophets = kingsData.prophets.filter(p => p.start <= year && year <= p.end);
+        if (!kings.length && !prophets.length) return null;
+        const link = r => h('a', { class: 'read-hist-person', href: Router.build('kings', [], { sel: kingSlug(r.name) }), title: r.name },
+            shortKing(r.name));
+        const list = rs => rs.flatMap((r, i) => (i ? [h('span', { class: 'read-hist-sep', 'aria-hidden': 'true' }, ', '), link(r)] : [link(r)]));
+        const group = (label, rs) => (rs.length ? h('span', { class: 'read-hist-group' },
+            h('span', { class: 'read-hist-label' }, label), ' ', list(rs)) : null);
+        const united = kings.filter(k => k.kingdom === 'united');
+        return h('p', { class: 'read-hist-line read-hist-reign' },
+            group(united.length ? 'King' : 'Judah', united.length ? united : kings.filter(k => k.kingdom === 'judah')),
+            group('Israel', kings.filter(k => k.kingdom === 'israel')),
+            group(prophets.length === 1 ? 'Prophet' : 'Prophets', prophets));
     }
 
     // ── The rail: back into history ─────────────────────────────────────
@@ -565,6 +926,121 @@ const Read = (() => {
         ];
     }
 
+    // ── Listen: the chapter read aloud ──────────────────────────────────
+    // The browser's speech synthesis, one verse at a time so the verse being read can be marked.
+    // Hidden where the browser has none; stops when the reader leaves the chapter.
+    const Listen = (() => {
+        const synth = typeof window !== 'undefined' && 'speechSynthesis' in window && typeof SpeechSynthesisUtterance === 'function'
+            ? window.speechSynthesis : null;
+        let on = false, paused = false, index = 0, utter = null;
+        let barEl = null, statusEl = null, pauseBtn = null, startBtn = null;
+
+        function voice() {
+            const voices = synth.getVoices() || [];
+            return voices.find(v => /^en(-|_)?(US|GB)?/i.test(v.lang) && v.localService)
+                || voices.find(v => /^en/i.test(v.lang)) || null;
+        }
+
+        function start() {
+            if (!synth || !current) return;
+            synth.cancel();
+            const from = selection.size ? Math.min(...selection) : null;
+            index = Math.max(0, from != null ? current.verses.findIndex(x => x.v === from) : 0);
+            on = true;
+            paused = false;
+            Analytics.event('listen_chapter', { ref: `${current.book.name} ${current.chapter}` });
+            speakNext();
+            sync();
+        }
+
+        function speakNext() {
+            if (!on || !current) { stop(); return; }
+            const verse = current.verses[index];
+            if (!verse) { stop(); return; }
+            const u = new SpeechSynthesisUtterance(verse.text.replace(/[“”"‘’]/g, ''));
+            const v = voice();
+            if (v) u.voice = v;
+            u.lang = v?.lang || 'en-US';
+            u.rate = 0.96;
+            u.onend = () => { if (utter !== u || !on) return; index++; speakNext(); };
+            u.onerror = e => { if (utter !== u || /interrupted|canceled/.test(e.error || '')) return; stop(); };
+            utter = u;
+            remark(true);
+            synth.speak(u);
+            sync();
+        }
+
+        function togglePause() {
+            if (!on) return;
+            if (paused) { synth.resume(); paused = false; } else { synth.pause(); paused = true; }
+            sync();
+        }
+
+        function stop() {
+            const was = on;
+            on = false;
+            paused = false;
+            utter = null;
+            if (synth && (was || synth.speaking)) synth.cancel();
+            for (const el of document.querySelectorAll('#view-read .verse.is-reading')) el.classList.remove('is-reading');
+            sync();
+        }
+
+        // Marks the verse being read (again, after the text is rebuilt).
+        function remark(scroll = false) {
+            if (!root) return;
+            for (const el of root.querySelectorAll('.verse.is-reading')) el.classList.remove('is-reading');
+            if (!on || !current) return;
+            const verse = current.verses[index];
+            const el = verse && root.querySelector(`.verse[data-v="${verse.v}"]`);
+            if (!el) return;
+            el.classList.add('is-reading');
+            if (scroll) {
+                const r = el.getBoundingClientRect();
+                if (r.top < 80 || r.bottom > window.innerHeight - 140) {
+                    el.scrollIntoView({ block: 'center', behavior: UI.reducedMotion() ? 'auto' : 'smooth' });
+                }
+            }
+        }
+
+        function sync() {
+            if (startBtn) {
+                startBtn.setAttribute('aria-pressed', String(on));
+                startBtn.classList.toggle('is-on', on);
+            }
+            if (!barEl) return;
+            barEl.hidden = !on;
+            if (!on || !current) return;
+            const verse = current.verses[index];
+            statusEl.textContent = paused ? 'Paused' : `Reading verse ${verse?.v ?? ''} of ${current.verses[current.verses.length - 1].v}`;
+            pauseBtn.replaceChildren(icon(paused ? 'play' : 'pause', 'icon-sm'), paused ? 'Resume' : 'Pause');
+        }
+
+        function button() {
+            if (!synth) return null;
+            startBtn = h('button', {
+                type: 'button', class: 'btn btn-sm read-listen', 'aria-pressed': 'false', title: 'Read the chapter aloud',
+                onclick: () => (on ? stop() : start())
+            }, icon('play', 'icon-sm'), 'Listen');
+            return startBtn;
+        }
+
+        function bar() {
+            if (!synth) { barEl = null; return null; }
+            statusEl = h('span', { class: 'read-listen-status', 'aria-live': 'polite' });
+            pauseBtn = h('button', { type: 'button', class: 'btn btn-sm', onclick: togglePause });
+            barEl = h('div', { class: 'read-listenbar', hidden: true, role: 'region', 'aria-label': 'Reading aloud' },
+                h('span', { class: 'read-listen-dot', 'aria-hidden': 'true' }),
+                statusEl, pauseBtn,
+                h('button', { type: 'button', class: 'icon-btn', 'aria-label': 'Stop reading aloud', title: 'Stop', onclick: stop }, icon('close')));
+            sync();
+            return barEl;
+        }
+
+        if (synth) window.addEventListener('pagehide', () => synth.cancel());
+        return { start, stop, remark, button, bar, get on() { return on; } };
+    })();
+
     // ── States ──────────────────────────────────────────────────────────
     function renderState(book, kind) {
         const copy = {
@@ -574,6 +1050,7 @@ const Read = (() => {
             failure: ['Offline', 'The text could not be loaded', 'Check your connection and try again. Chapters you have already opened are kept on this device.'],
             offline: ['Offline', 'Scripture text is not available', 'The Bible files could not be reached. Check your connection and try again.']
         }[kind];
+        Listen.stop();
         current = null;
         Study.close({ silent: true });
         const actions = [h('a', { class: 'btn btn-primary', href: '#/read' }, 'Back to the library')];
@@ -594,6 +1071,8 @@ const Read = (() => {
         root = el;
         root.classList.add('read');
         root.tabIndex = -1;
+        settings = loadSettings();
+        applyComfort();
         document.addEventListener('keydown', onChapterKey);
     }
 
@@ -611,9 +1090,12 @@ const Read = (() => {
     async function show(route) {
         const t = ++token;
         if (!manifest) {
-            manifest = await BibleText.manifest();
+            const [m, years, kings] = await Promise.all([BibleText.manifest(), Api.getChapterYears(), Api.getKings()]);
             if (t !== token) return;
-            if (!manifest) { renderState(null, 'offline'); return; }
+            if (!m) { renderState(null, 'offline'); return; }
+            manifest = m;
+            chapterYears = years && typeof years === 'object' ? years : {};
+            kingsData = { kings: kings?.kings || [], prophets: kings?.prophets || [] };
             buildBookIndex();
             buildLinked();
         }
@@ -640,7 +1122,7 @@ const Read = (() => {
         return renderChapter(book, chapter);
     }
 
-    function hide() { closePicker?.(); Study.close({ silent: true }); }
+    function hide() { closePicker?.(); Listen.stop(); Study.close({ silent: true }); }
 
     function title(route) {
         const book = route.parts[0] && Store.book(route.parts[0]);

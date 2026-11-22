@@ -1,0 +1,162 @@
+/* print.css — any page prints cleanly: no chrome, everything flows, black on white, serif text.
+   Loaded with media="print", so nothing here needs an @media wrapper. Tokens are overridden so the
+   page prints the same whichever theme is on screen. Rules for .page content are general, so
+   views added later (book, guide, topic, dictionary, place, word) print without their own rules. */
+
+@page {
+    size: auto;
+    margin: 18mm 16mm 20mm;
+    @bottom-center {
+        content: "Faith Through Time \2014  faiththroughtime.com";
+        font: 9pt Georgia, 'Times New Roman', serif;
+        color: #555;
+    }
+}
+
+/* ── Ink on paper, whatever the theme ──────────────────────────────── */
+:root, :root[data-theme], :root[data-theme='dark'], :root[data-theme='light'] {
+    color-scheme: light;
+    --bg: #fff; --bg-1: #fff; --bg-2: #fff; --bg-3: #fff;
+    --line: #bbb; --line-strong: #888;
+    --text: #000; --text-dim: #222; --text-faint: #444;
+    --gold: #333; --gold-bright: #000; --gold-soft: transparent; --on-gold: #000;
+    --scrim: transparent; --shadow: none; --glow: none;
+    --font-display: Georgia, 'Times New Roman', serif;
+    --font-scripture: Georgia, 'Times New Roman', serif;
+    --font-ui: Georgia, 'Times New Roman', serif;
+    --topbar-h: 0px; --tabbar-h: 0px;
+    --content-w: 100%; --gutter: 0px;
+}
+
+/* ── Hide the chrome ───────────────────────────────────────────────── */
+.topbar, .tabbar, .skip-link, #toast, #splash, #search, #share, #detail, .detail, .share, .search,
+.search-trigger, .nav, .brand,
+button, select, input, textarea, .btn, .icon-btn, button.chip, .no-print,
+.read-tools, .read-rail, .read-selbar, .read-pager, .read-pop, .read-crumbs, .read-picker, .read-versions,
+.par-tabs, .par-tools, .par-tab, .par-search, .par-head .read-tools,
+.pr-tools, .pr-search, .pr-pager, .pr-crumbs, .pr-arrow, .pr-passage-head .btn, .pr-tabs, .pr-chips,
+.plan-actions, .plan-steps, .plan-year, .plan-order, .plan-ornament, .plan-chapters,
+.kings-bar, .kings-toggle, .kings-legend, .kings-cardbox,
+.leaflet-container, .map-canvas, #view-map, #view-timeline, #view-family,
+.ornament, video, audio, iframe, canvas,
+[class*='-filters'], [class*='-filter'], [class*='-picker'], [class*='-toolbar'], [class*='-crumbs'] {
+    display: none !important;
+}
+[hidden] { display: none !important; }
+
+/* Verse numbers are buttons in the reader: keep them, as plain numerals. */
+.verse button.vn { display: inline !important; line-height: 1.2 !important; height: auto !important; width: auto !important; border: 0 !important; }
+
+/* ── Let everything flow ───────────────────────────────────────────── */
+html, body { height: auto !important; overflow: visible !important; background: #fff !important; color: #000 !important; }
+body { font-family: Georgia, 'Times New Roman', serif; font-size: 11.5pt; line-height: 1.5; }
+#views, .view, .view-fill, .page, .page > * {
+    position: static !important; inset: auto !important;
+    height: auto !important; min-height: 0 !important; max-height: none !important;
+    overflow: visible !important;
+}
+#views { display: block !important; }
+.page { width: 100% !important; max-width: none !important; margin: 0 !important; padding: 0 !important; }
+* {
+    animation: none !important; transition: none !important;
+    box-shadow: none !important; text-shadow: none !important;
+    backdrop-filter: none !important; -webkit-backdrop-filter: none !important;
+    background-image: none !important;
+}
+.rise { opacity: 1 !important; transform: none !important; }
+[style*='sticky'], .par-colhead, .read-rail { position: static !important; }
+
+/* ── Type ──────────────────────────────────────────────────────────── */
+h1, h2, h3, h4, .display, .eyebrow { color: #000 !important; font-family: Georgia, 'Times New Roman', serif; }
+h1 { font-size: 24pt; line-height: 1.15; margin: 0 0 6pt; letter-spacing: 0; }
+h2 { font-size: 15pt; line-height: 1.25; margin: 14pt 0 4pt; }
+h3 { font-size: 12.5pt; margin: 10pt 0 3pt; }
+h1, h2, h3, h4, .eyebrow, .read-attrib, dt, th { break-after: avoid; page-break-after: avoid; }
+.eyebrow { font-size: 8.5pt; letter-spacing: .12em; text-transform: uppercase; color: #444 !important; margin: 0 0 2pt; }
+.lede, .par-note, .read-attrib, .dim, .pr-foot { color: #222 !important; font-size: 10.5pt; }
+p, li { orphans: 3; widows: 3; }
+em { font-style: italic; color: inherit !important; }
+
+a, a:visited { color: #000 !important; text-decoration: none !important; }
+.page a[href^='http']::after { content: none; }   /* references and internal links: text only */
+
+hr, .rule { border: 0; border-top: .5pt solid #888; margin: 10pt 0; }
+.card, .kings-table-wrap, article, section {
+    background: #fff !important; border-color: #888 !important; border-radius: 0 !important;
+}
+.card { border: .5pt solid #888; padding: 6pt 8pt; margin-bottom: 6pt; }
+.card, figure, blockquote, tr, li.pr-q, .plan-passage, .pr-passage { break-inside: avoid; page-break-inside: avoid; }
+
+/* ── Scripture text ────────────────────────────────────────────────── */
+.scripture, .read-text, .par-text, .pr-text {
+    font-family: Georgia, 'Times New Roman', serif; font-size: 12pt; line-height: 1.55;
+    max-width: none !important; color: #000; hanging-punctuation: none;
+}
+.verse, .par-v, .pr-verse { background: none !important; border-radius: 0; cursor: auto; box-shadow: none !important; }
+.verse { break-inside: avoid; page-break-inside: avoid; }
+.is-lines .verse, .is-lines .par-v { break-inside: avoid; }
+.vn, .par-vn, .pr-vn, sup { color: #000 !important; font-family: Georgia, serif; font-size: .68em; font-weight: 700; padding: 0 .15em 0 0; margin: 0; background: none !important; border: 0; min-height: 0; }
+.dropcap { color: #000 !important; font-size: 3.2em; }
+.read-title, .par-title, .pr-title, .plan-title { font-size: 26pt; }
+.read-chnum { color: #000 !important; font-style: normal; margin-left: .25em; }
+.read-attrib { margin-top: 14pt; padding-top: 5pt; border-top: .5pt solid #888; max-width: none; font-style: italic; }
+.read-flow { max-width: none; }
+.read-chapter { display: block !important; }
+.read-head, .par-head, .pr-head, .plan-head { display: block !important; margin-bottom: 10pt; }
+
+/* ── Parallel passages: columns side by side, each with its reference ─ */
+.par-cols { display: grid !important; grid-template-columns: repeat(var(--cols, 2), minmax(0, 1fr)) !important; gap: 14pt !important; align-items: start; }
+.par-cols[data-count='3'], .par-cols[data-count='4'] { grid-template-columns: repeat(var(--cols, 2), minmax(0, 1fr)) !important; }
+.par-col, .par-col.is-active { display: block !important; min-width: 0; }
+.par-colhead { display: flex; justify-content: space-between; align-items: baseline; padding: 0 0 3pt; margin: 0 0 5pt; border-bottom: 1pt solid #000; background: none !important; }
+.par-ref { font-size: 12.5pt; margin: 0; }
+.par-ver { color: #444 !important; font-size: 8pt; }
+.par-text { font-size: 10.5pt; line-height: 1.45; }
+.par-chapter { color: #444 !important; }
+.par-text.is-lines .par-v { padding-left: 1.6em; text-indent: -1.6em; }
+
+/* ── Prophecy pair: prophecy and fulfilment side by side ───────────── */
+.pr-pair { display: grid !important; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important; gap: 16pt !important; }
+.pr-col { display: block; min-width: 0; }
+.pr-col-title { border-bottom: 1pt solid #000 !important; padding-bottom: 2pt; margin-bottom: 6pt; }
+.pr-passage { margin-bottom: 10pt; }
+.pr-passage-head { display: block; }
+.pr-passage-ref { font-size: 12.5pt; margin: 0 0 3pt; }
+.pr-text { font-size: 10.5pt; }
+.pr-skel { display: none; }
+
+/* ── Reading-plan day ──────────────────────────────────────────────── */
+.plan-body { display: block; }
+.plan-passages { display: block; }
+.plan-passage { display: block; font-size: 13pt; }
+.plan-passage-name { font-weight: 700; }
+.plan-passage-name .icon, .plan-passage-name svg { display: none; }
+.plan-sub { font-size: 12pt; }
+
+/* ── Kings list: the table ─────────────────────────────────────────── */
+.kings-page .kings-chartbox:not([hidden]) { overflow: visible; }
+.kings-list { display: block !important; }
+.kings-list-section { break-inside: auto; margin-bottom: 14pt; }
+.kings-table-wrap { border: 0 !important; overflow: visible !important; }
+table { width: 100%; border-collapse: collapse; font-size: 9.5pt; }
+th, td { border-bottom: .5pt solid #aaa; padding: 3pt 5pt; text-align: left; vertical-align: top; color: #000 !important; background: none !important; }
+thead { display: table-header-group; }
+th { border-bottom: 1pt solid #000; font-weight: 700; }
+tr { break-inside: avoid; page-break-inside: avoid; }
+.kings-verdict { color: #000 !important; }
+.kings-link { color: #000 !important; }
+
+/* ── General page content (book, guide, topic, dictionary, place, word) ─ */
+.page img, .page svg:not(.icon) { max-width: 100%; }
+.page svg.icon { display: none; }
+.page ul, .page ol { padding-left: 1.3em; }
+.page p { max-width: none; }
+.page dl { margin: 0; }
+.page dt { font-weight: 700; }
+.page dd { margin: 0 0 4pt; }
+.page details > :not(summary) { display: block; }
+.page details summary { list-style: none; font-weight: 700; }
+.page details summary::-webkit-details-marker { display: none; }
+.page pre, .page blockquote { white-space: pre-wrap; border-left: 1.5pt solid #888; padding-left: 8pt; margin: 6pt 0; }
+.page [class*='-grid'], .page [class*='-list']:not(ul):not(ol) { break-inside: auto; }
+.page [class*='-card'] { background: #fff !important; border: .5pt solid #888; border-radius: 0; break-inside: avoid; }

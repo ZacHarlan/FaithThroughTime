@@ -616,7 +616,11 @@ const Study = (() => {
         { href: '#/kings', icon: 'crown', tone: 'crimson', title: 'Kings and prophets', text: 'The kings of Israel and Judah side by side, and the prophets who spoke to them.' },
         { href: '#/parallel', icon: 'swap', tone: 'teal', title: 'Parallel passages', text: 'The same events told in more than one book, read side by side.' },
         { href: '#/prophecy', icon: 'scroll', tone: 'violet', title: 'Quotations and prophecy', text: 'Where the New Testament quotes the Old, and the promises it says were fulfilled.' },
-        { href: '#/word', icon: 'sparkle', tone: 'gold', title: 'Word study', text: 'The Hebrew and Greek behind the English: what a word means and everywhere it is used.' }
+        { href: '#/word', icon: 'sparkle', tone: 'gold', title: 'Word study', text: 'The Hebrew and Greek behind the English: what a word means and everywhere it is used.' },
+        { href: '#/topic', icon: 'filter', tone: 'blue', title: 'Topical Bible', text: 'Follow a subject, such as faith, prayer or covenant, through the whole Bible.' },
+        { href: '#/dictionary', icon: 'book', tone: 'green', title: 'Bible dictionary', text: 'Easton’s entries on the people, places and things of Scripture.' },
+        { href: '#/guide', icon: 'info', tone: 'crimson', title: 'Guides', text: 'The covenants, the feasts of Israel and the tabernacle, with the passages beside each.' },
+        { href: '#/place', icon: 'pin', tone: 'teal', title: 'Places', text: 'Every place on the map: what happened there, and the verses that name it.' }
     ];
 
     let hubRoot = null;

@@ -227,7 +227,8 @@ const Parallel = (() => {
                 h('div', { class: 'read-tools par-tools' },
                     stepButton(prev, 'Previous section', 'chevron-left'),
                     stepButton(next, 'Next section', 'chevron-right'),
-                    versionSwitch(wanted, section))),
+                    versionSwitch(wanted, section),
+                    shareTools(section))),
             tabs,
             fellBack ? h('p', { class: 'read-notice', role: 'status' },
                 `${versionInfo(wanted).short} is not available for every passage on this device. Showing ${used.map(v => v.short).join(' and ')}.`) : null,
@@ -255,6 +256,18 @@ const Parallel = (() => {
                     h('sup', { class: 'par-vn', 'aria-label': `Verse ${v}` }, String(v)), t, ' '))
             ]));
         return h('article', { class: 'par-col', 'aria-label': dash(p.ref), dataset: { i } }, head, body);
+    }
+
+    // Print and Share, in the tool row.
+    function shareTools(section) {
+        return [
+            h('button', { type: 'button', class: 'btn btn-sm par-act', 'data-act': 'print', onclick: () => window.print() },
+                icon('print', 'icon-sm'), 'Print'),
+            h('button', {
+                type: 'button', class: 'btn btn-sm par-act', 'data-act': 'share',
+                onclick: () => UI.share({ title: section.title, text: `${section.title} — parallel passages`, url: window.location.href })
+            }, icon('share', 'icon-sm'), 'Share')
+        ];
     }
 
     function stepButton(target, label, name) {

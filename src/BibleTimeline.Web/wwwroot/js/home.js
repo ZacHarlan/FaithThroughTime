@@ -17,6 +17,8 @@
         const pairs = notablePairs(all);
         el.append(h('div', { class: 'home' },
             hero(),
+            welcome(),
+            todaySection(),
             discoverySection(pairs),
             waysIn(scale, previewPair(all)),
             erasSection(),
@@ -24,6 +26,8 @@
         backdrop = Backdrop(el.querySelector('.home-hero'), el, scale);
         App.on('theme', () => backdrop.repaint());
         setupReveals(el);
+        Install.onChange(refreshInstall);
+        refreshInstall();
     }
 
     function show() { backdrop.play(); }
@@ -413,6 +417,178 @@
         };
     }
 
+
+    // ── Remembering a visit ─────────────────────────────────────────────
+    const memory = {
+        get(key) { try { return localStorage.getItem(key); } catch { return null; } },
+        set(key, value) { try { localStorage.setItem(key, value); } catch { /* private mode */ } }
+    };
+
+    // ── Start here: for someone who has not been before ─────────────────
+    const WELCOME_KEY = 'ftt-welcome-done';
+    let welcomeEl = null;
+
+    function welcomeWanted() {
+        return memory.get(WELCOME_KEY) !== '1' && Install.visits() <= 3;
+    }
+
+    function welcome() {
+        const acts = Store.journeys.find(j => j.slug === 'book-of-acts') || Store.journeys[0];
+        const paths = [
+            ['Follow the story', 'Walk the whole Bible in order, one chapter of the story at a time.', Router.build('story', ['the-whole-story', 1])],
+            ['Read today’s passage', 'Today’s portion of a year-long plan, set in story order.', Router.build('plan')],
+            ['Follow a journey', acts ? `${acts.name}, stop by stop, on the map.` : 'Trace the journeys of the Bible, stop by stop, on the map.',
+                acts ? Router.build('map', [acts.slug]) : '#/map'],
+            ['Study a verse', 'Open John 3:16 with its cross-references and original words.', Router.build('read', ['john', 3], { v: 16, study: 16 })]
+        ];
+        welcomeEl = h('section', { class: 'home-welcome', 'aria-labelledby': 'home-welcome-title', hidden: !welcomeWanted() },
+            h('div', { class: 'home-wrap' },
+                h('div', { class: 'welcome' },
+                    h('div', { class: 'welcome-head' },
+                        h('div', null,
+                            h('p', { class: 'eyebrow' }, 'Welcome'),
+                            h('h2', { class: 'display welcome-title', id: 'home-welcome-title', tabindex: '-1' }, 'Start here')),
+                        h('button', { class: 'btn btn-quiet btn-sm', type: 'button', onclick: dismissWelcome }, 'Got it')),
+                    h('ol', { class: 'welcome-paths' }, paths.map(([title, text, href], i) =>
+                        h('li', null, h('a', { class: 'welcome-path', href },
+                            h('span', { class: 'welcome-num', 'aria-hidden': 'true' }, String(i + 1)),
+                            h('span', { class: 'welcome-body' },
+                                h('span', { class: 'welcome-name' }, title),
+                                h('span', { class: 'welcome-text' }, text)))))))));
+        return welcomeEl;
+    }
+
+    function dismissWelcome() {
+        memory.set(WELCOME_KEY, '1');
+        welcomeEl.hidden = true;
+    }
+
+    function reopenWelcome() {
+        memory.set(WELCOME_KEY, '');
+        welcomeEl.hidden = false;
+        welcomeEl.scrollIntoView({ block: 'start', behavior: UI.reducedMotion() ? 'auto' : 'smooth' });
+        welcomeEl.querySelector('.welcome-title').focus({ preventScroll: true });
+    }
+
+    // ── Today: the reading, and one thing worth a look ──────────────────
+    // The plan day is computed as js/plan.js does: 1 January is day 1, and in a leap year
+    // 29 February shares day 59, so the plan year has 365 days.
+    function planDay(now = new Date()) {
+        const start = new Date(now.getFullYear(), 0, 1);
+        let n = Math.round((new Date(now.getFullYear(), now.getMonth(), now.getDate()) - start) / 864e5) + 1;
+        if (new Date(now.getFullYear(), 1, 29).getMonth() === 1 && n > 59) n -= 1;
+        return Math.min(Math.max(n, 1), 365);
+    }
+    // The calendar date as a whole number: the same all day, a new one tomorrow.
+    const dateNumber = (now = new Date()) => Math.floor(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()) / 864e5);
+    const firstSentence = text => (/^.*?[.!?](?=\s|$)/.exec(text || '') || [text || ''])[0];
+
+    // "Psalms 8, 19, 23" → the reader at chapter 8; null when the book is not one we know.
+    function readerHref(text) {
+        const m = /^(.+?) (\d+)/.exec(text);
+        const book = m && Store.books.find(b => b.name === (m[1] === 'Psalm' ? 'Psalms' : m[1]));
+        return book ? Router.build('read', [book.slug, Number(m[2])]) : null;
+    }
+
+    function todaySection() {
+        const readSlot = h('div', { class: 'today-slot today-read-slot' });
+        const pickSlot = h('div', { class: 'today-slot today-pick-slot' });
+        const section = h('section', { class: 'home-section home-today', 'aria-labelledby': 'home-today-title', dataset: { reveal: '' } },
+            h('div', { class: 'home-wrap' },
+                h('header', { class: 'today-head' },
+                    h('p', { class: 'eyebrow' }, new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })),
+                    h('h2', { class: 'display today-title', id: 'home-today-title' }, 'Today')),
+                h('div', { class: 'today-grid' }, readSlot, pickSlot)));
+
+        Api.getReadingPlan().then(plan => {
+            const n = planDay();
+            const day = plan?.days?.[n - 1];
+            if (day) readSlot.replaceChildren(readingCard(n, plan.days.length || 365, day));
+            else readSlot.remove();
+            settle();
+        });
+        Promise.all([Api.getDiscoveries(), Api.getProphecy(), Api.getParallels()]).then(([found, prophecy, parallels]) => {
+            const pick = todaysPick(found, prophecy, parallels);
+            if (pick) pickSlot.replaceChildren(pickCard(pick));
+            else pickSlot.remove();
+            settle();
+        });
+        let pending = 2;
+        function settle() { if (--pending === 0 && !section.querySelector('.today-slot > *')) section.hidden = true; }
+        return section;
+    }
+
+    function readingCard(n, total, day) {
+        return h('article', { class: 'today-card today-read' },
+            h('p', { class: 'eyebrow today-eyebrow' }, UI.icon('calendar', 'icon-sm'), `Today’s reading · Day ${n} of ${total}`),
+            h('h3', { class: 'display today-card-title' }, day.title),
+            h('ul', { class: 'chip-row today-passages', 'aria-label': 'Passages for today' },
+                day.passages.map(p => {
+                    const href = readerHref(p);
+                    return h('li', null, href ? h('a', { class: 'chip', href }, p) : h('span', { class: 'chip' }, p));
+                })),
+            h('div', { class: 'today-actions' },
+                h('a', { class: 'btn', href: Router.build('plan', [n]) }, 'Open day ', String(n), UI.icon('arrow-right', 'icon-sm'))));
+    }
+
+    // One pick a day, rotating through four kinds; within a kind it moves on every fourth day.
+    function todaysPick(found, prophecy, parallels) {
+        const n = dateNumber();
+        const makers = [
+            () => {
+                const list = Meet.parseDiscoveries(found || {}).filter(d => d.result.known);
+                const d = list[(Math.floor(n / 4) + 7) % (list.length || 1)];
+                return d && {
+                    kind: 'Did they meet?', title: `${d.a.name} and ${d.b.name}`,
+                    line: Meet.fill(d.headline, d.result),
+                    href: Router.build('meet', [d.a.slug, d.b.slug]), cta: 'See for yourself'
+                };
+            },
+            () => {
+                const list = Store.journeys.filter(j => j.stops?.length);
+                const j = list[Math.floor(n / 4) % (list.length || 1)];
+                return j && {
+                    kind: 'A journey', title: j.name,
+                    line: firstSentence(j.description) || `${plural(j.stops.length, 'stop', 'stops')} on the map.`,
+                    href: Router.build('map', [j.slug]), cta: 'Follow it on the map'
+                };
+            },
+            () => {
+                const list = prophecy?.prophecies || [];
+                const p = list[Math.floor(n / 4) % (list.length || 1)];
+                return p && {
+                    kind: 'Prophecy fulfilled', title: p.title,
+                    line: `${p.prophecy.join(', ')} is answered in ${p.fulfilment.join(', ')}.`,
+                    href: Router.build('prophecy', [p.id]), cta: 'Read both passages'
+                };
+            },
+            () => {
+                const list = (parallels?.groups || []).flatMap(g => g.sections.filter(s => s.passages.length > 1));
+                const s = list[Math.floor(n / 4) % (list.length || 1)];
+                return s && {
+                    kind: 'Told more than once', title: s.title,
+                    line: `${s.passages.length} accounts side by side: ${s.passages.join(', ')}.`,
+                    href: Router.build('parallel', [s.id]), cta: 'Read them side by side'
+                };
+            }
+        ];
+        // If the day's kind has nothing to show, the next one stands in.
+        for (let i = 0; i < makers.length; i++) {
+            const pick = makers[(n + i) % makers.length]();
+            if (pick) return pick;
+        }
+        return null;
+    }
+
+    function pickCard(p) {
+        return h('article', { class: 'today-card today-pick' },
+            h('p', { class: 'eyebrow today-eyebrow' }, UI.icon('sparkle', 'icon-sm'), `Worth a look today · ${p.kind}`),
+            h('h3', { class: 'display today-card-title' }, p.title),
+            h('p', { class: 'today-line' }, p.line),
+            h('div', { class: 'today-actions' },
+                h('a', { class: 'btn', href: p.href, 'data-pick': '' }, p.cta, UI.icon('arrow-right', 'icon-sm'))));
+    }
+
     // ── Today's discovery ───────────────────────────────────────────────
     function discoverySection(pairs) {
         const slot = h('div', { class: 'discovery-slot' });
@@ -512,7 +688,22 @@
                 h('header', { class: 'home-head', dataset: { reveal: '' } },
                     h('p', { class: 'eyebrow' }, 'Ways in'),
                     h('h2', { class: 'display', id: 'home-ways-title' }, 'Start wherever ', h('em', null, 'your question'), ' is.')),
-                h('div', { class: 'ways-grid' }, cards)));
+                h('div', { class: 'ways-grid' }, cards),
+                studyRow()));
+    }
+
+    // The study tools as one quiet row under the cards: a line of what is there, and a door to each.
+    function studyRow() {
+        const tools = [
+            ['Search the text', '#/find'], ['Reading plan', Router.build('plan')],
+            ['Kings and prophets', '#/kings'], ['Prophecy fulfilled', '#/prophecy']
+        ];
+        return h('div', { class: 'ways-study', dataset: { reveal: '' } },
+            h('div', { class: 'ways-study-text' },
+                h('h3', { class: 'ways-study-title' }, h('a', { href: '#/study' }, 'Study tools')),
+                h('p', null, 'Search every word of Scripture, read the Bible through in a year, and chart the kings and the prophets who spoke to them.')),
+            h('div', { class: 'chip-row ways-study-links' }, tools.map(([label, href]) => h('a', { class: 'chip', href }, label))),
+            h('a', { class: 'way-go ways-study-go', href: '#/study' }, 'Open study tools', UI.icon('arrow-right', 'icon-sm')));
     }
 
     function way(kind, href, title, text, preview) {
@@ -640,6 +831,9 @@
     }
 
     // ── Footer ──────────────────────────────────────────────────────────
+    let installBtn = null;
+    function refreshInstall() { if (installBtn) installBtn.hidden = !Install.available(); }
+
     function footer() {
         return h('footer', { class: 'home-foot' },
             h('div', { class: 'home-wrap' },
@@ -650,6 +844,12 @@
                         'The Bible’s own figures come first. Where Scripture does not fix a year, the timeline follows James Ussher’s chronology, so that every life sits on the same calendar. Each date carries a label saying how sure anyone can be, from anchored in outside records to handed down by tradition.'),
                     h('a', { class: 'btn btn-quiet home-foot-link', href: '#/about' },
                         'Read about the dates and sources', UI.icon('arrow-right', 'icon-sm'))),
+                h('div', { class: 'home-foot-quiet' },
+                    h('button', { class: 'btn btn-quiet btn-sm', type: 'button', onclick: reopenWelcome }, 'New here?'),
+                    installBtn = h('button', {
+                        class: 'btn btn-quiet btn-sm', type: 'button', hidden: true, 'data-install': '',
+                        onclick: () => Install.prompt()
+                    }, 'Add to home screen')),
                 h('p', { class: 'home-colophon' },
                     h('span', { class: 'home-colophon-brand' },
                         svg('svg', { class: 'icon', 'aria-hidden': 'true' }, svg('use', { href: '#i-mark' })),
