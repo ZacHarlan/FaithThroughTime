@@ -12055,4 +12055,411 @@ INSERT INTO journey_people (journey_id, person_id) VALUES
 (22, 974),
 (22, 975);
 
+-- ═══════════════════════════════════════════════════════════════════════
+-- LATER CORRECTIONS (applied after the inserts above, in order)
+-- ═══════════════════════════════════════════════════════════════════════
+
+-- ── Book years brought into line with the events and people (2026-11-22) ──
+-- biblical_books: bring the writing years and covered periods into line with the events and people
+-- tables (Scripture first, then Ussher; owner's exceptions for the Persian period). No year 0.
+-- Rows not touched here were checked and already agree with the database.
+
+-- Joshua (6). period_covered_end -1420 -> -1443: event 322 "Death of Joshua" -1443 (person 13, Joshua son of Nun,
+-- d. -1443, Ussher Annals 340); -1420 was the old Josephus-based death year.
+-- approx_writing_year -1420 -> -1415: the book ends with the death of Eleazar after Joshua (Josh 24:33), and
+-- person 184 (Eleazar son of Aaron) has d. c. -1415; the book is not written before the last event it tells.
+UPDATE biblical_books SET period_covered_end = -1443, approx_writing_year = -1415 WHERE id = 6;
+
+-- Judges (7). period_covered_start -1420 -> -1443: event 21 "Period of the Judges" -1443 to -1095 starts at
+-- Joshua's death (Judg 1:1; event 322 -1443), so Joshua's end and Judges' start meet.
+UPDATE biblical_books SET period_covered_start = -1443 WHERE id = 7;
+
+-- Ruth (8). period_covered_start -1195 -> -1182, period_covered_end -1145 -> -1170: event 412 "Ruth and Boaz"
+-- -1172 to -1170, ending with the birth of Obed (person 265, b. -1170; Ruth 4:13-17); the family had lived in
+-- Moab "about ten years" before (Ruth 1:4), so about -1182. -1195 is Ruth's estimated birth (person 17), and
+-- -1145 matched nothing in the database.
+UPDATE biblical_books SET period_covered_start = -1182, period_covered_end = -1170 WHERE id = 8;
+
+-- 1 Samuel (9). period_covered_end -1056 -> -1055: event 323 "Death of Saul at Gilboa" -1055 (person 19, Saul,
+-- d. -1055); 2 Samuel already starts at -1055, so the two now meet.
+UPDATE biblical_books SET period_covered_end = -1055 WHERE id = 9;
+
+-- 2 Chronicles (14). period_covered_end -536 -> -537: the book closes with Cyrus's decree (2 Chr 36:22-23),
+-- event 37 "Edict of Cyrus" -537 (Ussher, Annals 948-949); the return of -536 (event 480) is not in it.
+UPDATE biblical_books SET period_covered_end = -537 WHERE id = 14;
+
+-- Ezra (15). period_covered_start -536 -> -537: Ezra 1:1-4 opens with the same decree, event 37 -537; the return
+-- under Zerubbabel (event 480, -536) follows in Ezra 2. 2 Chronicles' end and Ezra's start now meet.
+-- (period_covered_end -457 is kept: Ezra came in 458, event 39, and the reform of Ezra 10 ended on the first day
+-- of the first month of the following year, Ezra 10:17, i.e. 457; person 6583's note dates Ezra 10 to 457.)
+UPDATE biblical_books SET period_covered_start = -537 WHERE id = 15;
+
+-- Job (18). period_covered_start -2000 -> -1635: person 121 (Job): Ussher, Annals AM 2369, 1635 BC, the trials.
+-- period_covered_end -2000 -> -1495: the book ends with his death 140 years after the trials (Job 42:16-17;
+-- person 121 d. -1495).
+-- approx_writing_year -2000 -> -1495: author and date are unknown, but the book cannot be written before the death
+-- it records; -1495 is the earliest year consistent with the database (the old -2000 put the writing before the events).
+UPDATE biblical_books SET period_covered_start = -1635, period_covered_end = -1495, approx_writing_year = -1495 WHERE id = 18;
+
+-- Isaiah (23). period_covered_start -758 -> -759: event 455 "Isaiah's Vision and Call" -759, the year Uzziah died
+-- (Isa 6:1; person 89, Uzziah, d. -759; Ussher, Annals 583-584).
+-- period_covered_end -700 -> -681 and approx_writing_year -700 -> -681: Isaiah 37:38 tells of Sennacherib's
+-- murder by his sons, event 462 "Sennacherib Assassinated" -681 (person 213, d. -681; owner's exception). The book
+-- is not written before the last event it narrates; person 25 (Isaiah) notes that either he outlived the
+-- traditional c. 695 or the notice was added later. -700 matched nothing (Hezekiah, the last king of Isa 1:1,
+-- died -698).
+UPDATE biblical_books SET period_covered_start = -759, period_covered_end = -681, approx_writing_year = -681 WHERE id = 23;
+
+-- Jeremiah (24). approx_writing_year -585 -> -562: the book's last chapter ends with Jehoiachin's release
+-- (Jer 52:31-34), event 476 -562, which is also the row's period_covered_end; Jer 51:64 marks the end of
+-- Jeremiah's own words, so the book was finished after 562.
+UPDATE biblical_books SET approx_writing_year = -562 WHERE id = 24;
+
+-- Daniel (27). period_covered_start -606 -> -607: event 468 "Daniel Taken to Babylon" -607 (Dan 1:1; Ussher,
+-- Annals 774-776; person 28). period_covered_end -534 -> -535: his last dated vision is in the third year of
+-- Cyrus (Dan 10:1), 535 BC counting from the edict of 537 (person 28, Annals 956; event 37).
+UPDATE biblical_books SET period_covered_start = -607, period_covered_end = -535 WHERE id = 27;
+
+-- Hosea (28). period_covered_start -755 -> -785, period_covered_end -725 -> -721: event 453 "Hosea's Ministry to
+-- Israel" -785 to -721 (Ussher, Annals 554-556: under Jeroboam II, d. -784, and living to see Samaria fall,
+-- event 32 -721). approx_writing_year -725 -> -721: the old value was the old end of the ministry; the book
+-- gathers a ministry that ran to 721.
+UPDATE biblical_books SET period_covered_start = -785, period_covered_end = -721, approx_writing_year = -721 WHERE id = 28;
+
+-- Joel (29). approx_writing_year, period_covered_start and period_covered_end -870 -> -808: person 109 (Joel):
+-- Ussher, Annals 553, under Uzziah (from -810) and Jeroboam II, about the 13th Jubilee, 808 BC.
+UPDATE biblical_books SET approx_writing_year = -808, period_covered_start = -808, period_covered_end = -808 WHERE id = 29;
+
+-- Jonah (32). period_covered_start and period_covered_end -785 -> -771: event 450 "Jonah's Mission to Nineveh"
+-- -771 (Ussher, Annals 575, under Pul). The writing year -760 is kept (after the mission, before his estimated
+-- death c. -750, person 112).
+UPDATE biblical_books SET period_covered_start = -771, period_covered_end = -771 WHERE id = 32;
+
+-- Micah (33). period_covered_start -735 -> -759, period_covered_end -700 -> -698: event 456 "Micah's Ministry"
+-- -759 to -698 (Ussher, Annals 585, 653; Mic 1:1, Jotham to Hezekiah, who died -698, person 29).
+-- approx_writing_year -700 -> -698: not before the end of the ministry the book gathers.
+UPDATE biblical_books SET period_covered_start = -759, period_covered_end = -698, approx_writing_year = -698 WHERE id = 33;
+
+-- Zephaniah (36). approx_writing_year, period_covered_start and period_covered_end -625 -> -629: Zeph 1:1 says only
+-- "in the days of Josiah" (641-610); Ussher places his warnings with Jeremiah's call in 629 BC, before the reform
+-- of 624 (event 465 "Jeremiah's Call" -629 and its note; person 116, Zephaniah, Annals 737; event 34 -624).
+UPDATE biblical_books SET approx_writing_year = -629, period_covered_start = -629, period_covered_end = -629 WHERE id = 36;
+
+-- Mark (41). period_covered_start 29 -> 27: Mark 1:9 begins with the baptism, event 43 "Baptism of Jesus" AD 27
+-- (Ussher, Annals 6288; person 37). Writing year 55 agrees with event 155.
+UPDATE biblical_books SET period_covered_start = 27 WHERE id = 41;
+
+-- John (43). period_covered_start 29 -> 27: John 1:29-34 opens the ministry at the baptism, event 43 AD 27.
+-- Writing year 85 agrees with event 171.
+UPDATE biblical_books SET period_covered_start = 27 WHERE id = 43;
+
+-- Acts (44). period_covered_end 63 -> 65 and approx_writing_year 63 -> 65: Acts 28:30 ends with Paul's two years
+-- in Rome, event 198 "Paul Arrives in Rome" AD 63-65; event 163 "Acts Written" AD 65.
+UPDATE biblical_books SET period_covered_end = 65, approx_writing_year = 65 WHERE id = 44;
+
+-- The letters: approx_writing_year, period_covered_start and period_covered_end follow the "... Written" events.
+-- Romans (45) 57 -> 60: event 157 "Romans Written" AD 60 (Ussher, Annals 6843).
+UPDATE biblical_books SET approx_writing_year = 60, period_covered_start = 60, period_covered_end = 60 WHERE id = 45;
+-- 1 Corinthians (46) 57 -> 59: event 153 "1 Corinthians Written" AD 59 (Annals 6835).
+UPDATE biblical_books SET approx_writing_year = 59, period_covered_start = 59, period_covered_end = 59 WHERE id = 46;
+-- 2 Corinthians (47) 57 -> 60: event 156 "2 Corinthians Written" AD 60 (Annals 6841).
+UPDATE biblical_books SET approx_writing_year = 60, period_covered_start = 60, period_covered_end = 60 WHERE id = 47;
+-- Galatians (48) 49 -> 58: event 150 "Galatians Written" AD 58 (Annals 6830; after the council of AD 52, event 52).
+UPDATE biblical_books SET approx_writing_year = 58, period_covered_start = 58, period_covered_end = 58 WHERE id = 48;
+-- Ephesians (49) 62 -> 64: event 159 "Ephesians Written" AD 64 (Annals 6910-6912; Rome AD 63-65, event 198).
+UPDATE biblical_books SET approx_writing_year = 64, period_covered_start = 64, period_covered_end = 64 WHERE id = 49;
+-- Philippians (50) 62 -> 64: event 162 "Philippians Written" AD 64 (Annals 6905, 6908).
+UPDATE biblical_books SET approx_writing_year = 64, period_covered_start = 64, period_covered_end = 64 WHERE id = 50;
+-- Colossians (51) 62 -> 64: event 160 "Colossians Written" AD 64 (Annals 6909).
+UPDATE biblical_books SET approx_writing_year = 64, period_covered_start = 64, period_covered_end = 64 WHERE id = 51;
+-- 1 Thessalonians (52) 51 -> 54: event 151 "1 Thessalonians Written" AD 54 (Annals 6803).
+UPDATE biblical_books SET approx_writing_year = 54, period_covered_start = 54, period_covered_end = 54 WHERE id = 52;
+-- 2 Thessalonians (53) 51 -> 55: event 152 "2 Thessalonians Written" AD 55 (Annals 6803; Corinth AD 54-56).
+UPDATE biblical_books SET approx_writing_year = 55, period_covered_start = 55, period_covered_end = 55 WHERE id = 53;
+-- 1 Timothy (54) 64 -> 65: event 164 "1 Timothy Written" AD 65 (Annals 6923-6924).
+UPDATE biblical_books SET approx_writing_year = 65, period_covered_start = 65, period_covered_end = 65 WHERE id = 54;
+-- 2 Timothy (55) 67 -> 66: event 169 "2 Timothy Written" AD 66 (Annals 6937, 6939; Paul d. AD 67, person 41).
+UPDATE biblical_books SET approx_writing_year = 66, period_covered_start = 66, period_covered_end = 66 WHERE id = 55;
+-- Titus (56) 64 -> 65: event 165 "Titus Written" AD 65 (Annals 6918, 6925).
+UPDATE biblical_books SET approx_writing_year = 65, period_covered_start = 65, period_covered_end = 65 WHERE id = 56;
+-- Philemon (57) 62 -> 64: event 161 "Philemon Written" AD 64 (Annals 6906, 6909).
+UPDATE biblical_books SET approx_writing_year = 64, period_covered_start = 64, period_covered_end = 64 WHERE id = 57;
+-- Hebrews (58) 67 -> 64: event 168 "Hebrews Written" AD 64 (Annals 6907, 6913).
+UPDATE biblical_books SET approx_writing_year = 64, period_covered_start = 64, period_covered_end = 64 WHERE id = 58;
+-- 2 Peter (61) 67 -> 66: event 170 "2 Peter Written" AD 66 (Annals 6937-6938; Peter d. AD 67, person 40).
+UPDATE biblical_books SET approx_writing_year = 66, period_covered_start = 66, period_covered_end = 66 WHERE id = 61;
+
+-- ── People from the lists placed on the timeline (2026-11-22) ──
+-- ===== The return under Zerubbabel (event 480, 536 BC): families named in Ezra 2 / Nehemiah 7 =====
+-- Shephatiah, head of a returning family (6420): named in Ezra 2:3-35, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6420, 480, 'Family named in the list of those who went up (Ezra 2:3-35)');
+-- Arah, head of a returning family (6421): named in Ezra 2:3-35, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6421, 480, 'Family named in the list of those who went up (Ezra 2:3-35)');
+-- Elam, head of a returning family (6423): named in Ezra 2:3-35, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6423, 480, 'Family named in the list of those who went up (Ezra 2:3-35)');
+-- Zattu, head of a returning family (6424): named in Ezra 2:3-35, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6424, 480, 'Family named in the list of those who went up (Ezra 2:3-35)');
+-- Zaccai, head of a returning family (6425): named in Ezra 2:3-35, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6425, 480, 'Family named in the list of those who went up (Ezra 2:3-35)');
+-- Bani, head of a returning family (6426): named in Ezra 2:3-35, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6426, 480, 'Family named in the list of those who went up (Ezra 2:3-35)');
+-- Azgad, head of a returning family (6428): named in Ezra 2:3-35, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6428, 480, 'Family named in the list of those who went up (Ezra 2:3-35)');
+-- Adonikam, head of a returning family (6429): named in Ezra 2:3-35, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6429, 480, 'Family named in the list of those who went up (Ezra 2:3-35)');
+-- Bigvai, head of a returning family (6430): named in Ezra 2:3-35, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6430, 480, 'Family named in the list of those who went up (Ezra 2:3-35)');
+-- Adin, head of a returning family (6431): named in Ezra 2:3-35, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6431, 480, 'Family named in the list of those who went up (Ezra 2:3-35)');
+-- Bezai, head of a returning family (6432): named in Ezra 2:3-35, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6432, 480, 'Family named in the list of those who went up (Ezra 2:3-35)');
+-- Hashum, head of a returning family (6433): named in Ezra 2:3-35, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6433, 480, 'Family named in the list of those who went up (Ezra 2:3-35)');
+-- Ater, of Hezekiah, head of a returning family (6434): named in Ezra 2:3-35, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6434, 480, 'Family named in the list of those who went up (Ezra 2:3-35)');
+-- Jorah, head of a returning family (6435): named in Ezra 2:3-35, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6435, 480, 'Family named in the list of those who went up (Ezra 2:3-35)');
+-- Gibbar, head of a returning family (6436): named in Ezra 2:3-35, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6436, 480, 'Family named in the list of those who went up (Ezra 2:3-35)');
+-- Magbish, head of a returning family (6437): named in Ezra 2:3-35, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6437, 480, 'Family named in the list of those who went up (Ezra 2:3-35)');
+-- Elam, head of the second family of Elam (6438): named in Ezra 2:3-35, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6438, 480, 'Family named in the list of those who went up (Ezra 2:3-35)');
+-- Harim, head of a returning family (6439): named in Ezra 2:3-35, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6439, 480, 'Family named in the list of those who went up (Ezra 2:3-35)');
+-- Jeshua, of the house of Pahath-moab (6440): named in Ezra 2:3-35, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6440, 480, 'Family named in the list of those who went up (Ezra 2:3-35)');
+-- Joab, of the house of Pahath-moab (6441): named in Ezra 2:3-35, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6441, 480, 'Family named in the list of those who went up (Ezra 2:3-35)');
+-- Jedaiah, head of a priestly family (6442): named in Ezra 2:36-42, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6442, 480, 'Family named in the list of those who went up (Ezra 2:36-42)');
+-- Pashur, head of a priestly family (6444): named in Ezra 2:36-42, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6444, 480, 'Family named in the list of those who went up (Ezra 2:36-42)');
+-- Harim, head of a priestly family (6445): named in Ezra 2:36-42, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6445, 480, 'Family named in the list of those who went up (Ezra 2:36-42)');
+-- Jeshua, head of a Levite family (6446): named in Ezra 2:36-42, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6446, 480, 'Family named in the list of those who went up (Ezra 2:36-42)');
+-- Kadmiel (6447): named in Ezra 2:36-42, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6447, 480, 'Family named in the list of those who went up (Ezra 2:36-42)');
+-- Hodaviah (6448): named in Ezra 2:36-42, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6448, 480, 'Family named in the list of those who went up (Ezra 2:36-42)');
+-- Shallum, head of a porters' family (6449): named in Ezra 2:36-42, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6449, 480, 'Family named in the list of those who went up (Ezra 2:36-42)');
+-- Ater, head of a porters' family (6450): named in Ezra 2:36-42, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6450, 480, 'Family named in the list of those who went up (Ezra 2:36-42)');
+-- Talmon (6451): named in Ezra 2:36-42, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6451, 480, 'Family named in the list of those who went up (Ezra 2:36-42)');
+-- Akkub, head of a porters' family (6452): named in Ezra 2:36-42, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6452, 480, 'Family named in the list of those who went up (Ezra 2:36-42)');
+-- Hatita (6453): named in Ezra 2:36-42, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6453, 480, 'Family named in the list of those who went up (Ezra 2:36-42)');
+-- Shobai (6454): named in Ezra 2:36-42, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6454, 480, 'Family named in the list of those who went up (Ezra 2:36-42)');
+-- Ziha (6455): named in Ezra 2:43-58, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6455, 480, 'Family named in the list of those who went up (Ezra 2:43-58)');
+-- Hashupha (6456): named in Ezra 2:43-58, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6456, 480, 'Family named in the list of those who went up (Ezra 2:43-58)');
+-- Tabbaoth (6457): named in Ezra 2:43-58, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6457, 480, 'Family named in the list of those who went up (Ezra 2:43-58)');
+-- Keros (6458): named in Ezra 2:43-58, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6458, 480, 'Family named in the list of those who went up (Ezra 2:43-58)');
+-- Sia (6459): named in Ezra 2:43-58, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6459, 480, 'Family named in the list of those who went up (Ezra 2:43-58)');
+-- Padon (6460): named in Ezra 2:43-58, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6460, 480, 'Family named in the list of those who went up (Ezra 2:43-58)');
+-- Lebana (6461): named in Ezra 2:43-58, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6461, 480, 'Family named in the list of those who went up (Ezra 2:43-58)');
+-- Hagaba (6462): named in Ezra 2:43-58, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6462, 480, 'Family named in the list of those who went up (Ezra 2:43-58)');
+-- Hagab (6463): named in Ezra 2:43-58, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6463, 480, 'Family named in the list of those who went up (Ezra 2:43-58)');
+-- Akkub, head of a Nethinim family (6464): named in Ezra 2:43-58, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6464, 480, 'Family named in the list of those who went up (Ezra 2:43-58)');
+-- Shalmai (6465): named in Ezra 2:43-58, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6465, 480, 'Family named in the list of those who went up (Ezra 2:43-58)');
+-- Hanan, head of a Nethinim family (6466): named in Ezra 2:43-58, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6466, 480, 'Family named in the list of those who went up (Ezra 2:43-58)');
+-- Giddel, head of a Nethinim family (6467): named in Ezra 2:43-58, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6467, 480, 'Family named in the list of those who went up (Ezra 2:43-58)');
+-- Gahar (6468): named in Ezra 2:43-58, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6468, 480, 'Family named in the list of those who went up (Ezra 2:43-58)');
+-- Reaiah (6469): named in Ezra 2:43-58, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6469, 480, 'Family named in the list of those who went up (Ezra 2:43-58)');
+-- Rezin, head of a Nethinim family (6470): named in Ezra 2:43-58, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6470, 480, 'Family named in the list of those who went up (Ezra 2:43-58)');
+-- Nekoda, head of a Nethinim family (6471): named in Ezra 2:43-58, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6471, 480, 'Family named in the list of those who went up (Ezra 2:43-58)');
+-- Gazzam (6472): named in Ezra 2:43-58, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6472, 480, 'Family named in the list of those who went up (Ezra 2:43-58)');
+-- Uzza (6473): named in Ezra 2:43-58, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6473, 480, 'Family named in the list of those who went up (Ezra 2:43-58)');
+-- Phaseah (6474): named in Ezra 2:43-58, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6474, 480, 'Family named in the list of those who went up (Ezra 2:43-58)');
+-- Besai (6475): named in Ezra 2:43-58, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6475, 480, 'Family named in the list of those who went up (Ezra 2:43-58)');
+-- Asnah (6476): named in Ezra 2:43-58, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6476, 480, 'Family named in the list of those who went up (Ezra 2:43-58)');
+-- Bakbuk (6477): named in Ezra 2:43-58, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6477, 480, 'Family named in the list of those who went up (Ezra 2:43-58)');
+-- Hakupha (6478): named in Ezra 2:43-58, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6478, 480, 'Family named in the list of those who went up (Ezra 2:43-58)');
+-- Harhur (6479): named in Ezra 2:43-58, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6479, 480, 'Family named in the list of those who went up (Ezra 2:43-58)');
+-- Bazlith (6480): named in Ezra 2:43-58, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6480, 480, 'Family named in the list of those who went up (Ezra 2:43-58)');
+-- Mehida (6481): named in Ezra 2:43-58, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6481, 480, 'Family named in the list of those who went up (Ezra 2:43-58)');
+-- Harsha (6482): named in Ezra 2:43-58, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6482, 480, 'Family named in the list of those who went up (Ezra 2:43-58)');
+-- Barkos (6483): named in Ezra 2:43-58, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6483, 480, 'Family named in the list of those who went up (Ezra 2:43-58)');
+-- Sisera, head of a Nethinim family (6484): named in Ezra 2:43-58, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6484, 480, 'Family named in the list of those who went up (Ezra 2:43-58)');
+-- Tamah (6485): named in Ezra 2:43-58, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6485, 480, 'Family named in the list of those who went up (Ezra 2:43-58)');
+-- Neziah (6486): named in Ezra 2:43-58, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6486, 480, 'Family named in the list of those who went up (Ezra 2:43-58)');
+-- Hatipha (6487): named in Ezra 2:43-58, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6487, 480, 'Family named in the list of those who went up (Ezra 2:43-58)');
+-- Sotai (6488): named in Ezra 2:43-58, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6488, 480, 'Family named in the list of those who went up (Ezra 2:43-58)');
+-- Sophereth (6489): named in Ezra 2:43-58, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6489, 480, 'Family named in the list of those who went up (Ezra 2:43-58)');
+-- Perida (6490): named in Ezra 2:43-58, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6490, 480, 'Family named in the list of those who went up (Ezra 2:43-58)');
+-- Jaala (6491): named in Ezra 2:43-58, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6491, 480, 'Family named in the list of those who went up (Ezra 2:43-58)');
+-- Darkon (6492): named in Ezra 2:43-58, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6492, 480, 'Family named in the list of those who went up (Ezra 2:43-58)');
+-- Giddel, head of a family of Solomon's servants (6493): named in Ezra 2:43-58, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6493, 480, 'Family named in the list of those who went up (Ezra 2:43-58)');
+-- Shephatiah, head of a family of Solomon's servants (6494): named in Ezra 2:43-58, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6494, 480, 'Family named in the list of those who went up (Ezra 2:43-58)');
+-- Hattil (6495): named in Ezra 2:43-58, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6495, 480, 'Family named in the list of those who went up (Ezra 2:43-58)');
+-- Pochereth of Zebaim (6496): named in Ezra 2:43-58, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6496, 480, 'Family named in the list of those who went up (Ezra 2:43-58)');
+-- Amon, head of a family of Solomon's servants (6497): named in Ezra 2:43-58, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6497, 480, 'Family named in the list of those who went up (Ezra 2:43-58)');
+-- Delaiah, head of an unregistered family (6498): named in Ezra 2:59-63, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6498, 480, 'Family that went up but could not prove its descent (Ezra 2:59-63)');
+-- Tobiah, head of an unregistered family (6499): named in Ezra 2:59-63, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6499, 480, 'Family that went up but could not prove its descent (Ezra 2:59-63)');
+-- Nekoda, head of an unregistered family (6500): named in Ezra 2:59-63, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6500, 480, 'Family that went up but could not prove its descent (Ezra 2:59-63)');
+-- Habaiah, head of a priestly family (6501): named in Ezra 2:59-63, the list of those who came up with Zerubbabel and Jeshua (Ezra 2:1-2); the name stands for a family or its head
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6501, 480, 'Family that went up but could not prove its descent (Ezra 2:59-63)');
+-- ===== Ezra 8: the second return under Ezra (event 39, 458 BC) =====
+-- Shechaniah, head of a returning family (Ezra 8:3) (6506): Ezra 8:3 and 8:5 name the sons of Shechaniah among those who went up with Ezra (Ezra 8:1)
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6506, 39, 'Family head whose sons went up with Ezra (Ezra 8:3, 8:5)');
+-- Shelomith, head of a returning family (Ezra 8:10) (6519): Ezra 8:10: 'of the sons of Shelomith' went up with Ezra (Ezra 8:1)
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6519, 39, 'Family head whose sons went up with Ezra (Ezra 8:10)');
+-- Jahaziel, father of a chief (Ezra 8:5) (6510): Father of the unnamed chief of the sons of Shechaniah who went up with Ezra in 458 BC (Ezra 8:5). Birth year is an estimate for placing only: one generation (30 years) before the other chiefs of Ezra 8, who are placed at 490 BC.
+UPDATE people SET birth_year = -520, death_year = NULL, date_confidence = 'possible', date_notes = 'Father of the unnamed chief of the sons of Shechaniah who went up with Ezra in 458 BC (Ezra 8:5). Birth year is an estimate for placing only: one generation (30 years) before the other chiefs of Ezra 8, who are placed at 490 BC.' WHERE id = 6510;
+-- Josiphiah, father of a chief (Ezra 8:10) (6520): Father of the unnamed chief of the sons of Shelomith who went up with Ezra in 458 BC (Ezra 8:10). Birth year is an estimate for placing only: one generation (30 years) before the other chiefs of Ezra 8, who are placed at 490 BC.
+UPDATE people SET birth_year = -520, death_year = NULL, date_confidence = 'possible', date_notes = 'Father of the unnamed chief of the sons of Shelomith who went up with Ezra in 458 BC (Ezra 8:10). Birth year is an estimate for placing only: one generation (30 years) before the other chiefs of Ezra 8, who are placed at 490 BC.' WHERE id = 6520;
+-- Hassenaah (6667): Nehemiah 3:3 'the fish gate did the sons of Hassenaah build'; the wall was rebuilt in 445 BC
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (6667, 40, 'His sons built the Fish Gate (Neh 3:3)');
+-- Hashem the Gizonite (5227): 1 Chr 11:10-34: 'the sons of Hashem the Gizonite' are among the mighty men who strengthened David's kingdom when all Israel made him king (1048 BC)
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (5227, 325, 'Named among David''s mighty men who strengthened his kingship (1 Chr 11:10, 34)');
+-- Ethan, son of Kushaiah (5603): 1 Chr 15:17: Ethan the son of Kushaiah was appointed among the singers when David brought up the ark; his father Kushaiah is then placed by generation
+INSERT OR IGNORE INTO person_events (person_id, event_id, role_in_event) VALUES (5603, 330, 'Merarite singer appointed to sound the bronze cymbals (1 Chr 15:17-19)');
+-- ===== People tied to a dated occasion but no event row =====
+-- Melchizedek (176): Gen 14:18-20, meets Abraham after the rescue of Lot (about 1913 BC, before the covenant of 1912 BC); no event row for Genesis 14
+UPDATE people SET birth_year = -1943, death_year = NULL, date_confidence = 'possible', date_notes = 'Scripture records no birth or death for Melchizedek (Heb 7:3). He is placed on the timeline by his meeting with Abraham (Gen 14:18-20), after the rescue of Lot, about 1913 BC, just before the covenant of Genesis 15 (1912 BC). Birth year is an estimate for placing only (an adult in 1913 BC). A Jewish tradition identifies him with Shem; this timeline does not assume it.' WHERE id = 176;
+-- Doeg the Edomite (934): 1 Sam 21:7, 22:9-19 (about 1060 BC)
+UPDATE people SET birth_year = -1090, death_year = NULL, date_confidence = 'possible', date_notes = 'Birth and death not recorded. Active around 1060 BC, when David fled from Saul to Nob (1 Sam 21:7; 22:9-19). Psalm 52 is titled as written about Doeg. Birth year is an estimate for placing only (an adult in 1060 BC).' WHERE id = 934;
+-- Araunah the Jebusite (949): 2 Sam 24:18-24 (census, 1017 BC)
+UPDATE people SET birth_year = -1047, death_year = NULL, date_confidence = 'possible', date_notes = 'Birth and death not recorded. Active at the time of David''s census, 1017 BC (Ussher, 2 Sam 24:18-24). The name is spelled Araunah in Samuel and Ornan in Chronicles; they are the same man. Birth year is an estimate for placing only (an adult in 1017 BC).' WHERE id = 949;
+-- Chuza, Herod's steward (1023): Luke 8:3 (Galilean ministry, about AD 31)
+UPDATE people SET birth_year = 1, death_year = NULL, date_confidence = 'possible', date_notes = 'No dates are known; he was in Herod''s service during Jesus'' ministry (about AD 28-33), and Luke 8:1-3 names his wife Joanna among the women who followed Jesus on the Galilean tour of about AD 31. Birth year (AD 1) is an estimate for placing only.' WHERE id = 1023;
+-- Joseph Barsabas, called Justus (1029): Acts 1:23-26 (AD 33)
+UPDATE people SET birth_year = 3, death_year = NULL, date_confidence = 'possible', date_notes = 'No dates are known; he was alive at the choosing of Matthias in AD 33 (Acts 1:23-26). Birth year (AD 3) is an estimate for placing only (an adult in AD 33).' WHERE id = 1029;
+-- Jaazaniah, son of Shaphan (6267): Ezek 8:1, 8:11 (vision of the sixth year, about 594 BC); the Shaphan link is left unmade because the row's notes say the text does not state it
+UPDATE people SET birth_year = -624, death_year = NULL, date_confidence = 'possible', date_notes = 'Seen by Ezekiel among the seventy elders in the temple vision of the sixth year of Jehoiachin''s captivity, about 594 BC (Ezek 8:1, 11). The text does not say whether his father Shaphan is Shaphan the scribe, so no father is recorded. Birth year is an estimate for placing only (an adult in 594 BC).' WHERE id = 6267;
+-- Diblaim (593): Hosea 1:3 'Gomer the daughter of Diblaim' states the link, missing on Gomer, wife of Hosea (592), who is already placed by Hosea's ministry (event 453)
+UPDATE people SET father_id = 593 WHERE id = 592 AND father_id IS NULL;
+-- ===== 1 Chronicles 9: those who dwelt in Jerusalem after the exile; neighbouring rows are placed at 475 BC (445 BC, the parallel list of Nehemiah 11, minus 30) =====
+-- Jedaiah, priest (1 Chr 9:10) (4067): named in 1 Chr 9:10 among those who dwelt in Jerusalem after the exile; ancestors in his chain are then placed by generation
+UPDATE people SET birth_year = -475, death_year = NULL, date_confidence = 'possible', date_notes = 'Listed among those who dwelt in Jerusalem after the exile (1 Chr 9:10). The neighbouring entries of this list are placed at 475 BC. Birth year is an estimate for placing only.' WHERE id = 4067;
+-- Jehoiarib, priest (1 Chr 9:10) (4068): named in 1 Chr 9:10 among those who dwelt in Jerusalem after the exile; ancestors in his chain are then placed by generation
+UPDATE people SET birth_year = -475, death_year = NULL, date_confidence = 'possible', date_notes = 'Listed among those who dwelt in Jerusalem after the exile (1 Chr 9:10). The neighbouring entries of this list are placed at 475 BC. Birth year is an estimate for placing only.' WHERE id = 4068;
+-- Adaiah, son of Jeroham (1 Chr 9:12) (4079): named in 1 Chr 9:12 among those who dwelt in Jerusalem after the exile; ancestors in his chain are then placed by generation
+UPDATE people SET birth_year = -475, death_year = NULL, date_confidence = 'possible', date_notes = 'Listed among those who dwelt in Jerusalem after the exile (1 Chr 9:12). The neighbouring entries of this list are placed at 475 BC. Birth year is an estimate for placing only.' WHERE id = 4079;
+-- Maasiai, son of Adiel (4085): named in 1 Chr 9:12 among those who dwelt in Jerusalem after the exile; ancestors in his chain are then placed by generation
+UPDATE people SET birth_year = -475, death_year = NULL, date_confidence = 'possible', date_notes = 'Listed among those who dwelt in Jerusalem after the exile (1 Chr 9:12). The neighbouring entries of this list are placed at 475 BC. Birth year is an estimate for placing only.' WHERE id = 4085;
+-- Berechiah, son of Asa (4100): named in 1 Chr 9:16 among those who dwelt in Jerusalem after the exile; ancestors in his chain are then placed by generation
+UPDATE people SET birth_year = -475, death_year = NULL, date_confidence = 'possible', date_notes = 'Listed among those who dwelt in Jerusalem after the exile (1 Chr 9:16). The neighbouring entries of this list are placed at 475 BC. Birth year is an estimate for placing only.' WHERE id = 4100;
+-- Ahiman, porter (1 Chr 9:17) (4103): named in 1 Chr 9:17 among those who dwelt in Jerusalem after the exile; ancestors in his chain are then placed by generation
+UPDATE people SET birth_year = -475, death_year = NULL, date_confidence = 'possible', date_notes = 'Listed among those who dwelt in Jerusalem after the exile (1 Chr 9:17). The neighbouring entries of this list are placed at 475 BC. Birth year is an estimate for placing only.' WHERE id = 4103;
+-- Uthai, son of Ammihud (4917): named in 1 Chr 9:4 among those who dwelt in Jerusalem after the exile; ancestors in his chain are then placed by generation
+UPDATE people SET birth_year = -475, death_year = NULL, date_confidence = 'possible', date_notes = 'Listed among those who dwelt in Jerusalem after the exile (1 Chr 9:4). The neighbouring entries of this list are placed at 475 BC. Birth year is an estimate for placing only.' WHERE id = 4917;
+-- Asaiah, the Shilonite (4922): named in 1 Chr 9:5 among those who dwelt in Jerusalem after the exile; ancestors in his chain are then placed by generation
+UPDATE people SET birth_year = -475, death_year = NULL, date_confidence = 'possible', date_notes = 'Listed among those who dwelt in Jerusalem after the exile (1 Chr 9:5). The neighbouring entries of this list are placed at 475 BC. Birth year is an estimate for placing only.' WHERE id = 4922;
+-- Jeuel, of the sons of Zerah (4923): named in 1 Chr 9:6 among those who dwelt in Jerusalem after the exile; ancestors in his chain are then placed by generation
+UPDATE people SET birth_year = -475, death_year = NULL, date_confidence = 'possible', date_notes = 'Listed among those who dwelt in Jerusalem after the exile (1 Chr 9:6). The neighbouring entries of this list are placed at 475 BC. Birth year is an estimate for placing only.' WHERE id = 4923;
+-- Sallu, son of Meshullam (4924): named in 1 Chr 9:7 among those who dwelt in Jerusalem after the exile; ancestors in his chain are then placed by generation
+UPDATE people SET birth_year = -475, death_year = NULL, date_confidence = 'possible', date_notes = 'Listed among those who dwelt in Jerusalem after the exile (1 Chr 9:7). The neighbouring entries of this list are placed at 475 BC. Birth year is an estimate for placing only.' WHERE id = 4924;
+-- Ibneiah, son of Jeroham (4928): named in 1 Chr 9:8 among those who dwelt in Jerusalem after the exile; ancestors in his chain are then placed by generation
+UPDATE people SET birth_year = -475, death_year = NULL, date_confidence = 'possible', date_notes = 'Listed among those who dwelt in Jerusalem after the exile (1 Chr 9:8). The neighbouring entries of this list are placed at 475 BC. Birth year is an estimate for placing only.' WHERE id = 4928;
+-- Elah, son of Uzzi (4930): named in 1 Chr 9:8 among those who dwelt in Jerusalem after the exile; ancestors in his chain are then placed by generation
+UPDATE people SET birth_year = -475, death_year = NULL, date_confidence = 'possible', date_notes = 'Listed among those who dwelt in Jerusalem after the exile (1 Chr 9:8). The neighbouring entries of this list are placed at 475 BC. Birth year is an estimate for placing only.' WHERE id = 4930;
+-- Meshullam, son of Shephatiah (4933): named in 1 Chr 9:8 among those who dwelt in Jerusalem after the exile; ancestors in his chain are then placed by generation
+UPDATE people SET birth_year = -475, death_year = NULL, date_confidence = 'possible', date_notes = 'Listed among those who dwelt in Jerusalem after the exile (1 Chr 9:8). The neighbouring entries of this list are placed at 475 BC. Birth year is an estimate for placing only.' WHERE id = 4933;
+-- Bakbakkar, Levite (1 Chr 9:15) (4090): 1 Chr 9:15 listed with Galal and Mattaniah, who are placed at -535 and -565
+UPDATE people SET birth_year = -565, death_year = NULL, date_confidence = 'possible', date_notes = 'Levite listed beside Galal and Mattaniah among those who dwelt in Jerusalem after the exile (1 Chr 9:15). Placed at 565 BC, the same year as Mattaniah in the same verse (an adult at the first return of 536 BC). Birth year is an estimate for placing only.' WHERE id = 4090;
+-- Heresh, Levite (1 Chr 9:15) (4091): 1 Chr 9:15 listed with Galal and Mattaniah, who are placed at -535 and -565
+UPDATE people SET birth_year = -565, death_year = NULL, date_confidence = 'possible', date_notes = 'Levite listed beside Galal and Mattaniah among those who dwelt in Jerusalem after the exile (1 Chr 9:15). Placed at 565 BC, the same year as Mattaniah in the same verse (an adult at the first return of 536 BC). Birth year is an estimate for placing only.' WHERE id = 4091;
+-- ===== Esau, his wives and the Horites of Seir =====
+-- Judith, wife of Esau (7601): Gen 26:34, married Esau when he was forty (1796 BC)
+UPDATE people SET birth_year = -1826, death_year = NULL, date_confidence = 'possible', date_notes = 'Married in 1796 BC, when Esau was forty (Gen 26:34). Birth year is an estimate for placing only (an adult in 1796 BC); her birth is not recorded.' WHERE id = 7601;
+-- Adah, wife of Esau (2101): Gen 36:2; if she is the Bashemath of Gen 26:34 she married in 1796 BC
+UPDATE people SET birth_year = -1826, death_year = NULL, date_confidence = 'possible', date_notes = 'Hittite wife of Esau, the daughter of Elon (Gen 36:2). Genesis 26:34 calls Esau''s Hittite wife Bashemath, daughter of Elon, who married him at forty (1796 BC); the names differ between passages. Birth year is an estimate for placing only (an adult in 1796 BC).' WHERE id = 2101;
+-- Aholibamah (2161): Gen 36:2, 36:5 Esau's wife whose sons were born in Canaan
+UPDATE people SET birth_year = -1826, death_year = NULL, date_confidence = 'possible', date_notes = 'Daughter of Anah and wife of Esau (Gen 36:2, 36:25); her sons were born in Canaan (Gen 36:5), so she was grown before Jacob''s return (1739 BC). Birth year is an estimate for placing only, set beside Esau''s other wives.' WHERE id = 2161;
+-- Seir the Horite (2115): Gen 14:6 Horites in mount Seir (about 1913 BC); Gen 36:20-25 gives four generations to Esau's wife Aholibamah
+UPDATE people SET birth_year = -1943, death_year = NULL, date_confidence = 'possible', date_notes = 'Ancestor of the Horites; the Horites already held mount Seir in Abraham''s day, about 1913 BC (Gen 14:6). Genesis 36:2, 36:20-25 gives the line Seir, Zibeon, Anah, Aholibamah, Esau''s wife (placed about 1826 BC). Birth year is an estimate for placing only (an adult in 1913 BC).' WHERE id = 2115;
+-- Timna, concubine of Eliphaz (2109): Gen 36:12 concubine of Eliphaz, placed in his generation (about 1806 BC)
+UPDATE people SET birth_year = -1806, death_year = NULL, date_confidence = 'possible', date_notes = 'Concubine of Eliphaz, Esau''s son, mother of Amalek (Gen 36:12). Birth year is an estimate for placing only: the year Eliphaz is placed by generation from Esau (born 1836 BC). 1 Chronicles 1:36 lists Timna among the sons of Eliphaz; she may be the Horite Timna, sister of Lotan.' WHERE id = 2109;
+-- Reumah (2068): Gen 22:24 concubine of Nahor, same generation as Nahor (born about 2000 BC in the table)
+UPDATE people SET birth_year = -2000, death_year = NULL, date_confidence = 'possible', date_notes = 'Concubine of Nahor, Abraham''s brother (Gen 22:24). Birth year is an estimate for placing only: the year given to Nahor, brother of Abraham (the same generation).' WHERE id = 2068;
+-- ===== Wives of Lamech (Cain's line) =====
+-- Adah, wife of Lamech (2005): Gen 4:19-20 wife of Lamech, same generation as Lamech (placed about 3800 BC)
+UPDATE people SET birth_year = -3800, death_year = NULL, date_confidence = 'possible', date_notes = 'Wife of Lamech, son of Methusael (Gen 4:19-20). Birth year is an estimate for placing only: the year Lamech is placed by generation from Cain.' WHERE id = 2005;
+-- Zillah (2006): Gen 4:19, 22 wife of Lamech, same generation as Lamech (placed about 3800 BC)
+UPDATE people SET birth_year = -3800, death_year = NULL, date_confidence = 'possible', date_notes = 'Wife of Lamech, son of Methusael (Gen 4:19, 22). Birth year is an estimate for placing only: the year Lamech is placed by generation from Cain.' WHERE id = 2006;
+-- ===== Wives and kin in the genealogy of Judah (1 Chr 2, 4) and Manasseh/Benjamin (1 Chr 7, 8) =====
+-- Azubah, wife of Caleb (3210): 1 Chr 2:18 wife or concubine of Caleb, son of Hezron, same generation (his row is placed at -1640)
+UPDATE people SET birth_year = -1640, death_year = NULL, date_confidence = 'possible', date_notes = 'Wife of Caleb, son of Hezron (1 Chr 2:18). Birth year is an estimate for placing only: the year given to her husband (the same generation).' WHERE id = 3210;
+-- Jerioth, wife of Caleb (3211): 1 Chr 2:18 wife or concubine of Caleb, son of Hezron, same generation (his row is placed at -1640)
+UPDATE people SET birth_year = -1640, death_year = NULL, date_confidence = 'possible', date_notes = 'Wife of Caleb, son of Hezron (1 Chr 2:18). Birth year is an estimate for placing only: the year given to her husband (the same generation).' WHERE id = 3211;
+-- Ephah, concubine of Caleb (3271): 1 Chr 2:46 wife or concubine of Caleb, son of Hezron, same generation (his row is placed at -1640)
+UPDATE people SET birth_year = -1640, death_year = NULL, date_confidence = 'possible', date_notes = 'Wife of Caleb, son of Hezron (1 Chr 2:46). Birth year is an estimate for placing only: the year given to her husband (the same generation).' WHERE id = 3271;
+-- Maachah, concubine of Caleb (3283): 1 Chr 2:48 wife or concubine of Caleb, son of Hezron, same generation (his row is placed at -1640)
+UPDATE people SET birth_year = -1640, death_year = NULL, date_confidence = 'possible', date_notes = 'Wife of Caleb, son of Hezron (1 Chr 2:48). Birth year is an estimate for placing only: the year given to her husband (the same generation).' WHERE id = 3283;
+-- Atarah, wife of Jerahmeel (3225): 1 Chr 2:26 wife or concubine of Jerahmeel, son of Hezron, same generation (his row is placed at -1660)
+UPDATE people SET birth_year = -1660, death_year = NULL, date_confidence = 'possible', date_notes = 'Wife of Jerahmeel, son of Hezron (1 Chr 2:26). Birth year is an estimate for placing only: the year given to her husband (the same generation).' WHERE id = 3225;
+-- Abihail, wife of Abishur (3234): 1 Chr 2:29 wife or concubine of Abishur, son of Shammai, same generation (his row is placed at -1570)
+UPDATE people SET birth_year = -1570, death_year = NULL, date_confidence = 'possible', date_notes = 'Wife of Abishur, son of Shammai (1 Chr 2:29). Birth year is an estimate for placing only: the year given to her husband (the same generation).' WHERE id = 3234;
+-- Helah, wife of Ashhur (3302): 1 Chr 4:5 wife or concubine of Ashhur, son of Hezron, same generation (his row is placed at -1589)
+UPDATE people SET birth_year = -1589, death_year = NULL, date_confidence = 'possible', date_notes = 'Wife of Ashhur, son of Hezron (1 Chr 4:5). Birth year is an estimate for placing only: the year given to her husband (the same generation).' WHERE id = 3302;
+-- Naarah, wife of Ashhur (3303): 1 Chr 4:5 wife or concubine of Ashhur, son of Hezron, same generation (his row is placed at -1589)
+UPDATE people SET birth_year = -1589, death_year = NULL, date_confidence = 'possible', date_notes = 'Wife of Ashhur, son of Hezron (1 Chr 4:5). Birth year is an estimate for placing only: the year given to her husband (the same generation).' WHERE id = 3303;
+-- Maachah, wife of Machir (4450): 1 Chr 7:15-16 wife or concubine of Machir, son of Manasseh, same generation (his row is placed at -1690)
+UPDATE people SET birth_year = -1690, death_year = NULL, date_confidence = 'possible', date_notes = 'Wife of Machir, son of Manasseh (1 Chr 7:15-16). Birth year is an estimate for placing only: the year given to her husband (the same generation).' WHERE id = 4450;
+-- Maachah, wife of Jehiel (4881): 1 Chr 8:29 wife or concubine of Jehiel (treated as Abiel, 547), same generation (his row is placed at -1205)
+UPDATE people SET birth_year = -1205, death_year = NULL, date_confidence = 'possible', date_notes = 'Wife of Jehiel (treated as Abiel, 547) (1 Chr 8:29). Birth year is an estimate for placing only: the year given to her husband (the same generation).' WHERE id = 4881;
+-- Jarha, servant of Sheshan (3242): 1 Chr 2:34-35 married Sheshan's daughter (Ahlai, placed about 1450 BC); his descendants Attai to Elishama then follow by generation
+UPDATE people SET birth_year = -1450, death_year = NULL, date_confidence = 'possible', date_notes = 'Egyptian servant of Sheshan to whom Sheshan gave his daughter (1 Chr 2:34-35). Birth year is an estimate for placing only: the generation of Sheshan''s daughter Ahlai, placed by generation at 1450 BC.' WHERE id = 3242;
+-- Putiel (2425): Ex 6:25 father-in-law of Eleazar son of Aaron (born 1530 BC)
+UPDATE people SET birth_year = -1560, death_year = NULL, date_confidence = 'possible', date_notes = 'Father of the wife of Eleazar son of Aaron and grandfather of Phinehas (Ex 6:25). Birth year is an estimate for placing only: one generation (30 years) before Eleazar (born 1530 BC), whose father-in-law he was.' WHERE id = 2425;
+-- Rephaiah, descendant of Zerubbabel (3634): 1 Chr 3:21 follows Hananiah's sons; one generation after them; descendants of Shechaniah (3:22-24) are then placed by generation
+UPDATE people SET birth_year = -470, death_year = NULL, date_confidence = 'possible', date_notes = 'Named in the Davidic line after Hananiah son of Zerubbabel (1 Chr 3:19-21); the verse lists the sons of Hananiah (Pelatiah, Jesaiah) and then the sons of this man''s family without saying how they are related. Birth year is an estimate for placing only: one generation after Pelatiah and Jesaiah.' WHERE id = 3634;
+-- Arnan (3635): 1 Chr 3:21 follows Hananiah's sons; one generation after them; descendants of Shechaniah (3:22-24) are then placed by generation
+UPDATE people SET birth_year = -470, death_year = NULL, date_confidence = 'possible', date_notes = 'Named in the Davidic line after Hananiah son of Zerubbabel (1 Chr 3:19-21); the verse lists the sons of Hananiah (Pelatiah, Jesaiah) and then the sons of this man''s family without saying how they are related. Birth year is an estimate for placing only: one generation after Pelatiah and Jesaiah.' WHERE id = 3635;
+-- Obadiah, descendant of Zerubbabel (3636): 1 Chr 3:21 follows Hananiah's sons; one generation after them; descendants of Shechaniah (3:22-24) are then placed by generation
+UPDATE people SET birth_year = -470, death_year = NULL, date_confidence = 'possible', date_notes = 'Named in the Davidic line after Hananiah son of Zerubbabel (1 Chr 3:19-21); the verse lists the sons of Hananiah (Pelatiah, Jesaiah) and then the sons of this man''s family without saying how they are related. Birth year is an estimate for placing only: one generation after Pelatiah and Jesaiah.' WHERE id = 3636;
+-- Shechaniah, descendant of Zerubbabel (3637): 1 Chr 3:21 follows Hananiah's sons; one generation after them; descendants of Shechaniah (3:22-24) are then placed by generation
+UPDATE people SET birth_year = -470, death_year = NULL, date_confidence = 'possible', date_notes = 'Named in the Davidic line after Hananiah son of Zerubbabel (1 Chr 3:19-21); the verse lists the sons of Hananiah (Pelatiah, Jesaiah) and then the sons of this man''s family without saying how they are related. Birth year is an estimate for placing only: one generation after Pelatiah and Jesaiah.' WHERE id = 3637;
+
 COMMIT;
