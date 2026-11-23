@@ -12105,13 +12105,14 @@ UPDATE biblical_books SET period_covered_start = -1635, period_covered_end = -14
 -- (Isa 6:1; person 89, Uzziah, d. -759; Ussher, Annals 583-584).
 -- period_covered_end -700 -> -681: Isaiah 37:38 tells of Sennacherib's murder by his sons, event 462
 -- "Sennacherib Assassinated" -681 (person 213, d. -681; owner's exception).
--- approx_writing_year stays at the traditional -700 (owner's decision, 2026-11-22); person 25 (Isaiah) notes that
--- either he outlived the traditional c. 695 or the notice of Sennacherib's death was added later.
-UPDATE biblical_books SET period_covered_start = -759, period_covered_end = -681 WHERE id = 23;
+-- approx_writing_year -700 -> -681: the book is not written before the last event it tells; person 25 (Isaiah)
+-- notes that either he outlived the traditional c. 695 or the notice of Sennacherib's death was added later.
+UPDATE biblical_books SET period_covered_start = -759, period_covered_end = -681, approx_writing_year = -681 WHERE id = 23;
 
--- Jeremiah (24). approx_writing_year stays at the traditional -585 (owner's decision, 2026-11-22), though the last
--- chapter ends with Jehoiachin's release (Jer 52:31-34), event 476 -562, the row's period_covered_end; Jer 51:64
--- marks the end of Jeremiah's own words.
+-- Jeremiah (24). approx_writing_year -585 -> -562: the book's last chapter ends with Jehoiachin's release
+-- (Jer 52:31-34), event 476 -562, which is also the row's period_covered_end; Jer 51:64 marks the end of
+-- Jeremiah's own words, so the book was finished after 562.
+UPDATE biblical_books SET approx_writing_year = -562 WHERE id = 24;
 
 -- Daniel (27). period_covered_start -606 -> -607: event 468 "Daniel Taken to Babylon" -607 (Dan 1:1; Ussher,
 -- Annals 774-776; person 28). period_covered_end -534 -> -535: his last dated vision is in the third year of
